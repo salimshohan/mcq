@@ -143,9 +143,6 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       opacity: 0.7;
-      background: linear-gradient(90deg, #6366f1, #22c55e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     /* Download Button */
@@ -240,7 +237,7 @@
         "mcq_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
 
       html2canvas(document.getElementById("mcqWrapper"), {
-        scale: 4,
+        scale: 35,
         useCORS: true,
         backgroundColor: null
       }).then(canvas => {
