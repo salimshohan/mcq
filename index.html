@@ -18,10 +18,10 @@
             padding: 20px;
         }
 
-        /* Input Section Styles */
+        /* Input Container */
         .app-container {
             width: 100%;
-            max-width: 450px;
+            max-width: 420px; /* Mobile Friendly Max Width */
             margin-bottom: 30px;
         }
 
@@ -56,7 +56,7 @@
         
         .btn-generate { 
             width: 100%; 
-            padding: 12px; 
+            padding: 14px; 
             margin-top: 20px;
             border-radius: 10px; 
             border: none; 
@@ -65,110 +65,111 @@
             font-size: 16px; 
             font-weight: 600; 
             cursor: pointer; 
-            transition: transform 0.2s;
         }
-        .btn-generate:active { transform: scale(0.98); }
 
-        /* --- PREVIEW AREA DESIGN (Matches the Image) --- */
+        /* --- PREVIEW AREA DESIGN (Mobile Fixed) --- */
         
-        /* This wrapper acts as the colorful background */
         #mcqWrapper {
-            display: none; /* Hidden initially */
-            width: 450px; /* Fixed width for image generation */
-            height: 450px; /* Square ratio like Instagram */
+            display: none; 
+            width: 100%;          /* Full width of container */
+            max-width: 400px;     /* Stop it from getting too huge */
+            aspect-ratio: 1 / 1;  /* Force it to be square like Instagram */
             position: relative;
-            /* The vibrant gradient background */
             background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #f472b6 100%);
             padding: 20px;
+            border-radius: 20px;  /* Smooth corners on phone view */
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin: 0 auto;       /* Center align */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        /* The Header Badge "Quick Quiz" */
         .quiz-badge {
             background: linear-gradient(90deg, #6366f1, #8b5cf6);
             color: white;
-            padding: 8px 30px;
+            padding: 8px 24px;
             border-radius: 20px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             box-shadow: 0 4px 15px rgba(99,102,241,0.4);
             margin-bottom: 15px;
             z-index: 10;
             font-family: 'Lexend', sans-serif;
+            text-align: center;
+            white-space: nowrap;
         }
 
-        /* The Main White Card */
         .mcq-card-inner {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(5px);
+            border-radius: 18px;
+            padding: 20px 15px;
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .question { 
-            font-size: 22px; 
+            font-size: 18px; 
             font-weight: 700; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             color: #111;
             line-height: 1.4;
         }
 
-        /* Options Style */
         .option { 
             display: flex; 
             align-items: center; 
             background: #ffffff; 
-            border-radius: 15px; 
-            padding: 10px 15px; 
-            margin-bottom: 12px; 
+            border-radius: 12px; 
+            padding: 8px 12px; 
+            margin-bottom: 8px; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border: 1px solid #eee;
         }
 
         .option span { 
-            width: 32px; 
-            height: 32px; 
+            min-width: 28px; 
+            height: 28px; 
             background: #e2e8f0;
             border-radius: 50%; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            margin-right: 15px; 
+            margin-right: 10px; 
             color: #1e293b; 
             font-weight: 700; 
-            font-size: 16px;
+            font-size: 14px;
             font-family: 'Lexend', sans-serif;
         }
 
         .option p { 
             margin: 0; 
-            font-size: 18px; 
+            font-size: 16px; 
             font-weight: 500;
             color: #333;
         }
 
-        /* Watermark */
         .watermark { 
             margin-top: auto; 
             position: absolute;
-            bottom: 15px;
-            right: 20px;
+            bottom: 12px;
+            right: 15px;
             text-align: right; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: 600; 
-            color: #000;
+            color: #222;
+            opacity: 0.8;
             font-family: 'Lexend', sans-serif;
         }
 
-        /* Download Button */
         .download-btn { 
             width: 100%; 
-            max-width: 450px;
-            margin-top: 16px; 
+            max-width: 420px;
+            margin-top: 20px; 
             padding: 14px; 
             border-radius: 12px; 
             border: none; 
@@ -178,7 +179,7 @@
             font-weight: 600; 
             cursor: pointer; 
             display: none; 
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
         }
         
     </style>
@@ -186,10 +187,10 @@
 <body>
 
     <div class="app-container">
-        <div class="h23">Create MCQ</div>
+        <div class="h23">MCQ Generator</div>
         <div class="input-box">
-            <b>Enter Question (Bengali/English)</b>
-            <input id="question" placeholder="প্রশ্ন লিখুন...">
+            <b>Enter Question</b>
+            <input id="question" placeholder="প্রশ্নটি এখানে লিখুন...">
             <b>Option A</b>
             <input id="optA" placeholder="অপশন ক">
             <b>Option B</b>
@@ -247,30 +248,28 @@
             const wrapper = document.getElementById('mcqWrapper');
             const downloadBtn = document.getElementById('mcqBtn');
 
-            // Show the preview area
             wrapper.style.display = "flex";
             downloadBtn.style.display = "block";
 
-            // Set text content
             document.getElementById('qText').innerText = "☆ " + q;
             document.getElementById('aText').innerText = a;
             document.getElementById('bText').innerText = b;
             document.getElementById('cText').innerText = c;
             document.getElementById('dText').innerText = d;
             
-            // Scroll to preview
-            wrapper.scrollIntoView({ behavior: 'smooth' });
+            // Smooth scroll
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function downloadMCQ() {
             const wrapper = document.getElementById("mcqWrapper");
             const randomName = "quiz_" + Date.now();
 
-            // Capture the colorful wrapper, not just the inner card
+            // High Quality Capture
             html2canvas(wrapper, {
-                scale: 2, // Higher quality
+                scale: 3, 
                 useCORS: true,
-                backgroundColor: null // Keeps gradient
+                backgroundColor: null 
             }).then(canvas => {
                 const link = document.createElement("a");
                 link.download = randomName + ".png";
