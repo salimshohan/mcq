@@ -66,21 +66,20 @@
             cursor: pointer; 
         }
 
-        /* --- PREVIEW AREA FIXES --- */
+        /* --- PREVIEW AREA --- */
         
         #mcqWrapper {
             display: none; 
             width: 100%;          
             max-width: 400px;
-            /* aspect-ratio removed mainly to allow height to grow if needed */
-            min-height: 400px; 
+            /* Auto height based on content */
             position: relative;
-            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); /* Slight adjustment for better contrast */
-            padding: 25px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+            padding: 20px; /* Reduced padding since watermark is inside */
             border-radius: 20px;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center content vertically */
+            justify-content: center;
             margin: 0 auto;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
@@ -93,7 +92,7 @@
             font-size: 18px;
             font-weight: 700;
             box-shadow: 0 4px 15px rgba(99,102,241,0.4);
-            margin-bottom: 20px; /* Space below badge */
+            margin-bottom: 20px; 
             z-index: 10;
             font-family: 'Lexend', sans-serif;
             text-align: center;
@@ -101,15 +100,14 @@
         }
 
         .mcq-card-inner {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(5px);
             border-radius: 18px;
-            padding: 20px 15px;
+            padding: 20px 15px 15px 15px; /* Bottom padding reduced */
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         .question { 
@@ -153,23 +151,24 @@
             color: #333;
         }
 
-        /* --- UPDATED WATERMARK --- */
+        /* --- CENTERED WATERMARK INSIDE CARD --- */
         .watermark { 
-            margin-top: 15px;      /* Gap between card and text */
-            width: 100%;           /* Full width to align right */
-            text-align: right; 
-            font-size: 12px; 
-            font-weight: 800; 
+            margin-top: 12px;      
+            width: 100%;           
+            text-align: center;     /* Center Aligned */
+            font-size: 11px; 
+            font-weight: 700; 
             font-family: 'Lexend', sans-serif;
             letter-spacing: 0.5px;
+            opacity: 0.8;
             
-            /* Colorful Gradient Text */
-            background: linear-gradient(90deg, #fff, #fbbf24); /* White to Gold Gradient */
+            /* Gradient Text Logic */
+            background: linear-gradient(90deg, #6366f1, #d946ef); 
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             
-            /* Fallback for non-webkit */
-            color: #fbbf24; 
+            /* Fallback */
+            color: #8b5cf6; 
         }
 
         .download-btn { 
@@ -231,9 +230,9 @@
                 <span>D</span>
                 <p id="dText"></p>
             </div>
-        </div>
 
-        <div class="watermark">Follow: Interactive Learning</div>
+            <div class="watermark">Follow: Interactive Learning</div>
+        </div>
     </div>
 
     <button class="download-btn" id="mcqBtn" onclick="downloadMCQ()">Download Image</button>
