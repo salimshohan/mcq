@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>MCQ Generator | Interactive Learning</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -37,7 +37,7 @@ body{
   margin-bottom:16px;
 }
 
-/* input box */
+/* input */
 .input-box{
   background:#fff;
   padding:16px;
@@ -52,14 +52,14 @@ body{
   width:100%;
   padding:14px;
   margin:8px 0 14px;
-  border-radius:10px;
+  border-radius:12px;
   border:1px solid #ddd;
 }
 
 .input-box button{
   width:100%;
-  padding:13px;
-  border-radius:14px;
+  padding:14px;
+  border-radius:16px;
   border:none;
   background:linear-gradient(135deg,#6366f1,#8b5cf6);
   color:#fff;
@@ -67,73 +67,82 @@ body{
   cursor:pointer;
 }
 
-/* MCQ CARD */
+/* ===== MCQ CARD ===== */
+
 .mcq-card{
   display:none;
-  padding:16px;
-  border-radius:26px;
-  box-shadow:0 25px 60px rgba(0,0,0,.18);
-  background:
-    linear-gradient(135deg,#6b6bff,#5ec6ff,#9f7cff,#ff8fcf);
-  background-size:300% 300%;
+  padding:18px;
 }
 
-/* inner white layer */
+/* OUTER GRADIENT FRAME */
+.mcq-frame{
+  padding:14px;
+  border-radius:32px;
+  background:linear-gradient(
+    135deg,
+    #6a6cff,
+    #5ec6ff,
+    #9f7cff,
+    #ff8fcf
+  );
+}
+
+/* INNER WHITE CARD */
 .mcq-inner{
-  background:rgba(255,255,255,.93);
-  border-radius:22px;
-  padding:16px;
+  background:rgba(255,255,255,0.97);
+  border-radius:24px;
+  padding:18px;
 }
 
-/* quiz header */
+/* QUIZ BADGE */
 .quiz-header{
   width:fit-content;
-  margin:0 auto 16px;
-  padding:10px 24px;
+  margin:0 auto 18px;
+  padding:12px 28px;
   border-radius:999px;
   background:linear-gradient(135deg,#6a5cff,#8f6bff);
   color:#fff;
   font-weight:600;
 }
 
-/* question strip */
+/* QUESTION STRIP */
 .question{
   font-size:16px;
   font-weight:600;
-  padding:14px;
-  border-radius:14px;
-  margin-bottom:14px;
+  padding:18px;
+  border-radius:16px;
+  margin-bottom:18px;
   background:linear-gradient(135deg,#efeaff,#e8f4ff);
 }
 
-/* options */
+/* OPTIONS */
 .option{
   display:flex;
   align-items:center;
   background:#f7f8fc;
-  border-radius:18px;
-  padding:12px;
-  margin-bottom:12px;
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:14px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
   font-weight:600;
 }
 
 .option span{
-  width:36px;
-  height:36px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   border:3px solid #cfcfe6;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-right:12px;
+  margin-right:14px;
 }
 
 /* watermark */
 .watermark{
-  margin-top:12px;
-  text-align:right;
-  font-size:12px;
+  margin-top:16px;
+  text-align:center;
+  font-size:13px;
   font-weight:600;
   opacity:.7;
 }
@@ -141,9 +150,9 @@ body{
 /* download */
 .download-btn{
   width:100%;
-  margin-top:16px;
-  padding:12px;
-  border-radius:14px;
+  margin-top:18px;
+  padding:14px;
+  border-radius:16px;
   border:none;
   background:#10b981;
   color:#fff;
@@ -181,17 +190,21 @@ body{
 
 <div id="mcqWrapper">
   <div class="mcq-card" id="mcqCard">
-    <div class="mcq-inner">
-      <div class="quiz-header">Quick Quiz</div>
+    <div class="mcq-frame">
+      <div class="mcq-inner">
 
-      <div class="question" id="qText"></div>
+        <div class="quiz-header">Quick Quiz</div>
 
-      <div class="option"><span>A</span><p id="aText"></p></div>
-      <div class="option"><span>B</span><p id="bText"></p></div>
-      <div class="option"><span>C</span><p id="cText"></p></div>
-      <div class="option"><span>D</span><p id="dText"></p></div>
+        <div class="question" id="qText"></div>
 
-      <div class="watermark">Follow: Interactive Learning</div>
+        <div class="option"><span>A</span><p id="aText"></p></div>
+        <div class="option"><span>B</span><p id="bText"></p></div>
+        <div class="option"><span>C</span><p id="cText"></p></div>
+        <div class="option"><span>D</span><p id="dText"></p></div>
+
+        <div class="watermark">Follow: Interactive Learning</div>
+
+      </div>
     </div>
   </div>
 </div>
