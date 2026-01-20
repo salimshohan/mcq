@@ -24,13 +24,14 @@
             margin-bottom: 30px;
         }
 
-        /* --- Stylish Header Animation --- */
+        /* --- Shared Color Animation Keyframes --- */
         @keyframes colorChange {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
+        /* --- Header --- */
         .h23 { 
             text-align: center; 
             color: white; 
@@ -54,7 +55,6 @@
 
         .input-box b { font-size: 14px; color: #444; display: block; margin-top: 10px;}
         
-        /* --- Stylish Inputs --- */
         .input-box input { 
             width: 100%; 
             padding: 12px; 
@@ -66,10 +66,7 @@
             transition: all 0.3s ease;
         }
         
-        /* Focus & Hover States */
-        .input-box input:hover {
-            border-color: #cbd5e1;
-        }
+        .input-box input:hover { border-color: #cbd5e1; }
         .input-box input:focus {
             outline: none;
             border-color: #8b5cf6;
@@ -88,12 +85,9 @@
             font-size: 16px; 
             font-weight: 600; 
             cursor: pointer; 
-            
-            /* Gradient Animation reused */
             background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
             background-size: 300% 300%;
             animation: colorChange 4s ease infinite;
-            
             transition: transform 0.2s, box-shadow 0.2s;
         }
         
@@ -101,23 +95,22 @@
             box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
             transform: translateY(-2px);
         }
-        .btn-generate:active {
-            transform: scale(0.98);
-        }
+        .btn-generate:active { transform: scale(0.98); }
 
-        /* --- PREVIEW AREA (Compact Design) --- */
+        /* --- PREVIEW AREA --- */
         
         #mcqWrapper {
             display: none; 
             width: 100%;          
             max-width: 400px;
             position: relative;
+            /* Outer gradient background */
             background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+            padding: 12px; 
             
-            /* Reduced padding to make white box closer to edges */
-            padding: 10px; 
+            /* REQUIREMENT: Outer radius removed (Square) */
+            border-radius: 0; 
             
-            border-radius: 20px;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -129,10 +122,7 @@
             background: linear-gradient(90deg, #6366f1, #8b5cf6);
             color: white;
             padding: 4px 18px; 
-            
-            /* Very minimal margin to pull it close to the card */
             margin-bottom: 8px; 
-            
             border-radius: 20px;
             font-size: 14px; 
             font-weight: 700;
@@ -143,36 +133,39 @@
             border: 1px solid rgba(255,255,255,0.3);
         }
 
+        /* REQUIREMENT: Inner box animated color change */
         .mcq-card-inner {
-            background: rgba(255, 255, 255, 0.98);
+            /* Replaced static white background with animated gradient */
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
+            background-size: 300% 300%;
+            animation: colorChange 6s ease infinite;
+            
             border-radius: 16px;
-            
-            /* Reduced internal padding for compactness */
             padding: 18px 12px 10px 12px; 
-            
             width: 100%;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
         }
 
-        /* Unique Question Style */
+        /* Question text color changed to white for contrast */
         .question { 
             font-size: 18px; 
             font-weight: 700; 
             margin-bottom: 15px; 
-            color: #1e293b;
+            color: white; 
             line-height: 1.4;
             display: flex;
             align-items: flex-start;
         }
         
+        /* Q prefix styled for dark background */
         .q-prefix {
-            color: #6366f1;
+            color: white;
             font-size: 20px;
             margin-right: 8px;
             font-weight: 800;
-            background: #e0e7ff;
+            background: rgba(255, 255, 255, 0.2);
             padding: 0 8px;
             border-radius: 6px;
             line-height: 26px;
@@ -185,7 +178,7 @@
             border-radius: 10px; 
             padding: 8px 10px; 
             margin-bottom: 8px; 
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .option span { 
@@ -211,6 +204,7 @@
             color: #334155;
         }
 
+        /* Watermark color changed to semi-transparent white */
         .watermark { 
             margin-top: 8px;      
             width: 100%;           
@@ -219,9 +213,10 @@
             font-weight: 600; 
             font-family: 'Lexend', sans-serif;
             letter-spacing: 0.5px;
-            color: #94a3b8; 
+            color: rgba(255, 255, 255, 0.8); 
         }
 
+        /* REQUIREMENT: Download button animation */
         .download-btn { 
             width: 100%; 
             max-width: 420px;
@@ -229,16 +224,23 @@
             padding: 14px; 
             border-radius: 12px; 
             border: none; 
-            background: #10b981; 
             color: white; 
             font-size: 16px; 
             font-weight: 600; 
             cursor: pointer; 
             display: none; 
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
-            transition: 0.2s;
+            
+            /* Applied the same animation as Generate button */
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
+            background-size: 300% 300%;
+            animation: colorChange 4s ease infinite;
+            
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .download-btn:hover { background: #059669; }
+        .download-btn:hover {
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
         .download-btn:active { transform: scale(0.98); }
         
     </style>
@@ -314,7 +316,6 @@
             wrapper.style.display = "flex";
             downloadBtn.style.display = "block";
 
-            // Only setting the text, the 'Q.' prefix is hardcoded in HTML
             document.getElementById('qText').innerText = q;
             document.getElementById('aText').innerText = a;
             document.getElementById('bText').innerText = b;
@@ -331,6 +332,7 @@
             html2canvas(wrapper, {
                 scale: 3, 
                 useCORS: true,
+                // Important: kept null to capture the animated gradient background
                 backgroundColor: null 
             }).then(canvas => {
                 const link = document.createElement("a");
