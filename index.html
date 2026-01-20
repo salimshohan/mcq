@@ -1,198 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MCQ Generator | Interactive Learning</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>MCQ Generator | Interactive Learning</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-*{
-  box-sizing:border-box;
-  font-family:'Lexend',sans-serif;
-}
+  <!-- Styles -->
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Lexend', sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#f4f6fb;
-  display:flex;
-  justify-content:center;
-  padding:20px;
-}
+    body {
+      margin: 0;
+      background: #f4f6fb;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
 
-.app{
-  width:100%;
-  max-width:400px;
-}
+    /* App Wrapper */
+    .app {
+      width: 100%;
+      max-width: 400px;
+    }
 
-/* header */
-.h23{
-  text-align:center;
-  background:#65f6af;
-  color:#065f46;
-  padding:12px;
-  border-radius:12px;
-  font-weight:600;
-  margin-bottom:16px;
-}
+    /* Header */
+    .h23 {
+      text-align: center;
+      color: #065f46;
+      background: #65f6af;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
 
-/* input */
-.input-box{
-  background:#fff;
-  padding:16px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-  margin-bottom:20px;
-}
+    /* Input Box */
+    .input-box {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
 
-.input-box b{font-size:13px}
+    .input-box b {
+      font-size: 13px;
+    }
 
-.input-box input{
-  width:100%;
-  padding:14px;
-  margin:8px 0 14px;
-  border-radius:12px;
-  border:1px solid #ddd;
-}
+    .input-box input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0 14px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
 
-.input-box button{
-  width:100%;
-  padding:14px;
-  border-radius:16px;
-  border:none;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-}
+    .input-box button {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer; box-shadow: 0 6px 16px rgba(99,102,241,0.35);
+    }
 
-/* ===== MCQ CARD ===== */
+    /* MCQ Card */
+    .mcq-card {
+      margin-top: 20px;
+      background: white;
+      border-radius: 1px;
+      padding: 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      display: none;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
 
-.mcq-card{
-  display:none;
-  padding:18px;
-}
+    .quiz-header {
+      width: fit-content;
+      padding: 8px 16px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 6px 16px rgba(99,102,241,0.35);
+      text-align: center;
+    }
 
-/* OUTER GRADIENT FRAME */
-.mcq-frame{
-  padding:14px;
-  border-radius:32px;
-  background:linear-gradient(
-    135deg,
-    #6a6cff,
-    #5ec6ff,
-    #9f7cff,
-    #ff8fcf
-  );
-}
+    .question {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
 
-/* INNER WHITE CARD */
-.mcq-inner{
-  background:rgba(255,255,255,0.97);
-  border-radius:24px;
-  padding:18px;
-}
+    .option {
+      display: flex;
+      align-items: center;
+      background: #f1f3f5;
+      border-radius: 12px;
+      padding: 8px;
+      margin-bottom: 8px;
+      opacity: 0.9;
+      font-weight: 600;
+    }
 
-/* QUIZ BADGE */
-.quiz-header{
-  width:fit-content;
-  margin:0 auto 18px;
-  padding:12px 28px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#6a5cff,#8f6bff);
-  color:#fff;
-  font-weight:600;
-}
+    .option span {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      border: 2px solid #aaa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      color: #012;
+      font-weight: 700;
+    }
 
-/* QUESTION STRIP */
-.question{
-  font-size:16px;
-  font-weight:600;
-  padding:18px;
-  border-radius:16px;
-  margin-bottom:18px;
-  background:linear-gradient(135deg,#efeaff,#e8f4ff);
-}
+    .option p {
+      margin: 0;
+      font-size: 14px;
+    }
 
-/* OPTIONS */
-.option{
-  display:flex;
-  align-items:center;
-  background:#f7f8fc;
-  border-radius:20px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
-  font-weight:600;
-}
+    /* Watermark */
+    .watermark {
+      margin-top: 14px;
+      text-align: right;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+    }
 
-.option span{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:3px solid #cfcfe6;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-right:14px;
-}
-
-/* watermark */
-.watermark{
-  margin-top:16px;
-  text-align:center;
-  font-size:13px;
-  font-weight:600;
-  opacity:.7;
-}
-
-/* download */
-.download-btn{
-  width:100%;
-  margin-top:18px;
-  padding:14px;
-  border-radius:16px;
-  border:none;
-  background:#10b981;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  display:none;
-}
-</style>
+    /* Download Button */
+    .download-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      background: #10b981;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-<div class="h23">Create MCQ</div>
+    <div class="h23">Create MCQ</div>
 
-<div class="input-box">
-  <b>Enter Question</b>
-  <input id="question">
+    <div class="input-box">
+      <b>Enter Question</b>
+      <input id="question" placeholder="Enter question">
 
-  <b>Option A</b>
-  <input id="optA">
+      <b>Option A</b>
+      <input id="optA" placeholder="Option A">
 
-  <b>Option B</b>
-  <input id="optB">
+      <b>Option B</b>
+      <input id="optB" placeholder="Option B">
 
-  <b>Option C</b>
-  <input id="optC">
+      <b>Option C</b>
+      <input id="optC" placeholder="Option C">
 
-  <b>Option D</b>
-  <input id="optD">
+      <b>Option D</b>
+      <input id="optD" placeholder="Option D">
 
-  <button onclick="generateMCQ()">Generate MCQ</button>
-</div>
+      <button onclick="generateMCQ()">Generate MCQ</button>
+    </div>
 
-<div id="mcqWrapper">
-  <div class="mcq-card" id="mcqCard">
-    <div class="mcq-frame">
-      <div class="mcq-inner">
-
+    <div id="mcqWrapper">
+      <div class="mcq-card" id="mcqCard">
         <div class="quiz-header">Quick Quiz</div>
 
         <div class="question" id="qText"></div>
@@ -203,47 +199,55 @@ body{
         <div class="option"><span>D</span><p id="dText"></p></div>
 
         <div class="watermark">Follow: Interactive Learning</div>
-
       </div>
     </div>
+
+    <button class="download-btn" id="mcqBtn" onclick="downloadMCQ()">Download Image</button>
+
   </div>
-</div>
 
-<button class="download-btn" id="mcqBtn" onclick="downloadMCQ()">Download Image</button>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-</div>
+  <script>
+    function generateMCQ() {
+      const q = question.value;
+      const a = optA.value;
+      const b = optB.value;
+      const c = optC.value;
+      const d = optD.value;
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+      if (!q || !a || !b || !c || !d) {
+        alert("সব ঘর পূরণ করো");
+        return;
+      }
 
-<script>
-function generateMCQ(){
-  if(!question.value||!optA.value||!optB.value||!optC.value||!optD.value){
-    alert("সব ঘর পূরণ করো");
-    return;
-  }
+      mcqCard.style.display = "block";
+      mcqBtn.style.display = "block";
 
-  mcqCard.style.display="block";
-  mcqBtn.style.display="block";
+      qText.innerText = "☆ " + q;
+      aText.innerText = a;
+      bText.innerText = b;
+      cText.innerText = c;
+      dText.innerText = d;
+    }
 
-  qText.innerText="☆ "+question.value;
-  aText.innerText=optA.value;
-  bText.innerText=optB.value;
-  cText.innerText=optC.value;
-  dText.innerText=optD.value;
-}
+    function downloadMCQ() {
+      const randomName =
+        "mcq_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
 
-function downloadMCQ(){
-  html2canvas(mcqWrapper,{
-    scale:4,
-    backgroundColor:null
-  }).then(canvas=>{
-    const a=document.createElement("a");
-    a.download="mcq_"+Date.now()+".png";
-    a.href=canvas.toDataURL();
-    a.click();
-  });
-}
-</script>
+      html2canvas(document.getElementById("mcqWrapper"), {
+        scale: 35,
+        useCORS: true,
+        backgroundColor: null
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = randomName + ".png";
+        link.href = canvas.toDataURL("image/png", 1.0);
+        link.click();
+      });
+    }
+  </script>
 
 </body>
 </html>
