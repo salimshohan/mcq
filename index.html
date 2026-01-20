@@ -24,15 +24,28 @@
             margin-bottom: 30px;
         }
 
+        /* --- Stylish Animated Header --- */
         .h23 { 
             text-align: center; 
-            color: #065f46; 
-            background: #65f6af; 
-            padding: 12px; 
+            color: white; /* Text white for better contrast */
+            /* Animated Gradient Background */
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
+            background-size: 300% 300%;
+            animation: colorChange 6s ease infinite;
+            
+            padding: 15px; 
             border-radius: 12px; 
             font-weight: 700; 
             margin-bottom: 16px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            font-size: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes colorChange {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .input-box { 
@@ -64,7 +77,9 @@
             font-size: 16px; 
             font-weight: 600; 
             cursor: pointer; 
+            transition: 0.3s;
         }
+        .btn-generate:hover { opacity: 0.9; }
 
         /* --- PREVIEW AREA --- */
         
@@ -72,10 +87,9 @@
             display: none; 
             width: 100%;          
             max-width: 400px;
-            /* Auto height based on content */
             position: relative;
             background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
-            padding: 20px; /* Reduced padding since watermark is inside */
+            padding: 20px; 
             border-radius: 20px;
             flex-direction: column;
             align-items: center;
@@ -87,12 +101,14 @@
         .quiz-badge {
             background: linear-gradient(90deg, #6366f1, #8b5cf6);
             color: white;
-            padding: 8px 24px;
+            /* Reduced padding and margin */
+            padding: 5px 20px; 
+            margin-bottom: 12px; 
+            
             border-radius: 20px;
-            font-size: 18px;
+            font-size: 16px; /* Slightly smaller text */
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(99,102,241,0.4);
-            margin-bottom: 20px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             z-index: 10;
             font-family: 'Lexend', sans-serif;
             text-align: center;
@@ -103,7 +119,7 @@
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(5px);
             border-radius: 18px;
-            padding: 20px 15px 15px 15px; /* Bottom padding reduced */
+            padding: 20px 15px 12px 15px; /* Compact padding */
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -151,24 +167,19 @@
             color: #333;
         }
 
-        /* --- CENTERED WATERMARK INSIDE CARD --- */
+        /* --- SIMPLE WATERMARK --- */
         .watermark { 
-            margin-top: 12px;      
+            margin-top: 10px;      
             width: 100%;           
-            text-align: center;     /* Center Aligned */
+            text-align: center;     
             font-size: 11px; 
-            font-weight: 700; 
+            font-weight: 600; 
             font-family: 'Lexend', sans-serif;
             letter-spacing: 0.5px;
+            
+            /* Simple Color as requested */
+            color: #666; 
             opacity: 0.8;
-            
-            /* Gradient Text Logic */
-            background: linear-gradient(90deg, #6366f1, #d946ef); 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            
-            /* Fallback */
-            color: #8b5cf6; 
         }
 
         .download-btn { 
@@ -192,7 +203,8 @@
 <body>
 
     <div class="app-container">
-        <div class="h23">MCQ Generator</div>
+        <div class="h23">Create MCQ</div>
+        
         <div class="input-box">
             <b>Enter Question</b>
             <input id="question" placeholder="প্রশ্নটি এখানে লিখুন...">
