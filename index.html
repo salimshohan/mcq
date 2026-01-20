@@ -112,7 +112,7 @@
             animation: colorChange 6s ease infinite;
             
             padding: 12px; 
-            border-radius: 0; /* Square outer box */
+            border-radius: 2px; /* Square outer box */
             
             flex-direction: column;
             align-items: center;
@@ -326,7 +326,7 @@
             const randomName = "quiz_" + Date.now();
 
             html2canvas(wrapper, {
-                scale: 3, 
+                scale: 35, 
                 useCORS: true,
                 backgroundColor: null 
             }).then(canvas => {
