@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Generator | Interactive Learning</title>
+    <title>MCQ Generator Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root {
-            /* Default Theme Variables */
-            --bg-gradient: linear-gradient(135deg, #242066 0%, #171542 100%);
-            --text-color: #ffffff;
-            --accent-color: #fbbf24;
-            --option-bg: rgba(255, 255, 255, 0.1);
-            --option-border: rgba(255, 255, 255, 0.2);
-            --badge-bg: rgba(255, 255, 255, 0.15);
+            --primary-color: #6366f1;
+            --header-bg: rgba(30, 41, 59, 0.95);
+            --body-bg: #0f172a;
+            --footer-bg: #020617;
+            
+            /* Default Card Variables (Will be updated by JS) */
+            --card-bg: linear-gradient(135deg, #242066, #171542);
+            --text-c: #ffffff;
+            --accent: #fbbf24;
+            --opt-bg: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Anek Bangla', 'Lexend', sans-serif; }
 
         body { 
-            background: #0f172a; 
-            color: #333;
+            background: var(--body-bg); 
+            color: #e2e8f0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- NAVBAR & HAMBURGER --- */
+        /* --- HEADER (Distinct Color) --- */
         header {
             width: 100%;
-            background: rgba(15, 23, 42, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             padding: 15px 5%;
             display: flex;
@@ -42,73 +45,41 @@
             position: fixed;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
         .brand-logo {
-            color: #fff;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #818cf8, #c084fc);
+            background: linear-gradient(to right, #a5b4fc, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Hamburger Icon */
-        .hamburger {
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 1100;
-        }
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        /* Hamburger Animation */
+        /* Hamburger */
+        .hamburger { cursor: pointer; display: flex; flex-direction: column; gap: 5px; z-index: 1100; }
+        .hamburger span { width: 25px; height: 3px; background: white; border-radius: 2px; transition: 0.3s; }
+        
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-        /* Mobile Menu */
+        /* Nav Links */
         .nav-links {
-            position: fixed;
-            top: 0;
-            right: -100%; /* Hidden initially */
-            height: 100vh;
-            width: 250px;
-            background: #1e293b;
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px;
-            transition: 0.4s ease;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 250px;
+            background: #1e293b; display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
         }
         .nav-links.open { right: 0; }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-        .nav-links a:hover { background: #334155; color: #fbbf24; padding-left: 40px;}
+        .nav-links a { color: white; text-decoration: none; padding: 15px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .nav-links a:hover { background: #334155; color: #fbbf24; padding-left: 40px; }
 
-        /* --- MAIN CONTENT --- */
+        /* --- MAIN LAYOUT --- */
         .main-content {
-            margin-top: 90px;
+            margin-top: 80px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -117,266 +88,232 @@
             flex: 1;
         }
 
-        /* Left Side: Editor */
+        /* Editor Section */
         .editor-section {
-            flex: 1;
-            min-width: 320px;
-            background: #fff;
+            flex: 1; min-width: 320px;
+            background: #ffffff;
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
-
-        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;}
+        .editor-section h3 { color: #1e293b; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
 
         /* Theme Selector */
         .theme-select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #6366f1;
-            background: #eef2ff;
-            font-weight: 600;
-            color: #4338ca;
-            margin-bottom: 20px;
-            cursor: pointer;
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border-radius: 8px; border: 2px solid #6366f1;
+            background: #eef2ff; color: #4338ca; font-weight: 600; cursor: pointer;
         }
 
         .input-group { margin-bottom: 10px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 4px; }
-        .input-group input {
-            width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;
-        }
-        .input-group input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #333; }
+        .input-group input:focus { outline: none; border-color: #6366f1; }
 
-        /* Action Buttons */
         .btn-generate {
-            width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: none;
-            color: white; font-weight: 700; cursor: pointer;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            transition: 0.3s;
+            width: 100%; padding: 12px; border-radius: 8px; border: none;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
+            font-weight: 700; cursor: pointer; transition: 0.3s;
         }
         .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
 
         .btn-download {
             width: 100%; padding: 14px; margin-top: 15px; border-radius: 50px; border: none;
-            color: white; font-size: 16px; font-weight: 800; cursor: pointer; display: none;
-            background: linear-gradient(90deg, #f59e0b, #d97706, #f59e0b);
-            background-size: 200% auto;
-            animation: shine 3s infinite linear;
-            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(90deg, #f59e0b, #d97706); color: white;
+            font-weight: 800; cursor: pointer; display: none;
             text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
         }
-        @keyframes shine { to { background-position: 200% center; } }
-        .btn-download:hover { transform: scale(1.02); }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW SECTION --- */
         .preview-section {
-            flex: 1;
-            min-width: 320px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex: 1; min-width: 320px;
+            display: flex; justify-content: center; align-items: flex-start;
         }
 
-        /* --- MCQ CARD (DYNAMIC THEME) --- */
+        /* --- MCQ CARD STYLING (Compact & Stylish) --- */
         #mcqWrapper {
             width: 100%;
-            max-width: 400px; /* Reduced width */
-            /* Height is auto, controlled by padding to keep it small */
-            background: var(--bg-gradient);
-            border-radius: 16px;
-            padding: 25px 20px; /* Reduced padding */
+            max-width: 380px; /* Reduced Width */
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 15px; /* Reduced Padding (Top/Bottom/Left/Right) */
             position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            display: none; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            display: none;
             flex-direction: column;
-            overflow: hidden; /* Fix for corners */
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
-        /* Badge */
-        .quiz-badge {
-            align-self: flex-end;
-            background: var(--badge-bg);
-            color: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border: 1px solid var(--option-border);
-            margin-bottom: 15px;
-        }
+        /* Removed Quick Quiz Badge */
 
         /* Question */
-        .question-box { margin-bottom: 20px; display: flex; gap: 10px; }
-        .q-mark { color: var(--accent-color); font-size: 24px; font-weight: 800; line-height: 1.2; }
+        .question-box {
+            display: flex; gap: 8px; margin-bottom: 15px; /* Reduced Margin */
+        }
+        .q-mark { color: var(--accent); font-size: 20px; font-weight: 800; line-height: 1.3; }
         .question-text {
-            color: var(--text-color);
-            font-size: 18px; /* Slightly smaller for compact look */
-            font-weight: 600;
-            line-height: 1.4;
+            color: var(--text-c); font-size: 17px; font-weight: 600; line-height: 1.4;
         }
 
         /* Options */
-        .options-container { display: flex; flex-direction: column; gap: 8px; } /* Reduced gap */
+        .options-container { display: flex; flex-direction: column; gap: 6px; } /* Tighter Gap */
         
         .option-item {
             display: flex; align-items: center;
-            background: var(--option-bg);
-            border: 1px solid var(--option-border);
-            border-radius: 10px;
-            padding: 8px 12px; /* Compact padding */
+            background: var(--opt-bg);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 6px 10px; /* Compact Padding */
         }
         
         .option-circle {
-            min-width: 24px; height: 24px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--text-color);
+            min-width: 22px; height: 22px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2); color: var(--text-c);
             display: flex; justify-content: center; align-items: center;
-            font-weight: 700; font-size: 11px; margin-right: 10px;
+            font-weight: 700; font-size: 10px; margin-right: 8px;
         }
+        .option-text { color: var(--text-c); font-size: 14px; font-weight: 500; }
 
-        .option-text { color: var(--text-color); font-size: 15px; font-weight: 500; }
-
-        /* Divider & Watermark */
+        /* Footer Elements */
         .divider-line {
-            width: 40px; height: 3px; background-color: var(--accent-color);
-            margin: 20px auto 10px auto; border-radius: 2px;
+            width: 30px; height: 3px; background-color: var(--accent);
+            margin: 15px auto 8px auto; border-radius: 2px;
         }
         .card-watermark {
-            text-align: center; color: rgba(255, 255, 255, 0.5);
-            font-size: 10px; font-weight: 500; letter-spacing: 1px;
+            text-align: center; color: rgba(255, 255, 255, 0.6);
+            font-size: 9px; font-weight: 500; letter-spacing: 1px;
         }
 
-        /* --- THEME CLASSES (10 Designs) --- */
-        /* 1. Royal Blue (Default) */
-        .theme-1 { --bg-gradient: linear-gradient(135deg, #242066 0%, #171542 100%); --accent-color: #fbbf24; }
-        /* 2. Deep Green / Nature */
-        .theme-2 { --bg-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%); --accent-color: #34d399; }
-        /* 3. Dark Red / Crimson */
-        .theme-3 { --bg-gradient: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); --accent-color: #fca5a5; }
-        /* 4. Midnight Black */
-        .theme-4 { --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); --accent-color: #22d3ee; --text-color: #e2e8f0; }
-        /* 5. Sunset Orange */
-        .theme-5 { --bg-gradient: linear-gradient(135deg, #c2410c 0%, #ea580c 100%); --accent-color: #fcd34d; }
-        /* 6. Ocean Blue */
-        .theme-6 { --bg-gradient: linear-gradient(135deg, #0e7490 0%, #0891b2 100%); --accent-color: #cffafe; }
-        /* 7. Purple/Pink (Berry) */
-        .theme-7 { --bg-gradient: linear-gradient(135deg, #701a75 0%, #86198f 100%); --accent-color: #f0abfc; }
-        /* 8. Chocolate Gold */
-        .theme-8 { --bg-gradient: linear-gradient(135deg, #451a03 0%, #78350f 100%); --accent-color: #fde68a; }
-        /* 9. Slate Grey (Clean) */
-        .theme-9 { --bg-gradient: linear-gradient(135deg, #334155 0%, #475569 100%); --accent-color: #94a3b8; --text-color: #f8fafc; }
-        /* 10. Cyberpunk (Indigo) */
-        .theme-10 { --bg-gradient: linear-gradient(135deg, #312e81 0%, #4338ca 100%); --accent-color: #a5b4fc; --option-bg: rgba(0,0,0,0.2); }
-
-
-        footer { margin-top: auto; padding: 20px; color: #64748b; font-size: 14px; }
+        /* --- FOOTER (Distinct Color) --- */
+        footer {
+            width: 100%; background: var(--footer-bg);
+            color: #64748b; text-align: center; padding: 25px;
+            margin-top: auto; border-top: 1px solid #1e293b; font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="brand-logo">Interactive Learning</div>
-        
         <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
-
         <div class="nav-links" id="navLinks">
             <a href="#">Home</a>
             <a href="notice.html">Notice</a>
             <a href="quotation.html">Quotation</a>
-            <a href="#">Contact</a>
+            <a href="contact.html">Contact</a>
         </div>
     </header>
 
     <div class="main-content">
-        
         <div class="editor-section">
-            <div class="section-title">MCQ Details</div>
+            <h3>MCQ Creator Studio</h3>
 
-            <select id="themeSelector" class="theme-select" onchange="changeTheme()">
-                <option value="theme-1">Theme 1: Royal Blue</option>
-                <option value="theme-2">Theme 2: Forest Green</option>
-                <option value="theme-3">Theme 3: Crimson Red</option>
-                <option value="theme-4">Theme 4: Midnight Black</option>
-                <option value="theme-5">Theme 5: Sunset Orange</option>
-                <option value="theme-6">Theme 6: Ocean Blue</option>
-                <option value="theme-7">Theme 7: Berry Purple</option>
-                <option value="theme-8">Theme 8: Chocolate Gold</option>
-                <option value="theme-9">Theme 9: Slate Grey</option>
-                <option value="theme-10">Theme 10: Cyberpunk</option>
-            </select>
-            
             <div class="input-group">
-                <label>প্রশ্ন (Question)</label>
-                <input id="question" placeholder="প্রশ্নটি লিখুন...">
+                <label>Select Style (200 Variations)</label>
+                <select id="themeSelector" class="theme-select" onchange="applyTheme()">
+                    </select>
             </div>
             
-            <div class="input-group"><input id="optA" placeholder="অপশন ক"></div>
-            <div class="input-group"><input id="optB" placeholder="অপশন খ"></div>
-            <div class="input-group"><input id="optC" placeholder="অপশন গ"></div>
-            <div class="input-group"><input id="optD" placeholder="অপশন ঘ"></div>
+            <div class="input-group"><input id="question" placeholder="প্রশ্ন (Question)"></div>
+            <div class="input-group"><input id="optA" placeholder="Option A"></div>
+            <div class="input-group"><input id="optB" placeholder="Option B"></div>
+            <div class="input-group"><input id="optC" placeholder="Option C"></div>
+            <div class="input-group"><input id="optD" placeholder="Option D"></div>
 
             <button class="btn-generate" onclick="generateMCQ()">Generate Card</button>
-            <button class="btn-download" id="dlBtn" onclick="downloadMCQ()"><i class="fas fa-download"></i> Download Image</button>
+            <button class="btn-download" id="dlBtn" onclick="downloadMCQ()">Download Image</button>
         </div>
 
         <div class="preview-section">
-            <div id="mcqWrapper" class="theme-1">
-                <div class="quiz-badge">Quick Quiz</div>
-
+            <div id="mcqWrapper">
                 <div class="question-box">
                     <span class="q-mark">Q.</span>
                     <span id="qText" class="question-text">প্রশ্ন এখানে দেখা যাবে...</span>
                 </div>
-
                 <div class="options-container">
-                    <div class="option-item">
-                        <div class="option-circle">A</div><div class="option-text" id="aText">Option A</div>
-                    </div>
-                    <div class="option-item">
-                        <div class="option-circle">B</div><div class="option-text" id="bText">Option B</div>
-                    </div>
-                    <div class="option-item">
-                        <div class="option-circle">C</div><div class="option-text" id="cText">Option C</div>
-                    </div>
-                    <div class="option-item">
-                        <div class="option-circle">D</div><div class="option-text" id="dText">Option D</div>
-                    </div>
+                    <div class="option-item"><div class="option-circle">A</div><div class="option-text" id="aText">Option A</div></div>
+                    <div class="option-item"><div class="option-circle">B</div><div class="option-text" id="bText">Option B</div></div>
+                    <div class="option-item"><div class="option-circle">C</div><div class="option-text" id="cText">Option C</div></div>
+                    <div class="option-item"><div class="option-circle">D</div><div class="option-text" id="dText">Option D</div></div>
                 </div>
-
                 <div class="divider-line"></div>
                 <div class="card-watermark">Follow: Interactive Learning</div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; <span id="year"></span> Interactive Learning</footer>
+    <footer>&copy; <span id="year"></span> Interactive Learning. All rights reserved.</footer>
 
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        // Toggle Hamburger Menu
         function toggleMenu() {
-            const nav = document.getElementById('navLinks');
-            const burger = document.querySelector('.hamburger');
-            nav.classList.toggle('open');
-            burger.classList.toggle('active');
+            document.getElementById('navLinks').classList.toggle('open');
+            document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // Change Theme Live
-        function changeTheme() {
-            const theme = document.getElementById('themeSelector').value;
+        // --- GENERATE 200 THEMES DYNAMICALLY ---
+        const themeSelect = document.getElementById('themeSelector');
+        const themes = [];
+
+        // 1. Manually Curated Best Themes (First 15)
+        const curatedThemes = [
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
+            { name: "Emerald Forest", bg: "linear-gradient(135deg, #064e3b, #065f46)", accent: "#34d399" },
+            { name: "Crimson Red", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
+            { name: "Midnight Black", bg: "linear-gradient(135deg, #000000, #1a1a1a)", accent: "#22d3ee" },
+            { name: "Sunset Orange", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0e7490, #155e75)", accent: "#cffafe" },
+            { name: "Berry Purple", bg: "linear-gradient(135deg, #701a75, #86198f)", accent: "#f0abfc" },
+            { name: "Dark Chocolate", bg: "linear-gradient(135deg, #451a03, #78350f)", accent: "#fde68a" },
+            { name: "Slate Grey", bg: "linear-gradient(135deg, #334155, #475569)", accent: "#94a3b8" },
+            { name: "Cyber Indigo", bg: "linear-gradient(135deg, #312e81, #4338ca)", accent: "#a5b4fc" },
+            { name: "Teal Deep", bg: "linear-gradient(135deg, #134e4a, #115e59)", accent: "#5eead4" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #881337, #9f1239)", accent: "#fda4af" },
+            { name: "Violet Night", bg: "linear-gradient(135deg, #4c1d95, #5b21b6)", accent: "#c4b5fd" },
+            { name: "Graphite", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Blueberry", bg: "linear-gradient(135deg, #172554, #1e3a8a)", accent: "#60a5fa" }
+        ];
+
+        // 2. Algorithmically Generate the rest up to 200
+        for (let i = 0; i < 200; i++) {
+            let theme;
+            if (i < curatedThemes.length) {
+                theme = curatedThemes[i];
+            } else {
+                // Generate random dark gradients
+                const hue = Math.floor(Math.random() * 360);
+                const sat = 60 + Math.floor(Math.random() * 40); // 60-100%
+                const lig1 = 10 + Math.floor(Math.random() * 20); // 10-30% (Dark)
+                const lig2 = lig1 + 10;
+                
+                const color1 = `hsl(${hue}, ${sat}%, ${lig1}%)`;
+                const color2 = `hsl(${hue}, ${sat}%, ${lig2}%)`;
+                const accent = `hsl(${(hue + 180) % 360}, 90%, 70%)`; // Complementary accent
+
+                theme = { name: `Custom Style ${i+1}`, bg: `linear-gradient(135deg, ${color1}, ${color2})`, accent: accent };
+            }
+            themes.push(theme);
+            
+            // Add to dropdown
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = `${i+1}. ${theme.name}`;
+            themeSelect.appendChild(option);
+        }
+
+        // Apply Theme Function
+        function applyTheme() {
+            const index = themeSelect.value;
+            const theme = themes[index];
             const wrapper = document.getElementById('mcqWrapper');
-            // Remove all existing classes except default if any, simpler to just overwrite class
-            wrapper.className = theme; 
+            
+            // Set CSS Variables dynamically
+            wrapper.style.setProperty('--card-bg', theme.bg);
+            wrapper.style.setProperty('--accent', theme.accent);
         }
 
         function generateMCQ() {
@@ -386,10 +323,7 @@
             const c = document.getElementById('optC').value;
             const d = document.getElementById('optD').value;
 
-            if (!q || !a || !b || !c || !d) {
-                alert("সব ঘর পূরণ করুন!");
-                return;
-            }
+            if (!q || !a || !b || !c || !d) { alert("সব ঘর পূরণ করুন!"); return; }
 
             document.getElementById('qText').innerText = q;
             document.getElementById('aText').innerText = a;
@@ -401,26 +335,16 @@
             wrapper.style.display = "flex";
             document.getElementById('dlBtn').style.display = "block";
             
-            // Apply selected theme
-            changeTheme();
+            applyTheme(); // Ensure theme is applied
 
-            if(window.innerWidth < 768) {
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            if(window.innerWidth < 768) wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function downloadMCQ() {
             const wrapper = document.getElementById("mcqWrapper");
-            const randomName = "MCQ_" + Date.now();
-
-            // Fix for white corners: use transparent background in config
-            html2canvas(wrapper, {
-                scale: 3, 
-                backgroundColor: null, 
-                useCORS: true
-            }).then(canvas => {
+            html2canvas(wrapper, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
                 const link = document.createElement("a");
-                link.download = randomName + ".png";
+                link.download = "MCQ_" + Date.now() + ".png";
                 link.href = canvas.toDataURL("image/png", 1.0);
                 link.click();
             });
