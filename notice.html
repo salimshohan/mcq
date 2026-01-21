@@ -154,23 +154,23 @@
         /* --- NOTICE CARD REDESIGN --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex; flex-direction: column;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.1);
+            /* Premium Shadow & Border */
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1);
             overflow: hidden; position: relative;
             background-clip: padding-box;
         }
         
         #noticeWrapper::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 60%);
             pointer-events: none; z-index: 0;
         }
 
         .top-label {
-            background: rgba(0,0,0,0.4); text-align: center; color: rgba(255,255,255,0.9);
-            font-size: 11px; font-weight: 800; letter-spacing: 3px; padding: 10px;
+            background: rgba(0,0,0,0.35); text-align: center; color: rgba(255,255,255,0.9);
+            font-size: 10px; font-weight: 800; letter-spacing: 3px; padding: 10px;
             text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(5px);
         }
@@ -179,34 +179,38 @@
 
         /* Header */
         .notice-header {
-            padding: 25px 30px 15px 30px;
+            padding: 20px 25px 15px 25px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
             font-size: 13px; font-weight: 800; text-transform: uppercase;
             letter-spacing: 1px; color: var(--accent); 
-            background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 6px;
+            background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 6px;
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .notice-date { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); opacity: 0.8;}
+        .notice-date-time { 
+            font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); 
+            text-align: right;
+        }
+        .live-time { font-size: 10px; opacity: 0.8; display: block; margin-top: 2px;}
 
         /* Body - Dynamic Padding */
         .notice-body { 
-            padding: 40px 35px; /* Default */
+            padding: 40px 35px; /* Base padding */
             flex: 1; display: flex; flex-direction: column; justify-content: center;
             position: relative;
         }
         
         .notice-text {
-            font-size: 19px; line-height: 1.7; color: #fff;
+            font-size: 18px; line-height: 1.7; color: #fff;
             white-space: pre-wrap; font-weight: 400;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* Footer */
         .notice-footer {
-            padding: 15px 30px;
+            padding: 15px 25px;
             background: rgba(0,0,0,0.25);
             backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
@@ -214,25 +218,31 @@
             min-height: 60px;
         }
         
-        /* Source Area */
+        /* Source Area - Improved for Long Text */
         .source-container { 
-            display: flex; flex-direction: column; gap: 4px; max-width: 60%;
+            display: flex; flex-direction: column; gap: 3px; 
+            flex: 1; margin-right: 15px; /* Space for brand */
+            min-width: 0; /* Important for flex truncation */
         }
-        .source-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+        .source-label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+        
         .notice-source { 
             font-weight: 700; color: #fff; font-size: 14px;
             display: flex; align-items: center; gap: 5px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Truncate if too long */
         }
-        .verified-badge { color: #38bdf8; font-size: 14px; }
+        .verified-badge { color: #38bdf8; font-size: 14px; flex-shrink: 0; }
 
-        /* Right Side Footer */
-        .footer-right { display: flex; align-items: center; gap: 10px; }
-        .notice-brand { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-size: 11px; color:white; }
+        /* Right Side Footer (Watermark) */
+        .footer-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0;}
+        .notice-brand { 
+            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
+            opacity: 0.6; font-size: 10px; color: white; text-align: right;
+        }
         
         #qrcode { 
             background: white; padding: 2px; border-radius: 4px; display: none; 
-            width: 34px; height: 34px;
+            width: 32px; height: 32px;
         }
         #qrcode img { display: block; }
 
@@ -318,10 +328,6 @@
                     <input type="checkbox" id="qrCheck" onchange="updateLive()">
                     <label for="qrCheck">Add QR Code</label>
                 </div>
-                <div class="feature-item">
-                    <input type="checkbox" id="brandCheck" checked onchange="updateLive()">
-                    <label for="brandCheck">Show Watermark</label>
-                </div>
             </div>
 
             <button class="btn-download" onclick="downloadImage()">Download HD Image</button>
@@ -333,10 +339,13 @@
                 <div class="notice-content-wrapper">
                     <div class="notice-header">
                         <div class="notice-cat-badge" id="pCat">BREAKING NEWS</div>
-                        <div class="notice-date" id="pDate"></div>
+                        <div class="notice-date-time">
+                            <div id="pDate"></div>
+                            <div id="pTime" class="live-time"></div>
+                        </div>
                     </div>
                     <div class="notice-body" id="bodySection">
-                        <div class="notice-text" id="pBody">Write your announcement content here. It will look spacious and premium.</div>
+                        <div class="notice-text" id="pBody">Write your announcement content here.</div>
                     </div>
                     <div class="notice-footer" id="footerSection">
                         <div class="source-container" id="pSourceContainer">
@@ -348,7 +357,7 @@
                         </div>
                         <div class="footer-right">
                             <div id="qrcode"></div>
-                            <div class="notice-brand" id="pBrand">Interactive Learning</div>
+                            <div class="notice-brand" id="pBrand">Interactive<br>Learning</div>
                         </div>
                     </div>
                 </div>
@@ -361,9 +370,16 @@
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
         
-        // Auto Date
-        const dateObj = new Date();
-        document.getElementById('pDate').innerText = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        // --- REAL TIME CLOCK ---
+        function updateTime() {
+            const now = new Date();
+            // Date
+            document.getElementById('pDate').innerText = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            // Time
+            document.getElementById('pTime').innerText = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); // Init
 
         function toggleMenu() {
             document.getElementById('navMenu').classList.toggle('open');
@@ -395,7 +411,7 @@
             // ... (Add more themes as needed from previous list)
         ];
         
-        // Fill themes for demo
+        // Fill themes
         for(let i=themes.length; i<60; i++) {
              const hue = Math.floor(Math.random() * 360);
              themes.push({
@@ -422,8 +438,7 @@
                 source: document.getElementById('noticeSource').value,
                 theme: document.getElementById('themeSelector').value,
                 verified: document.getElementById('verifiedCheck').checked,
-                qr: document.getElementById('qrCheck').checked,
-                brand: document.getElementById('brandCheck').checked
+                qr: document.getElementById('qrCheck').checked
             };
             document.getElementById('noticeCat').selectedIndex = 0;
             document.getElementById('noticeBody').value = '';
@@ -431,7 +446,6 @@
             document.getElementById('themeSelector').selectedIndex = 0;
             document.getElementById('verifiedCheck').checked = false;
             document.getElementById('qrCheck').checked = false;
-            document.getElementById('brandCheck').checked = true;
             document.getElementById('undoBtn').style.display = 'flex';
             updateLive();
         }
@@ -444,14 +458,13 @@
             document.getElementById('themeSelector').value = lastState.theme;
             document.getElementById('verifiedCheck').checked = lastState.verified;
             document.getElementById('qrCheck').checked = lastState.qr;
-            document.getElementById('brandCheck').checked = lastState.brand;
             document.getElementById('undoBtn').style.display = 'none';
             updateLive();
         }
 
         // Initialize QR
         let qrCodeObj = new QRCode(document.getElementById("qrcode"), {
-            width: 34, height: 34,
+            width: 32, height: 32,
             colorDark : "#000000", colorLight : "#ffffff"
         });
 
@@ -461,14 +474,16 @@
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // Dynamic Padding Logic
+            // --- DYNAMIC PADDING LOGIC ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
                 bodySection.style.padding = "70px 35px";
             } else if(bodyText.length < 150) {
                 bodySection.style.padding = "50px 35px";
+            } else if(bodyText.length > 300) {
+                bodySection.style.padding = "25px 35px";
             } else {
-                bodySection.style.padding = "30px 35px";
+                bodySection.style.padding = "40px 35px";
             }
 
             // Source Logic
@@ -484,13 +499,11 @@
 
             // Features
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
-            document.getElementById('pBrand').style.display = document.getElementById('brandCheck').checked ? 'block' : 'none';
             
             // QR Code
             const showQR = document.getElementById('qrCheck').checked;
             document.getElementById('qrcode').style.display = showQR ? 'block' : 'none';
             if(showQR) {
-                // Generate QR for current page or dummy link
                 qrCodeObj.clear();
                 qrCodeObj.makeCode("https://example.com/notice"); 
             }
