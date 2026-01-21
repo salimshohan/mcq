@@ -14,7 +14,7 @@
     <style>
         :root {
             --bg-dark: #020617;
-            --panel-bg: rgba(30, 41, 59, 0.5);
+            --panel-bg: rgba(30, 41, 59, 0.6);
             --border-color: rgba(255, 255, 255, 0.1);
             --primary: #8b5cf6;
             --accent: #fbbf24;
@@ -28,8 +28,8 @@
             font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0, transparent 50%), 
-                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.15) 0, transparent 50%);
+                radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%), 
+                radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.1) 0, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
@@ -39,8 +39,8 @@
         /* --- HEADER --- */
         header {
             width: 100%;
-            background: rgba(2, 6, 23, 0.9);
-            backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(15px);
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
@@ -83,16 +83,18 @@
             font-weight: 500; border-bottom: 1px solid var(--border-color);
         }
 
-        /* --- CONTAINER --- */
+        /* --- CONTAINER (CENTERED) --- */
         .container {
-            margin-top: 80px; width: 95%; max-width: 1100px;
-            display: flex; flex-wrap: wrap; justify-content: center;
+            margin-top: 80px; width: 95%; max-width: 1000px;
+            display: flex; flex-wrap: wrap; 
+            justify-content: center; /* Center horizontally */
+            align-items: flex-start; /* Align to top */
             gap: 40px; padding-bottom: 40px; flex: 1;
         }
 
         /* --- EDITOR --- */
         .editor-box {
-            flex: 1; min-width: 350px;
+            flex: 1; min-width: 350px; max-width: 500px; /* Constrain width */
             background: var(--panel-bg); backdrop-filter: blur(12px);
             padding: 30px; border-radius: 24px; border: 1px solid var(--border-color);
             height: fit-content; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -136,7 +138,9 @@
         .feature-item input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
         .feature-item label { margin: 0; font-size: 13px; color: #e2e8f0; cursor: pointer; font-weight: 500;}
 
+        /* Download Button - Hidden by default */
         .btn-download {
+            display: none; /* Hidden logic */
             width: 100%; padding: 16px; margin-top: 10px; border-radius: 50px; border: none;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899); background-size: 200% auto;
             color: white; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;
@@ -145,28 +149,30 @@
         @keyframes gradientAnim { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6); }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW AREA (Centered) --- */
         .preview-box {
-            flex: 1; min-width: 350px;
+            flex: 1; min-width: 350px; max-width: 500px;
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- REDESIGNED NOTICE CARD --- */
+        /* --- NOTICE CARD --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
             border-radius: 24px;
             display: flex; flex-direction: column;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.15);
+            /* Default Shadow (No Glow) */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden; position: relative;
             background: #1e293b;
-            transition: box-shadow 0.3s ease;
-            margin: 0 auto; /* Centering Fix */
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            margin: 0 auto; /* Explicit Center */
         }
         
+        /* Only applied when glow is active */
         #noticeWrapper.glow-active {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 40px 80px rgba(0,0,0,0.6);
-            border: 1px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.4), 0 40px 80px rgba(0,0,0,0.6);
+            border: 1px solid rgba(139, 92, 246, 0.5);
         }
 
         .top-label {
@@ -184,7 +190,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 13px; font-weight: 700; /* Removed Uppercase */
+            font-size: 13px; font-weight: 700; text-transform: capitalize; /* Title Case */
             letter-spacing: 0.5px; color: var(--accent); 
             background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
@@ -196,7 +202,7 @@
         }
         .live-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; font-weight: 400;}
 
-        /* Body - Dynamic Padding applied via JS */
+        /* Body */
         .notice-body { 
             padding: 40px 35px; 
             flex: 1; display: flex; flex-direction: column; justify-content: center;
@@ -209,20 +215,28 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
+        /* WATERMARK - Right Side Only */
+        .watermark-body {
+            position: absolute; bottom: 8px; right: 25px;
+            font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.3); pointer-events: none; z-index: 2;
+        }
+
         /* Footer */
         .notice-footer {
             padding: 20px 30px;
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center;
+            /* Hidden by default, shown via JS if source exists */
+            display: none; 
+            justify-content: flex-start; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.08);
-            min-height: 70px;
+            min-height: 60px;
         }
         
         .source-container { 
-            display: none; /* Hidden by default, JS toggles flex */
-            flex-direction: column; gap: 4px; 
-            flex: 1; margin-right: 15px; 
+            display: flex; flex-direction: column; gap: 4px; 
+            flex: 1;
         }
         .source-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
         
@@ -231,15 +245,7 @@
             display: flex; align-items: center; gap: 6px;
             line-height: 1.3;
         }
-        .verified-badge { color: #38bdf8; font-size: 15px; flex-shrink: 0; }
-
-        /* Brand on Right */
-        .notice-brand { 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
-            opacity: 0.5; font-size: 11px; color: white; text-align: right; line-height: 1.4;
-            /* Allow it to take space even if source is hidden */
-            margin-left: auto;
-        }
+        .verified-badge { color: #38bdf8; font-size: 15px; margin-top: 2px; flex-shrink: 0; }
 
         footer {
             width: 100%; padding: 25px; text-align: center;
@@ -248,7 +254,8 @@
         }
 
         @media (max-width: 768px) {
-            .container { flex-direction: column; }
+            .container { flex-direction: column; align-items: center; }
+            .editor-box, .preview-box { min-width: 100%; max-width: 100%; }
         }
     </style>
 </head>
@@ -325,7 +332,7 @@
                 </div>
             </div>
 
-            <button class="btn-download" onclick="downloadImage()">Download HD Image</button>
+            <button class="btn-download" id="dlBtn" onclick="downloadImage()">Download HD Image</button>
         </div>
 
         <div class="preview-box">
@@ -342,6 +349,7 @@
                     
                     <div class="notice-body" id="bodySection">
                         <div class="notice-text" id="pBody">Write your announcement content here.</div>
+                        <div class="watermark-body">Interactive Learning</div>
                     </div>
 
                     <div class="notice-footer" id="footerSection">
@@ -352,8 +360,6 @@
                                 <i class="fas fa-check-circle verified-badge" id="pVerified" style="display:none;"></i>
                             </div>
                         </div>
-                        
-                        <div class="notice-brand" id="pBrand">Interactive<br>Learning</div>
                     </div>
                 </div>
             </div>
@@ -381,6 +387,7 @@
 
         function toggleGlow() {
             const wrapper = document.getElementById('noticeWrapper');
+            // Checkbox logic: checked = add class, unchecked (default) = remove class
             if(document.getElementById('glowCheck').checked) {
                 wrapper.classList.add('glow-active');
             } else {
@@ -410,8 +417,15 @@
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
             { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000000" },
             { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
+            // New styles
+            { name: "Glass White", bg: "linear-gradient(135deg, #e0e7ff, #f3f4f6)", accent: "#333" },
+            { name: "Cyber Black", bg: "linear-gradient(135deg, #000, #111)", accent: "#00ff00" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
+            { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
+            { name: "Vaporwave", bg: "linear-gradient(135deg, #ff71ce, #01cdfe)", accent: "#fff" }
         ];
         
+        // Fill themes for demo
         for(let i=themes.length; i<60; i++) {
              const hue = Math.floor(Math.random() * 360);
              themes.push({
@@ -470,7 +484,15 @@
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DYNAMIC PADDING LOGIC ---
+            // --- DOWNLOAD BUTTON VISIBILITY ---
+            // Show only if body text length > 10
+            if (document.getElementById('noticeBody').value.length > 10) {
+                document.getElementById('dlBtn').style.display = 'block';
+            } else {
+                document.getElementById('dlBtn').style.display = 'none';
+            }
+            
+            // --- DYNAMIC PADDING ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
                 bodySection.style.padding = "70px 35px";
@@ -482,18 +504,20 @@
                 bodySection.style.padding = "40px 35px";
             }
 
-            // Source Logic - Hide if empty
-            const src = document.getElementById('noticeSource').value;
-            const pSourceContainer = document.getElementById('pSourceContainer');
+            // --- SOURCE VISIBILITY ---
+            const src = document.getElementById('noticeSource').value.trim();
+            const footerSection = document.getElementById('footerSection');
             
-            if(src && src.trim() !== "") {
-                pSourceContainer.style.display = 'flex';
+            if(src.length > 0) {
+                // Show footer and source
+                footerSection.style.display = 'flex';
                 document.getElementById('pSource').innerText = src;
             } else {
-                pSourceContainer.style.display = 'none';
+                // Hide footer completely if no source
+                footerSection.style.display = 'none';
             }
 
-            // Verified Badge
+            // Features
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
             // Theme
@@ -504,14 +528,16 @@
             document.getElementById('pCat').style.color = theme.accent;
             document.querySelector('.top-label').style.color = theme.accent;
 
-            // Light Theme
-            const isLight = ["Silver", "Gold Rush", "Ice Cold"].includes(theme.name);
+            // Light Theme Logic
+            const isLight = ["Silver", "Gold Rush", "Ice Cold", "Glass White", "Rose Gold", "Minty Fresh", "Vaporwave"].includes(theme.name);
             const textCol = isLight ? "#222" : "#fff";
             document.getElementById('pBody').style.color = textCol;
             document.querySelector('.notice-source').style.color = textCol; 
             document.querySelector('.top-label').style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.3)";
             document.querySelector('.source-label').style.color = isLight ? "#666" : "rgba(255,255,255,0.5)";
-            document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
+            
+            // Watermark color
+            document.querySelector('.watermark-body').style.color = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
         }
 
         function downloadImage() {
