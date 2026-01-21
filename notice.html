@@ -25,7 +25,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', 'Apple Color Emoji', sans-serif;
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-dark);
             background-image: 
                 radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0, transparent 50%), 
@@ -36,7 +36,7 @@
             overflow-x: hidden;
         }
 
-        /* --- COMPACT HEADER --- */
+        /* --- HEADER --- */
         header {
             width: 100%;
             background: rgba(2, 6, 23, 0.9);
@@ -161,6 +161,7 @@
             overflow: hidden; position: relative;
             background: #1e293b;
             transition: box-shadow 0.3s ease;
+            margin: 0 auto; /* Centering Fix */
         }
         
         #noticeWrapper.glow-active {
@@ -183,8 +184,8 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 13px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--accent); 
+            font-size: 13px; font-weight: 700; /* Removed Uppercase */
+            letter-spacing: 0.5px; color: var(--accent); 
             background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(5px);
@@ -195,7 +196,7 @@
         }
         .live-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; font-weight: 400;}
 
-        /* Body */
+        /* Body - Dynamic Padding applied via JS */
         .notice-body { 
             padding: 40px 35px; 
             flex: 1; display: flex; flex-direction: column; justify-content: center;
@@ -208,13 +209,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* Subtle Watermark Inside Body */
-        .watermark-body {
-            position: absolute; bottom: 8px; right: 25px;
-            font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.2); pointer-events: none; z-index: 0;
-        }
-
         /* Footer */
         .notice-footer {
             padding: 20px 30px;
@@ -222,29 +216,29 @@
             backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.08);
-            min-height: 60px;
+            min-height: 70px;
         }
         
         .source-container { 
-            display: none; /* Hidden by default */
+            display: none; /* Hidden by default, JS toggles flex */
             flex-direction: column; gap: 4px; 
             flex: 1; margin-right: 15px; 
         }
-        
         .source-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
         
         .notice-source { 
             font-weight: 700; color: #fff; font-size: 15px;
-            display: flex; align-items: flex-start; gap: 6px;
+            display: flex; align-items: center; gap: 6px;
             line-height: 1.3;
         }
-        .verified-badge { color: #38bdf8; font-size: 15px; margin-top: 2px; flex-shrink: 0; }
+        .verified-badge { color: #38bdf8; font-size: 15px; flex-shrink: 0; }
 
-        /* Brand (Always Visible) */
+        /* Brand on Right */
         .notice-brand { 
             font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
             opacity: 0.5; font-size: 11px; color: white; text-align: right; line-height: 1.4;
-            margin-left: auto; /* Push to right if source hidden */
+            /* Allow it to take space even if source is hidden */
+            margin-left: auto;
         }
 
         footer {
@@ -295,18 +289,18 @@
             <div class="input-group">
                 <label>Category</label>
                 <select id="noticeCat" class="form-control" onchange="updateLive()">
-                    <option>📢 BREAKING NEWS</option>
-                    <option>🔴 URGENT NOTICE</option>
-                    <option>📝 ACADEMIC UPDATE</option>
-                    <option>🎉 ANNOUNCEMENT</option>
-                    <option>⚠️ IMPORTANT ALERT</option>
-                    <option>🏫 SCHOOL CLOSED</option>
-                    <option>💡 INFORMATION</option>
-                    <option>📌 ADMISSION</option>
-                    <option>✅ APPROVED</option>
-                    <option>🚫 REJECTED</option>
-                    <option>🏆 WINNER</option>
-                    <option>⏰ REMINDER</option>
+                    <option>Breaking News</option>
+                    <option>Urgent Notice</option>
+                    <option>Academic Update</option>
+                    <option>Announcement</option>
+                    <option>Important Alert</option>
+                    <option>School Closed</option>
+                    <option>Information</option>
+                    <option>Admission</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
+                    <option>Winner</option>
+                    <option>Reminder</option>
                 </select>
             </div>
 
@@ -339,7 +333,7 @@
                 <div class="top-label"><i class="fas fa-bullhorn"></i> ANNOUNCEMENT</div>
                 <div class="notice-content-wrapper">
                     <div class="notice-header">
-                        <div class="notice-cat-badge" id="pCat">BREAKING NEWS</div>
+                        <div class="notice-cat-badge" id="pCat">Breaking News</div>
                         <div class="notice-date-time">
                             <div id="pDate"></div>
                             <div id="pTime" class="live-time"></div>
@@ -348,7 +342,6 @@
                     
                     <div class="notice-body" id="bodySection">
                         <div class="notice-text" id="pBody">Write your announcement content here.</div>
-                        <div class="watermark-body">Interactive Learning</div>
                     </div>
 
                     <div class="notice-footer" id="footerSection">
@@ -472,12 +465,12 @@
         }
 
         function updateLive() {
-            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
+            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value; 
             
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DYNAMIC PADDING ---
+            // --- DYNAMIC PADDING LOGIC ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
                 bodySection.style.padding = "70px 35px";
@@ -489,7 +482,7 @@
                 bodySection.style.padding = "40px 35px";
             }
 
-            // Source Visibility Logic
+            // Source Logic - Hide if empty
             const src = document.getElementById('noticeSource').value;
             const pSourceContainer = document.getElementById('pSourceContainer');
             
@@ -500,7 +493,7 @@
                 pSourceContainer.style.display = 'none';
             }
 
-            // Features
+            // Verified Badge
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
             // Theme
@@ -519,9 +512,6 @@
             document.querySelector('.top-label').style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.3)";
             document.querySelector('.source-label').style.color = isLight ? "#666" : "rgba(255,255,255,0.5)";
             document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
-            
-            // Watermark color
-            document.querySelector('.watermark-body').style.color = isLight ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.2)";
         }
 
         function downloadImage() {
