@@ -3,44 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Pro | Interactive Learning</title>
+    <title>MCQ Generator | Interactive Learning</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root {
-            --primary: #8b5cf6;
-            --dark-bg: #0f172a;
-            --panel-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+            /* --- LIGHT MODE VARIABLES (DEFAULT) --- */
+            --bg-color: #f3f4f6;
+            --panel-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --primary: #6366f1;
             
-            /* Dynamic Card Variables */
+            /* Card Defaults */
             --card-gradient: linear-gradient(135deg, #242066, #171542);
             --card-accent: #fbbf24;
             --card-text: #ffffff;
         }
 
+        /* --- DARK MODE CLASS --- */
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', 'Hind Siliguri', sans-serif; }
 
         body { 
-            background-color: var(--dark-bg);
-            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0, transparent 50%), 
-                              radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
+            background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* --- STYLISH HEADER --- */
+        /* --- HEADER --- */
         header {
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
+            background: var(--panel-bg);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -49,65 +61,66 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow);
+            transition: background 0.3s;
         }
 
         .brand-logo {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
+            text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Mode Toggle Button */
+        .theme-toggle {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .theme-toggle:hover { background: var(--primary); color: white; }
 
         .hamburger {
-            cursor: pointer;
-            width: 30px;
-            height: 20px;
-            position: relative;
-            z-index: 1100;
+            cursor: pointer; font-size: 24px; color: var(--text-main); display: block;
         }
-        
-        .hamburger span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #60a5fa, #a78bfa);
-            position: absolute;
-            transition: 0.3s;
-            border-radius: 2px;
-        }
-        
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 9px; }
-        .hamburger span:nth-child(3) { top: 18px; }
 
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
-
+        /* Mobile Menu */
         .nav-menu {
             position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
-            background: rgba(30, 41, 59, 0.98); backdrop-filter: blur(15px);
+            background: var(--panel-bg);
             display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            transition: 0.4s;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
             border-left: 1px solid var(--border-color);
+            z-index: 999;
         }
         .nav-menu.open { right: 0; }
         .nav-menu a {
             color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-size: 16px; font-weight: 500; border-bottom: 1px solid var(--border-color);
-            transition: 0.3s;
+            font-weight: 500; border-bottom: 1px solid var(--border-color);
         }
-        .nav-menu a:hover { background: rgba(139, 92, 246, 0.1); color: #a78bfa; padding-left: 35px; }
 
-        /* --- MAIN LAYOUT --- */
+        /* --- MAIN CONTAINER --- */
         .container {
             margin-top: 90px;
             width: 95%;
-            max-width: 1000px;
+            max-width: 1100px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -118,192 +131,193 @@
 
         /* --- EDITOR SECTION --- */
         .editor-box {
-            flex: 1; min-width: 340px;
+            flex: 1; min-width: 350px;
             background: var(--panel-bg);
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
+            transition: background 0.3s;
         }
 
-        .editor-header {
-            font-size: 18px; font-weight: 700; margin-bottom: 25px;
-            color: #a78bfa; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        .section-title {
+            font-size: 18px; font-weight: 700; margin-bottom: 20px;
+            color: var(--primary); border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        /* Stylish Input Labels */
-        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group { margin-bottom: 15px; }
         .input-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            display: flex; align-items: center; gap: 6px;
+            display: block; font-size: 13px; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 6px;
         }
-        .input-group label i { color: #8b5cf6; }
 
-        .input-group input, .theme-select {
+        .form-control {
             width: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid #334155;
-            color: white;
-            padding: 12px 15px;
-            border-radius: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 8px;
             font-size: 14px;
             transition: 0.3s;
         }
-        .input-group input:focus, .theme-select:focus {
-            outline: none; border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-            background: rgba(15, 23, 42, 0.9);
+        .form-control:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        /* Theme Selector Styles */
-        .theme-select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a78bfa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 10px auto;
-            border-color: #6366f1;
-            font-weight: 500;
-        }
+        .row-inputs { display: flex; gap: 10px; }
+        .row-inputs > div { flex: 1; }
 
+        /* Buttons */
         .btn-generate {
             width: 100%; padding: 14px; margin-top: 10px;
             border-radius: 10px; border: none;
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white; font-weight: 600; font-size: 15px;
-            cursor: pointer; transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            color: white; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
-        .btn-generate:hover { transform: translateY(-2px); filter: brightness(1.1); }
-
         .btn-download {
             width: 100%; padding: 14px; margin-top: 15px;
             border-radius: 50px; border: none;
             background: linear-gradient(90deg, #f59e0b, #d97706);
-            color: white; font-weight: 700; font-size: 14px;
-            cursor: pointer; display: none;
-            text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
-            animation: pulse 2s infinite;
+            color: white; font-weight: 700; cursor: pointer; display: none;
         }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
 
         /* --- PREVIEW SECTION --- */
         .preview-box {
-            flex: 1; min-width: 340px;
+            flex: 1; min-width: 350px;
             display: flex; justify-content: center; align-items: flex-start;
-            padding-top: 20px;
+            padding-top: 10px;
         }
 
-        /* --- MCQ CARD (COMPACT) --- */
+        /* --- MCQ CARD --- */
         #mcqWrapper {
-            width: 100%; max-width: 360px; /* Width Controlled */
+            width: 100%; max-width: 400px;
             background: var(--card-gradient);
-            border-radius: 12px;
-            padding: 20px 15px; /* Compact Padding */
+            border-radius: 16px;
+            padding: 25px 20px;
             display: none; flex-direction: column;
-            position: relative;
             box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.15);
-            /* Corner Fix */
-            overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
         }
 
-        /* Question */
-        .question-row { display: flex; gap: 8px; margin-bottom: 12px; }
-        .q-prefix { color: var(--card-accent); font-size: 18px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
-        .q-text { color: var(--card-text); font-size: 16px; font-weight: 600; line-height: 1.4; }
+        .question-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .q-prefix { color: var(--card-accent); font-size: 20px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
+        .q-text { color: var(--card-text); font-size: 17px; font-weight: 600; line-height: 1.4; }
 
-        /* Options */
-        .options-list { display: flex; flex-direction: column; gap: 6px; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
         .opt-item {
             display: flex; align-items: center;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 6px 10px; /* Small Padding */
+            border-radius: 10px; padding: 8px 12px;
         }
         .opt-circle {
-            width: 20px; height: 20px; flex-shrink: 0;
+            width: 24px; height: 24px; flex-shrink: 0;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             color: var(--card-text);
             display: flex; justify-content: center; align-items: center;
-            font-size: 10px; font-weight: 700; margin-right: 8px;
+            font-size: 11px; font-weight: 700; margin-right: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        .opt-text { color: var(--card-text); font-size: 13px; font-weight: 500; }
+        .opt-text { color: var(--card-text); font-size: 14px; font-weight: 500; }
 
-        /* Footer Decoration */
-        .card-line { width: 30px; height: 3px; background: var(--card-accent); margin: 15px auto 6px; border-radius: 2px; }
-        .card-brand { text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 9px; font-weight: 500; letter-spacing: 0.5px; }
+        .card-footer {
+            margin-top: 20px; text-align: center;
+        }
+        .card-line { width: 40px; height: 3px; background: var(--card-accent); margin: 0 auto 10px; border-radius: 2px; }
+        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 10px; font-weight: 500; letter-spacing: 1px; }
 
-        /* --- STYLISH FOOTER --- */
+        /* Footer */
         footer {
-            width: 100%; margin-top: auto;
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid var(--border-color);
-            padding: 20px; text-align: center;
-            color: #64748b; font-size: 13px;
+            width: 100%; padding: 20px; text-align: center;
+            background: var(--panel-bg); color: var(--text-muted);
+            border-top: 1px solid var(--border-color); margin-top: auto; font-size: 13px;
         }
-        footer span { color: #8b5cf6; font-weight: 600; }
 
-        /* Mobile Responsive */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .container { flex-direction: column; }
-            .preview-box { order: -1; } /* Preview on top in mobile */
+            /* Editor stays on top naturally, removed the 'order' property */
+            .brand-logo span { font-size: 16px; }
         }
     </style>
 </head>
-<body>
-
-    <header>
-        <div class="brand-logo"><i class="fas fa-layer-group"></i> Interactive</div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
+<body class=""> <header>
+        <div class="brand-logo">
+            <i class="fas fa-book-open"></i> Interactive Learning
         </div>
+        
+        <div class="header-actions">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+            
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+
         <div class="nav-menu" id="navMenu">
             <a href="index.html">Home</a>
-            <a href="notice.html">Notice Board</a>
+            <a href="notice.html">Notice</a>
             <a href="quotation.html">Quotation</a>
-            <a href="contact.html">Contact Us</a>
+            <a href="contact.html">Contact</a>
         </div>
     </header>
 
     <div class="container">
         <div class="editor-box">
-            <div class="editor-header">Design Your Card</div>
+            <div class="section-title">Design Your Card</div>
 
-            <div class="input-group">
-                <label><i class="fas fa-question-circle"></i> Question</label>
-                <input id="qInput" placeholder="Enter your question here...">
+            <div class="row-inputs">
+                <div class="input-group">
+                    <label>প্রশ্ন স্টাইল (Q. Style)</label>
+                    <select id="qStyle" class="form-control" onchange="updatePreviewLive()">
+                        <option value="Q.">Q.</option>
+                        <option value="?">?</option>
+                        <option value="প্রশ্ন:">প্রশ্ন:</option>
+                        <option value="Question:">Question:</option>
+                        <option value="">(No Prefix)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>অপশন স্টাইল (Option Type)</label>
+                    <select id="optStyle" class="form-control" onchange="updatePreviewLive()">
+                        <option value="english">A, B, C, D</option>
+                        <option value="bengali">ক, খ, গ, ঘ</option>
+                        <option value="roman">i, ii, iii, iv</option>
+                        <option value="number">1, 2, 3, 4</option>
+                    </select>
+                </div>
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-list-ul"></i> Options</label>
-                <input id="optA" placeholder="Option A" style="margin-bottom: 8px;">
-                <input id="optB" placeholder="Option B" style="margin-bottom: 8px;">
-                <input id="optC" placeholder="Option C" style="margin-bottom: 8px;">
-                <input id="optD" placeholder="Option D">
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-palette"></i> Select Theme (100 Styles)</label>
-                <select id="themeSelector" class="theme-select" onchange="applyTheme()">
+                <label>কার্ড থিম (Color Theme)</label>
+                <select id="themeSelector" class="form-control" onchange="updatePreviewLive()">
                     </select>
             </div>
 
-            <button class="btn-generate" onclick="generate()">
-                <i class="fas fa-magic"></i> Generate Card
-            </button>
+            <div class="input-group">
+                <label>প্রশ্ন (Question)</label>
+                <input id="qInput" class="form-control" placeholder="এখানে প্রশ্ন লিখুন..." oninput="updatePreviewLive()">
+            </div>
 
+            <div class="input-group">
+                <label>অপশন সমূহ</label>
+                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:8px;" oninput="updatePreviewLive()">
+                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:8px;" oninput="updatePreviewLive()">
+                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:8px;" oninput="updatePreviewLive()">
+                <input id="optD" class="form-control" placeholder="Option 4" oninput="updatePreviewLive()">
+            </div>
+
+            <button class="btn-generate" onclick="generate()">
+                <i class="fas fa-magic"></i> Generate & View
+            </button>
             <button class="btn-download" id="dlBtn" onclick="downloadImage()">
                 <i class="fas fa-download"></i> Download Image
             </button>
@@ -311,218 +325,142 @@
 
         <div class="preview-box">
             <div id="mcqWrapper">
-                <div class="question-row">
-                    <span class="q-prefix">Q.</span>
-                    <span id="pQ" class="q-text">Your question will appear here...</span>
+                <div class="question-box">
+                    <span id="pPrefix" class="q-prefix">Q.</span>
+                    <span id="pQ" class="q-text">তোমার প্রশ্ন এখানে দেখাবে...</span>
                 </div>
                 <div class="options-list">
-                    <div class="opt-item"><div class="opt-circle">A</div><div id="pA" class="opt-text">Option A</div></div>
-                    <div class="opt-item"><div class="opt-circle">B</div><div id="pB" class="opt-text">Option B</div></div>
-                    <div class="opt-item"><div class="opt-circle">C</div><div id="pC" class="opt-text">Option C</div></div>
-                    <div class="opt-item"><div class="opt-circle">D</div><div id="pD" class="opt-text">Option D</div></div>
+                    <div class="opt-item"><div class="opt-circle" id="oc1">A</div><div id="pA" class="opt-text">Option 1</div></div>
+                    <div class="opt-item"><div class="opt-circle" id="oc2">B</div><div id="pB" class="opt-text">Option 2</div></div>
+                    <div class="opt-item"><div class="opt-circle" id="oc3">C</div><div id="pC" class="opt-text">Option 3</div></div>
+                    <div class="opt-item"><div class="opt-circle" id="oc4">D</div><div id="pD" class="opt-text">Option 4</div></div>
                 </div>
-                <div class="card-line"></div>
-                <div class="card-brand">Follow: Interactive Learning</div>
+                <div class="card-footer">
+                    <div class="card-line"></div>
+                    <div class="card-brand">Follow: Interactive Learning</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        &copy; <span id="year"></span> Interactive Learning. All rights reserved.
-    </footer>
+    <footer>&copy; <span id="year"></span> Interactive Learning</footer>
 
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('open');
-            document.querySelector('.hamburger').classList.toggle('active');
-        }
-
-        // --- 100 CURATED THEMES ---
-        const themes = [
-            // 1-10: Blues & Purples
-            { name: "Royal Indigo", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
-            { name: "Ocean Depth", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
-            { name: "Electric Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
-            { name: "Night Sky", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
-            { name: "Blueberry", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd" },
-            { name: "Deep Navy", bg: "linear-gradient(135deg, #001f3f, #003366)", accent: "#FFD700" },
-            { name: "Neon Blue", bg: "linear-gradient(135deg, #000428, #004e92)", accent: "#00ffff" },
-            { name: "Periwinkle", bg: "linear-gradient(135deg, #4338ca, #6366f1)", accent: "#e0e7ff" },
-            { name: "Dark Slate", bg: "linear-gradient(135deg, #1e293b, #334155)", accent: "#94a3b8" },
-            { name: "Cyber Punk", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff" },
+        // --- THEME TOGGLE LOGIC ---
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
             
-            // 11-20: Greens & Teals
-            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
-            { name: "Forest Night", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
-            { name: "Seafoam", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#ccfbf1" },
-            { name: "Dark Moss", bg: "linear-gradient(135deg, #1a2e05, #365314)", accent: "#bef264" },
-            { name: "Teal Gradient", bg: "linear-gradient(135deg, #004d40, #009688)", accent: "#b2dfdb" },
-            { name: "Jungle", bg: "linear-gradient(135deg, #1b4332, #2d6a4f)", accent: "#95d5b2" },
-            { name: "Mint Dark", bg: "linear-gradient(135deg, #0f766e, #14b8a6)", accent: "#f0fdfa" },
-            { name: "Olive Drab", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
-            { name: "Aurora", bg: "linear-gradient(135deg, #000000, #0f9b0f)", accent: "#00ff00" },
-            { name: "Swamp", bg: "linear-gradient(135deg, #1e2019, #2c3327)", accent: "#a3b18a" },
-
-            // 21-30: Reds & Pinks
-            { name: "Crimson Tide", bg: "linear-gradient(135deg, #450a0a, #991b1b)", accent: "#fca5a5" },
-            { name: "Rose Garden", bg: "linear-gradient(135deg, #881337, #be123c)", accent: "#fda4af" },
-            { name: "Blood Moon", bg: "linear-gradient(135deg, #280000, #7f0000)", accent: "#ffcccc" },
-            { name: "Cherry Bomb", bg: "linear-gradient(135deg, #590d22, #a4133c)", accent: "#ffb3c1" },
-            { name: "Berry Smoothie", bg: "linear-gradient(135deg, #4a044e, #c026d3)", accent: "#f5d0fe" },
-            { name: "Hot Pink", bg: "linear-gradient(135deg, #831843, #db2777)", accent: "#fbcfe8" },
-            { name: "Burgundy", bg: "linear-gradient(135deg, #360505, #5e0a0a)", accent: "#e5e7eb" },
-            { name: "Valentine", bg: "linear-gradient(135deg, #701a75, #a21caf)", accent: "#f0abfc" },
-            { name: "Mars", bg: "linear-gradient(135deg, #3f1010, #7f2a2a)", accent: "#ffa3a3" },
-            { name: "Wine", bg: "linear-gradient(135deg, #2c0b0e, #581c1c)", accent: "#d4a5a5" },
-
-            // 31-40: Oranges & Yellows
-            { name: "Sunset Blaze", bg: "linear-gradient(135deg, #7c2d12, #ea580c)", accent: "#fdba74" },
-            { name: "Pumpkin", bg: "linear-gradient(135deg, #431407, #c2410c)", accent: "#ffedd5" },
-            { name: "Gold Rush", bg: "linear-gradient(135deg, #422006, #a16207)", accent: "#fde047" },
-            { name: "Amber Alert", bg: "linear-gradient(135deg, #451a03, #d97706)", accent: "#fcd34d" },
-            { name: "Desert Sand", bg: "linear-gradient(135deg, #3e2723, #5d4037)", accent: "#d7ccc8" },
-            { name: "Fire", bg: "linear-gradient(135deg, #b91c1c, #f59e0b)", accent: "#fff" },
-            { name: "Citrus", bg: "linear-gradient(135deg, #a16207, #eab308)", accent: "#fef08a" },
-            { name: "Brown Sugar", bg: "linear-gradient(135deg, #3f2e3e, #8c52ff)", accent: "#fcd34d" },
-            { name: "Bronze", bg: "linear-gradient(135deg, #291d18, #594236)", accent: "#cd7f32" },
-            { name: "Solar", bg: "linear-gradient(135deg, #5c2c06, #c2410c)", accent: "#ffedd5" },
-
-            // 41-50: Dark & Greys
-            { name: "Pure Black", bg: "linear-gradient(135deg, #000000, #111111)", accent: "#ffffff" },
-            { name: "Charcoal", bg: "linear-gradient(135deg, #1c1917, #292524)", accent: "#d6d3d1" },
-            { name: "Graphite", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#a1a1aa" },
-            { name: "Midnight Grey", bg: "linear-gradient(135deg, #111827, #374151)", accent: "#9ca3af" },
-            { name: "Shadow", bg: "linear-gradient(135deg, #0f0f0f, #232323)", accent: "#666666" },
-            { name: "Metal", bg: "linear-gradient(135deg, #202020, #404040)", accent: "#c0c0c0" },
-            { name: "Carbon", bg: "linear-gradient(135deg, #171717, #262626)", accent: "#ef4444" },
-            { name: "Ash", bg: "linear-gradient(135deg, #262626, #404040)", accent: "#a3a3a3" },
-            { name: "Onyx", bg: "linear-gradient(135deg, #0c0c0c, #1a1a1a)", accent: "#facc15" },
-            { name: "Ink", bg: "linear-gradient(135deg, #02040a, #0f172a)", accent: "#e2e8f0" },
-
-            // 51-60: Mixed Gradients (Trendy)
-            { name: "Insta Vibes", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)", accent: "#fcb045" },
-            { name: "Spotify Dark", bg: "linear-gradient(135deg, #191414, #121212)", accent: "#1db954" },
-            { name: "Discord Blurple", bg: "linear-gradient(135deg, #2c2f33, #5865f2)", accent: "#ffffff" },
-            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#ffffff" },
-            { name: "Twitter Dim", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
-            { name: "Twitch Purple", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff" },
-            { name: "YouTube Red", bg: "linear-gradient(135deg, #282828, #ff0000)", accent: "#ffffff" },
-            { name: "Netflix Black", bg: "linear-gradient(135deg, #000000, #b9090b)", accent: "#e50914" },
-            { name: "Amazon Dark", bg: "linear-gradient(135deg, #232f3e, #131921)", accent: "#ff9900" },
-            { name: "Slack Huddle", bg: "linear-gradient(135deg, #4a154b, #3f0e40)", accent: "#ecb22e" },
-
-            // 61-80: Exotic & Nature
-            { name: "Northern Lights", bg: "linear-gradient(135deg, #43cea2, #185a9d)", accent: "#ffffff" },
-            { name: "Space Dust", bg: "linear-gradient(135deg, #20002c, #cbb4d4)", accent: "#cbb4d4" },
-            { name: "Mystic Mauve", bg: "linear-gradient(135deg, #302b63, #24243e)", accent: "#ff0099" },
-            { name: "Deep Space", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#00bfff" },
-            { name: "Vampire", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000" },
-            { name: "Galaxy", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
-            { name: "Royal Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000000" },
-            { name: "Silver Surfer", bg: "linear-gradient(135deg, #2c3e50, #bdc3c7)", accent: "#ecf0f1" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
-            { name: "Cosmic Fusion", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
-            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
-            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
-            { name: "Mega Tron", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#fff" },
-            { name: "Moonlit Asteroid", bg: "linear-gradient(135deg, #0f2027, #203a43)", accent: "#fff" },
-            { name: "Harvey", bg: "linear-gradient(135deg, #1f1c2c, #928dab)", accent: "#fff" },
-            { name: "Amin", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)", accent: "#fff" },
-            { name: "Harmonic", bg: "linear-gradient(135deg, #5433ff, #20bdff)", accent: "#a5fecb" },
-            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#fff" },
-            { name: "Ibiza Sunset", bg: "linear-gradient(135deg, #ee0979, #ff6a00)", accent: "#fff" },
-            { name: "Sunny Days", bg: "linear-gradient(135deg, #EDE574, #E1F5C4)", accent: "#333" },
-
-            // 81-100: Soft & Misc
-            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#fff" },
-            { name: "Frost", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#fff" },
-            { name: "Mauve", bg: "linear-gradient(135deg, #42275a, #734b6d)", accent: "#fff" },
-            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
-            { name: "Pale Wood", bg: "linear-gradient(135deg, #eacda3, #d6ae7b)", accent: "#333" },
-            { name: "Haikus", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
-            { name: "Pizelex", bg: "linear-gradient(135deg, #114357, #F29492)", accent: "#fff" },
-            { name: "Sky Glider", bg: "linear-gradient(135deg, #88d3ce, #6e45e2)", accent: "#fff" },
-            { name: "Horizon", bg: "linear-gradient(135deg, #003973, #E5E5BE)", accent: "#fff" },
-            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff" },
-            { name: "Witching Hour", bg: "linear-gradient(135deg, #c31432, #240b36)", accent: "#fff" },
-            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
-            { name: "Solid Vault", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)", accent: "#fff" },
-            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #BA8B02, #181818)", accent: "#fff" },
-            { name: "Piglet", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#555" },
-            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
-            { name: "Mantle", bg: "linear-gradient(135deg, #24c6dc, #514a9d)", accent: "#fff" },
-            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424, #4A569D)", accent: "#fff" },
-            { name: "Mossy", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" }
-        ];
-
-        // Populate Dropdown
-        const selector = document.getElementById('themeSelector');
-        themes.forEach((t, i) => {
-            let option = document.createElement("option");
-            option.value = i;
-            option.text = `${i + 1}. ${t.name}`;
-            selector.appendChild(option);
-        });
-
-        // Apply Theme
-        function applyTheme() {
-            const idx = document.getElementById('themeSelector').value;
-            const theme = themes[idx];
-            const wrapper = document.getElementById('mcqWrapper');
+            body.classList.toggle('dark-mode');
             
-            wrapper.style.background = theme.bg;
-            
-            // Set styles dynamically
-            document.querySelector('.q-prefix').style.color = theme.accent;
-            document.querySelector('.card-line').style.background = theme.accent;
-            document.querySelector('.q-text').style.color = theme.name.includes("Light") || theme.name.includes("Days") ? "#111" : "#fff";
-            
-            // Update Circles
-            const circles = document.querySelectorAll('.opt-circle');
-            circles.forEach(c => c.style.color = theme.name.includes("Light") ? "#111" : "#fff");
-            
-            // Update Text color for light themes
-            const texts = document.querySelectorAll('.opt-text');
-            texts.forEach(t => t.style.color = theme.name.includes("Light") ? "#333" : "#fff");
-        }
-
-        // Generate
-        function generate() {
-            const q = document.getElementById('qInput').value;
-            const a = document.getElementById('optA').value;
-            const b = document.getElementById('optB').value;
-            const c = document.getElementById('optC').value;
-            const d = document.getElementById('optD').value;
-
-            if(!q || !a || !b || !c || !d) { alert("Please fill all fields!"); return; }
-
-            document.getElementById('pQ').innerText = q;
-            document.getElementById('pA').innerText = a;
-            document.getElementById('pB').innerText = b;
-            document.getElementById('pC').innerText = c;
-            document.getElementById('pD').innerText = d;
-
-            const wrapper = document.getElementById('mcqWrapper');
-            wrapper.style.display = 'flex';
-            document.getElementById('dlBtn').style.display = 'block';
-
-            applyTheme();
-
-            if(window.innerWidth < 768) {
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if(body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
         }
 
-        // Download
+        // --- MENU TOGGLE ---
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('open');
+        }
+
+        // --- POPULATE 100 THEMES ---
+        const themes = [
+            { name: "Royal Blue (Default)", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
+            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #065f46)", accent: "#34d399" },
+            { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
+            { name: "Midnight", bg: "linear-gradient(135deg, #0f172a, #1e293b)", accent: "#38bdf8" },
+            { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
+            { name: "Teal", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#5eead4" },
+            { name: "Dark Grey", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            // Generating remaining themes generically
+        ];
+
+        // Fill up to 100 themes
+        for(let i=themes.length; i<100; i++) {
+             const hue = Math.floor(Math.random() * 360);
+             themes.push({
+                 name: `Custom Theme ${i+1}`,
+                 bg: `linear-gradient(135deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 10%))`,
+                 accent: `hsl(${(hue+180)%360}, 80%, 60%)`
+             });
+        }
+
+        const tSelect = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `${i+1}. ${t.name}`;
+            tSelect.appendChild(opt);
+        });
+
+        // --- OPTION MAPPING ---
+        const optionTypes = {
+            english: ['A', 'B', 'C', 'D'],
+            bengali: ['ক', 'খ', 'গ', 'ঘ'],
+            roman: ['i', 'ii', 'iii', 'iv'],
+            number: ['1', '2', '3', '4']
+        };
+
+        // --- LIVE UPDATE & GENERATE ---
+        function updatePreviewLive() {
+            // Apply Text
+            const q = document.getElementById('qInput').value || "তোমার প্রশ্ন এখানে দেখাবে...";
+            document.getElementById('pQ').innerText = q;
+
+            document.getElementById('pA').innerText = document.getElementById('optA').value || "Option 1";
+            document.getElementById('pB').innerText = document.getElementById('optB').value || "Option 2";
+            document.getElementById('pC').innerText = document.getElementById('optC').value || "Option 3";
+            document.getElementById('pD').innerText = document.getElementById('optD').value || "Option 4";
+
+            // Apply Prefixes
+            const qStyle = document.getElementById('qStyle').value;
+            document.getElementById('pPrefix').innerText = qStyle;
+
+            const optStyle = document.getElementById('optStyle').value;
+            const labels = optionTypes[optStyle];
+            document.getElementById('oc1').innerText = labels[0];
+            document.getElementById('oc2').innerText = labels[1];
+            document.getElementById('oc3').innerText = labels[2];
+            document.getElementById('oc4').innerText = labels[3];
+
+            // Apply Theme
+            const tIdx = document.getElementById('themeSelector').value;
+            const theme = themes[tIdx];
+            const wrapper = document.getElementById('mcqWrapper');
+            
+            wrapper.style.background = theme.bg;
+            document.querySelector('.q-prefix').style.color = theme.accent;
+            document.querySelector('.card-line').style.background = theme.accent;
+            
+            // Adjust text color logic slightly for lighter/darker themes if needed
+            // Defaulting all text to white for these dark gradients
+        }
+
+        function generate() {
+            updatePreviewLive();
+            const wrapper = document.getElementById('mcqWrapper');
+            wrapper.style.display = 'flex';
+            document.getElementById('dlBtn').style.display = 'block';
+            
+            // Scroll only on mobile
+            if(window.innerWidth < 768) {
+                wrapper.scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+        }
+
         function downloadImage() {
             const wrapper = document.getElementById('mcqWrapper');
-            html2canvas(wrapper, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
+            html2canvas(wrapper, {scale: 3, backgroundColor: null, useCORS: true}).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'MCQ-Card.png';
-                link.href = canvas.toDataURL("image/png");
+                link.download = 'MCQ_' + Date.now() + '.png';
+                link.href = canvas.toDataURL('image/png');
                 link.click();
             });
         }
