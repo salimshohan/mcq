@@ -558,12 +558,12 @@
             const wrapper = document.getElementById('noticeWrapper');
             wrapper.style.display = 'flex';
             html2canvas(wrapper, {
-                scale: 4, 
+                scale: 35, 
                 backgroundColor: null,
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Notice_' + Date.now() + '.png';
+                link.download = 'notice_mcqmake_' + Date.now() + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
