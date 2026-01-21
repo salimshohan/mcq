@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Maker</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            background: #f3f4f6; 
+            font-family: 'Hind Siliguri', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Header Animation (Purple Theme) --- */
+        @keyframes headerAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .h23 { 
+            text-align: center; 
+            color: white; 
+            /* Deep Purple Gradient */
+            background: linear-gradient(45deg, #4c1d95, #7c3aed, #8b5cf6, #6d28d9);
+            background-size: 300% 300%;
+            animation: headerAnim 6s ease infinite;
+            padding: 15px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        .input-box { 
+            background: #ffffff; 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+        }
+
+        .input-box b { font-size: 14px; color: #5b21b6; display: block; margin-top: 15px; font-weight: 600; text-transform: uppercase;}
+        
+        .input-box textarea, .input-box input { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 8px 0 0; 
+            border-radius: 8px; 
+            border: 2px solid #ddd6fe; 
+            font-size: 16px; 
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: all 0.3s ease;
+            background: #fbfbfc;
+        }
+        
+        .input-box textarea:focus, .input-box input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            background: #fff;
+        }
+        
+        .btn-generate { 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 25px;
+            border-radius: 10px; 
+            border: none; 
+            color: white; 
+            font-size: 16px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            cursor: pointer; 
+            background: linear-gradient(45deg, #4c1d95, #7c3aed, #8b5cf6);
+            background-size: 200% 200%;
+            transition: transform 0.2s;
+            letter-spacing: 1px;
+        }
+        .btn-generate:active { transform: scale(0.98); }
+
+        /* --- PREVIEW AREA (Unique Style) --- */
+        
+        #quoteWrapper {
+            display: none; 
+            width: 100%;          
+            max-width: 420px;
+            position: relative;
+            /* Aesthetic Dark Gradient Background */
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            padding: 40px 30px; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden; /* To clip the big quote mark */
+            border: 1px solid #4338ca;
+        }
+
+        /* Decorative Big Quote Mark */
+        .big-quote-bg {
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 180px;
+            font-family: 'Playfair Display', serif;
+            color: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .quote-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+
+        .quote-icon {
+            font-size: 40px;
+            color: #a78bfa; /* Light Purple accent */
+            margin-bottom: 15px;
+            display: block;
+            line-height: 1;
+        }
+
+        .quote-text { 
+            font-size: 22px; 
+            font-weight: 400; 
+            color: #ffffff; 
+            line-height: 1.6;
+            white-space: pre-wrap; 
+            width: 100%;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-style: italic;
+        }
+
+        /* Line separator */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: #fbbf24; /* Gold Accent */
+            margin: 25px auto;
+            border-radius: 2px;
+        }
+
+        .quote-author { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: #e0e7ff; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .watermark { 
+            position: absolute;
+            bottom: 10px;
+            width: 100%;           
+            text-align: center;     
+            font-size: 10px; 
+            opacity: 0.4;
+            color: #fff;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .download-btn { 
+            width: 100%; 
+            max-width: 420px;
+            margin-top: 20px; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: none; 
+            color: white; 
+            font-size: 16px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            display: none; 
+            background: #1e1b4b; /* Dark Button */
+            border: 1px solid #4338ca;
+            transition: all 0.2s;
+        }
+        .download-btn:hover { background: #312e81; }
+        .download-btn:active { transform: scale(0.98); }
+        
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="h23">❝ Quotation Maker</div>
+        
+        <div class="input-box">
+            
+            <b>Quote / উক্তি</b>
+            <textarea id="quoteInput" rows="4" placeholder="সুন্দর একটি উক্তি লিখুন..."></textarea>
+            
+            <b>Author / বক্তা</b>
+            <input id="authorInput" placeholder="যেমন: হুমায়ূন আহমেদ, আলবার্ট আইনস্টাইন..." maxlength="30">
+            
+            <button class="btn-generate" onclick="generateQuote()">Create Quote Card</button>
+        </div>
+    </div>
+
+    <div id="quoteWrapper">
+        <div class="big-quote-bg">❝</div>
+        
+        <div class="quote-content">
+            <span class="quote-icon">❝</span>
+            <div class="quote-text" id="previewText">
+                "সাফল্য তখনই আসে যখন প্রস্তুতি এবং সুযোগের মিলন ঘটে।"
+            </div>
+            <div class="divider"></div>
+            <div class="quote-author" id="previewAuthor">
+                — সংগ্রহীত
+            </div>
+        </div>
+
+        <div class="watermark">Created by Quotation Maker</div>
+    </div>
+
+    <button class="download-btn" id="dlBtn" onclick="downloadQuote()">Download Image</button>
+
+    <script>
+        function generateQuote() {
+            // Get values
+            const quote = document.getElementById('quoteInput').value;
+            const author = document.getElementById('authorInput').value;
+
+            // Validation
+            if (!quote) {
+                alert("দয়া করে একটি উক্তি লিখুন!");
+                return;
+            }
+
+            // Elements
+            const wrapper = document.getElementById('quoteWrapper');
+            const dlBtn = document.getElementById('dlBtn');
+
+            // Show Elements
+            wrapper.style.display = "flex";
+            dlBtn.style.display = "block";
+
+            // Set Data
+            document.getElementById('previewText').innerText = '"' + quote + '"';
+            
+            if(author.trim() !== "") {
+                document.getElementById('previewAuthor').innerText = "— " + author;
+            } else {
+                document.getElementById('previewAuthor').innerText = "";
+            }
+            
+            // Scroll to view
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function downloadQuote() {
+            const wrapper = document.getElementById("quoteWrapper");
+            const randomName = "quote_" + Date.now();
+
+            html2canvas(wrapper, {
+                scale: 3, // High quality
+                useCORS: true,
+                backgroundColor: null 
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = randomName + ".png";
+                link.href = canvas.toDataURL("image/png", 1.0);
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
