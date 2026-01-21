@@ -159,12 +159,10 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.15);
             overflow: hidden; position: relative;
-            /* Default background, will be overridden */
             background: #1e293b;
             transition: box-shadow 0.3s ease;
         }
         
-        /* Glow Effect Class */
         #noticeWrapper.glow-active {
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 40px 80px rgba(0,0,0,0.6);
             border: 1px solid rgba(139, 92, 246, 0.4);
@@ -197,7 +195,7 @@
         }
         .live-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; font-weight: 400;}
 
-        /* Body - Dynamic Padding applied via JS */
+        /* Body */
         .notice-body { 
             padding: 40px 35px; 
             flex: 1; display: flex; flex-direction: column; justify-content: center;
@@ -210,9 +208,9 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* Watermark */
+        /* Subtle Watermark Inside Body */
         .watermark-body {
-            position: absolute; bottom: 8px; right: 20px;
+            position: absolute; bottom: 8px; right: 25px;
             font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
             color: rgba(255, 255, 255, 0.2); pointer-events: none; z-index: 0;
         }
@@ -224,16 +222,17 @@
             backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.08);
-            min-height: 70px;
+            min-height: 60px;
         }
         
         .source-container { 
-            display: flex; flex-direction: column; gap: 4px; 
+            display: none; /* Hidden by default */
+            flex-direction: column; gap: 4px; 
             flex: 1; margin-right: 15px; 
         }
+        
         .source-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
         
-        /* Fixed Source Layout */
         .notice-source { 
             font-weight: 700; color: #fff; font-size: 15px;
             display: flex; align-items: flex-start; gap: 6px;
@@ -241,9 +240,11 @@
         }
         .verified-badge { color: #38bdf8; font-size: 15px; margin-top: 2px; flex-shrink: 0; }
 
+        /* Brand (Always Visible) */
         .notice-brand { 
             font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
             opacity: 0.5; font-size: 11px; color: white; text-align: right; line-height: 1.4;
+            margin-left: auto; /* Push to right if source hidden */
         }
 
         footer {
@@ -358,9 +359,8 @@
                                 <i class="fas fa-check-circle verified-badge" id="pVerified" style="display:none;"></i>
                             </div>
                         </div>
-                        <div class="footer-right">
-                            <div class="notice-brand" id="pBrand">Interactive<br>Learning</div>
-                        </div>
+                        
+                        <div class="notice-brand" id="pBrand">Interactive<br>Learning</div>
                     </div>
                 </div>
             </div>
@@ -477,7 +477,7 @@
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DYNAMIC PADDING LOGIC ---
+            // --- DYNAMIC PADDING ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
                 bodySection.style.padding = "70px 35px";
@@ -489,7 +489,7 @@
                 bodySection.style.padding = "40px 35px";
             }
 
-            // Source Logic
+            // Source Visibility Logic
             const src = document.getElementById('noticeSource').value;
             const pSourceContainer = document.getElementById('pSourceContainer');
             
@@ -500,7 +500,7 @@
                 pSourceContainer.style.display = 'none';
             }
 
-            // Verified Badge
+            // Features
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
             // Theme
@@ -518,6 +518,7 @@
             document.querySelector('.notice-source').style.color = textCol; 
             document.querySelector('.top-label').style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.3)";
             document.querySelector('.source-label').style.color = isLight ? "#666" : "rgba(255,255,255,0.5)";
+            document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
             
             // Watermark color
             document.querySelector('.watermark-body').style.color = isLight ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.2)";
