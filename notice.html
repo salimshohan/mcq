@@ -25,11 +25,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', 'Apple Color Emoji', sans-serif;
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0, transparent 50%), 
-                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.15) 0, transparent 50%);
+                radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%), 
+                radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.1) 0, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
@@ -40,7 +40,7 @@
         header {
             width: 100%;
             background: rgba(2, 6, 23, 0.95);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
@@ -83,7 +83,7 @@
             font-weight: 500; border-bottom: 1px solid var(--border-color);
         }
 
-        /* --- CONTAINER --- */
+        /* --- CONTAINER (Centered) --- */
         .container {
             margin-top: 80px; width: 95%; max-width: 1000px;
             display: flex; flex-wrap: wrap; 
@@ -130,16 +130,16 @@
         
         .features-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .feature-item { 
-            display: flex; align-items: center; gap: 8px; flex: 1;
+            display: flex; align-items: center; gap: 8px; 
             background: rgba(255,255,255,0.03); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s;
         }
         .feature-item:hover { background: rgba(255,255,255,0.06); }
         .feature-item input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
         .feature-item label { margin: 0; font-size: 13px; color: #e2e8f0; cursor: pointer; font-weight: 500; display: flex; align-items: center;}
 
+        /* Download Button */
         .btn-download {
-            display: none;
-            width: 100%; padding: 16px; margin-top: 10px; border-radius: 50px; border: none;
+            display: none; width: 100%; padding: 16px; margin-top: 10px; border-radius: 50px; border: none;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899); background-size: 200% auto;
             color: white; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;
             box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); transition: 0.3s; animation: gradientAnim 3s infinite alternate;
@@ -147,7 +147,7 @@
         @keyframes gradientAnim { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6); }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW AREA (CENTERED) --- */
         .preview-box {
             flex: 1; min-width: 350px; max-width: 500px;
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
@@ -156,13 +156,13 @@
         /* --- NOTICE CARD --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
-            border-radius: 24px;
+            border-radius: 4px;
             display: flex; flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.15);
             overflow: hidden; position: relative;
             background: #1e293b;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: box-shadow 0.3s ease;
             margin: 0 auto;
         }
         
@@ -177,11 +177,11 @@
 
         /* Header */
         .notice-header {
-            padding: 20px 25px 5px 25px; /* Reduced Bottom Padding */
+            padding: 20px 25px 5px 25px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 13px; font-weight: 700; text-transform: capitalize;
+            font-size: 13px; font-weight: 700; /* No uppercase */
             letter-spacing: 0.5px; color: var(--accent); 
             background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
@@ -193,9 +193,9 @@
         }
         .live-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; font-weight: 400;}
 
-        /* Body - REDUCED TOP PADDING */
+        /* Body */
         .notice-body { 
-            padding: 20px 35px 30px 35px; /* Top reduced to 20px */
+            padding: 20px 35px 30px 35px; /* Compact padding */
             flex: 1; display: flex; flex-direction: column; justify-content: center;
             position: relative;
         }
@@ -206,10 +206,10 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* WATERMARK - Right Side */
+        /* WATERMARK - Body Bottom Right */
         .watermark-body {
-            position: absolute; bottom: 8px; right: 25px;
-            font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            position: absolute; bottom: 5px; right: 25px;
+            font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
             color: rgba(255, 255, 255, 0.3); pointer-events: none; z-index: 2;
         }
 
@@ -303,7 +303,7 @@
 
             <div class="input-group">
                 <label>Announcement Body</label>
-                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here..." oninput="updateLive()"></textarea>
+                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here (min 10 chars)..." oninput="updateLive()"></textarea>
             </div>
 
              <div class="input-group">
@@ -403,7 +403,7 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- THEMES ---
+        // --- FIXED 50 PREMIUM THEMES ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
@@ -429,17 +429,33 @@
             { name: "Cyber Black", bg: "linear-gradient(135deg, #000, #111)", accent: "#00ff00" },
             { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
             { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
-            { name: "Vaporwave", bg: "linear-gradient(135deg, #ff71ce, #01cdfe)", accent: "#fff" }
+            { name: "Vaporwave", bg: "linear-gradient(135deg, #ff71ce, #01cdfe)", accent: "#fff" },
+            { name: "Cherry Bomb", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#fff" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#fff" },
+            { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#fff" },
+            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#fff" },
+            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#fff" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#fff" },
+            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#fff" },
+            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#fff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#fff" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
+            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#fff" },
+            { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#fff" },
+            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
+            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#fff" },
+            { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#fff" },
+            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#fff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#fff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" }
         ];
-        
-        for(let i=themes.length; i<60; i++) {
-             const hue = Math.floor(Math.random() * 360);
-             themes.push({
-                 name: `Style ${i+1}`,
-                 bg: `linear-gradient(135deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 10%))`,
-                 accent: `hsl(${(hue+180)%360}, 80%, 60%)`
-             });
-        }
 
         const tSelect = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
@@ -485,7 +501,14 @@
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DYNAMIC PADDING LOGIC (UPDATED) ---
+            // --- DOWNLOAD BUTTON VISIBILITY ---
+            if (document.getElementById('noticeBody').value.length > 10) {
+                document.getElementById('dlBtn').style.display = 'block';
+            } else {
+                document.getElementById('dlBtn').style.display = 'none';
+            }
+            
+            // --- DYNAMIC PADDING ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
                 bodySection.style.padding = "20px 35px 30px 35px";
@@ -508,16 +531,9 @@
                 footerSection.style.display = 'none';
             }
 
-            // Features
+            // Verified Badge
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
-            // Download Button Logic
-            if (bodyText.length > 10) {
-                document.getElementById('dlBtn').style.display = 'block';
-            } else {
-                document.getElementById('dlBtn').style.display = 'none';
-            }
-
             // Theme
             const tIdx = document.getElementById('themeSelector').value;
             const theme = themes[tIdx];
@@ -526,7 +542,7 @@
             document.getElementById('pCat').style.color = theme.accent;
             document.querySelector('.top-label').style.color = theme.accent;
 
-            // Light Theme
+            // Light Theme Logic
             const isLight = ["Silver", "Gold Rush", "Ice Cold", "Glass White", "Rose Gold", "Minty Fresh", "Vaporwave"].includes(theme.name);
             const textCol = isLight ? "#222" : "#fff";
             document.getElementById('pBody').style.color = textCol;
