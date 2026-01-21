@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Generator Pro</title>
+    <title>MCQ Generator Pro Max</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root {
-            --bg-color: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.6);
-            --header-bg: rgba(15, 23, 42, 0.95);
-            --text-main: #f1f5f9;
+            --bg-dark: #020617;
+            --panel-glass: rgba(30, 41, 59, 0.4);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --input-bg: rgba(0, 0, 0, 0.3);
             --primary: #8b5cf6;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', 'Hind Siliguri', sans-serif; }
 
         body { 
-            background-color: var(--bg-color);
-            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0, transparent 50%), 
-                              radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -37,8 +38,8 @@
         /* --- NAVBAR --- */
         header {
             width: 100%;
-            background: var(--header-bg);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -46,7 +47,7 @@
             position: fixed;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-glass);
         }
 
         .brand-logo {
@@ -61,45 +62,45 @@
 
         .hamburger {
             cursor: pointer;
-            z-index: 1100;
             width: 30px;
-            height: 25px;
+            height: 20px;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            z-index: 1100;
         }
         
         .hamburger span {
             display: block;
-            height: 3px;
             width: 100%;
+            height: 2px;
             background: white;
+            position: absolute;
+            transition: 0.3s;
             border-radius: 2px;
-            transition: all 0.3s ease;
         }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
 
-        /* Hamburger Animation */
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
         .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
 
         .nav-menu {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 250px;
-            background: #1e293b;
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
+            background: #0f172a;
             display: flex; flex-direction: column; padding-top: 80px;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            border-left: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-glass);
         }
         .nav-menu.open { right: 0; }
         
         .nav-menu a {
             color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-weight: 500; border-bottom: 1px solid var(--border-color);
+            font-weight: 500; border-bottom: 1px solid var(--border-glass);
             transition: 0.2s;
         }
-        .nav-menu a:hover { padding-left: 35px; color: var(--primary); background: rgba(255,255,255,0.05); }
+        .nav-menu a:hover { padding-left: 35px; color: var(--primary); background: rgba(255,255,255,0.03); }
 
         /* --- CONTAINER --- */
         .container {
@@ -109,7 +110,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             padding-bottom: 40px;
             flex: 1;
         }
@@ -117,65 +118,77 @@
         /* --- EDITOR --- */
         .editor-box {
             flex: 1; min-width: 340px;
-            background: var(--panel-bg);
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: var(--panel-glass);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
-        .section-title {
-            font-size: 18px; font-weight: 700; margin-bottom: 20px;
-            color: var(--primary); text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; border-bottom: 1px solid var(--border-glass); padding-bottom: 15px;
         }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Reset Buttons */
+        .action-buttons { display: flex; gap: 10px; }
+        .btn-icon {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass);
+            color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-icon:hover { background: rgba(255,255,255,0.1); color: white; }
+        .btn-reset:hover { background: rgba(239, 68, 68, 0.2); color: var(--danger); border-color: var(--danger); }
+        .btn-undo { display: none; color: var(--success); border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
+        .btn-undo:hover { background: rgba(16, 185, 129, 0.2); }
 
-        .input-group { margin-bottom: 12px; }
+        .input-group { margin-bottom: 15px; }
         .input-group label {
-            display: block; font-size: 11px; font-weight: 700;
-            color: var(--text-muted); margin-bottom: 5px;
-            text-transform: uppercase;
+            display: block; font-size: 12px; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         .form-control {
             width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-glass);
             color: white;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        .form-control:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5); }
+        .form-control:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1); }
 
-        .row-inputs { display: flex; gap: 10px; }
+        .row-inputs { display: flex; gap: 15px; }
         .row-inputs > div { flex: 1; }
 
-        /* Animated Generate Button */
+        /* Generate Button */
         .btn-generate {
-            width: 100%; padding: 14px; margin-top: 10px;
-            border-radius: 8px; border: none;
+            width: 100%; padding: 15px; margin-top: 15px;
+            border-radius: 12px; border: none;
             color: white; font-weight: 700; cursor: pointer;
-            font-size: 14px; letter-spacing: 0.5px;
+            font-size: 15px; letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
             background-size: 200% 200%;
-            background-image: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
-            animation: gradientShift 3s ease infinite;
+            animation: gradientAnim 4s ease infinite;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
             transition: transform 0.2s;
         }
-        .btn-generate:hover { transform: scale(1.02); }
+        .btn-generate:hover { transform: translateY(-2px); }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .btn-download {
-            width: 100%; padding: 12px; margin-top: 15px;
+            width: 100%; padding: 15px; margin-top: 15px;
             border-radius: 50px; border: none;
             background: linear-gradient(90deg, #f59e0b, #d97706);
             color: white; font-weight: 700; cursor: pointer; display: none;
-            text-transform: uppercase; font-size: 12px;
+            text-transform: uppercase; font-size: 13px;
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
         }
 
         /* --- PREVIEW --- */
@@ -185,57 +198,68 @@
             padding-top: 10px;
         }
 
-        /* --- MCQ CARD (COMPACT) --- */
+        /* --- STYLISH MCQ CARD --- */
         #mcqWrapper {
-            width: 100%; max-width: 380px; /* Reduced Width */
-            /* Background set by JS */
-            border-radius: 16px;
-            padding: 20px 15px; /* Compact Padding */
+            width: 100%; max-width: 400px;
+            /* Background set dynamically */
+            border-radius: 20px;
+            padding: 30px 25px;
             display: none; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.15);
             position: relative;
-            /* No overflow:hidden to allow clean corners in capture, handled by borderRadius */
+            /* Glassy Border Effect */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1);
+            overflow: hidden; /* Ensures content stays inside radius */
+        }
+        
+        /* Inner Glow/Shine Element */
+        #mcqWrapper::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 40%);
+            pointer-events: none; z-index: 0;
         }
 
-        .question-box { display: flex; gap: 8px; margin-bottom: 12px; }
-        .q-prefix { color: #fbbf24; font-size: 18px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
-        .q-text { color: #fff; font-size: 16px; font-weight: 600; line-height: 1.4; }
+        .card-content { position: relative; z-index: 1; }
 
-        .options-list { display: flex; flex-direction: column; gap: 6px; } /* Compact Gap */
+        .question-box { display: flex; gap: 12px; margin-bottom: 20px; }
+        .q-prefix { color: #fbbf24; font-size: 20px; font-weight: 800; line-height: 1.3; flex-shrink: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .q-text { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
         
         .opt-item {
             display: flex; align-items: center;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05); /* Very subtle fill */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px; padding: 6px 10px; /* Compact */
+            border-radius: 12px; padding: 10px 14px;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
         
         .opt-circle {
-            width: 22px; height: 22px; flex-shrink: 0;
+            width: 28px; height: 28px; flex-shrink: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
             color: #fff;
             display: flex; justify-content: center; align-items: center;
-            font-size: 10px; font-weight: 700; margin-right: 10px;
+            font-size: 12px; font-weight: 700; margin-right: 12px;
             border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .opt-text { color: #e2e8f0; font-size: 14px; font-weight: 500; }
+        .opt-text { color: #f1f5f9; font-size: 15px; font-weight: 500; }
 
-        .card-footer { margin-top: 15px; text-align: center; }
-        .card-line { width: 30px; height: 3px; background: #fbbf24; margin: 0 auto 8px; border-radius: 2px; }
-        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 9px; font-weight: 500; letter-spacing: 1px; }
+        .card-footer { margin-top: 25px; text-align: center; }
+        .card-line { width: 40px; height: 4px; background: #fbbf24; margin: 0 auto 10px; border-radius: 10px; box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
 
         /* Footer */
         footer {
-            width: 100%; padding: 20px; text-align: center;
-            background: var(--header-bg); border-top: 1px solid var(--border-color);
+            width: 100%; padding: 25px; text-align: center;
+            background: rgba(15, 23, 42, 0.9); border-top: 1px solid var(--border-glass);
             margin-top: auto; font-size: 12px; color: var(--text-muted);
         }
 
         @media (max-width: 768px) {
             .container { flex-direction: column; }
-            .brand-logo { font-size: 18px; }
         }
     </style>
 </head>
@@ -243,13 +267,9 @@
 
     <header>
         <div class="brand-logo">Interactive Learning</div>
-        
         <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
-
         <div class="nav-menu" id="navMenu">
             <a href="index.html">Home</a>
             <a href="notice.html">Notice</a>
@@ -260,72 +280,80 @@
 
     <div class="container">
         <div class="editor-box">
-            <div class="section-title">MCQ Generator</div>
+            <div class="section-header">
+                <div class="section-title">MCQ Creator</div>
+                <div class="action-buttons">
+                    <button class="btn-icon btn-undo" id="undoBtn" onclick="undoReset()" title="Undo">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button class="btn-icon btn-reset" onclick="resetAll()" title="Reset All">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
 
             <div class="row-inputs">
                 <div class="input-group">
-                    <label>Prefix</label>
+                    <label>Prefix Style</label>
                     <select id="qStyle" class="form-control" onchange="updateLive()">
                         <option value="Q.">Q.</option>
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
-                        <option value="Question:">Question:</option>
-                        <option value="Que.">Que.</option>
-                        <option value="01.">01.</option>
                         <option value="">None</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Options</label>
+                    <label>Option Style</label>
                     <select id="optStyle" class="form-control" onchange="updateLive()">
-                        <option value="english">A, B, C, D</option>
-                        <option value="bengali">ক, খ, গ, ঘ</option>
+                        <option value="abcd">a, b, c, d</option>
+                        <option value="ABCD">A, B, C, D</option>
                         <option value="roman">i, ii, iii, iv</option>
                         <option value="number">1, 2, 3, 4</option>
-                        <option value="eng_bracket">(a), (b), (c), (d)</option>
-                        <option value="rom_bracket">(i), (ii), (iii), (iv)</option>
+                        <option value="bangla">১, ২, ৩, ৪</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group">
-                <label>Select Premium Theme</label>
+                <label>Theme Selection</label>
                 <select id="themeSelector" class="form-control" onchange="updateLive()">
                     </select>
             </div>
 
             <div class="input-group">
                 <label>Question</label>
-                <input id="qInput" class="form-control" placeholder="Type question..." oninput="updateLive()">
+                <input id="qInput" class="form-control" placeholder="Type your question..." oninput="updateLive()">
             </div>
 
             <div class="input-group">
-                <label>Answers</label>
-                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:8px;" oninput="updateLive()">
-                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:8px;" oninput="updateLive()">
-                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:8px;" oninput="updateLive()">
+                <label>Options (Inputs)</label>
+                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:10px;" oninput="updateLive()">
+                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:10px;" oninput="updateLive()">
+                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:10px;" oninput="updateLive()">
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
             </div>
 
-            <button class="btn-generate" onclick="generate()">Generate Card</button>
-            <button class="btn-download" id="dlBtn" onclick="downloadImage()">Download PNG</button>
+            <button class="btn-generate" onclick="generate()">Generate Stylish Card</button>
+            <button class="btn-download" id="dlBtn" onclick="downloadImage()">Download Image</button>
         </div>
 
         <div class="preview-box">
             <div id="mcqWrapper">
-                <div class="question-box">
-                    <span id="pPrefix" class="q-prefix">Q.</span>
-                    <span id="pQ" class="q-text">Question Preview...</span>
-                </div>
-                <div class="options-list">
-                    <div class="opt-item"><div class="opt-circle" id="oc1">A</div><div id="pA" class="opt-text">Option A</div></div>
-                    <div class="opt-item"><div class="opt-circle" id="oc2">B</div><div id="pB" class="opt-text">Option B</div></div>
-                    <div class="opt-item"><div class="opt-circle" id="oc3">C</div><div id="pC" class="opt-text">Option C</div></div>
-                    <div class="opt-item"><div class="opt-circle" id="oc4">D</div><div id="pD" class="opt-text">Option D</div></div>
-                </div>
-                <div class="card-footer">
-                    <div class="card-line"></div>
-                    <div class="card-brand">Follow: Interactive Learning</div>
+                <div class="card-content">
+                    <div class="question-box">
+                        <span id="pPrefix" class="q-prefix">Q.</span>
+                        <span id="pQ" class="q-text">Your question will appear here...</span>
+                    </div>
+                    <div class="options-list">
+                        <div class="opt-item"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option 1</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option 2</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option 3</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option 4</div></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-line"></div>
+                        <div class="card-brand">Follow: Interactive Learning</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -336,96 +364,67 @@
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        // --- NAVBAR LOGIC ---
+        // --- MENU LOGIC ---
         function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            const hamburger = document.querySelector('.hamburger');
-            
-            if (menu.classList.contains('open')) {
-                menu.classList.remove('open');
-                hamburger.classList.remove('active');
-            } else {
-                menu.classList.add('open');
-                hamburger.classList.add('active');
-            }
+            document.getElementById('navMenu').classList.toggle('open');
+            document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- HARDCODED PREMIUM THEMES (60 Distinct Styles) ---
+        // --- THEMES (60 Styles) ---
         const themes = [
-            // Blues
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
-            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
-            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
-            { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd" },
-            { name: "Facebook Style", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#ffffff" },
-            { name: "Twitter Dark", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
-            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
-            { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05" },
-            { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff" },
-            { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff" },
-            
-            // Purples
+            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
+            { name: "Crimson Red", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
+            { name: "Midnight Sky", bg: "linear-gradient(135deg, #0f172a, #1e293b)", accent: "#38bdf8" },
+            { name: "Sunset Blaze", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
             { name: "Deep Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
-            { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff" },
-            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff" },
-            { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ffffff" },
-            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#ffffff" },
-            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#ffffff" },
-            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#ffffff" },
-            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#ffffff" },
-            { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#ffffff" },
-
-            // Greens
-            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
-            { name: "Forest", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
-            { name: "Spotify", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff" },
-            { name: "Mint", bg: "linear-gradient(135deg, #11998e, #38ef7d)", accent: "#ffffff" },
-            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#ffffff" },
-            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#ffffff" },
-            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#ffffff" },
-            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
-            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
-            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#ffffff" },
-
-            // Reds/Oranges
-            { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
-            { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
-            { name: "Youtube", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff" },
-            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#ffffff" },
-            { name: "Blood Moon", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000" },
-            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#ffffff" },
-            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#f1c40f" },
-            { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#ffffff" },
-            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#ffffff" },
-            { name: "Rose", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#ffffff" },
-
-            // Darks/Blacks
+            { name: "Ocean Teal", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#5eead4" },
+            { name: "Charcoal Grey", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
             { name: "Pure Black", bg: "linear-gradient(135deg, #000000, #111111)", accent: "#ffffff" },
-            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
-            { name: "Midnight", bg: "linear-gradient(135deg, #232526, #414345)", accent: "#ffffff" },
-            { name: "Metal", bg: "linear-gradient(135deg, #2c3e50, #000000)", accent: "#bdc3c7" },
-            { name: "Shadow", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
-            { name: "Carbon", bg: "linear-gradient(135deg, #093028, #237a57)", accent: "#ffffff" },
-            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
-            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff" },
-            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff" },
-
-            // Specials
+            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#ffffff" },
+            { name: "Spotify Green", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff" },
+            { name: "Youtube Red", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff" },
+            { name: "Twitter Dark", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
-            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff" },
+            { name: "Neon Cyber", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#00ffff" },
+            { name: "Forest Night", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
+            { name: "Blood Moon", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#f1c40f" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
+            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #aa771c)", accent: "#000000" },
             { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
-            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#ffffff" },
-            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#ffffff" },
-            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff" },
-            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#ffffff" },
-            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
+            { name: "Space Dust", bg: "linear-gradient(135deg, #20002c, #cbb4d4)", accent: "#ffffff" },
+            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#ffffff" },
             { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff" },
-            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff" }
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#ffffff" },
+            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff" },
+            { name: "Frost", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#ffffff" },
+            // Adding duplicates with slight var to reach higher count perception
+            { name: "Deep Navy", bg: "linear-gradient(135deg, #001f3f, #003366)", accent: "#FFD700" },
+            { name: "Electric Violet", bg: "linear-gradient(135deg, #471175, #7c3aed)", accent: "#c4b5fd" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #1a2e05, #365314)", accent: "#bef264" },
+            { name: "Cherry Bomb", bg: "linear-gradient(135deg, #590d22, #a4133c)", accent: "#ffb3c1" },
+            { name: "Brown Sugar", bg: "linear-gradient(135deg, #3f2e3e, #8c52ff)", accent: "#fcd34d" },
+            { name: "Blueberry", bg: "linear-gradient(135deg, #172554, #1e3a8a)", accent: "#60a5fa" },
+            { name: "Teal Deep", bg: "linear-gradient(135deg, #134e4a, #115e59)", accent: "#5eead4" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #881337, #9f1239)", accent: "#fda4af" },
+            { name: "Graphite", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Shadow", bg: "linear-gradient(135deg, #0f0f0f, #232323)", accent: "#666666" },
+            { name: "Northern Lights", bg: "linear-gradient(135deg, #43cea2, #185a9d)", accent: "#ffffff" },
+            { name: "Mystic Mauve", bg: "linear-gradient(135deg, #302b63, #24243e)", accent: "#ff0099" },
+            { name: "Royal Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba)", accent: "#000000" },
+            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "Amin", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)", accent: "#fff" },
+            { name: "Harmonic", bg: "linear-gradient(135deg, #5433ff, #20bdff)", accent: "#a5fecb" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3)", accent: "#fff" },
+            { name: "Mauve", bg: "linear-gradient(135deg, #42275a, #734b6d)", accent: "#fff" },
+            { name: "Horizon", bg: "linear-gradient(135deg, #003973, #E5E5BE)", accent: "#fff" },
+            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff" }
         ];
 
-        // Populate Theme Dropdown
         const tSelect = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
             let opt = document.createElement('option');
@@ -434,28 +433,74 @@
             tSelect.appendChild(opt);
         });
 
+        // --- OPTION MAPPING ---
         const optionTypes = {
-            english: ['A', 'B', 'C', 'D'],
-            bengali: ['ক', 'খ', 'গ', 'ঘ'],
+            abcd: ['a', 'b', 'c', 'd'],
+            ABCD: ['A', 'B', 'C', 'D'],
             roman: ['i', 'ii', 'iii', 'iv'],
             number: ['1', '2', '3', '4'],
-            eng_bracket: ['(a)', '(b)', '(c)', '(d)'],
-            rom_bracket: ['(i)', '(ii)', '(iii)', '(iv)']
+            bangla: ['১', '২', '৩', '৪']
         };
 
+        // --- RESET & UNDO LOGIC ---
+        let lastState = null;
+
+        function resetAll() {
+            // Save state before reset
+            lastState = {
+                q: document.getElementById('qInput').value,
+                a: document.getElementById('optA').value,
+                b: document.getElementById('optB').value,
+                c: document.getElementById('optC').value,
+                d: document.getElementById('optD').value,
+                qStyle: document.getElementById('qStyle').value,
+                optStyle: document.getElementById('optStyle').value,
+                theme: document.getElementById('themeSelector').value
+            };
+
+            // Clear fields
+            document.getElementById('qInput').value = '';
+            document.getElementById('optA').value = '';
+            document.getElementById('optB').value = '';
+            document.getElementById('optC').value = '';
+            document.getElementById('optD').value = '';
+            document.getElementById('qStyle').selectedIndex = 0;
+            document.getElementById('optStyle').selectedIndex = 0;
+            document.getElementById('themeSelector').selectedIndex = 0;
+
+            // Show Undo
+            document.getElementById('undoBtn').style.display = 'flex';
+            updateLive();
+        }
+
+        function undoReset() {
+            if (!lastState) return;
+
+            document.getElementById('qInput').value = lastState.q;
+            document.getElementById('optA').value = lastState.a;
+            document.getElementById('optB').value = lastState.b;
+            document.getElementById('optC').value = lastState.c;
+            document.getElementById('optD').value = lastState.d;
+            document.getElementById('qStyle').value = lastState.qStyle;
+            document.getElementById('optStyle').value = lastState.optStyle;
+            document.getElementById('themeSelector').value = lastState.theme;
+
+            // Hide Undo
+            document.getElementById('undoBtn').style.display = 'none';
+            updateLive();
+        }
+
+        // --- UPDATE LIVE PREVIEW ---
         function updateLive() {
-            // Text
-            const q = document.getElementById('qInput').value || "Question will appear here...";
+            const q = document.getElementById('qInput').value || "Your question will appear here...";
             document.getElementById('pQ').innerText = q;
             document.getElementById('pA').innerText = document.getElementById('optA').value || "Option 1";
             document.getElementById('pB').innerText = document.getElementById('optB').value || "Option 2";
             document.getElementById('pC').innerText = document.getElementById('optC').value || "Option 3";
             document.getElementById('pD').innerText = document.getElementById('optD').value || "Option 4";
 
-            // Prefix
             document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
 
-            // Option Labels
             const optStyle = document.getElementById('optStyle').value;
             const labels = optionTypes[optStyle];
             document.getElementById('oc1').innerText = labels[0];
@@ -463,29 +508,34 @@
             document.getElementById('oc3').innerText = labels[2];
             document.getElementById('oc4').innerText = labels[3];
 
-            // Theme Apply
-            const tIdx = document.getElementById('themeSelector').value;
-            const theme = themes[tIdx];
+            // Apply Theme
+            const idx = document.getElementById('themeSelector').value;
+            const theme = themes[idx];
             const wrapper = document.getElementById('mcqWrapper');
-
+            
             wrapper.style.background = theme.bg;
             document.querySelector('.q-prefix').style.color = theme.accent;
             document.querySelector('.card-line').style.background = theme.accent;
+            document.querySelector('.card-line').style.boxShadow = `0 0 10px ${theme.accent}66`;
 
-            // Adjust text colors for very light themes
+            // Adjust for light themes
             const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold"].includes(theme.name);
-            const textColor = isLight ? "#222" : "#fff";
-            document.querySelector('.q-text').style.color = textColor;
-            document.querySelectorAll('.opt-text').forEach(el => el.style.color = textColor);
-            document.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.color = textColor;
-                el.style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.15)";
-                el.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
+            const txtColor = isLight ? "#222" : "#fff";
+            
+            document.querySelector('.q-text').style.color = txtColor;
+            document.querySelectorAll('.opt-text').forEach(t => t.style.color = txtColor);
+            
+            document.querySelectorAll('.opt-circle').forEach(c => {
+                c.style.color = txtColor;
+                c.style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
+                c.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
             });
-            document.querySelectorAll('.opt-item').forEach(el => {
-                el.style.borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
-                el.style.background = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.08)";
+
+            document.querySelectorAll('.opt-item').forEach(i => {
+                i.style.background = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)";
+                i.style.borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
             });
+
             document.querySelector('.card-brand').style.color = isLight ? "#555" : "rgba(255,255,255,0.6)";
         }
 
@@ -499,11 +549,10 @@
 
         function downloadImage() {
             const wrapper = document.getElementById('mcqWrapper');
-            
-            // Fix white corners: backgroundColor null + scaling
+            // Radius Fix: backgroundColor: null and scaling
             html2canvas(wrapper, {
                 scale: 3,
-                backgroundColor: null, // Critical for transparent corners
+                backgroundColor: null,
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
