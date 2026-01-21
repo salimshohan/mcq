@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Announcement Maker</title>
+    <title>Announcement Maker</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -114,7 +114,7 @@
             color: #ef4444;
             padding: 6px 20px; 
             margin-bottom: 12px; 
-            border-radius: 4px; /* Slightly squared for news look */
+            border-radius: 30px; /* Ager moto rounded */
             font-size: 14px; 
             font-weight: 800;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -122,12 +122,12 @@
             font-family: 'Lexend', sans-serif;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .announce-card-inner {
             background: rgba(255, 255, 255, 0.98);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 25px 20px; 
             width: 100%;
             min-height: 220px;
@@ -139,7 +139,7 @@
         }
 
         .announce-headline { 
-            font-size: 26px; 
+            font-size: 28px; 
             font-weight: 800; 
             margin-bottom: 15px; 
             color: #be123c; 
@@ -147,6 +147,7 @@
             width: 100%;
             border-bottom: 2px dashed #fecdd3;
             padding-bottom: 15px;
+            font-family: 'Lexend', sans-serif; /* Title looks better in English font usually, or Bangla if mixed */
         }
 
         .announce-body { 
@@ -214,10 +215,10 @@
 <body>
 
     <div class="app-container">
-        <div class="h23">📰 News Card Maker</div>
+        <div class="h23">📢 Announcement Maker</div>
         
         <div class="input-box">
-            <b>Category / ক্যাটাগরি</b>
+            <b>Category / Title</b>
             <select id="catSelect">
                 <option value="Breaking News">Breaking News</option>
                 <option value="Admission Update">Admission Update</option>
@@ -227,10 +228,8 @@
                 <option value="Scholarship">Scholarship</option>
                 <option value="Reminder">Reminder</option>
                 <option value="Daily News">Daily News</option>
+                <option value="Office Order">Office Order</option>
             </select>
-
-            <b>Headline / শিরোনাম</b>
-            <input id="headlineInput" placeholder="যেমন: আগামীকাল স্কুল বন্ধ..." maxlength="50">
             
             <b>Details / বিস্তারিত</b>
             <textarea id="msgInput" rows="4" placeholder="এখানে বিস্তারিত খবর লিখুন..."></textarea>
@@ -238,15 +237,16 @@
             <b>Source / তথ্যসূত্র</b>
             <input id="sourceInput" placeholder="যেমন: Prothom Alo, UGC website...">
             
-            <button class="btn-generate" onclick="generatePost()">Generate News Card</button>
+            <button class="btn-generate" onclick="generatePost()">Generate Post</button>
         </div>
     </div>
 
     <div id="announceWrapper">
-        <div class="announce-badge" id="previewBadge">BREAKING NEWS</div>
+        <div class="announce-badge">ANNOUNCEMENT</div>
         
         <div class="announce-card-inner">
-            <div class="announce-headline" id="previewHeadline">Headline Goes Here</div>
+            <div class="announce-headline" id="previewHeadline">TITLE HERE</div>
+            
             <div class="announce-body" id="previewMsg">Message content...</div>
             
             <div class="source-box" id="sourceContainer" style="display:none;">
@@ -263,13 +263,12 @@
         function generatePost() {
             // ভ্যালু নেওয়া
             const category = document.getElementById('catSelect').value;
-            const headline = document.getElementById('headlineInput').value;
             const msg = document.getElementById('msgInput').value;
             const source = document.getElementById('sourceInput').value;
 
             // ভ্যালিডেশন
-            if (!headline || !msg) {
-                alert("দয়া করে শিরোনাম এবং বিস্তারিত লিখুন!");
+            if (!msg) {
+                alert("দয়া করে বিস্তারিত মেসেজ লিখুন!");
                 return;
             }
 
@@ -283,8 +282,8 @@
             dlBtn.style.display = "block";
 
             // ডাটা সেট করা
-            document.getElementById('previewBadge').innerText = category;
-            document.getElementById('previewHeadline').innerText = headline;
+            // Category tai ekhon Headline hisebe kaj korbe
+            document.getElementById('previewHeadline').innerText = category;
             document.getElementById('previewMsg').innerText = msg;
             
             // সোর্স যদি থাকে তবেই দেখাবে
@@ -301,10 +300,10 @@
 
         function downloadPost() {
             const wrapper = document.getElementById("announceWrapper");
-            const randomName = "news_" + Date.now();
+            const randomName = "notice_" + Date.now();
 
             html2canvas(wrapper, {
-                scale: 35, // হাই কোয়ালিটি
+                scale: 35, 
                 useCORS: true,
                 backgroundColor: null 
             }).then(canvas => {
