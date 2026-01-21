@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; font-family: 'Anek Bangla', 'Lexend', sans-serif; }
         body { 
             margin: 0; 
             background: #fdf2f8; 
@@ -250,7 +250,7 @@
             const randomName = "notice_" + Date.now();
 
             html2canvas(wrapper, {
-                scale: 3, 
+                scale: 35, 
                 useCORS: true,
                 backgroundColor: null 
             }).then(canvas => {
