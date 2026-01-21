@@ -10,6 +10,7 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -25,16 +26,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', 'Apple Color Emoji', sans-serif;
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-dark);
             background-image: 
                 radial-gradient(at 50% 0%, rgba(56, 189, 248, 0.1) 0, transparent 50%), 
                 radial-gradient(at 50% 100%, rgba(236, 72, 153, 0.05) 0, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
         }
 
@@ -43,32 +42,23 @@
             width: 100%;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(15px);
-            padding: 10px 5%; /* Reduced Padding */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
+            padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--border-color);
         }
 
         .brand-logo {
             display: flex; align-items: center;
-            font-size: 16px; /* Smaller Font */
-            font-weight: 700;
+            font-size: 16px; font-weight: 700;
             background: linear-gradient(135deg, #60a5fa, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
         
         .logo-img {
-            height: 28px; width: 28px; /* Smaller Logo */
-            margin-right: 8px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            height: 28px; width: 28px; margin-right: 8px;
+            border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.2);
             object-fit: cover;
         }
 
@@ -96,8 +86,7 @@
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 70px;
-            width: 95%; max-width: 1100px;
+            margin-top: 70px; width: 95%; max-width: 1100px;
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
@@ -105,11 +94,8 @@
         /* --- EDITOR --- */
         .editor-box {
             flex: 1; min-width: 350px;
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 20px; border: 1px solid var(--border-color);
             height: fit-content;
         }
 
@@ -126,13 +112,8 @@
             cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
         }
         .btn-icon:hover { background: rgba(255,255,255,0.1); color: white; }
-        
-        .align-options { display: flex; gap: 10px; margin-top: 5px; }
-        .align-btn {
-            padding: 5px 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2);
-            color: #fff; cursor: pointer; border-radius: 5px; font-size: 12px;
-        }
-        .align-btn.active { background: var(--primary); border-color: var(--primary); }
+        .btn-reset:hover { color: #ef4444; border-color: #ef4444; }
+        .btn-undo { display: none; color: #10b981; border-color: #10b981; }
 
         .input-group { margin-bottom: 15px; }
         .input-group label {
@@ -144,12 +125,17 @@
             border: 1px solid rgba(148, 163, 184, 0.2); color: #f1f5f9;
             padding: 12px 15px; border-radius: 10px; font-size: 14px; transition: 0.3s;
         }
-        textarea.form-control { resize: vertical; height: 140px; }
+        textarea.form-control { resize: vertical; height: 120px; }
         .form-control:focus { outline: none; border-color: #8b5cf6; background: rgba(15, 23, 42, 0.9); }
         
-        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .checkbox-group input { width: 16px; height: 16px; accent-color: var(--primary); }
-        .checkbox-group label { margin: 0; font-size: 13px; color: #fff; text-transform: none; font-weight: 500;}
+        /* Checkbox Style */
+        .features-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .feature-item { 
+            display: flex; align-items: center; gap: 8px; 
+            background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+        }
+        .feature-item input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+        .feature-item label { margin: 0; font-size: 12px; color: #e2e8f0; cursor: pointer; text-transform: none; font-weight: 500;}
 
         .btn-download {
             width: 100%; padding: 14px; margin-top: 15px; border-radius: 50px; border: none;
@@ -165,70 +151,90 @@
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- ANNOUNCEMENT CARD --- */
+        /* --- NOTICE CARD REDESIGN --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
-            border-radius: 20px;
+            border-radius: 24px;
             display: flex; flex-direction: column;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden; position: relative;
+            background-clip: padding-box;
         }
         
         #noticeWrapper::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 40%);
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 60%);
             pointer-events: none; z-index: 0;
+        }
+
+        .top-label {
+            background: rgba(0,0,0,0.4); text-align: center; color: rgba(255,255,255,0.9);
+            font-size: 11px; font-weight: 800; letter-spacing: 3px; padding: 10px;
+            text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
         }
 
         .notice-content-wrapper { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
 
-        /* Top Announcement Label */
-        .top-label {
-            background: rgba(0,0,0,0.3); text-align: center; color: rgba(255,255,255,0.8);
-            font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 8px;
-            text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
         /* Header */
         .notice-header {
-            padding: 20px 30px; /* More padding */
+            padding: 25px 30px 15px 30px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 12px; font-weight: 800; text-transform: uppercase;
+            font-size: 13px; font-weight: 800; text-transform: uppercase;
             letter-spacing: 1px; color: var(--accent); 
-            background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 4px;
+            background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .notice-date { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6); }
+        .notice-date { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); opacity: 0.8;}
 
-        /* Body - HUGE PADDING */
+        /* Body - Dynamic Padding */
         .notice-body { 
-            padding: 50px 35px; /* Requested Huge Padding */
+            padding: 40px 35px; /* Default */
             flex: 1; display: flex; flex-direction: column; justify-content: center;
+            position: relative;
         }
         
         .notice-text {
             font-size: 19px; line-height: 1.7; color: #fff;
             white-space: pre-wrap; font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* Footer */
         .notice-footer {
             padding: 15px 30px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 12px; color: rgba(255,255,255,0.6);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            min-height: 60px;
         }
         
-        /* New Source Style */
-        .notice-source { 
-            font-weight: 700; color: #fff; display: flex; align-items: center; gap: 5px;
+        /* Source Area */
+        .source-container { 
+            display: flex; flex-direction: column; gap: 4px; max-width: 60%;
         }
-        .verified-badge { color: #38bdf8; font-size: 14px; display: none; } /* Blue Tick */
+        .source-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+        .notice-source { 
+            font-weight: 700; color: #fff; font-size: 14px;
+            display: flex; align-items: center; gap: 5px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .verified-badge { color: #38bdf8; font-size: 14px; }
 
-        .notice-brand { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; font-size: 10px; }
+        /* Right Side Footer */
+        .footer-right { display: flex; align-items: center; gap: 10px; }
+        .notice-brand { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-size: 11px; color:white; }
+        
+        #qrcode { 
+            background: white; padding: 2px; border-radius: 4px; display: none; 
+            width: 34px; height: 34px;
+        }
+        #qrcode img { display: block; }
 
         footer {
             width: 100%; padding: 20px; text-align: center;
@@ -296,21 +302,25 @@
             <div class="input-group">
                 <label>Announcement Body</label>
                 <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here..." oninput="updateLive()"></textarea>
-                
-                <div class="align-options">
-                    <div class="align-btn active" onclick="setAlignment('left', this)">Left</div>
-                    <div class="align-btn" onclick="setAlignment('center', this)">Center</div>
-                    <div class="align-btn" onclick="setAlignment('right', this)">Right</div>
-                </div>
             </div>
 
              <div class="input-group">
                 <label>Source Name (Optional)</label>
                 <input id="noticeSource" class="form-control" placeholder="e.g. Authority" oninput="updateLive()">
-                
-                <div class="checkbox-group">
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-item">
                     <input type="checkbox" id="verifiedCheck" onchange="updateLive()">
-                    <label for="verifiedCheck">Show Verified Badge <i class="fas fa-check-circle" style="color:#38bdf8;"></i></label>
+                    <label for="verifiedCheck">Verified Badge</label>
+                </div>
+                <div class="feature-item">
+                    <input type="checkbox" id="qrCheck" onchange="updateLive()">
+                    <label for="qrCheck">Add QR Code</label>
+                </div>
+                <div class="feature-item">
+                    <input type="checkbox" id="brandCheck" checked onchange="updateLive()">
+                    <label for="brandCheck">Show Watermark</label>
                 </div>
             </div>
 
@@ -325,15 +335,21 @@
                         <div class="notice-cat-badge" id="pCat">BREAKING NEWS</div>
                         <div class="notice-date" id="pDate"></div>
                     </div>
-                    <div class="notice-body">
+                    <div class="notice-body" id="bodySection">
                         <div class="notice-text" id="pBody">Write your announcement content here. It will look spacious and premium.</div>
                     </div>
                     <div class="notice-footer" id="footerSection">
-                        <div class="notice-source" id="pSourceContainer">
-                            Source: <span id="pSource">Authority</span> 
-                            <i class="fas fa-check-circle verified-badge" id="pVerified"></i>
+                        <div class="source-container" id="pSourceContainer">
+                            <span class="source-label">Source</span>
+                            <div class="notice-source">
+                                <span id="pSource">Authority</span> 
+                                <i class="fas fa-check-circle verified-badge" id="pVerified" style="display:none;"></i>
+                            </div>
                         </div>
-                        <div class="notice-brand">Interactive Learning</div>
+                        <div class="footer-right">
+                            <div id="qrcode"></div>
+                            <div class="notice-brand" id="pBrand">Interactive Learning</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,16 +413,7 @@
             tSelect.appendChild(opt);
         });
 
-        // --- ALIGNMENT ---
-        let currentAlign = 'left';
-        function setAlignment(align, btn) {
-            currentAlign = align;
-            document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            updateLive();
-        }
-
-        // --- RESET ---
+        // --- RESET & UNDO ---
         let lastState = null;
         function resetAll() {
             lastState = {
@@ -414,13 +421,17 @@
                 body: document.getElementById('noticeBody').value,
                 source: document.getElementById('noticeSource').value,
                 theme: document.getElementById('themeSelector').value,
-                verified: document.getElementById('verifiedCheck').checked
+                verified: document.getElementById('verifiedCheck').checked,
+                qr: document.getElementById('qrCheck').checked,
+                brand: document.getElementById('brandCheck').checked
             };
             document.getElementById('noticeCat').selectedIndex = 0;
             document.getElementById('noticeBody').value = '';
             document.getElementById('noticeSource').value = '';
             document.getElementById('themeSelector').selectedIndex = 0;
             document.getElementById('verifiedCheck').checked = false;
+            document.getElementById('qrCheck').checked = false;
+            document.getElementById('brandCheck').checked = true;
             document.getElementById('undoBtn').style.display = 'flex';
             updateLive();
         }
@@ -432,15 +443,34 @@
             document.getElementById('noticeSource').value = lastState.source;
             document.getElementById('themeSelector').value = lastState.theme;
             document.getElementById('verifiedCheck').checked = lastState.verified;
+            document.getElementById('qrCheck').checked = lastState.qr;
+            document.getElementById('brandCheck').checked = lastState.brand;
             document.getElementById('undoBtn').style.display = 'none';
             updateLive();
         }
 
+        // Initialize QR
+        let qrCodeObj = new QRCode(document.getElementById("qrcode"), {
+            width: 34, height: 34,
+            colorDark : "#000000", colorLight : "#ffffff"
+        });
+
         function updateLive() {
-            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); // Remove emoji for clean look if wanted, or keep it. Current: keeps it.
-            document.getElementById('pBody').innerText = document.getElementById('noticeBody').value || "Content goes here...";
-            document.getElementById('pBody').style.textAlign = currentAlign;
+            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
             
+            const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
+            document.getElementById('pBody').innerText = bodyText;
+            
+            // Dynamic Padding Logic
+            const bodySection = document.getElementById('bodySection');
+            if(bodyText.length < 50) {
+                bodySection.style.padding = "70px 35px";
+            } else if(bodyText.length < 150) {
+                bodySection.style.padding = "50px 35px";
+            } else {
+                bodySection.style.padding = "30px 35px";
+            }
+
             // Source Logic
             const src = document.getElementById('noticeSource').value;
             const pSourceContainer = document.getElementById('pSourceContainer');
@@ -452,9 +482,18 @@
                 pSourceContainer.style.display = 'none';
             }
 
-            // Verified Badge
-            const isVerified = document.getElementById('verifiedCheck').checked;
-            document.getElementById('pVerified').style.display = isVerified ? 'inline-block' : 'none';
+            // Features
+            document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
+            document.getElementById('pBrand').style.display = document.getElementById('brandCheck').checked ? 'block' : 'none';
+            
+            // QR Code
+            const showQR = document.getElementById('qrCheck').checked;
+            document.getElementById('qrcode').style.display = showQR ? 'block' : 'none';
+            if(showQR) {
+                // Generate QR for current page or dummy link
+                qrCodeObj.clear();
+                qrCodeObj.makeCode("https://example.com/notice"); 
+            }
 
             // Theme
             const tIdx = document.getElementById('themeSelector').value;
@@ -464,13 +503,14 @@
             document.getElementById('pCat').style.color = theme.accent;
             document.querySelector('.top-label').style.color = theme.accent;
 
-            // Light Theme Handling
+            // Light Theme
             const isLight = ["Silver", "Gold Rush", "Ice Cold"].includes(theme.name);
             const textCol = isLight ? "#222" : "#fff";
             document.getElementById('pBody').style.color = textCol;
-            document.getElementById('pSource').style.color = textCol;
             document.querySelector('.notice-source').style.color = textCol; 
             document.querySelector('.top-label').style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.3)";
+            document.querySelector('.source-label').style.color = isLight ? "#666" : "rgba(255,255,255,0.5)";
+            document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
         }
 
         function downloadImage() {
