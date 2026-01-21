@@ -83,7 +83,7 @@
             font-weight: 500; border-bottom: 1px solid var(--border-color);
         }
 
-        /* --- CONTAINER (CENTERED) --- */
+        /* --- CONTAINER (Centered) --- */
         .container {
             margin-top: 80px; width: 95%; max-width: 1000px;
             display: flex; flex-wrap: wrap; 
@@ -130,7 +130,7 @@
         
         .features-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .feature-item { 
-            display: flex; align-items: center; gap: 8px; flex: 1;
+            display: flex; align-items: center; gap: 8px; 
             background: rgba(255,255,255,0.03); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s;
         }
         .feature-item:hover { background: rgba(255,255,255,0.06); }
@@ -147,7 +147,7 @@
         @keyframes gradientAnim { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6); }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW AREA (CENTERED) --- */
         .preview-box {
             flex: 1; min-width: 350px; max-width: 500px;
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
@@ -156,7 +156,7 @@
         /* --- NOTICE CARD --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
-            border-radius: 24px;
+            border-radius: 4px;
             display: flex; flex-direction: column;
             box-shadow: 0 40px 80px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.15);
@@ -181,7 +181,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 13px; font-weight: 700; text-transform: capitalize;
+            font-size: 13px; font-weight: 700; /* No uppercase */
             letter-spacing: 0.5px; color: var(--accent); 
             background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
@@ -195,7 +195,7 @@
 
         /* Body */
         .notice-body { 
-            padding: 20px 35px 30px 35px;
+            padding: 20px 35px 30px 35px; /* Compact padding */
             flex: 1; display: flex; flex-direction: column; justify-content: center;
             position: relative;
         }
@@ -236,19 +236,6 @@
             line-height: 1.2;
         }
         .verified-badge { color: #38bdf8; font-size: 15px; margin-top: 2px; flex-shrink: 0; }
-
-        /* BRAND with LOGO inside CARD */
-        .notice-brand { 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
-            opacity: 0.6; font-size: 11px; color: white; text-align: right; line-height: 1.2;
-            margin-left: auto;
-            display: flex; align-items: center; justify-content: flex-end; gap: 8px;
-        }
-        
-        .card-brand-logo {
-            width: 20px; height: 20px; border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
 
         footer {
             width: 100%; padding: 25px; text-align: center;
@@ -391,11 +378,6 @@
                                 <i class="fas fa-check-circle verified-badge" id="pVerified" style="display:none;"></i>
                             </div>
                         </div>
-                        
-                        <div class="notice-brand" id="pBrand">
-                            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="card-brand-logo">
-                            Interactive<br>Learning
-                        </div>
                     </div>
                 </div>
             </div>
@@ -421,7 +403,7 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- THEMES ---
+        // --- FIXED 50 PREMIUM THEMES ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
@@ -447,17 +429,33 @@
             { name: "Cyber Black", bg: "linear-gradient(135deg, #000, #111)", accent: "#00ff00" },
             { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
             { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
-            { name: "Vaporwave", bg: "linear-gradient(135deg, #ff71ce, #01cdfe)", accent: "#fff" }
+            { name: "Vaporwave", bg: "linear-gradient(135deg, #ff71ce, #01cdfe)", accent: "#fff" },
+            { name: "Cherry Bomb", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#fff" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#fff" },
+            { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#fff" },
+            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#fff" },
+            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#fff" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#fff" },
+            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#fff" },
+            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#fff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#fff" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
+            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#fff" },
+            { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#fff" },
+            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
+            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#fff" },
+            { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#fff" },
+            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#fff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#fff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" }
         ];
-        
-        for(let i=themes.length; i<60; i++) {
-             const hue = Math.floor(Math.random() * 360);
-             themes.push({
-                 name: `Style ${i+1}`,
-                 bg: `linear-gradient(135deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 10%))`,
-                 accent: `hsl(${(hue+180)%360}, 80%, 60%)`
-             });
-        }
 
         const tSelect = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
@@ -498,7 +496,7 @@
         }
 
         function updateLive() {
-            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
+            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value; 
             
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
@@ -528,14 +526,12 @@
             
             if(src.length > 0) {
                 footerSection.style.display = 'flex';
-                document.getElementById('pSourceContainer').style.display = 'flex';
                 document.getElementById('pSource').innerText = src;
             } else {
-                footerSection.style.display = 'flex'; // Footer always shows for brand
-                document.getElementById('pSourceContainer').style.display = 'none';
+                footerSection.style.display = 'none';
             }
 
-            // Features
+            // Verified Badge
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
             // Theme
@@ -556,16 +552,13 @@
             
             // Watermark color
             document.querySelector('.watermark-body').style.color = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
-            
-            // Brand Color
-            document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
         }
 
         function downloadImage() {
             const wrapper = document.getElementById('noticeWrapper');
             wrapper.style.display = 'flex';
             html2canvas(wrapper, {
-                scale: 35, // User requested scale
+                scale: 35, 
                 backgroundColor: null,
                 useCORS: true
             }).then(canvas => {
