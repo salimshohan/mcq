@@ -88,13 +88,13 @@
             margin-top: 80px; width: 95%; max-width: 1000px;
             display: flex; flex-wrap: wrap; 
             justify-content: center; /* Center horizontally */
-            align-items: flex-start; /* Align to top */
+            align-items: flex-start;
             gap: 40px; padding-bottom: 40px; flex: 1;
         }
 
         /* --- EDITOR --- */
         .editor-box {
-            flex: 1; min-width: 350px; max-width: 500px; /* Constrain width */
+            flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); backdrop-filter: blur(12px);
             padding: 30px; border-radius: 24px; border: 1px solid var(--border-color);
             height: fit-content; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -131,16 +131,16 @@
         
         .features-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .feature-item { 
-            display: flex; align-items: center; gap: 8px; 
-            background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 8px; flex: 1;
+            background: rgba(255,255,255,0.03); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s;
         }
         .feature-item:hover { background: rgba(255,255,255,0.06); }
         .feature-item input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
-        .feature-item label { margin: 0; font-size: 13px; color: #e2e8f0; cursor: pointer; font-weight: 500;}
+        .feature-item label { margin: 0; font-size: 13px; color: #e2e8f0; cursor: pointer; font-weight: 500; display: flex; align-items: center;}
 
         /* Download Button - Hidden by default */
         .btn-download {
-            display: none; /* Hidden logic */
+            display: none; /* Hidden initially */
             width: 100%; padding: 16px; margin-top: 10px; border-radius: 50px; border: none;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899); background-size: 200% auto;
             color: white; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;
@@ -160,7 +160,6 @@
             width: 100%; max-width: 420px;
             border-radius: 24px;
             display: flex; flex-direction: column;
-            /* Default Shadow (No Glow) */
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden; position: relative;
@@ -169,12 +168,6 @@
             margin: 0 auto; /* Explicit Center */
         }
         
-        /* Only applied when glow is active */
-        #noticeWrapper.glow-active {
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.4), 0 40px 80px rgba(0,0,0,0.6);
-            border: 1px solid rgba(139, 92, 246, 0.5);
-        }
-
         .top-label {
             background: rgba(0,0,0,0.3); text-align: center; color: rgba(255,255,255,0.9);
             font-size: 10px; font-weight: 800; letter-spacing: 3px; padding: 12px;
@@ -190,7 +183,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
-            font-size: 13px; font-weight: 700; text-transform: capitalize; /* Title Case */
+            font-size: 13px; font-weight: 700; text-transform: capitalize;
             letter-spacing: 0.5px; color: var(--accent); 
             background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
@@ -222,13 +215,12 @@
             color: rgba(255, 255, 255, 0.3); pointer-events: none; z-index: 2;
         }
 
-        /* Footer */
+        /* Footer - Hidden if no source */
         .notice-footer {
             padding: 20px 30px;
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
-            /* Hidden by default, shown via JS if source exists */
-            display: none; 
+            display: none; /* Hidden by default */
             justify-content: flex-start; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.08);
             min-height: 60px;
@@ -313,7 +305,7 @@
 
             <div class="input-group">
                 <label>Announcement Body</label>
-                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here..." oninput="updateLive()"></textarea>
+                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here (min 10 chars for download)..." oninput="updateLive()"></textarea>
             </div>
 
              <div class="input-group">
@@ -324,11 +316,7 @@
             <div class="features-grid">
                 <div class="feature-item">
                     <input type="checkbox" id="verifiedCheck" onchange="updateLive()">
-                    <label for="verifiedCheck">Verified Badge</label>
-                </div>
-                <div class="feature-item">
-                    <input type="checkbox" id="glowCheck" onchange="toggleGlow()">
-                    <label for="glowCheck">Neon Glow</label>
+                    <label for="verifiedCheck">Show Verified Badge <i class="fas fa-check-circle" style="color:#38bdf8; margin-left:5px;"></i></label>
                 </div>
             </div>
 
@@ -383,16 +371,6 @@
         function toggleMenu() {
             document.getElementById('navMenu').classList.toggle('open');
             document.querySelector('.hamburger').classList.toggle('active');
-        }
-
-        function toggleGlow() {
-            const wrapper = document.getElementById('noticeWrapper');
-            // Checkbox logic: checked = add class, unchecked (default) = remove class
-            if(document.getElementById('glowCheck').checked) {
-                wrapper.classList.add('glow-active');
-            } else {
-                wrapper.classList.remove('glow-active');
-            }
         }
 
         // --- THEMES ---
@@ -451,18 +429,15 @@
                 body: document.getElementById('noticeBody').value,
                 source: document.getElementById('noticeSource').value,
                 theme: document.getElementById('themeSelector').value,
-                verified: document.getElementById('verifiedCheck').checked,
-                glow: document.getElementById('glowCheck').checked
+                verified: document.getElementById('verifiedCheck').checked
             };
             document.getElementById('noticeCat').selectedIndex = 0;
             document.getElementById('noticeBody').value = '';
             document.getElementById('noticeSource').value = '';
             document.getElementById('themeSelector').selectedIndex = 0;
             document.getElementById('verifiedCheck').checked = false;
-            document.getElementById('glowCheck').checked = false;
             document.getElementById('undoBtn').style.display = 'flex';
             updateLive();
-            toggleGlow();
         }
 
         function undoReset() {
@@ -472,20 +447,17 @@
             document.getElementById('noticeSource').value = lastState.source;
             document.getElementById('themeSelector').value = lastState.theme;
             document.getElementById('verifiedCheck').checked = lastState.verified;
-            document.getElementById('glowCheck').checked = lastState.glow;
             document.getElementById('undoBtn').style.display = 'none';
             updateLive();
-            toggleGlow();
         }
 
         function updateLive() {
-            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value; 
+            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
             
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DOWNLOAD BUTTON VISIBILITY ---
-            // Show only if body text length > 10
+            // --- DOWNLOAD BUTTON VISIBILITY (Min 10 chars) ---
             if (document.getElementById('noticeBody').value.length > 10) {
                 document.getElementById('dlBtn').style.display = 'block';
             } else {
