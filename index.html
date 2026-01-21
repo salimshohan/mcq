@@ -3,41 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Generator Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>MCQ Pro | Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root {
-            --primary-color: #6366f1;
-            --header-bg: rgba(30, 41, 59, 0.95);
-            --body-bg: #0f172a;
-            --footer-bg: #020617;
+            --primary: #8b5cf6;
+            --dark-bg: #0f172a;
+            --panel-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
             
-            /* Default Card Variables (Will be updated by JS) */
-            --card-bg: linear-gradient(135deg, #242066, #171542);
-            --text-c: #ffffff;
-            --accent: #fbbf24;
-            --opt-bg: rgba(255, 255, 255, 0.1);
+            /* Dynamic Card Variables */
+            --card-gradient: linear-gradient(135deg, #242066, #171542);
+            --card-accent: #fbbf24;
+            --card-text: #ffffff;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Anek Bangla', 'Lexend', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', 'Hind Siliguri', sans-serif; }
 
         body { 
-            background: var(--body-bg); 
-            color: #e2e8f0;
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- HEADER (Distinct Color) --- */
+        /* --- STYLISH HEADER --- */
         header {
             width: 100%;
-            background: var(--header-bg);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -45,307 +48,481 @@
             position: fixed;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-color);
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
         .brand-logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
-            background: linear-gradient(to right, #a5b4fc, #c084fc);
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
         }
 
-        /* Hamburger */
-        .hamburger { cursor: pointer; display: flex; flex-direction: column; gap: 5px; z-index: 1100; }
-        .hamburger span { width: 25px; height: 3px; background: white; border-radius: 2px; transition: 0.3s; }
+        .hamburger {
+            cursor: pointer;
+            width: 30px;
+            height: 20px;
+            position: relative;
+            z-index: 1100;
+        }
         
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
-
-        /* Nav Links */
-        .nav-links {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 250px;
-            background: #1e293b; display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            position: absolute;
+            transition: 0.3s;
+            border-radius: 2px;
         }
-        .nav-links.open { right: 0; }
-        .nav-links a { color: white; text-decoration: none; padding: 15px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .nav-links a:hover { background: #334155; color: #fbbf24; padding-left: 40px; }
+        
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
+
+        .nav-menu {
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
+            background: rgba(30, 41, 59, 0.98); backdrop-filter: blur(15px);
+            display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            border-left: 1px solid var(--border-color);
+        }
+        .nav-menu.open { right: 0; }
+        .nav-menu a {
+            color: var(--text-main); text-decoration: none; padding: 15px 30px;
+            font-size: 16px; font-weight: 500; border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .nav-menu a:hover { background: rgba(139, 92, 246, 0.1); color: #a78bfa; padding-left: 35px; }
 
         /* --- MAIN LAYOUT --- */
-        .main-content {
-            margin-top: 80px;
-            width: 100%;
-            max-width: 1100px;
+        .container {
+            margin-top: 90px;
+            width: 95%;
+            max-width: 1000px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 30px;
-            padding: 20px;
+            padding-bottom: 40px;
             flex: 1;
         }
 
-        /* Editor Section */
-        .editor-section {
-            flex: 1; min-width: 320px;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        /* --- EDITOR SECTION --- */
+        .editor-box {
+            flex: 1; min-width: 340px;
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        .editor-section h3 { color: #1e293b; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
 
-        /* Theme Selector */
+        .editor-header {
+            font-size: 18px; font-weight: 700; margin-bottom: 25px;
+            color: #a78bfa; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        }
+
+        /* Stylish Input Labels */
+        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .input-group label i { color: #8b5cf6; }
+
+        .input-group input, .theme-select {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .input-group input:focus, .theme-select:focus {
+            outline: none; border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        /* Theme Selector Styles */
         .theme-select {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            border-radius: 8px; border: 2px solid #6366f1;
-            background: #eef2ff; color: #4338ca; font-weight: 600; cursor: pointer;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a78bfa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 10px auto;
+            border-color: #6366f1;
+            font-weight: 500;
         }
-
-        .input-group { margin-bottom: 10px; }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #333; }
-        .input-group input:focus { outline: none; border-color: #6366f1; }
 
         .btn-generate {
-            width: 100%; padding: 12px; border-radius: 8px; border: none;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
+            width: 100%; padding: 14px; margin-top: 10px;
+            border-radius: 10px; border: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white; font-weight: 600; font-size: 15px;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
-        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3); }
+        .btn-generate:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
         .btn-download {
-            width: 100%; padding: 14px; margin-top: 15px; border-radius: 50px; border: none;
-            background: linear-gradient(90deg, #f59e0b, #d97706); color: white;
-            font-weight: 800; cursor: pointer; display: none;
+            width: 100%; padding: 14px; margin-top: 15px;
+            border-radius: 50px; border: none;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            color: white; font-weight: 700; font-size: 14px;
+            cursor: pointer; display: none;
             text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
+            animation: pulse 2s infinite;
         }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
 
         /* --- PREVIEW SECTION --- */
-        .preview-section {
-            flex: 1; min-width: 320px;
+        .preview-box {
+            flex: 1; min-width: 340px;
             display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 20px;
         }
 
-        /* --- MCQ CARD STYLING (Compact & Stylish) --- */
+        /* --- MCQ CARD (COMPACT) --- */
         #mcqWrapper {
-            width: 100%;
-            max-width: 380px; /* Reduced Width */
-            background: var(--card-bg);
+            width: 100%; max-width: 360px; /* Width Controlled */
+            background: var(--card-gradient);
             border-radius: 12px;
-            padding: 20px 15px; /* Reduced Padding (Top/Bottom/Left/Right) */
+            padding: 20px 15px; /* Compact Padding */
+            display: none; flex-direction: column;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            display: none;
-            flex-direction: column;
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.15);
+            /* Corner Fix */
+            overflow: hidden; 
         }
-
-        /* Removed Quick Quiz Badge */
 
         /* Question */
-        .question-box {
-            display: flex; gap: 8px; margin-bottom: 15px; /* Reduced Margin */
-        }
-        .q-mark { color: var(--accent); font-size: 20px; font-weight: 800; line-height: 1.3; }
-        .question-text {
-            color: var(--text-c); font-size: 17px; font-weight: 600; line-height: 1.4;
-        }
+        .question-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .q-prefix { color: var(--card-accent); font-size: 18px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
+        .q-text { color: var(--card-text); font-size: 16px; font-weight: 600; line-height: 1.4; }
 
         /* Options */
-        .options-container { display: flex; flex-direction: column; gap: 6px; } /* Tighter Gap */
-        
-        .option-item {
+        .options-list { display: flex; flex-direction: column; gap: 6px; }
+        .opt-item {
             display: flex; align-items: center;
-            background: var(--opt-bg);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
-            padding: 6px 10px; /* Compact Padding */
+            padding: 6px 10px; /* Small Padding */
         }
-        
-        .option-circle {
-            min-width: 22px; height: 22px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2); color: var(--text-c);
+        .opt-circle {
+            width: 20px; height: 20px; flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--card-text);
             display: flex; justify-content: center; align-items: center;
-            font-weight: 700; font-size: 10px; margin-right: 8px;
+            font-size: 10px; font-weight: 700; margin-right: 8px;
         }
-        .option-text { color: var(--text-c); font-size: 14px; font-weight: 500; }
+        .opt-text { color: var(--card-text); font-size: 13px; font-weight: 500; }
 
-        /* Footer Elements */
-        .divider-line {
-            width: 30px; height: 3px; background-color: var(--accent);
-            margin: 15px auto 8px auto; border-radius: 2px;
-        }
-        .card-watermark {
-            text-align: center; color: rgba(255, 255, 255, 0.6);
-            font-size: 9px; font-weight: 500; letter-spacing: 1px;
-        }
+        /* Footer Decoration */
+        .card-line { width: 30px; height: 3px; background: var(--card-accent); margin: 15px auto 6px; border-radius: 2px; }
+        .card-brand { text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 9px; font-weight: 500; letter-spacing: 0.5px; }
 
-        /* --- FOOTER (Distinct Color) --- */
+        /* --- STYLISH FOOTER --- */
         footer {
-            width: 100%; background: var(--footer-bg);
-            color: #64748b; text-align: center; padding: 25px;
-            margin-top: auto; border-top: 1px solid #1e293b; font-size: 13px;
+            width: 100%; margin-top: auto;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 20px; text-align: center;
+            color: #64748b; font-size: 13px;
+        }
+        footer span { color: #8b5cf6; font-weight: 600; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .preview-box { order: -1; } /* Preview on top in mobile */
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-logo">Interactive Learning</div>
+        <div class="brand-logo"><i class="fas fa-layer-group"></i> Interactive</div>
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
-        <div class="nav-links" id="navLinks">
-            <a href="#">Home</a>
-            <a href="notice.html">Notice</a>
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html">Home</a>
+            <a href="notice.html">Notice Board</a>
             <a href="quotation.html">Quotation</a>
-            <a href="contact.html">Contact</a>
+            <a href="contact.html">Contact Us</a>
         </div>
     </header>
 
-    <div class="main-content">
-        <div class="editor-section">
-            <h3>MCQ Creator Studio</h3>
+    <div class="container">
+        <div class="editor-box">
+            <div class="editor-header">Design Your Card</div>
 
             <div class="input-group">
-                <label>Select Style (200 Variations)</label>
+                <label><i class="fas fa-question-circle"></i> Question</label>
+                <input id="qInput" placeholder="Enter your question here...">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-list-ul"></i> Options</label>
+                <input id="optA" placeholder="Option A" style="margin-bottom: 8px;">
+                <input id="optB" placeholder="Option B" style="margin-bottom: 8px;">
+                <input id="optC" placeholder="Option C" style="margin-bottom: 8px;">
+                <input id="optD" placeholder="Option D">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-palette"></i> Select Theme (100 Styles)</label>
                 <select id="themeSelector" class="theme-select" onchange="applyTheme()">
                     </select>
             </div>
-            
-            <div class="input-group"><input id="question" placeholder="প্রশ্ন (Question)"></div>
-            <div class="input-group"><input id="optA" placeholder="Option A"></div>
-            <div class="input-group"><input id="optB" placeholder="Option B"></div>
-            <div class="input-group"><input id="optC" placeholder="Option C"></div>
-            <div class="input-group"><input id="optD" placeholder="Option D"></div>
 
-            <button class="btn-generate" onclick="generateMCQ()">Generate Card</button>
-            <button class="btn-download" id="dlBtn" onclick="downloadMCQ()">Download Image</button>
+            <button class="btn-generate" onclick="generate()">
+                <i class="fas fa-magic"></i> Generate Card
+            </button>
+
+            <button class="btn-download" id="dlBtn" onclick="downloadImage()">
+                <i class="fas fa-download"></i> Download Image
+            </button>
         </div>
 
-        <div class="preview-section">
+        <div class="preview-box">
             <div id="mcqWrapper">
-                <div class="question-box">
-                    <span class="q-mark">Q.</span>
-                    <span id="qText" class="question-text">প্রশ্ন এখানে দেখা যাবে...</span>
+                <div class="question-row">
+                    <span class="q-prefix">Q.</span>
+                    <span id="pQ" class="q-text">Your question will appear here...</span>
                 </div>
-                <div class="options-container">
-                    <div class="option-item"><div class="option-circle">A</div><div class="option-text" id="aText">Option A</div></div>
-                    <div class="option-item"><div class="option-circle">B</div><div class="option-text" id="bText">Option B</div></div>
-                    <div class="option-item"><div class="option-circle">C</div><div class="option-text" id="cText">Option C</div></div>
-                    <div class="option-item"><div class="option-circle">D</div><div class="option-text" id="dText">Option D</div></div>
+                <div class="options-list">
+                    <div class="opt-item"><div class="opt-circle">A</div><div id="pA" class="opt-text">Option A</div></div>
+                    <div class="opt-item"><div class="opt-circle">B</div><div id="pB" class="opt-text">Option B</div></div>
+                    <div class="opt-item"><div class="opt-circle">C</div><div id="pC" class="opt-text">Option C</div></div>
+                    <div class="opt-item"><div class="opt-circle">D</div><div id="pD" class="opt-text">Option D</div></div>
                 </div>
-                <div class="divider-line"></div>
-                <div class="card-watermark">Follow: Interactive Learning</div>
+                <div class="card-line"></div>
+                <div class="card-brand">Follow: Interactive Learning</div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; <span id="year"></span> Interactive Learning. All rights reserved.</footer>
+    <footer>
+        &copy; <span id="year"></span> Interactive Learning. All rights reserved.
+    </footer>
 
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
         function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('navMenu').classList.toggle('open');
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- GENERATE 200 THEMES DYNAMICALLY ---
-        const themeSelect = document.getElementById('themeSelector');
-        const themes = [];
+        // --- 100 CURATED THEMES ---
+        const themes = [
+            // 1-10: Blues & Purples
+            { name: "Royal Indigo", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
+            { name: "Ocean Depth", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
+            { name: "Electric Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
+            { name: "Night Sky", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
+            { name: "Blueberry", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd" },
+            { name: "Deep Navy", bg: "linear-gradient(135deg, #001f3f, #003366)", accent: "#FFD700" },
+            { name: "Neon Blue", bg: "linear-gradient(135deg, #000428, #004e92)", accent: "#00ffff" },
+            { name: "Periwinkle", bg: "linear-gradient(135deg, #4338ca, #6366f1)", accent: "#e0e7ff" },
+            { name: "Dark Slate", bg: "linear-gradient(135deg, #1e293b, #334155)", accent: "#94a3b8" },
+            { name: "Cyber Punk", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff" },
+            
+            // 11-20: Greens & Teals
+            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
+            { name: "Forest Night", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#ccfbf1" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #1a2e05, #365314)", accent: "#bef264" },
+            { name: "Teal Gradient", bg: "linear-gradient(135deg, #004d40, #009688)", accent: "#b2dfdb" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1b4332, #2d6a4f)", accent: "#95d5b2" },
+            { name: "Mint Dark", bg: "linear-gradient(135deg, #0f766e, #14b8a6)", accent: "#f0fdfa" },
+            { name: "Olive Drab", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
+            { name: "Aurora", bg: "linear-gradient(135deg, #000000, #0f9b0f)", accent: "#00ff00" },
+            { name: "Swamp", bg: "linear-gradient(135deg, #1e2019, #2c3327)", accent: "#a3b18a" },
 
-        // 1. Manually Curated Best Themes (First 15)
-        const curatedThemes = [
-            { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
-            { name: "Emerald Forest", bg: "linear-gradient(135deg, #064e3b, #065f46)", accent: "#34d399" },
-            { name: "Crimson Red", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
-            { name: "Midnight Black", bg: "linear-gradient(135deg, #000000, #1a1a1a)", accent: "#22d3ee" },
-            { name: "Sunset Orange", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
-            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0e7490, #155e75)", accent: "#cffafe" },
-            { name: "Berry Purple", bg: "linear-gradient(135deg, #701a75, #86198f)", accent: "#f0abfc" },
-            { name: "Dark Chocolate", bg: "linear-gradient(135deg, #451a03, #78350f)", accent: "#fde68a" },
-            { name: "Slate Grey", bg: "linear-gradient(135deg, #334155, #475569)", accent: "#94a3b8" },
-            { name: "Cyber Indigo", bg: "linear-gradient(135deg, #312e81, #4338ca)", accent: "#a5b4fc" },
-            { name: "Teal Deep", bg: "linear-gradient(135deg, #134e4a, #115e59)", accent: "#5eead4" },
-            { name: "Rose Gold", bg: "linear-gradient(135deg, #881337, #9f1239)", accent: "#fda4af" },
-            { name: "Violet Night", bg: "linear-gradient(135deg, #4c1d95, #5b21b6)", accent: "#c4b5fd" },
-            { name: "Graphite", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
-            { name: "Blueberry", bg: "linear-gradient(135deg, #172554, #1e3a8a)", accent: "#60a5fa" }
+            // 21-30: Reds & Pinks
+            { name: "Crimson Tide", bg: "linear-gradient(135deg, #450a0a, #991b1b)", accent: "#fca5a5" },
+            { name: "Rose Garden", bg: "linear-gradient(135deg, #881337, #be123c)", accent: "#fda4af" },
+            { name: "Blood Moon", bg: "linear-gradient(135deg, #280000, #7f0000)", accent: "#ffcccc" },
+            { name: "Cherry Bomb", bg: "linear-gradient(135deg, #590d22, #a4133c)", accent: "#ffb3c1" },
+            { name: "Berry Smoothie", bg: "linear-gradient(135deg, #4a044e, #c026d3)", accent: "#f5d0fe" },
+            { name: "Hot Pink", bg: "linear-gradient(135deg, #831843, #db2777)", accent: "#fbcfe8" },
+            { name: "Burgundy", bg: "linear-gradient(135deg, #360505, #5e0a0a)", accent: "#e5e7eb" },
+            { name: "Valentine", bg: "linear-gradient(135deg, #701a75, #a21caf)", accent: "#f0abfc" },
+            { name: "Mars", bg: "linear-gradient(135deg, #3f1010, #7f2a2a)", accent: "#ffa3a3" },
+            { name: "Wine", bg: "linear-gradient(135deg, #2c0b0e, #581c1c)", accent: "#d4a5a5" },
+
+            // 31-40: Oranges & Yellows
+            { name: "Sunset Blaze", bg: "linear-gradient(135deg, #7c2d12, #ea580c)", accent: "#fdba74" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #431407, #c2410c)", accent: "#ffedd5" },
+            { name: "Gold Rush", bg: "linear-gradient(135deg, #422006, #a16207)", accent: "#fde047" },
+            { name: "Amber Alert", bg: "linear-gradient(135deg, #451a03, #d97706)", accent: "#fcd34d" },
+            { name: "Desert Sand", bg: "linear-gradient(135deg, #3e2723, #5d4037)", accent: "#d7ccc8" },
+            { name: "Fire", bg: "linear-gradient(135deg, #b91c1c, #f59e0b)", accent: "#fff" },
+            { name: "Citrus", bg: "linear-gradient(135deg, #a16207, #eab308)", accent: "#fef08a" },
+            { name: "Brown Sugar", bg: "linear-gradient(135deg, #3f2e3e, #8c52ff)", accent: "#fcd34d" },
+            { name: "Bronze", bg: "linear-gradient(135deg, #291d18, #594236)", accent: "#cd7f32" },
+            { name: "Solar", bg: "linear-gradient(135deg, #5c2c06, #c2410c)", accent: "#ffedd5" },
+
+            // 41-50: Dark & Greys
+            { name: "Pure Black", bg: "linear-gradient(135deg, #000000, #111111)", accent: "#ffffff" },
+            { name: "Charcoal", bg: "linear-gradient(135deg, #1c1917, #292524)", accent: "#d6d3d1" },
+            { name: "Graphite", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#a1a1aa" },
+            { name: "Midnight Grey", bg: "linear-gradient(135deg, #111827, #374151)", accent: "#9ca3af" },
+            { name: "Shadow", bg: "linear-gradient(135deg, #0f0f0f, #232323)", accent: "#666666" },
+            { name: "Metal", bg: "linear-gradient(135deg, #202020, #404040)", accent: "#c0c0c0" },
+            { name: "Carbon", bg: "linear-gradient(135deg, #171717, #262626)", accent: "#ef4444" },
+            { name: "Ash", bg: "linear-gradient(135deg, #262626, #404040)", accent: "#a3a3a3" },
+            { name: "Onyx", bg: "linear-gradient(135deg, #0c0c0c, #1a1a1a)", accent: "#facc15" },
+            { name: "Ink", bg: "linear-gradient(135deg, #02040a, #0f172a)", accent: "#e2e8f0" },
+
+            // 51-60: Mixed Gradients (Trendy)
+            { name: "Insta Vibes", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)", accent: "#fcb045" },
+            { name: "Spotify Dark", bg: "linear-gradient(135deg, #191414, #121212)", accent: "#1db954" },
+            { name: "Discord Blurple", bg: "linear-gradient(135deg, #2c2f33, #5865f2)", accent: "#ffffff" },
+            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#ffffff" },
+            { name: "Twitter Dim", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
+            { name: "Twitch Purple", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff" },
+            { name: "YouTube Red", bg: "linear-gradient(135deg, #282828, #ff0000)", accent: "#ffffff" },
+            { name: "Netflix Black", bg: "linear-gradient(135deg, #000000, #b9090b)", accent: "#e50914" },
+            { name: "Amazon Dark", bg: "linear-gradient(135deg, #232f3e, #131921)", accent: "#ff9900" },
+            { name: "Slack Huddle", bg: "linear-gradient(135deg, #4a154b, #3f0e40)", accent: "#ecb22e" },
+
+            // 61-80: Exotic & Nature
+            { name: "Northern Lights", bg: "linear-gradient(135deg, #43cea2, #185a9d)", accent: "#ffffff" },
+            { name: "Space Dust", bg: "linear-gradient(135deg, #20002c, #cbb4d4)", accent: "#cbb4d4" },
+            { name: "Mystic Mauve", bg: "linear-gradient(135deg, #302b63, #24243e)", accent: "#ff0099" },
+            { name: "Deep Space", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#00bfff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000" },
+            { name: "Galaxy", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
+            { name: "Royal Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000000" },
+            { name: "Silver Surfer", bg: "linear-gradient(135deg, #2c3e50, #bdc3c7)", accent: "#ecf0f1" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
+            { name: "Cosmic Fusion", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#fff" },
+            { name: "Moonlit Asteroid", bg: "linear-gradient(135deg, #0f2027, #203a43)", accent: "#fff" },
+            { name: "Harvey", bg: "linear-gradient(135deg, #1f1c2c, #928dab)", accent: "#fff" },
+            { name: "Amin", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)", accent: "#fff" },
+            { name: "Harmonic", bg: "linear-gradient(135deg, #5433ff, #20bdff)", accent: "#a5fecb" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#fff" },
+            { name: "Ibiza Sunset", bg: "linear-gradient(135deg, #ee0979, #ff6a00)", accent: "#fff" },
+            { name: "Sunny Days", bg: "linear-gradient(135deg, #EDE574, #E1F5C4)", accent: "#333" },
+
+            // 81-100: Soft & Misc
+            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#fff" },
+            { name: "Frost", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#fff" },
+            { name: "Mauve", bg: "linear-gradient(135deg, #42275a, #734b6d)", accent: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
+            { name: "Pale Wood", bg: "linear-gradient(135deg, #eacda3, #d6ae7b)", accent: "#333" },
+            { name: "Haikus", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
+            { name: "Pizelex", bg: "linear-gradient(135deg, #114357, #F29492)", accent: "#fff" },
+            { name: "Sky Glider", bg: "linear-gradient(135deg, #88d3ce, #6e45e2)", accent: "#fff" },
+            { name: "Horizon", bg: "linear-gradient(135deg, #003973, #E5E5BE)", accent: "#fff" },
+            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff" },
+            { name: "Witching Hour", bg: "linear-gradient(135deg, #c31432, #240b36)", accent: "#fff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
+            { name: "Solid Vault", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)", accent: "#fff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #BA8B02, #181818)", accent: "#fff" },
+            { name: "Piglet", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#555" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
+            { name: "Mantle", bg: "linear-gradient(135deg, #24c6dc, #514a9d)", accent: "#fff" },
+            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424, #4A569D)", accent: "#fff" },
+            { name: "Mossy", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" }
         ];
 
-        // 2. Algorithmically Generate the rest up to 200
-        for (let i = 0; i < 200; i++) {
-            let theme;
-            if (i < curatedThemes.length) {
-                theme = curatedThemes[i];
-            } else {
-                // Generate random dark gradients
-                const hue = Math.floor(Math.random() * 360);
-                const sat = 60 + Math.floor(Math.random() * 40); // 60-100%
-                const lig1 = 10 + Math.floor(Math.random() * 20); // 10-30% (Dark)
-                const lig2 = lig1 + 10;
-                
-                const color1 = `hsl(${hue}, ${sat}%, ${lig1}%)`;
-                const color2 = `hsl(${hue}, ${sat}%, ${lig2}%)`;
-                const accent = `hsl(${(hue + 180) % 360}, 90%, 70%)`; // Complementary accent
-
-                theme = { name: `Custom Style ${i+1}`, bg: `linear-gradient(135deg, ${color1}, ${color2})`, accent: accent };
-            }
-            themes.push(theme);
-            
-            // Add to dropdown
-            const option = document.createElement('option');
+        // Populate Dropdown
+        const selector = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let option = document.createElement("option");
             option.value = i;
-            option.text = `${i+1}. ${theme.name}`;
-            themeSelect.appendChild(option);
-        }
+            option.text = `${i + 1}. ${t.name}`;
+            selector.appendChild(option);
+        });
 
-        // Apply Theme Function
+        // Apply Theme
         function applyTheme() {
-            const index = themeSelect.value;
-            const theme = themes[index];
+            const idx = document.getElementById('themeSelector').value;
+            const theme = themes[idx];
             const wrapper = document.getElementById('mcqWrapper');
             
-            // Set CSS Variables dynamically
-            wrapper.style.setProperty('--card-bg', theme.bg);
-            wrapper.style.setProperty('--accent', theme.accent);
+            wrapper.style.background = theme.bg;
+            
+            // Set styles dynamically
+            document.querySelector('.q-prefix').style.color = theme.accent;
+            document.querySelector('.card-line').style.background = theme.accent;
+            document.querySelector('.q-text').style.color = theme.name.includes("Light") || theme.name.includes("Days") ? "#111" : "#fff";
+            
+            // Update Circles
+            const circles = document.querySelectorAll('.opt-circle');
+            circles.forEach(c => c.style.color = theme.name.includes("Light") ? "#111" : "#fff");
+            
+            // Update Text color for light themes
+            const texts = document.querySelectorAll('.opt-text');
+            texts.forEach(t => t.style.color = theme.name.includes("Light") ? "#333" : "#fff");
         }
 
-        function generateMCQ() {
-            const q = document.getElementById('question').value;
+        // Generate
+        function generate() {
+            const q = document.getElementById('qInput').value;
             const a = document.getElementById('optA').value;
             const b = document.getElementById('optB').value;
             const c = document.getElementById('optC').value;
             const d = document.getElementById('optD').value;
 
-            if (!q || !a || !b || !c || !d) { alert("সব ঘর পূরণ করুন!"); return; }
+            if(!q || !a || !b || !c || !d) { alert("Please fill all fields!"); return; }
 
-            document.getElementById('qText').innerText = q;
-            document.getElementById('aText').innerText = a;
-            document.getElementById('bText').innerText = b;
-            document.getElementById('cText').innerText = c;
-            document.getElementById('dText').innerText = d;
+            document.getElementById('pQ').innerText = q;
+            document.getElementById('pA').innerText = a;
+            document.getElementById('pB').innerText = b;
+            document.getElementById('pC').innerText = c;
+            document.getElementById('pD').innerText = d;
 
             const wrapper = document.getElementById('mcqWrapper');
-            wrapper.style.display = "flex";
-            document.getElementById('dlBtn').style.display = "block";
-            
-            applyTheme(); // Ensure theme is applied
+            wrapper.style.display = 'flex';
+            document.getElementById('dlBtn').style.display = 'block';
 
-            if(window.innerWidth < 768) wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            applyTheme();
+
+            if(window.innerWidth < 768) {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
-        function downloadMCQ() {
-            const wrapper = document.getElementById("mcqWrapper");
+        // Download
+        function downloadImage() {
+            const wrapper = document.getElementById('mcqWrapper');
             html2canvas(wrapper, { scale: 3, backgroundColor: null, useCORS: true }).then(canvas => {
-                const link = document.createElement("a");
-                link.download = "MCQ_" + Date.now() + ".png";
-                link.href = canvas.toDataURL("image/png", 1.0);
+                const link = document.createElement('a');
+                link.download = 'MCQ-Card.png';
+                link.href = canvas.toDataURL("image/png");
                 link.click();
             });
         }
