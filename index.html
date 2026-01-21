@@ -10,15 +10,18 @@
     
     <style>
         :root {
-            /* --- LIGHT MODE VARIABLES (DEFAULT) --- */
-            --bg-color: #f3f4f6;
-            --panel-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
-            --input-bg: #f9fafb;
-            --shadow: 0 4px 20px rgba(0,0,0,0.05);
-            --primary: #6366f1;
+            /* --- DARK MODE (DEFAULT) --- */
+            --bg-color: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.7); /* Glassy Panel */
+            --header-bg: rgba(15, 23, 42, 0.85);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.2);
+            --input-border: rgba(255, 255, 255, 0.15);
+            --primary: #8b5cf6;
+            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             
             /* Card Defaults */
             --card-gradient: linear-gradient(135deg, #242066, #171542);
@@ -26,33 +29,39 @@
             --card-text: #ffffff;
         }
 
-        /* --- DARK MODE CLASS --- */
-        body.dark-mode {
-            --bg-color: #0f172a;
-            --panel-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --input-bg: rgba(15, 23, 42, 0.6);
-            --shadow: 0 10px 40px rgba(0,0,0,0.3);
+        /* --- LIGHT MODE OVERRIDE --- */
+        body.light-mode {
+            --bg-color: #eef2f6; /* Soft Blue-Grey */
+            --panel-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            --input-border: #cbd5e1;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', 'Hind Siliguri', sans-serif; }
 
         body { 
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* --- HEADER --- */
+        /* --- STYLISH NAVBAR --- */
         header {
             width: 100%;
-            background: var(--panel-bg);
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -61,52 +70,43 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            transition: background 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .brand-logo {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
-            color: var(--primary);
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: 1px;
+            white-space: nowrap; /* Prevent line break */
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 15px; }
 
-        /* Mode Toggle Button */
         .theme-toggle {
-            background: var(--input-bg);
+            background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            width: 40px; height: 40px;
+            width: 38px; height: 38px;
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             cursor: pointer;
-            font-size: 18px;
             transition: 0.3s;
         }
-        .theme-toggle:hover { background: var(--primary); color: white; }
+        .theme-toggle:hover { background: var(--input-bg); color: var(--primary); border-color: var(--primary); }
 
-        .hamburger {
-            cursor: pointer; font-size: 24px; color: var(--text-main); display: block;
-        }
+        .hamburger { cursor: pointer; font-size: 22px; color: var(--text-main); }
 
-        /* Mobile Menu */
+        /* Menu */
         .nav-menu {
             position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
-            background: var(--panel-bg);
+            background: var(--bg-color); /* Match body bg */
             display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.3);
             border-left: 1px solid var(--border-color);
             z-index: 999;
         }
@@ -114,9 +114,11 @@
         .nav-menu a {
             color: var(--text-main); text-decoration: none; padding: 15px 30px;
             font-weight: 500; border-bottom: 1px solid var(--border-color);
+            transition: 0.2s;
         }
+        .nav-menu a:hover { padding-left: 35px; color: var(--primary); background: var(--input-bg); }
 
-        /* --- MAIN CONTAINER --- */
+        /* --- CONTAINER --- */
         .container {
             margin-top: 90px;
             width: 95%;
@@ -129,60 +131,71 @@
             flex: 1;
         }
 
-        /* --- EDITOR SECTION --- */
+        /* --- EDITOR STYLING --- */
         .editor-box {
             flex: 1; min-width: 350px;
             background: var(--panel-bg);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
-            transition: background 0.3s;
         }
 
         .section-title {
-            font-size: 18px; font-weight: 700; margin-bottom: 20px;
-            color: var(--primary); border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+            font-size: 20px; font-weight: 700; margin-bottom: 25px;
+            color: var(--primary); display: flex; align-items: center; gap: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 12px;
         }
 
-        .input-group { margin-bottom: 15px; }
+        /* Stylish Inputs */
+        .input-group { margin-bottom: 18px; }
         .input-group label {
-            display: block; font-size: 13px; font-weight: 600;
-            color: var(--text-muted); margin-bottom: 6px;
+            display: block; font-size: 12px; font-weight: 700;
+            color: var(--text-muted); margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         .form-control {
             width: 100%;
             background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--input-border);
             color: var(--text-main);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border-radius: 12px;
             font-size: 14px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
         .form-control:focus {
-            outline: none; border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+            background: var(--bg-color);
         }
-
-        .row-inputs { display: flex; gap: 10px; }
+        
+        .row-inputs { display: flex; gap: 15px; }
         .row-inputs > div { flex: 1; }
 
         /* Buttons */
         .btn-generate {
-            width: 100%; padding: 14px; margin-top: 10px;
-            border-radius: 10px; border: none;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white; font-weight: 600; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            width: 100%; padding: 15px; margin-top: 10px;
+            border-radius: 12px; border: none;
+            background: var(--primary-gradient);
+            color: white; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            font-size: 15px; letter-spacing: 0.5px;
+            transition: transform 0.2s;
         }
+        .btn-generate:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
         .btn-download {
-            width: 100%; padding: 14px; margin-top: 15px;
+            width: 100%; padding: 15px; margin-top: 15px;
             border-radius: 50px; border: none;
             background: linear-gradient(90deg, #f59e0b, #d97706);
             color: white; font-weight: 700; cursor: pointer; display: none;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
 
         /* --- PREVIEW SECTION --- */
@@ -197,64 +210,63 @@
             width: 100%; max-width: 400px;
             background: var(--card-gradient);
             border-radius: 16px;
-            padding: 25px 20px;
+            padding: 30px 25px;
             display: none; flex-direction: column;
-            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
 
-        .question-box { display: flex; gap: 10px; margin-bottom: 15px; }
-        .q-prefix { color: var(--card-accent); font-size: 20px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
-        .q-text { color: var(--card-text); font-size: 17px; font-weight: 600; line-height: 1.4; }
+        .question-box { display: flex; gap: 12px; margin-bottom: 20px; }
+        .q-prefix { color: var(--card-accent); font-size: 22px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
+        .q-text { color: var(--card-text); font-size: 18px; font-weight: 600; line-height: 1.4; }
 
-        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
         .opt-item {
             display: flex; align-items: center;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px; padding: 8px 12px;
+            border-radius: 12px; padding: 10px 14px;
+            transition: 0.3s;
         }
         .opt-circle {
-            width: 24px; height: 24px; flex-shrink: 0;
+            width: 26px; height: 26px; flex-shrink: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             color: var(--card-text);
             display: flex; justify-content: center; align-items: center;
-            font-size: 11px; font-weight: 700; margin-right: 10px;
-            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 12px; font-weight: 700; margin-right: 12px;
+            border: 1px solid rgba(255,255,255,0.25);
         }
-        .opt-text { color: var(--card-text); font-size: 14px; font-weight: 500; }
+        .opt-text { color: var(--card-text); font-size: 15px; font-weight: 500; }
 
-        .card-footer {
-            margin-top: 20px; text-align: center;
-        }
-        .card-line { width: 40px; height: 3px; background: var(--card-accent); margin: 0 auto 10px; border-radius: 2px; }
-        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 10px; font-weight: 500; letter-spacing: 1px; }
+        .card-footer { margin-top: 25px; text-align: center; }
+        .card-line { width: 40px; height: 4px; background: var(--card-accent); margin: 0 auto 10px; border-radius: 4px; }
+        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
 
         /* Footer */
         footer {
-            width: 100%; padding: 20px; text-align: center;
-            background: var(--panel-bg); color: var(--text-muted);
-            border-top: 1px solid var(--border-color); margin-top: auto; font-size: 13px;
+            width: 100%; padding: 25px; text-align: center;
+            background: var(--header-bg); border-top: 1px solid var(--border-color);
+            margin-top: auto; font-size: 13px; color: var(--text-muted);
         }
 
-        /* Mobile Adjustments */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .container { flex-direction: column; }
-            /* Editor stays on top naturally, removed the 'order' property */
-            .brand-logo span { font-size: 16px; }
+            .brand-logo { font-size: 18px; } /* Smaller font on mobile */
+            .editor-box, .preview-box { min-width: 100%; }
         }
     </style>
 </head>
 <body class=""> <header>
         <div class="brand-logo">
-            <i class="fas fa-book-open"></i> Interactive Learning
+            <i class="fas fa-layer-group" style="margin-right: 8px;"></i> Interactive Learning
         </div>
         
         <div class="header-actions">
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fas fa-moon" id="themeIcon"></i>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Theme">
+                <i class="fas fa-sun" id="themeIcon"></i>
             </button>
             
             <div class="hamburger" onclick="toggleMenu()">
@@ -272,21 +284,21 @@
 
     <div class="container">
         <div class="editor-box">
-            <div class="section-title">Design Your Card</div>
+            <div class="section-title"><i class="fas fa-edit"></i> MCQ Generator</div>
 
             <div class="row-inputs">
                 <div class="input-group">
-                    <label>প্রশ্ন স্টাইল (Q. Style)</label>
+                    <label>Prefix Style</label>
                     <select id="qStyle" class="form-control" onchange="updatePreviewLive()">
                         <option value="Q.">Q.</option>
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
                         <option value="Question:">Question:</option>
-                        <option value="">(No Prefix)</option>
+                        <option value="">None</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>অপশন স্টাইল (Option Type)</label>
+                    <label>Option Style</label>
                     <select id="optStyle" class="form-control" onchange="updatePreviewLive()">
                         <option value="english">A, B, C, D</option>
                         <option value="bengali">ক, খ, গ, ঘ</option>
@@ -297,26 +309,26 @@
             </div>
 
             <div class="input-group">
-                <label>কার্ড থিম (Color Theme)</label>
+                <label>Select Theme (100+ Styles)</label>
                 <select id="themeSelector" class="form-control" onchange="updatePreviewLive()">
                     </select>
             </div>
 
             <div class="input-group">
-                <label>প্রশ্ন (Question)</label>
-                <input id="qInput" class="form-control" placeholder="এখানে প্রশ্ন লিখুন..." oninput="updatePreviewLive()">
+                <label>Question Text</label>
+                <input id="qInput" class="form-control" placeholder="Type your question here..." oninput="updatePreviewLive()">
             </div>
 
             <div class="input-group">
-                <label>অপশন সমূহ</label>
-                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:8px;" oninput="updatePreviewLive()">
-                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:8px;" oninput="updatePreviewLive()">
-                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:8px;" oninput="updatePreviewLive()">
+                <label>Options</label>
+                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:10px;" oninput="updatePreviewLive()">
+                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:10px;" oninput="updatePreviewLive()">
+                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:10px;" oninput="updatePreviewLive()">
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updatePreviewLive()">
             </div>
 
             <button class="btn-generate" onclick="generate()">
-                <i class="fas fa-magic"></i> Generate & View
+                <i class="fas fa-magic"></i> Generate Card
             </button>
             <button class="btn-download" id="dlBtn" onclick="downloadImage()">
                 <i class="fas fa-download"></i> Download Image
@@ -327,7 +339,7 @@
             <div id="mcqWrapper">
                 <div class="question-box">
                     <span id="pPrefix" class="q-prefix">Q.</span>
-                    <span id="pQ" class="q-text">তোমার প্রশ্ন এখানে দেখাবে...</span>
+                    <span id="pQ" class="q-text">Your question will appear here...</span>
                 </div>
                 <div class="options-list">
                     <div class="opt-item"><div class="opt-circle" id="oc1">A</div><div id="pA" class="opt-text">Option 1</div></div>
@@ -343,50 +355,48 @@
         </div>
     </div>
 
-    <footer>&copy; <span id="year"></span> Interactive Learning</footer>
+    <footer>&copy; <span id="year"></span> Interactive Learning.</footer>
 
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        // --- THEME TOGGLE LOGIC ---
+        // --- THEME TOGGLE (Dark Default) ---
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('themeIcon');
             
-            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
             
-            if(body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
+            if(body.classList.contains('light-mode')) {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
             }
         }
 
-        // --- MENU TOGGLE ---
         function toggleMenu() {
             document.getElementById('navMenu').classList.toggle('open');
         }
 
-        // --- POPULATE 100 THEMES ---
+        // --- 100 THEMES LOGIC ---
         const themes = [
-            { name: "Royal Blue (Default)", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
-            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #065f46)", accent: "#34d399" },
-            { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
-            { name: "Midnight", bg: "linear-gradient(135deg, #0f172a, #1e293b)", accent: "#38bdf8" },
-            { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
-            { name: "Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
-            { name: "Teal", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#5eead4" },
-            { name: "Dark Grey", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
-            // Generating remaining themes generically
+            { name: "Royal Blue (Pro)", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
+            { name: "Forest Emerald", bg: "linear-gradient(135deg, #064e3b, #065f46)", accent: "#34d399" },
+            { name: "Ruby Red", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
+            { name: "Midnight Sky", bg: "linear-gradient(135deg, #0f172a, #1e293b)", accent: "#38bdf8" },
+            { name: "Sunset Orange", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Deep Purple", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
+            { name: "Ocean Teal", bg: "linear-gradient(135deg, #115e59, #14b8a6)", accent: "#5eead4" },
+            { name: "Charcoal Grey", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" }
         ];
 
-        // Fill up to 100 themes
+        // Generate more themes
         for(let i=themes.length; i<100; i++) {
              const hue = Math.floor(Math.random() * 360);
              themes.push({
-                 name: `Custom Theme ${i+1}`,
+                 name: `Style ${i+1}`,
                  bg: `linear-gradient(135deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 10%))`,
                  accent: `hsl(${(hue+180)%360}, 80%, 60%)`
              });
@@ -400,7 +410,7 @@
             tSelect.appendChild(opt);
         });
 
-        // --- OPTION MAPPING ---
+        // --- OPTIONS MAP ---
         const optionTypes = {
             english: ['A', 'B', 'C', 'D'],
             bengali: ['ক', 'খ', 'গ', 'ঘ'],
@@ -408,10 +418,9 @@
             number: ['1', '2', '3', '4']
         };
 
-        // --- LIVE UPDATE & GENERATE ---
+        // --- PREVIEW UPDATE ---
         function updatePreviewLive() {
-            // Apply Text
-            const q = document.getElementById('qInput').value || "তোমার প্রশ্ন এখানে দেখাবে...";
+            const q = document.getElementById('qInput').value || "Your question will appear here...";
             document.getElementById('pQ').innerText = q;
 
             document.getElementById('pA').innerText = document.getElementById('optA').value || "Option 1";
@@ -419,10 +428,10 @@
             document.getElementById('pC').innerText = document.getElementById('optC').value || "Option 3";
             document.getElementById('pD').innerText = document.getElementById('optD').value || "Option 4";
 
-            // Apply Prefixes
-            const qStyle = document.getElementById('qStyle').value;
-            document.getElementById('pPrefix').innerText = qStyle;
+            // Prefix
+            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
 
+            // Option Labels
             const optStyle = document.getElementById('optStyle').value;
             const labels = optionTypes[optStyle];
             document.getElementById('oc1').innerText = labels[0];
@@ -430,7 +439,7 @@
             document.getElementById('oc3').innerText = labels[2];
             document.getElementById('oc4').innerText = labels[3];
 
-            // Apply Theme
+            // Theme
             const tIdx = document.getElementById('themeSelector').value;
             const theme = themes[tIdx];
             const wrapper = document.getElementById('mcqWrapper');
@@ -438,9 +447,6 @@
             wrapper.style.background = theme.bg;
             document.querySelector('.q-prefix').style.color = theme.accent;
             document.querySelector('.card-line').style.background = theme.accent;
-            
-            // Adjust text color logic slightly for lighter/darker themes if needed
-            // Defaulting all text to white for these dark gradients
         }
 
         function generate() {
@@ -448,11 +454,7 @@
             const wrapper = document.getElementById('mcqWrapper');
             wrapper.style.display = 'flex';
             document.getElementById('dlBtn').style.display = 'block';
-            
-            // Scroll only on mobile
-            if(window.innerWidth < 768) {
-                wrapper.scrollIntoView({behavior: 'smooth', block: 'center'});
-            }
+            if(window.innerWidth < 768) wrapper.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
 
         function downloadImage() {
