@@ -3,296 +3,439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800;900&family=Lexend:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>MCQ Generator | Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
-        * { box-sizing: border-box; font-family: 'Anek Bangla', 'Lexend', sans-serif; }
+        :root {
+            --primary-dark: #1e1b4b; /* Deep Indigo */
+            --primary-light: #4338ca;
+            --accent-gold: #fbbf24;
+            --text-light: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --card-bg: linear-gradient(135deg, #242066 0%, #171542 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Anek Bangla', 'Lexend', sans-serif; }
+
         body { 
-            margin: 0; 
-            background: #f0f2f5; 
-            font-family: 'Anek Bangla', 'Lexend', sans-serif;
+            background: radial-gradient(at top left, #312e81, transparent), 
+                        radial-gradient(at bottom right, #4c1d95, transparent), 
+                        #0f172a; /* Dark Stylish Background */
+            color: #333;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
         }
 
-        .app-container {
+        /* --- Header Styles --- */
+        header {
             width: 100%;
-            max-width: 420px;
-            margin-bottom: 30px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- Shared Color Animation Keyframes --- */
-        @keyframes colorChange {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .brand-logo {
+            color: var(--text-light);
+            font-size: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* --- Header --- */
-        .h23 { 
-            text-align: center; 
-            color: white; 
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
-            background-size: 300% 300%;
-            animation: colorChange 6s ease infinite;
-            padding: 15px; 
-            border-radius: 12px; 
-            font-weight: 700; 
-            margin-bottom: 16px; 
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        /* Dropdown Menu */
+        .nav-menu { position: relative; display: inline-block; }
+        .menu-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .menu-btn:hover { background: var(--glass-bg); border-color: #818cf8; }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #1e293b;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            z-index: 1;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: 0.2s;
+        }
+        .dropdown-content a:hover { background-color: #334155; color: #fbbf24; }
+        .nav-menu:hover .dropdown-content { display: block; }
+
+        /* --- Main Container --- */
+        .main-content {
+            margin-top: 100px; /* Space for fixed header */
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            flex: 1; /* Pushes footer down */
+        }
+
+        /* --- Input Section (Left Side) --- */
+        .editor-section {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            height: fit-content;
+        }
+
+        .editor-title {
             font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
         }
 
-        .input-box { 
-            background: #ffffff; 
-            padding: 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+        .input-group { margin-bottom: 12px; }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 5px;
         }
-
-        .input-box b { font-size: 14px; color: #444; display: block; margin-top: 10px;}
-        
-        .input-box input { 
-            width: 100%; 
-            padding: 12px; 
-            margin: 5px 0 0; 
-            border-radius: 8px; 
-            border: 2px solid #e2e8f0; 
-            font-size: 14px; 
-            font-family: 'Anek Bangla', 'Lexend', sans-serif;
-            transition: all 0.3s ease;
+        .input-group input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        
-        .input-box input:hover { border-color: #cbd5e1; }
-        .input-box input:focus {
+        .input-group input:focus {
+            border-color: var(--primary-light);
             outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-            background: #fdfcff;
+            box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
         }
-        
-        /* --- Animated Generate Button --- */
-        .btn-generate { 
-            width: 100%; 
-            padding: 14px; 
-            margin-top: 20px;
-            border-radius: 10px; 
-            border: none; 
-            color: white; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
-            background-size: 300% 300%;
-            animation: colorChange 4s ease infinite;
+
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .btn-generate:hover {
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        .btn-action:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
         }
-        .btn-generate:active { transform: scale(0.98); }
+        .btn-download {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            display: none; /* Hidden initially */
+        }
 
-        /* --- PREVIEW AREA --- */
-        
-        /* REQUIREMENT: Outer box gets the animation now */
-        #mcqWrapper {
-            display: none; 
-            width: 100%;          
-            max-width: 400px;
-            position: relative;
-            
-            /* Animated Gradient Background applied here */
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
-            background-size: 300% 300%;
-            animation: colorChange 6s ease infinite;
-            
-            padding: 12px; 
-            border-radius: 2px; /* Square outer box */
-            
-            flex-direction: column;
-            align-items: center;
+        /* --- Preview Section (Right Side - The Card) --- */
+        .preview-section {
+            flex: 1;
+            min-width: 350px;
+            display: flex;
             justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            align-items: flex-start;
         }
 
+        /* --- THE MCQ CARD DESIGN (Updated to Match Image) --- */
+        #mcqWrapper {
+            width: 100%;
+            max-width: 450px;
+            /* The deep blue/purple gradient from the image */
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px 30px 30px 30px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+            display: none; /* Hidden until generated */
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Giant Quote Mark Background Decoration */
+        #mcqWrapper::before {
+            content: '“';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 180px;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+        
+        #mcqWrapper::after {
+            content: '”';
+            position: absolute;
+            bottom: -60px;
+            right: 20px;
+            font-size: 180px;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* Stylish Badge */
         .quiz-badge {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            color: white;
-            padding: 4px 18px; 
-            margin-bottom: 8px; 
-            border-radius: 20px;
-            font-size: 14px; 
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--accent-gold);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 10;
-           
-            text-align: center;
+        }
+
+        /* Question Text */
+        .question-box {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 25px;
+            margin-top: 10px;
+        }
+
+        .question-text {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: left;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-style: italic; /* Matches quote style slightly */
+        }
+        
+        .q-mark {
+            color: var(--accent-gold);
+            font-size: 28px;
+            margin-right: 8px;
+        }
+
+        /* Options Container */
+        .options-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Glassmorphism Options */
+        .option-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.07); /* Transparent white */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .option-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 12px;
+            margin-right: 12px;
             border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* REQUIREMENT: Inner box reverted to static white */
-        .mcq-card-inner {
-            background: rgba(255, 255, 255, 0.98); /* Static white */
-            border-radius: 16px;
-            padding: 18px 12px 10px 12px; 
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Question text color reverted to dark */
-        .question { 
-            font-size: 16px; 
-            font-weight: 700; 
-            margin-bottom: 15px; 
-            color: #1e293b; /* Dark color */
-            line-height: 1.4;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        /* Q prefix styled for light background */
-        .q-prefix {
-            color: #6366f1;
-            font-size: 20px;
-            margin-right: 8px;
-            font-weight: 800;
-            background: #e0e7ff; /* Light purple background */
-            padding: 0 8px;
-            border-radius: 6px;
-            line-height: 26px;
-        }
-
-        .option { 
-            display: flex; 
-            align-items: center; 
-            background: #ffffff; 
-            border-radius: 10px; 
-            padding: 5px 6px; 
-            margin-bottom: 5px; 
-            border: 1px solid #e2e8f0; /* Subtle gray border */
-        }
-
-        .option span { 
-            min-width: 26px; 
-            height: 26px; 
-            background: #f1f5f9;
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            margin-right: 7px; 
-            color: #475569; 
-            font-weight: 700; 
-            font-size: 11px;
-        border: 1px solid #cbd5e1;
-        }
-
-        .option p { 
-            margin: 0; 
-            font-size: 15px; 
+        .option-text {
+            color: #e2e8f0;
+            font-size: 16px;
             font-weight: 500;
-            color: #334155;
         }
 
-        /* Watermark color reverted to gray */
-        .watermark { 
-            margin-top: 5px;      
-            width: 100%;           
-            text-align: center;     
-            font-size: 10px; 
-            font-weight: 700; 
-            font-family:
-            letter-spacing: 0.5px;
-            color: #94a3b8; /* Gray color */
+        /* The Gold Divider Line (from image) */
+        .divider-line {
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-gold);
+            border-radius: 2px;
+            margin: 30px auto 20px auto;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Animated Download Button */
-        .download-btn { 
-            width: 100%; 
-            max-width: 420px;
-            margin-top: 20px; 
-            padding: 14px; 
-            border-radius: 12px; 
-            border: none; 
-            color: white; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            display: none; 
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #3b82f6);
-            background-size: 300% 300%;
-            animation: colorChange 4s ease infinite;
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* Watermark */
+        .card-watermark {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
         }
-        .download-btn:hover {
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-            transform: translateY(-2px);
+
+        /* --- Footer --- */
+        footer {
+            width: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+            font-size: 14px;
         }
-        .download-btn:active { transform: scale(0.98); }
-        
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-content { flex-direction: column; }
+            .editor-section, .preview-section { min-width: 100%; }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="h23">Create MCQ</div>
-        
-        <div class="input-box">
-            <b>Enter Question</b>
-            <input id="question" placeholder="প্রশ্নটি এখানে লিখুন...">
-            <b>Option A</b>
-            <input id="optA" placeholder="অপশন ক">
-            <b>Option B</b>
-            <input id="optB" placeholder="অপশন খ">
-            <b>Option C</b>
-            <input id="optC" placeholder="অপশন গ">
-            <b>Option D</b>
-            <input id="optD" placeholder="অপশন ঘ">
-            <button class="btn-generate" onclick="generateMCQ()">Generate MCQ</button>
+    <header>
+        <div class="brand-logo">Interactive Learning</div>
+        <div class="nav-menu">
+            <button class="menu-btn">Menu <i class="fas fa-chevron-down"></i></button>
+            <div class="dropdown-content">
+                <a href="notice.html">Notice Board</a>
+                <a href="quotation.html">Quotation</a>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <div id="mcqWrapper">
-        <div class="quiz-badge">Quick Quiz</div>
+    <div class="main-content">
         
-        <div class="mcq-card-inner">
-            <div class="question">
-                <span class="q-prefix">Q.</span>
-                <span id="qText"></span>
+        <div class="editor-section">
+            <div class="editor-title"><i class="fas fa-pen-fancy"></i> Create MCQ</div>
+            
+            <div class="input-group">
+                <label>প্রশ্ন (Question)</label>
+                <input id="question" placeholder="এখানে প্রশ্নটি লিখুন...">
             </div>
             
-            <div class="option">
-                <span>A</span>
-                <p id="aText"></p>
+            <div class="input-group">
+                <label>অপশন ক (Option A)</label>
+                <input id="optA" placeholder="অপশন ক">
             </div>
-            <div class="option">
-                <span>B</span>
-                <p id="bText"></p>
+            <div class="input-group">
+                <label>অপশন খ (Option B)</label>
+                <input id="optB" placeholder="অপশন খ">
             </div>
-            <div class="option">
-                <span>C</span>
-                <p id="cText"></p>
+            <div class="input-group">
+                <label>অপশন গ (Option C)</label>
+                <input id="optC" placeholder="অপশন গ">
             </div>
-            <div class="option">
-                <span>D</span>
-                <p id="dText"></p>
+            <div class="input-group">
+                <label>অপশন ঘ (Option D)</label>
+                <input id="optD" placeholder="অপশন ঘ">
             </div>
 
-            <div class="watermark">Follow: Interactive Learning</div>
+            <button class="btn-action" onclick="generateMCQ()">Generate Card</button>
+            <button class="btn-action btn-download" id="dlBtn" onclick="downloadMCQ()">Download Image</button>
+        </div>
+
+        <div class="preview-section">
+            <div id="mcqWrapper">
+                <div class="quiz-badge">Quick Quiz</div>
+
+                <div class="question-box">
+                    <div class="question-text">
+                        <span class="q-mark">Q.</span><span id="qText">তোমার প্রশ্ন এখানে আসবে...</span>
+                    </div>
+                </div>
+
+                <div class="options-container">
+                    <div class="option-item">
+                        <div class="option-circle">A</div>
+                        <div class="option-text" id="aText">Option A</div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-circle">B</div>
+                        <div class="option-text" id="bText">Option B</div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-circle">C</div>
+                        <div class="option-text" id="cText">Option C</div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-circle">D</div>
+                        <div class="option-text" id="dText">Option D</div>
+                    </div>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="card-watermark">Follow: Interactive Learning</div>
+            </div>
         </div>
     </div>
 
-    <button class="download-btn" id="mcqBtn" onclick="downloadMCQ()">Download Image</button>
+    <footer>
+        <p>&copy; <span id="year"></span> Interactive Learning. All rights reserved.</p>
+    </footer>
 
     <script>
+        // Set Current Year in Footer
+        document.getElementById('year').innerText = new Date().getFullYear();
+
         function generateMCQ() {
             const q = document.getElementById('question').value;
             const a = document.getElementById('optA').value;
@@ -301,33 +444,48 @@
             const d = document.getElementById('optD').value;
 
             if (!q || !a || !b || !c || !d) {
-                alert("সব ঘর পূরণ করো");
+                alert("দয়া করে সবগুলো ঘর পূরণ করুন!");
                 return;
             }
 
-            const wrapper = document.getElementById('mcqWrapper');
-            const downloadBtn = document.getElementById('mcqBtn');
-
-            wrapper.style.display = "flex";
-            downloadBtn.style.display = "block";
-
+            // Update Text
             document.getElementById('qText').innerText = q;
             document.getElementById('aText').innerText = a;
             document.getElementById('bText').innerText = b;
             document.getElementById('cText').innerText = c;
             document.getElementById('dText').innerText = d;
+
+            // Show Card & Download Button
+            const wrapper = document.getElementById('mcqWrapper');
+            const btn = document.getElementById('dlBtn');
             
-            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            wrapper.style.display = "flex";
+            btn.style.display = "block";
+
+            // Small animation effect
+            wrapper.style.opacity = 0;
+            wrapper.style.transform = "translateY(20px)";
+            setTimeout(() => {
+                wrapper.style.transition = "all 0.5s ease";
+                wrapper.style.opacity = 1;
+                wrapper.style.transform = "translateY(0)";
+            }, 50);
+
+            // Scroll for mobile
+            if(window.innerWidth < 768) {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         function downloadMCQ() {
             const wrapper = document.getElementById("mcqWrapper");
-            const randomName = "quiz_" + Date.now();
+            const randomName = "MCQ_" + Date.now();
 
+            // Use html2canvas
             html2canvas(wrapper, {
-                scale: 35, 
-                useCORS: true,
-                backgroundColor: null 
+                scale: 3, // High resolution
+                backgroundColor: null, // Transparent bg for the canvas itself
+                useCORS: true
             }).then(canvas => {
                 const link = document.createElement("a");
                 link.download = randomName + ".png";
