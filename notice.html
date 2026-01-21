@@ -10,7 +10,6 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -128,7 +127,6 @@
         textarea.form-control { resize: vertical; height: 120px; }
         .form-control:focus { outline: none; border-color: #8b5cf6; background: rgba(15, 23, 42, 0.9); }
         
-        /* Checkbox Style */
         .features-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
         .feature-item { 
             display: flex; align-items: center; gap: 8px; 
@@ -151,12 +149,11 @@
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- NOTICE CARD REDESIGN --- */
+        /* --- NOTICE CARD --- */
         #noticeWrapper {
             width: 100%; max-width: 420px;
             border-radius: 20px;
             display: flex; flex-direction: column;
-            /* Premium Shadow & Border */
             box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1);
             overflow: hidden; position: relative;
             background-clip: padding-box;
@@ -195,17 +192,32 @@
         }
         .live-time { font-size: 10px; opacity: 0.8; display: block; margin-top: 2px;}
 
-        /* Body - Dynamic Padding */
+        /* Body - Relative for Watermark */
         .notice-body { 
-            padding: 40px 35px; /* Base padding */
+            padding: 40px 35px;
             flex: 1; display: flex; flex-direction: column; justify-content: center;
-            position: relative;
+            position: relative; 
         }
         
         .notice-text {
             font-size: 18px; line-height: 1.7; color: #fff;
             white-space: pre-wrap; font-weight: 400;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2; /* Text above watermark */
+        }
+
+        /* WATERMARK (Small, Right Side of Body) */
+        .watermark-body {
+            position: absolute;
+            bottom: 5px;
+            right: 25px; /* Aligned with padding */
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* Footer */
@@ -215,36 +227,22 @@
             backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.08);
-            min-height: 60px;
+            min-height: 50px;
         }
         
-        /* Source Area - Improved for Long Text */
         .source-container { 
             display: flex; flex-direction: column; gap: 3px; 
-            flex: 1; margin-right: 15px; /* Space for brand */
-            min-width: 0; /* Important for flex truncation */
+            flex: 1; margin-right: 15px; 
+            min-width: 0;
         }
         .source-label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
         
         .notice-source { 
             font-weight: 700; color: #fff; font-size: 14px;
             display: flex; align-items: center; gap: 5px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Truncate if too long */
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .verified-badge { color: #38bdf8; font-size: 14px; flex-shrink: 0; }
-
-        /* Right Side Footer (Watermark) */
-        .footer-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0;}
-        .notice-brand { 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; 
-            opacity: 0.6; font-size: 10px; color: white; text-align: right;
-        }
-        
-        #qrcode { 
-            background: white; padding: 2px; border-radius: 4px; display: none; 
-            width: 32px; height: 32px;
-        }
-        #qrcode img { display: block; }
 
         footer {
             width: 100%; padding: 20px; text-align: center;
@@ -324,10 +322,6 @@
                     <input type="checkbox" id="verifiedCheck" onchange="updateLive()">
                     <label for="verifiedCheck">Verified Badge</label>
                 </div>
-                <div class="feature-item">
-                    <input type="checkbox" id="qrCheck" onchange="updateLive()">
-                    <label for="qrCheck">Add QR Code</label>
-                </div>
             </div>
 
             <button class="btn-download" onclick="downloadImage()">Download HD Image</button>
@@ -344,9 +338,12 @@
                             <div id="pTime" class="live-time"></div>
                         </div>
                     </div>
+                    
                     <div class="notice-body" id="bodySection">
                         <div class="notice-text" id="pBody">Write your announcement content here.</div>
+                        <div class="watermark-body">Interactive Learning</div>
                     </div>
+
                     <div class="notice-footer" id="footerSection">
                         <div class="source-container" id="pSourceContainer">
                             <span class="source-label">Source</span>
@@ -354,10 +351,6 @@
                                 <span id="pSource">Authority</span> 
                                 <i class="fas fa-check-circle verified-badge" id="pVerified" style="display:none;"></i>
                             </div>
-                        </div>
-                        <div class="footer-right">
-                            <div id="qrcode"></div>
-                            <div class="notice-brand" id="pBrand">Interactive<br>Learning</div>
                         </div>
                     </div>
                 </div>
@@ -373,20 +366,18 @@
         // --- REAL TIME CLOCK ---
         function updateTime() {
             const now = new Date();
-            // Date
             document.getElementById('pDate').innerText = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-            // Time
             document.getElementById('pTime').innerText = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         }
         setInterval(updateTime, 1000);
-        updateTime(); // Init
+        updateTime();
 
         function toggleMenu() {
             document.getElementById('navMenu').classList.toggle('open');
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- 60 THEMES ---
+        // --- THEMES ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
@@ -408,10 +399,8 @@
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
             { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000000" },
             { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
-            // ... (Add more themes as needed from previous list)
         ];
         
-        // Fill themes
         for(let i=themes.length; i<60; i++) {
              const hue = Math.floor(Math.random() * 360);
              themes.push({
@@ -437,15 +426,13 @@
                 body: document.getElementById('noticeBody').value,
                 source: document.getElementById('noticeSource').value,
                 theme: document.getElementById('themeSelector').value,
-                verified: document.getElementById('verifiedCheck').checked,
-                qr: document.getElementById('qrCheck').checked
+                verified: document.getElementById('verifiedCheck').checked
             };
             document.getElementById('noticeCat').selectedIndex = 0;
             document.getElementById('noticeBody').value = '';
             document.getElementById('noticeSource').value = '';
             document.getElementById('themeSelector').selectedIndex = 0;
             document.getElementById('verifiedCheck').checked = false;
-            document.getElementById('qrCheck').checked = false;
             document.getElementById('undoBtn').style.display = 'flex';
             updateLive();
         }
@@ -457,16 +444,9 @@
             document.getElementById('noticeSource').value = lastState.source;
             document.getElementById('themeSelector').value = lastState.theme;
             document.getElementById('verifiedCheck').checked = lastState.verified;
-            document.getElementById('qrCheck').checked = lastState.qr;
             document.getElementById('undoBtn').style.display = 'none';
             updateLive();
         }
-
-        // Initialize QR
-        let qrCodeObj = new QRCode(document.getElementById("qrcode"), {
-            width: 32, height: 32,
-            colorDark : "#000000", colorLight : "#ffffff"
-        });
 
         function updateLive() {
             document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
@@ -497,17 +477,9 @@
                 pSourceContainer.style.display = 'none';
             }
 
-            // Features
+            // Verified Badge
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
-            // QR Code
-            const showQR = document.getElementById('qrCheck').checked;
-            document.getElementById('qrcode').style.display = showQR ? 'block' : 'none';
-            if(showQR) {
-                qrCodeObj.clear();
-                qrCodeObj.makeCode("https://example.com/notice"); 
-            }
-
             // Theme
             const tIdx = document.getElementById('themeSelector').value;
             const theme = themes[tIdx];
@@ -523,7 +495,9 @@
             document.querySelector('.notice-source').style.color = textCol; 
             document.querySelector('.top-label').style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.3)";
             document.querySelector('.source-label').style.color = isLight ? "#666" : "rgba(255,255,255,0.5)";
-            document.querySelector('.notice-brand').style.color = isLight ? "#444" : "white";
+            
+            // Watermark color
+            document.querySelector('.watermark-body').style.color = isLight ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.4)";
         }
 
         function downloadImage() {
