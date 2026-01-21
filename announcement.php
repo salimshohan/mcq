@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Maker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            background: #fdf2f8; /* Light pinkish bg */
+            font-family: 'Anek Bangla', 'Lexend', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Header Animation --- */
+        @keyframes headerAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .h23 { 
+            text-align: center; 
+            color: white; 
+            /* Red-Orange Gradient for Announcement Vibe */
+            background: linear-gradient(45deg, #f43f5e, #f97316, #fbbf24, #ef4444);
+            background-size: 300% 300%;
+            animation: headerAnim 6s ease infinite;
+            padding: 15px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            margin-bottom: 16px; 
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+            font-size: 22px;
+        }
+
+        .input-box { 
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+        }
+
+        .input-box b { font-size: 15px; color: #333; display: block; margin-top: 12px;}
+        
+        /* Textarea specific styling */
+        .input-box textarea, .input-box input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0 0; 
+            border-radius: 8px; 
+            border: 2px solid #e2e8f0; 
+            font-size: 16px; 
+            font-family: 'Anek Bangla', sans-serif;
+            transition: all 0.3s ease;
+            resize: none; /* Disable manual resize */
+        }
+        
+        .input-box textarea:focus, .input-box input:focus {
+            outline: none;
+            border-color: #f43f5e;
+            box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+            background: #fff1f2;
+        }
+        
+        .btn-generate { 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 20px;
+            border-radius: 10px; 
+            border: none; 
+            color: white; 
+            font-size: 18px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            background: linear-gradient(45deg, #f43f5e, #f97316, #fbbf24, #ef4444);
+            background-size: 300% 300%;
+            animation: headerAnim 4s ease infinite;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-generate:active { transform: scale(0.98); }
+
+        /* --- PREVIEW AREA --- */
+        
+        #announceWrapper {
+            display: none; 
+            width: 100%;          
+            max-width: 400px;
+            position: relative;
+            /* Animated Background */
+            background: linear-gradient(45deg, #f43f5e, #f97316, #fbbf24, #ef4444);
+            background-size: 300% 300%;
+            animation: headerAnim 6s ease infinite;
+            
+            padding: 12px; 
+            border-radius: 0; /* Square edges */
+            
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Announcement Badge (Top) */
+        .announce-badge {
+            background: #fff;
+            color: #ef4444;
+            padding: 5px 20px; 
+            margin-bottom: 10px; 
+            border-radius: 30px;
+            font-size: 14px; 
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            font-family: 'Lexend', sans-serif;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .announce-card-inner {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 12px;
+            padding: 25px 20px; 
+            width: 100%;
+            min-height: 200px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Title Style */
+        .announce-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 12px; 
+            color: #be123c; 
+            line-height: 1.3;
+            width: 100%;
+            border-bottom: 2px dashed #fecdd3;
+            padding-bottom: 10px;
+        }
+
+        /* Body Text Style */
+        .announce-body { 
+            font-size: 18px; 
+            font-weight: 500; 
+            color: #374151; 
+            line-height: 1.6;
+            white-space: pre-wrap; /* Keeps line breaks */
+            width: 100%;
+        }
+
+        /* Footer / Watermark */
+        .watermark { 
+            margin-top: 15px;      
+            width: 100%;           
+            text-align: center;     
+            font-size: 12px; 
+            font-weight: 600; 
+            font-family: 'Lexend', sans-serif;
+            color: #9ca3af; 
+        }
+
+        .download-btn { 
+            width: 100%; 
+            max-width: 420px;
+            margin-top: 20px; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: none; 
+            color: white; 
+            font-size: 16px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            display: none; 
+            background: linear-gradient(45deg, #f43f5e, #f97316, #fbbf24, #ef4444);
+            background-size: 300% 300%;
+            animation: headerAnim 4s ease infinite;
+            transition: transform 0.2s;
+        }
+        .download-btn:active { transform: scale(0.98); }
+        
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="h23">📢 Announcement Maker</div>
+        
+        <div class="input-box">
+            <b>Headline / Title</b>
+            <input id="titleInput" placeholder="জরুরি নোটিশ / সুখবর..." maxlength="40">
+            
+            <b>Message Details</b>
+            <textarea id="msgInput" rows="5" placeholder="এখানে বিস্তারিত লিখুন..."></textarea>
+            
+            <button class="btn-generate" onclick="generatePost()">Generate Post</button>
+        </div>
+    </div>
+
+    <div id="announceWrapper">
+        <div class="announce-badge">Announcement</div>
+        
+        <div class="announce-card-inner">
+            <div class="announce-title" id="previewTitle"></div>
+            <div class="announce-body" id="previewMsg"></div>
+            <div class="watermark">Follow: Interactive Learning</div>
+        </div>
+    </div>
+
+    <button class="download-btn" id="dlBtn" onclick="downloadPost()">Download Image</button>
+
+    <script>
+        function generatePost() {
+            const title = document.getElementById('titleInput').value;
+            const msg = document.getElementById('msgInput').value;
+
+            if (!title || !msg) {
+                alert("দয়া করে শিরোনাম এবং মেসেজ লিখুন!");
+                return;
+            }
+
+            const wrapper = document.getElementById('announceWrapper');
+            const dlBtn = document.getElementById('dlBtn');
+
+            wrapper.style.display = "flex";
+            dlBtn.style.display = "block";
+
+            document.getElementById('previewTitle').innerText = title;
+            document.getElementById('previewMsg').innerText = msg;
+            
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function downloadPost() {
+            const wrapper = document.getElementById("announceWrapper");
+            const randomName = "notice_" + Date.now();
+
+            html2canvas(wrapper, {
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: null 
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = randomName + ".png";
+                link.href = canvas.toDataURL("image/png", 1.0);
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
