@@ -25,11 +25,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            font-family: 'Lexend', 'Anek Bangla', 'Apple Color Emoji', sans-serif;
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%), 
-                radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.1) 0, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.15) 0, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
@@ -40,7 +40,7 @@
         header {
             width: 100%;
             background: rgba(2, 6, 23, 0.95);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
@@ -115,7 +115,7 @@
         .btn-reset:hover { color: #ef4444; border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
         .btn-undo { display: none; color: #10b981; border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
 
-        .input-group { margin-bottom: 18px; position: relative; }
+        .input-group { margin-bottom: 18px; }
         .input-group label {
             display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
         }
@@ -168,7 +168,7 @@
         
         .top-label {
             background: rgba(0,0,0,0.3); text-align: center; color: rgba(255,255,255,0.9);
-            font-size: 10px; font-weight: 800; letter-spacing: 3px; padding: 10px;
+            font-size: 10px; font-weight: 800; letter-spacing: 3px; padding: 12px;
             text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(4px);
         }
@@ -177,7 +177,7 @@
 
         /* Header */
         .notice-header {
-            padding: 20px 25px 5px 25px; /* Bottom padding reduced */
+            padding: 20px 25px 5px 25px; /* Reduced Bottom Padding */
             display: flex; justify-content: space-between; align-items: center;
         }
         .notice-cat-badge {
@@ -193,33 +193,34 @@
         }
         .live-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; font-weight: 400;}
 
-        /* Body - Compact Padding */
+        /* Body - REDUCED TOP PADDING */
         .notice-body { 
-            padding: 30px 35px 25px 35px; /* Tighter padding */
+            padding: 20px 35px 30px 35px; /* Top reduced to 20px */
             flex: 1; display: flex; flex-direction: column; justify-content: center;
             position: relative;
         }
         
         .notice-text {
-            font-size: 19px; line-height: 1.5; color: #fff;
+            font-size: 19px; line-height: 1.6; color: #fff;
             white-space: pre-wrap; font-weight: 400;
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* WATERMARK - Right Side Only */
+        /* WATERMARK - Right Side */
         .watermark-body {
-            position: absolute; bottom: 5px; right: 25px;
-            font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            position: absolute; bottom: 8px; right: 25px;
+            font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
             color: rgba(255, 255, 255, 0.3); pointer-events: none; z-index: 2;
         }
 
-        /* Footer - Compact */
+        /* Footer */
         .notice-footer {
-            padding: 10px 30px 20px 30px; /* Reduced top padding */
+            padding: 15px 30px 20px 30px; 
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             display: none; /* Hidden by default */
             justify-content: flex-start; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
             min-height: 50px;
         }
         
@@ -230,11 +231,11 @@
         .source-label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
         
         .notice-source { 
-            font-weight: 700; color: #fff; font-size: 14px;
+            font-weight: 700; color: #fff; font-size: 15px;
             display: flex; align-items: center; gap: 6px;
             line-height: 1.2;
         }
-        .verified-badge { color: #38bdf8; font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+        .verified-badge { color: #38bdf8; font-size: 15px; margin-top: 2px; flex-shrink: 0; }
 
         footer {
             width: 100%; padding: 25px; text-align: center;
@@ -302,13 +303,13 @@
 
             <div class="input-group">
                 <label>Announcement Body</label>
-                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here (min 10 chars for download)..." oninput="updateLive()"></textarea>
+                <textarea id="noticeBody" class="form-control" placeholder="Write the announcement here..." oninput="updateLive()"></textarea>
             </div>
 
              <div class="input-group">
-                <label>Source Name (Optional - Suggestions Available)</label>
-                <input id="noticeSource" class="form-control" list="sourceSuggestions" placeholder="e.g. The Daily Campus" oninput="updateLive()">
-                <datalist id="sourceSuggestions">
+                <label>Source Name (Optional)</label>
+                <input id="noticeSource" class="form-control" list="sourceList" placeholder="e.g. The Daily Campus" oninput="updateLive()">
+                <datalist id="sourceList">
                     <option value="The Daily Campus">
                     <option value="Prothom Alo">
                     <option value="The Daily Star">
@@ -316,12 +317,29 @@
                     <option value="Kaler Kantho">
                     <option value="Samakal">
                     <option value="Jugantor">
+                    <option value="Ittefaq">
+                    <option value="Manab Zamin">
+                    <option value="Naya Diganta">
+                    <option value="Daily Inqilab">
+                    <option value="Bhorer Kagoj">
+                    <option value="Jaijaidin">
+                    <option value="Bangladesh Pratidin">
+                    <option value="The Business Standard">
                     <option value="Bangla Tribune">
-                    <option value="Education Board">
-                    <option value="UGC">
+                    <option value="Jago News 24">
+                    <option value="Somoy News">
+                    <option value="DBC News">
+                    <option value="RU Insiders">
+                    <option value="DU Insiders">
+                    <option value="JU Insiders">
+                    <option value="CU Insiders">
+                    <option value="BUET Insiders">
+                    <option value="Rajshahi University">
                     <option value="Dhaka University">
-                    <option value="BUET">
-                    <option value="Medical Admission">
+                    <option value="Jahangirnagar University">
+                    <option value="Chittagong University">
+                    <option value="Ministry of Education">
+                    <option value="UGC">
                 </datalist>
             </div>
 
@@ -407,7 +425,6 @@
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
             { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000000" },
             { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
-            // ... (New styles as requested)
             { name: "Glass White", bg: "linear-gradient(135deg, #e0e7ff, #f3f4f6)", accent: "#333" },
             { name: "Cyber Black", bg: "linear-gradient(135deg, #000, #111)", accent: "#00ff00" },
             { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
@@ -463,28 +480,21 @@
         }
 
         function updateLive() {
-            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value.replace(/^[^\s]+\s/, ''); 
+            document.getElementById('pCat').innerText = document.getElementById('noticeCat').value; 
             
             const bodyText = document.getElementById('noticeBody').value || "Content goes here...";
             document.getElementById('pBody').innerText = bodyText;
             
-            // --- DOWNLOAD BUTTON VISIBILITY (Min 10 chars) ---
-            if (document.getElementById('noticeBody').value.length > 10) {
-                document.getElementById('dlBtn').style.display = 'block';
-            } else {
-                document.getElementById('dlBtn').style.display = 'none';
-            }
-            
-            // --- DYNAMIC PADDING & COMPACT SPACING ---
+            // --- DYNAMIC PADDING LOGIC (UPDATED) ---
             const bodySection = document.getElementById('bodySection');
             if(bodyText.length < 50) {
-                bodySection.style.padding = "70px 35px 40px 35px";
+                bodySection.style.padding = "20px 35px 30px 35px";
             } else if(bodyText.length < 150) {
-                bodySection.style.padding = "50px 35px 30px 35px";
+                bodySection.style.padding = "20px 35px 30px 35px";
             } else if(bodyText.length > 300) {
-                bodySection.style.padding = "30px 35px 20px 35px";
+                bodySection.style.padding = "20px 35px 30px 35px";
             } else {
-                bodySection.style.padding = "40px 35px 30px 35px";
+                bodySection.style.padding = "20px 35px 30px 35px";
             }
 
             // --- SOURCE VISIBILITY ---
@@ -492,17 +502,22 @@
             const footerSection = document.getElementById('footerSection');
             
             if(src.length > 0) {
-                // Show footer and source
                 footerSection.style.display = 'flex';
                 document.getElementById('pSource').innerText = src;
             } else {
-                // Hide footer completely if no source
                 footerSection.style.display = 'none';
             }
 
             // Features
             document.getElementById('pVerified').style.display = document.getElementById('verifiedCheck').checked ? 'inline-block' : 'none';
             
+            // Download Button Logic
+            if (bodyText.length > 10) {
+                document.getElementById('dlBtn').style.display = 'block';
+            } else {
+                document.getElementById('dlBtn').style.display = 'none';
+            }
+
             // Theme
             const tIdx = document.getElementById('themeSelector').value;
             const theme = themes[tIdx];
@@ -511,7 +526,7 @@
             document.getElementById('pCat').style.color = theme.accent;
             document.querySelector('.top-label').style.color = theme.accent;
 
-            // Light Theme Logic
+            // Light Theme
             const isLight = ["Silver", "Gold Rush", "Ice Cold", "Glass White", "Rose Gold", "Minty Fresh", "Vaporwave"].includes(theme.name);
             const textCol = isLight ? "#222" : "#fff";
             document.getElementById('pBody').style.color = textCol;
