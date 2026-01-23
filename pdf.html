@@ -134,26 +134,26 @@
             transition: transform 0.3s ease;
         }
 
-        /* --- A4 PAPER DESIGN (FIXED SIZE) --- */
+        /* --- A4 PAPER DESIGN --- */
         #pdfContent {
             width: 210mm;
             min-height: 296mm;
             background: white;
             color: black !important;
-            padding: 15mm; /* Increased padding for better spacing */
+            padding: 12mm 15mm;
             position: relative;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
-            /* Watermark on every page using background image */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.05)' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
+            overflow: hidden; /* Key to prevent blank page overflow */
+            
+            /* Watermark Implementation (SVG Background for Multi-page support) */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='50%' font-size='50' fill='rgba(0,0,0,0.03)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 200, 200)'>Interactive Learning</text></svg>");
             background-repeat: repeat;
             background-position: center;
         }
         
-        #pdfContent * {
-            color: black !important;
-        }
+        #pdfContent * { color: black !important; }
 
         /* Header Design */
         .pdf-header {
@@ -161,29 +161,32 @@
             margin-top: 0;
         }
         .pdf-main-title {
-            /* Removed black background */
-            background: transparent; color: #000 !important;
+            background: #000; color: #fff !important; /* Title Block */
             display: inline-block;
-            padding: 0; font-size: 24px; font-weight: 700; margin-bottom: 5px;
+            padding: 5px 25px; font-size: 24px; font-weight: 700; margin-bottom: 5px;
+            border-radius: 2px;
         }
         .pdf-sub-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* 2-Column Layout */
+        /* 2-Column Layout with Vertical Line */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
-            column-rule: 1px solid #ccc;
+            /* VERTICAL LINE */
+            column-rule: 1px solid #999;
             text-align: left;
             display: block; 
         }
 
         .mcq-item {
             margin-bottom: 15px;
-            break-inside: avoid;
+            break-inside: avoid; /* Keeps question block together */
             page-break-inside: avoid;
             font-size: 13px;
             line-height: 1.4;
+            /* Padding right to avoid text hitting the vertical line */
+            padding-right: 5px;
         }
         
         .q-text { font-weight: 700; font-size: 14px; margin-bottom: 5px; display: block;}
@@ -193,28 +196,32 @@
             font-size: 12px; margin-left: 15px; row-gap: 4px;
         }
         
+        /* Answer Positioned Below */
         .ans-row {
-            text-align: right; font-size: 11px; font-weight: 700; margin-top: 4px;
+            text-align: right; 
+            font-size: 12px; 
+            font-weight: 700; 
+            margin-top: 5px;
+            padding-top: 2px;
+            border-top: 1px dashed #ccc; /* Subtle separation */
         }
+        
         .exp-box {
-            font-size: 10px; color: #333 !important; margin-top: 4px;
-            font-style: italic; border-top: 1px dotted #999; padding-top: 2px;
+            font-size: 11px; color: #333 !important; margin-top: 3px;
+            font-style: italic;
         }
 
         /* Footer */
         .pdf-footer {
-            margin-top: 30px;
+            margin-top: 20px;
             width: 100%;
             text-align: center; 
-            /* Removed black background */
             background: transparent; color: #000 !important;
             padding: 5px; font-size: 11px; font-weight: 600;
-            border-top: 1px solid #ccc; /* Added a light border instead */
+            border-top: 1px solid #ccc;
         }
         
-        .footer-text { color: #000 !important; }
-
-        /* Mobile Responsive Scaling for Preview Only */
+        /* Mobile Responsive Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
@@ -287,7 +294,7 @@
                         </div>
 
                     <div class="pdf-footer">
-                        <span class="footer-text">Interactive Learning • BCS & Job Preparation</span>
+                        Interactive Learning • BCS & Job Preparation
                     </div>
                 </div>
             </div>
@@ -301,7 +308,7 @@
 
         let questions = [
             { id: 1, q: "পয়োধি শব্দের অর্থ কী?", a: "শৈল", b: "সৈকত", c: "আকাশ", d: "সমুদ্র", ans: "ঘ", exp: "ব্যাখ্যা: ATM Royal Edition পৃষ্ঠা ২৩২" },
-            { id: 2, q: "সূর্যের সমার্থক শব্দ নয় কোনটি?", a: "আদিত্য", b: "শশধর", c: "ভাস্কর", d: "রবি", ans: "খ", exp: "ব্যাখ্যা: শশধর শব্দের অর্থ চাঁদ।" }
+            { id: 2, q: "সূর্যের সমার্থক শব্দ নয় কোনটি?", a: "আদিত্য", b: "শশধর", c: "ভাস্কর", d: "রবি", ans: "খ", exp: "" }
         ];
 
         function init() {
@@ -370,13 +377,14 @@
                 div.className = 'mcq-item';
                 const expHTML = q.exp ? `<div class="exp-box">${q.exp}</div>` : '';
                 
+                // Updated HTML structure for Answer below options
                 div.innerHTML = `
                     <span class="q-text">${toBn(i+1)}. ${q.q}</span>
                     <div class="options-grid">
                         <span>ক. ${q.a}</span><span>খ. ${q.b}</span>
                         <span>গ. ${q.c}</span><span>ঘ. ${q.d}</span>
                     </div>
-                    <div class="ans-row">উঃ ${q.ans}</div>
+                    <div class="ans-row">উত্তর: ${q.ans}</div>
                     ${expHTML}
                 `;
                 body.appendChild(div);
@@ -387,22 +395,27 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
+            // Save state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
+            // Reset for full quality capture
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             const opt = {
-                // Added margins to fix top/bottom spacing issues on pages
-                margin:       [10, 10, 10, 10],
+                // Reduced margins to prevent blank pages from overflow
+                margin:       [10, 10, 10, 10], 
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                // Use strict page breaking to avoid cutting lines
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
+                // Restore mobile preview
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
             });
