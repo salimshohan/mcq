@@ -459,18 +459,21 @@
         function downloadPDF() {
             const element = document.getElementById('pdfPreviewContainer');
             const scaleBox = document.querySelector('.scale-box');
-            const pages = document.querySelectorAll('.pdf-page'); // সব পেজ সিলেক্ট করা হলো
+            const pages = document.querySelectorAll('.pdf-page');
 
             // আগের স্টাইল সেভ করে রাখা
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.marginBottom;
 
-            // পিডিএফ জেনারেশনের জন্য টেম্পোরারি স্টাইল সেট করা
+            // ১. স্কেলিং রিসেট
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
             
-            // পেজের নিচের মার্জিন ০ করে দেওয়া যাতে এক্সট্রা পেজ না আসে
-            pages.forEach(page => page.style.marginBottom = '0');
+            // ২. পেজের মার্জিন এবং শ্যাডো রিমুভ করা (গুরুত্বপূর্ণ)
+            pages.forEach(page => {
+                page.style.marginBottom = '0';
+                page.style.boxShadow = 'none'; // শ্যাডো অফ করা হলো
+            });
 
             const hex = Math.random().toString(16).substring(2, 8);
             const opt = {
@@ -482,10 +485,13 @@
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                // ডাউনলোড শেষে আগের স্টাইল ফিরিয়ে আনা
+                // ৩. ডাউনলোড শেষে আগের স্টাইল ফিরিয়ে আনা
                 scaleBox.style.transform = oldTransform;
                 scaleBox.style.marginBottom = oldMargin;
-                pages.forEach(page => page.style.marginBottom = '20px'); // মার্জিন রিস্টোর করা
+                pages.forEach(page => {
+                    page.style.marginBottom = ''; // CSS ক্লাসের মার্জিন ফিরে আসবে
+                    page.style.boxShadow = '';    // CSS ক্লাসের শ্যাডো ফিরে আসবে
+                });
             });
         }
         // --- DOWNLOAD PNG (Random Hex) ---
