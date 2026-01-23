@@ -86,7 +86,7 @@
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid var(--border-color);
-            /* Removed sticky/fixed height to prevent mobile overlap issues */
+            /* Fixed height removed for better mobile experience */
             height: auto; 
         }
 
@@ -123,36 +123,48 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            background: #555;
-            padding: 20px;
+            /* Dark background to make the white paper pop */
+            background: #334155; 
+            padding: 40px 20px;
             border-radius: 10px;
-            /* Allow scrolling horizontally on mobile if needed */
-            overflow-x: auto; 
-            min-height: 500px;
+            /* Horizontal scroll for small screens if needed */
+            overflow: auto; 
+            min-height: 600px;
         }
 
-        /* A4 PAPER DESIGN */
+        /* This box handles the scaling for mobile view */
+        .scale-box {
+            transform-origin: top center;
+            transition: transform 0.3s ease;
+        }
+
+        /* --- A4 PAPER DESIGN (FIXED SIZE) --- */
         #pdfContent {
             width: 210mm;
-            /* Auto height allows it to grow and split pages */
-            height: auto; 
-            min-height: 296mm;
+            min-height: 296mm; /* Almost A4 height */
             background: white;
-            color: black;
-            padding: 10mm; /* Safe padding */
+            color: black !important; /* Force black text */
+            padding: 10mm;
             position: relative;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            /* Better font rendering */
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
+            /* Ensure text color applies to everything inside */
+        }
+        
+        #pdfContent * {
+            color: black !important; /* Crucial for PDF generation */
         }
 
         /* Header Design */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 10px; 
+            text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; 
             margin-top: 0;
         }
         .pdf-main-title {
-            background: #000; color: #fff; display: inline-block;
+            background: #000; color: #fff !important; /* Exception for title bg */
+            display: inline-block;
             padding: 5px 25px; font-size: 24px; font-weight: 700; margin-bottom: 5px;
             border-radius: 2px;
         }
@@ -170,7 +182,9 @@
 
         .mcq-item {
             margin-bottom: 12px;
-            break-inside: avoid; /* Essential for correct pagination */
+            /* Prevent cutting inside a question */
+            break-inside: avoid;
+            page-break-inside: avoid;
             font-size: 13px;
             line-height: 1.3;
         }
@@ -186,16 +200,16 @@
             text-align: right; font-size: 11px; font-weight: 700; margin-top: 2px;
         }
         .exp-box {
-            font-size: 10px; color: #444; margin-top: 2px;
+            font-size: 10px; color: #333 !important; margin-top: 2px;
             font-style: italic; border-top: 1px dotted #999;
         }
 
         /* Watermark */
         .watermark {
-            position: absolute; top: 50%; left: 50%;
+            position: absolute; top: 300px; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 70px; font-weight: 900;
-            color: rgba(0,0,0,0.04);
+            color: rgba(0,0,0,0.05) !important; /* Very light grey */
             white-space: nowrap; pointer-events: none; z-index: 0;
         }
 
@@ -203,24 +217,31 @@
         .pdf-footer {
             margin-top: 20px;
             width: 100%;
-            text-align: center; background: #000; color: #fff;
+            text-align: center; background: #000; 
             padding: 4px; font-size: 11px; font-weight: 600;
         }
+        
+        .footer-text { color: #fff !important; }
 
-        /* Mobile Scaling */
+        /* Mobile Responsive Scaling for Preview Only */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
-            .preview-wrapper { width: 100%; justify-content: flex-start; }
+            .preview-wrapper { width: 100%; padding: 10px; overflow: hidden; justify-content: center;}
             
-            /* Scale Down the Preview ONLY visually */
-            #pdfContent {
-                transform: scale(0.45); 
-                transform-origin: top left;
-                /* Add negative margin to remove whitespace caused by scaling */
+            /* Scale down the A4 paper to fit mobile screen.
+               We use CSS transform so it LOOKS small but IS actually big.
+            */
+            .scale-box { 
+                transform: scale(0.42); 
+                transform-origin: top center; 
+                /* Negative margin to remove the whitespace created by scaling */
                 margin-bottom: -150%; 
-                margin-right: -100%;
             }
+        }
+        
+        @media (min-width: 901px) {
+            .scale-box { transform: scale(0.85); transform-origin: top center; }
         }
 
     </style>
@@ -267,20 +288,22 @@
         </div>
 
         <div class="preview-wrapper">
-            <div id="pdfContent">
-                <div class="pdf-header">
-                    <div class="pdf-main-title" id="pTitle">স্থানীয় সরকার বিভাগ</div>
-                    <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
-                    <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
-                </div>
-
-                <div class="watermark">Interactive Learning</div>
-
-                <div class="pdf-body" id="pdfBody">
+            <div class="scale-box">
+                <div id="pdfContent">
+                    <div class="pdf-header">
+                        <div class="pdf-main-title" id="pTitle">স্থানীয় সরকার বিভাগ</div>
+                        <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
+                        <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
                     </div>
 
-                <div class="pdf-footer">
-                    Interactive Learning • BCS & Job Preparation
+                    <div class="watermark">Interactive Learning</div>
+
+                    <div class="pdf-body" id="pdfBody">
+                        </div>
+
+                    <div class="pdf-footer">
+                        <span class="footer-text">Interactive Learning • BCS & Job Preparation</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -376,37 +399,35 @@
         }
 
         function downloadPDF() {
-            // 1. CLONE THE ELEMENT
-            const originalElement = document.getElementById('pdfContent');
-            const clone = originalElement.cloneNode(true);
+            // 1. Get the element and the scaling wrapper
+            const element = document.getElementById('pdfContent');
+            const scaleBox = document.querySelector('.scale-box');
+            
+            // 2. Save current Scale state
+            const originalTransform = scaleBox.style.transform;
+            const originalMargin = scaleBox.style.marginBottom;
+            
+            // 3. RESET SCALE for PDF Generation (Crucial Step!)
+            // This ensures html2pdf sees the element at full size (210mm wide)
+            // instead of the shrunken mobile version.
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
 
-            // 2. CREATE A CONTAINER TO HOLD THE CLONE OFF-SCREEN
-            // This container will not have any CSS transforms (scale) applied
-            const container = document.createElement('div');
-            container.style.position = 'absolute';
-            container.style.top = '-9999px';
-            container.style.left = '0';
-            container.style.width = '210mm'; // Enforce A4 width on clone
-            container.appendChild(clone);
-            document.body.appendChild(container);
-
-            // 3. REMOVE TRANSFORM FROM CLONE (Just in case inline styles copied)
-            clone.style.transform = 'none';
-            clone.style.margin = '0';
-
-            // 4. GENERATE PDF FROM CLONE
+            // 4. Configuration
             const opt = {
-                margin:       [10, 10, 10, 10],
+                margin:       0,
                 filename:     'Question_Paper.pdf',
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                image:        { type: 'jpeg', quality: 0.98 },
+                // scale 2 ensures high quality text
+                html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
-            html2pdf().set(opt).from(clone).save().then(() => {
-                // 5. CLEAN UP
-                document.body.removeChild(container);
+            // 5. Generate and Save
+            html2pdf().set(opt).from(element).save().then(() => {
+                // 6. Restore Mobile Preview State
+                scaleBox.style.transform = originalTransform;
+                scaleBox.style.marginBottom = originalMargin;
             });
         }
 
