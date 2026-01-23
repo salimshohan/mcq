@@ -86,8 +86,8 @@
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid var(--border-color);
-            max-height: 85vh; overflow-y: auto;
-            position: sticky; top: 90px;
+            /* Removed sticky/fixed height to prevent mobile overlap issues */
+            height: auto; 
         }
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
@@ -126,20 +126,20 @@
             background: #555;
             padding: 20px;
             border-radius: 10px;
-            min-height: 600px;
-            overflow-x: auto;
+            /* Allow scrolling horizontally on mobile if needed */
+            overflow-x: auto; 
+            min-height: 500px;
         }
 
         /* A4 PAPER DESIGN */
         #pdfContent {
-            /* Standard A4 Width */
             width: 210mm;
-            /* Height is auto to let content grow */
-            height: auto;
-            min-height: 297mm;
+            /* Auto height allows it to grow and split pages */
+            height: auto; 
+            min-height: 296mm;
             background: white;
             color: black;
-            padding: 12mm;
+            padding: 10mm; /* Safe padding */
             position: relative;
             box-shadow: 0 0 15px rgba(0,0,0,0.3);
             text-rendering: optimizeLegibility;
@@ -148,8 +148,8 @@
 
         /* Header Design */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; 
-            margin-top: -5px;
+            text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 10px; 
+            margin-top: 0;
         }
         .pdf-main-title {
             background: #000; color: #fff; display: inline-block;
@@ -165,15 +165,12 @@
             column-gap: 8mm;
             column-rule: 1px solid #ccc;
             text-align: left;
-            /* Ensure wrapping works for pagination */
             display: block; 
         }
 
         .mcq-item {
             margin-bottom: 12px;
-            /* Prevents cutting inside a question */
-            break-inside: avoid;
-            page-break-inside: avoid;
+            break-inside: avoid; /* Essential for correct pagination */
             font-size: 13px;
             line-height: 1.3;
         }
@@ -193,9 +190,9 @@
             font-style: italic; border-top: 1px dotted #999;
         }
 
-        /* Watermark (Centered on the long div) */
+        /* Watermark */
         .watermark {
-            position: absolute; top: 300px; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 70px; font-weight: 900;
             color: rgba(0,0,0,0.04);
@@ -204,17 +201,26 @@
 
         /* Footer */
         .pdf-footer {
-            /* Pushed to bottom of the content container */
-            margin-top: 30px;
+            margin-top: 20px;
             width: 100%;
             text-align: center; background: #000; color: #fff;
             padding: 4px; font-size: 11px; font-weight: 600;
         }
 
-        /* Mobile Scale for Preview */
+        /* Mobile Scaling */
         @media (max-width: 900px) {
-            .preview-wrapper { overflow: hidden; }
-            #pdfContent { transform: scale(0.45); transform-origin: top left; margin-bottom: -160%; }
+            .container { flex-direction: column; }
+            .editor-section { width: 100%; }
+            .preview-wrapper { width: 100%; justify-content: flex-start; }
+            
+            /* Scale Down the Preview ONLY visually */
+            #pdfContent {
+                transform: scale(0.45); 
+                transform-origin: top left;
+                /* Add negative margin to remove whitespace caused by scaling */
+                margin-bottom: -150%; 
+                margin-right: -100%;
+            }
         }
 
     </style>
@@ -370,27 +376,37 @@
         }
 
         function downloadPDF() {
-            const element = document.getElementById('pdfContent');
-            
-            // Generate PDF options
+            // 1. CLONE THE ELEMENT
+            const originalElement = document.getElementById('pdfContent');
+            const clone = originalElement.cloneNode(true);
+
+            // 2. CREATE A CONTAINER TO HOLD THE CLONE OFF-SCREEN
+            // This container will not have any CSS transforms (scale) applied
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.top = '-9999px';
+            container.style.left = '0';
+            container.style.width = '210mm'; // Enforce A4 width on clone
+            container.appendChild(clone);
+            document.body.appendChild(container);
+
+            // 3. REMOVE TRANSFORM FROM CLONE (Just in case inline styles copied)
+            clone.style.transform = 'none';
+            clone.style.margin = '0';
+
+            // 4. GENERATE PDF FROM CLONE
             const opt = {
-                margin:       [10, 10, 10, 10], // Margin to avoid cutting text
+                margin:       [10, 10, 10, 10],
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 1 },
-                // Enable page breaking features
-                html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                // Important: CSS Page break mode
                 pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
             
-            // Temporary scale fix for mobile
-            const pdfDiv = document.getElementById('pdfContent');
-            const originalTransform = pdfDiv.style.transform;
-            pdfDiv.style.transform = 'none';
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                pdfDiv.style.transform = originalTransform;
+            html2pdf().set(opt).from(clone).save().then(() => {
+                // 5. CLEAN UP
+                document.body.removeChild(container);
             });
         }
 
