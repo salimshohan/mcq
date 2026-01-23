@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Question Maker | Interactive Learning</title>
+    <title>Smart PDF Question Maker</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,9 +16,7 @@
         :root {
             --bg-dark: #0f172a;
             --panel-bg: #1e293b;
-            --input-bg: #020617;
-            --border-color: #334155;
-            --primary: #8b5cf6;
+            --primary: #6366f1;
             --accent: #fbbf24;
             --text-main: #f1f5f9;
         }
@@ -42,7 +40,7 @@
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .brand-logo {
@@ -53,28 +51,6 @@
         }
         
         .logo-img { height: 30px; margin-right: 10px; border-radius: 50%; }
-
-        .hamburger {
-            cursor: pointer; z-index: 1100; width: 24px; height: 18px;
-            position: relative; display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .hamburger span { display: block; height: 2px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 4px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -4px); }
-
-        .nav-menu {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
-            background: var(--bg-dark);
-            display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s; box-shadow: -5px 0 30px rgba(0,0,0,0.6);
-            border-left: 1px solid var(--border-color);
-        }
-        .nav-menu.open { right: 0; }
-        .nav-menu a {
-            color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-weight: 500; border-bottom: 1px solid var(--border-color);
-        }
 
         /* --- CONTAINER --- */
         .container {
@@ -87,120 +63,87 @@
         /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 20px;
-            border: 1px solid var(--border-color);
+            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { font-size: 16px; font-weight: 700; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
 
-        /* STATUS BAR (Moved down) */
-        #pageStatus {
-            background: rgba(15, 23, 42, 0.8);
-            padding: 10px; border-radius: 8px;
-            margin-bottom: 15px; font-size: 13px; color: #fff;
-            border: 1px solid #334155;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .status-bar-bg { width: 100px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
-        .status-bar-fill { height: 100%; background: #22c55e; width: 0%; transition: 0.3s; }
-        .status-text { font-weight: 700; }
-
-        #topicSummary {
-            background: rgba(139, 92, 246, 0.1);
-            padding: 10px; border-radius: 8px;
-            margin-bottom: 20px; font-size: 13px; color: #cbd5e1;
-            border: 1px dashed var(--primary);
+        /* Page Count Badge */
+        #pageCounter {
+            background: rgba(99, 102, 241, 0.2); color: #a5b4fc;
+            padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600;
+            margin-bottom: 15px; border: 1px solid rgba(99, 102, 241, 0.4);
+            text-align: center;
         }
 
-        /* PREMIUM INPUT DESIGN */
+        /* NEW INPUT DESIGN (Modern Box) */
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
         
         .form-control {
             width: 100%; 
-            background: var(--input-bg); 
-            border: none;
-            border-bottom: 2px solid #334155; 
-            color: #f1f5f9; padding: 12px 10px; font-size: 14px;
-            transition: all 0.3s ease;
-            border-radius: 4px 4px 0 0;
+            background: #020617; 
+            border: 1px solid #334155; 
+            color: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px;
+            transition: all 0.2s ease;
         }
         .form-control:focus {
             outline: none;
-            background: #1e293b;
-            border-bottom-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
         }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 80px; border: 1px solid #334155; border-radius: 8px; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
-        .question-card {
-            background: #1e293b; 
-            padding: 20px; border-radius: 12px;
-            margin-bottom: 20px; border: 1px solid #334155;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        /* Cards */
+        .card-base {
+            background: #1e293b; padding: 15px; border-radius: 10px;
+            margin-bottom: 15px; border: 1px solid #334155; position: relative;
         }
-        
-        .header-card {
-            background: linear-gradient(90deg, #1e293b, #0f172a);
-            padding: 15px; border-radius: 8px;
-            margin-bottom: 20px; border-left: 4px solid var(--accent);
-            position: relative;
-        }
+        .header-card { border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%); }
+        .break-card { border: 1px dashed #ef4444; background: rgba(239, 68, 68, 0.05); color: #ef4444; text-align: center; font-weight: bold; }
 
-        .break-card {
-            background: rgba(239, 68, 68, 0.15);
-            padding: 12px; border-radius: 8px;
-            margin-bottom: 20px; border: 1px dashed #ef4444;
-            color: #ef4444; font-weight: 700;
-            text-align: center; display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #94a3b8; margin-bottom: 12px; font-weight: 700; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
         
         .control-icons { display: flex; gap: 8px; }
-        .control-icon { 
-            cursor: pointer; padding: 6px; border-radius: 4px; transition: 0.2s; 
-            background: rgba(255,255,255,0.05);
-        }
-        .control-icon:hover { background: rgba(255,255,255,0.15); color: white; }
+        .control-icon { cursor: pointer; padding: 5px; border-radius: 4px; transition: 0.2s; background: rgba(255,255,255,0.05); }
+        .control-icon:hover { background: rgba(255,255,255,0.1); color: white; }
         .fa-trash { color: #f87171; }
-        .fa-arrow-up, .fa-arrow-down { color: var(--primary); }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        /* Buttons */
+        .btn-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
         .btn-add {
-            flex: 1; min-width: 120px; padding: 12px; border: 1px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
-            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
-            transition: 0.3s;
+            flex: 1; padding: 10px; border: 1px solid #475569; background: #1e293b;
+            color: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;
+            transition: 0.2s; white-space: nowrap;
         }
-        .btn-add:hover { background: var(--primary); color: white; }
+        .btn-add:hover { background: #334155; border-color: #94a3b8; }
+        .btn-break { color: #f87171; border-color: #7f1d1d; background: rgba(127, 29, 29, 0.2); }
         
-        .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-        .btn-break:hover { background: #ef4444; color: white; }
-
         .btn-download {
-            width: 100%; padding: 16px; border-radius: 50px; border: none;
-            background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
-            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-            transition: transform 0.2s;
+            width: 100%; padding: 14px; border-radius: 8px; border: none;
+            background: var(--primary); color: white;
+            font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
-        .btn-download:hover { transform: translateY(-2px); }
+        .btn-download:hover { background: #4f46e5; }
 
-        /* --- PREVIEW --- */
+        /* --- PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            background: #334155; 
-            padding: 40px 20px;
-            border-radius: 20px;
+            flex-direction: column;
+            align-items: center;
+            background: #475569; 
+            padding: 30px;
+            border-radius: 16px;
             overflow: auto; 
             min-height: 600px;
+            gap: 20px; /* Space between pages in preview */
         }
 
         .scale-box {
@@ -208,161 +151,105 @@
             transition: transform 0.3s ease;
         }
 
-        /* --- A4 PAPER --- */
-        #pdfContent {
+        /* --- THE A4 PAGE (SMART PAGINATION) --- */
+        .pdf-page {
             width: 210mm;
-            min-height: 297mm; 
+            height: 296mm; /* Fixed A4 Height */
             background: white;
             color: black !important;
             padding: 15mm;
             position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            overflow: hidden; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            margin-bottom: 20px; /* Gap between pages in preview */
             
-            /* Watermark: Centered & Fixed */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='40' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
-            background-repeat: repeat-y;
-            background-size: 100% 297mm; 
-            background-position: center top;
+            /* Column Logic */
+            column-count: 2;
+            column-gap: 10mm;
+            column-fill: auto; /* Ensures L->R flow on THIS page */
+            
+            /* Visuals */
+            background-image: 
+                /* Vertical Line */
+                linear-gradient(to right, transparent 49.8%, #999 49.8%, #999 50.2%, transparent 50.2%),
+                /* Watermark */
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='50%' font-size='40' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 200, 200)'>Interactive Learning</text></svg>");
+            background-repeat: no-repeat, no-repeat;
+            background-size: 100% 100%, 100% 100%;
+            background-position: center, center;
+            
+            overflow: hidden; /* Hide overflow to detect breaks */
         }
         
-        #pdfContent * { color: black !important; }
+        .pdf-page * { color: black !important; }
 
-        /* Header */
+        /* Header (Only on Page 1) */
         .pdf-header {
             text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; 
-            margin-top: 0;
+            column-span: all; /* Spans across columns */
         }
         .brand-name-pdf {
             font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
             margin-bottom: 5px; display: block; color: #333 !important;
         }
         .pdf-main-title {
-            background: transparent;
-            border: 2px solid #000;
-            color: #000 !important;
-            display: inline-block;
+            border: 2px solid #000; display: inline-block;
             padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px;
         }
-        .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
-
-        /* Body & Vertical Line - KEY FIXES HERE */
-        .pdf-body {
-            column-count: 2;
-            column-gap: 10mm;
-            text-align: left;
-            display: block; 
-            min-height: 200px;
-            position: relative;
-            /* Thin Vertical Line */
-            background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
-            
-            /* KEY FIX: Use auto to fill columns sequentially (Left then Right) */
-            column-fill: auto;
-            /* Height must be auto to let content grow */
-            height: auto; 
-        }
 
         /* Subject Header */
         .section-header-pdf {
-            text-align: center;
-            font-weight: 800;
-            font-size: 16px;
-            margin-bottom: 10px;
-            margin-top: 15px;
-            /* Prevent breaking inside */
+            text-align: center; font-weight: 800; font-size: 16px;
+            margin: 15px 0 10px 0;
             break-inside: avoid;
-            background: white; 
-            padding: 5px;
-            display: block;
+            background: white; /* Hides vertical line behind text */
+            padding: 2px;
             border-bottom: 1px solid #333;
-            width: 100%;
-        }
-
-        /* Page Break Logic for PDF */
-        .html2pdf__page-break {
-            height: 0;
-            margin: 0;
-            padding: 0;
-            border: none;
             display: block;
-            /* Forces page break even inside columns */
-            break-after: page; 
-            page-break-after: always;
-            column-span: all;
-            width: 100%;
         }
 
-        /* Visual indicator in Preview */
-        .break-line-preview {
-            column-span: all;
-            border-top: 2px dashed #ef4444;
-            color: #ef4444;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 10px;
-            font-weight: bold;
-            background: white;
-            padding: 5px;
-        }
-
-        /* Guides */
-        .page-limit-line {
-            position: absolute; left: 0; width: 100%; height: 2px;
-            border-top: 2px dashed #ef4444; pointer-events: none; z-index: 100; opacity: 0.7;
-        }
-        .page-limit-text {
-            position: absolute; right: 10px; top: -15px; color: #ef4444; font-size: 10px; font-weight: bold; background: white; padding: 2px;
-        }
-
+        /* Question Item */
         .mcq-item {
             margin-bottom: 12px;
             break-inside: avoid;
-            page-break-inside: avoid;
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            background: transparent; 
+            background: transparent;
             position: relative;
-            text-shadow: 2px 0 0 #fff, -2px 0 0 #fff; 
+            /* White text shadow to separate text from vertical line if they overlap */
+            text-shadow: 3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff; 
         }
         
-        .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
+        .q-text { font-weight: 700; margin-bottom: 4px; display: block;}
         
         .options-grid {
             display: grid; grid-template-columns: 1fr 1fr; 
-            font-size: 13px; margin-left: 15px; row-gap: 4px;
+            font-size: 13px; margin-left: 15px; row-gap: 2px;
         }
         
         .ans-row {
-            text-align: left;
-            font-size: 13px; font-weight: 700; margin-top: 6px; margin-left: 15px; 
+            text-align: left; font-size: 12px; font-weight: 700; margin-top: 4px; margin-left: 15px; 
         }
         
         .exp-box {
-            font-size: 12px; color: #333 !important; margin-top: 4px;
+            font-size: 12px; color: #333 !important; margin-top: 3px;
             font-style: italic; margin-left: 15px;
             border-top: 0.5px dotted #ccc; padding-top: 2px;
         }
 
         /* Footer */
         .pdf-footer {
-            margin-top: 30px;
-            width: 100%;
-            text-align: center; 
-            background: transparent;
-            padding: 8px; font-size: 12px; font-weight: 600;
-            border-top: 1px solid #000;
+            position: absolute; bottom: 10mm; left: 0; width: 100%;
+            text-align: center; padding: 5px; font-size: 11px; font-weight: 600;
+            border-top: 1px solid #000; background: white;
         }
 
         /* Mobile Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
-            .preview-wrapper { width: 100%; padding: 10px; overflow: hidden; justify-content: center;}
+            .preview-wrapper { width: 100%; padding: 10px; }
             .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
         }
         @media (min-width: 901px) {
@@ -392,7 +279,7 @@
         <div class="editor-section">
             <div class="section-title">PDF Content</div>
             
-            <div id="topicSummary">Add subjects and questions to start.</div>
+            <div id="pageCounter">Total Pages: 1</div>
 
             <div class="input-group">
                 <label>Main Heading</label>
@@ -409,16 +296,9 @@
 
             <div id="itemsList"></div>
 
-            <div id="pageStatus">
-                <span class="status-text" id="statusText">Page 1: 0%</span>
-                <div class="status-bar-bg">
-                    <div class="status-bar-fill" id="statusFill"></div>
-                </div>
-            </div>
-
             <div class="btn-group">
-                <button class="btn-add" onclick="addHeader()">+ Add Subject</button>
-                <button class="btn-add" onclick="addQuestion()">+ Add Question</button>
+                <button class="btn-add" onclick="addHeader()">+ Subject</button>
+                <button class="btn-add" onclick="addQuestion()">+ Question</button>
                 <button class="btn-add btn-break" onclick="addPageBreak()">+ Page Break</button>
             </div>
             
@@ -426,42 +306,14 @@
         </div>
 
         <div class="preview-wrapper">
-            <div class="scale-box">
-                <div id="pdfContent">
-                    <div class="pdf-header">
-                        <div class="brand-name-pdf">Interactive Learning</div>
-                        <div class="pdf-main-title" id="pTitle">স্থানীয় সরকার বিভাগ</div>
-                        <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
-                        <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
-                    </div>
-
-                    <div class="pdf-body" id="pdfBody">
-                        </div>
-
-                    <div class="pdf-footer">
-                        Interactive Learning • BCS, Job & Admission Preparation
-                    </div>
+            <div class="scale-box" id="pdfPreviewContainer">
                 </div>
-            </div>
         </div>
     </div>
 
     <datalist id="subjectOptions">
-        <option value="Bangla">
-        <option value="English">
-        <option value="General Knowledge">
-        <option value="Mathematics">
-        <option value="ICT">
-        <option value="Physics">
-        <option value="Chemistry">
-        <option value="Biology">
-        <option value="Accounting">
-        <option value="Management">
-        <option value="Geography">
-        <option value="International Affairs">
-        <option value="Bangladesh Affairs">
-        <option value="Mental Ability">
-        <option value="Ethics & Governance">
+        <option value="Bangla"><option value="English"><option value="General Knowledge">
+        <option value="Mathematics"><option value="ICT"><option value="Physics">
     </datalist>
 
     <script>
@@ -476,123 +328,47 @@
             updatePDF();
         }
 
-        function addHeader() {
-            items.push({ id: Date.now(), type: 'header', title: '' });
-            renderInputs();
-            updatePDF();
+        // --- DATA MANAGEMENT ---
+        function addHeader() { items.push({ id: Date.now(), type: 'header', title: '' }); renderInputs(); updatePDF(); }
+        function addQuestion() { items.push({ id: Date.now(), type: 'question', q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" }); renderInputs(); updatePDF(); }
+        function addPageBreak() { items.push({ id: Date.now(), type: 'break' }); renderInputs(); updatePDF(); }
+        
+        function removeItem(index) { items.splice(index, 1); renderInputs(); updatePDF(); }
+        function moveItem(index, dir) {
+            if (dir === 'up' && index > 0) [items[index], items[index-1]] = [items[index-1], items[index]];
+            else if (dir === 'down' && index < items.length-1) [items[index], items[index+1]] = [items[index+1], items[index]];
+            renderInputs(); updatePDF();
         }
-
-        function addQuestion() {
-            items.push({ id: Date.now(), type: 'question', q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" });
-            renderInputs();
-            updatePDF();
-        }
-
-        function addPageBreak() {
-            items.push({ id: Date.now(), type: 'break' });
-            renderInputs();
-            updatePDF();
-        }
-
-        function removeItem(index) {
-            items.splice(index, 1);
-            renderInputs();
-            updatePDF();
-        }
-
-        function moveItem(index, direction) {
-            if (direction === 'up' && index > 0) {
-                [items[index], items[index - 1]] = [items[index - 1], items[index]];
-            } else if (direction === 'down' && index < items.length - 1) {
-                [items[index], items[index + 1]] = [items[index + 1], items[index]];
-            }
-            renderInputs();
-            updatePDF();
-        }
-
         function updateData(id, field, val) {
             const item = items.find(x => x.id === id);
-            if(item) {
-                item[field] = val;
-                updatePDF();
-                if(item.type === 'header') updateSummary();
-            }
+            if(item) { item[field] = val; updatePDF(); }
         }
 
-        function updateSummary() {
-            const summaryBox = document.getElementById('topicSummary');
-            let summaryHTML = '';
-            let currentHeader = 'General';
-            let counts = {};
-            let total = 0;
-
-            items.forEach(item => {
-                if(item.type === 'header') {
-                    currentHeader = item.title || 'Untitled';
-                    if(!counts[currentHeader]) counts[currentHeader] = 0;
-                } else if(item.type === 'question') {
-                    if(!counts[currentHeader]) counts[currentHeader] = 0;
-                    counts[currentHeader]++;
-                    total++;
-                }
-            });
-
-            if (total === 0) {
-                summaryBox.innerHTML = 'Add items to start.';
-                return;
-            }
-
-            summaryHTML = `<b>Total Questions: ${total}</b> <br> `;
-            for (const [key, value] of Object.entries(counts)) {
-                if(value > 0) summaryHTML += `<span style="color:#a78bfa; margin-right:10px;">${key}: ${value}</span>`;
-            }
-            summaryBox.innerHTML = summaryHTML;
-        }
-
+        // --- EDITOR RENDERING ---
         function renderInputs() {
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
-            
             let qCounter = 0;
 
             items.forEach((item, index) => {
                 const div = document.createElement('div');
+                div.className = item.type === 'header' ? 'card-base header-card' : item.type === 'break' ? 'card-base break-card' : 'card-base question-card';
                 
-                if (item.type === 'header') {
-                    div.className = 'header-card';
-                    div.innerHTML = `
-                        <div class="q-header">
-                            <span>SUBJECT SECTION</span>
-                            <div class="control-icons">
-                                <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
-                                <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
-                                <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
-                            </div>
-                        </div>
-                        <input class="form-control" list="subjectOptions" placeholder="Subject Name (e.g. Bangla)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
-                    `;
-                } else if (item.type === 'break') {
-                    div.className = 'break-card';
-                    div.innerHTML = `
-                        <span>--- PAGE BREAK ---</span>
-                        <div class="control-icons">
-                            <i class="fas fa-arrow-up control-icon" style="color:#ef4444" onclick="moveItem(${index}, 'up')"></i>
-                            <i class="fas fa-arrow-down control-icon" style="color:#ef4444" onclick="moveItem(${index}, 'down')"></i>
-                            <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
-                        </div>
-                    `;
-                } else {
-                    qCounter++;
-                    div.className = 'question-card';
-                    div.innerHTML = `
-                        <div class="q-header">
-                            <span>Question ${qCounter}</span>
-                            <div class="control-icons">
-                                <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
-                                <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
-                                <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
-                            </div>
-                        </div>
+                let inner = `<div class="q-header">`;
+                if(item.type === 'header') inner += `<span>SUBJECT</span>`;
+                else if(item.type === 'break') inner += `<span>PAGE BREAK</span>`;
+                else { qCounter++; inner += `<span>Q ${qCounter}</span>`; }
+                
+                inner += `<div class="control-icons">
+                    <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
+                    <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
+                    <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
+                </div></div>`;
+
+                if(item.type === 'header') {
+                    inner += `<input class="form-control" list="subjectOptions" placeholder="Subject Name (e.g. Bangla)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
+                } else if(item.type === 'question') {
+                    inner += `
                         <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
                             <input class="form-control" placeholder="ক" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
@@ -600,61 +376,80 @@
                             <input class="form-control" placeholder="গ" value="${item.c}" oninput="updateData(${item.id}, 'c', this.value)">
                             <input class="form-control" placeholder="ঘ" value="${item.d}" oninput="updateData(${item.id}, 'd', this.value)">
                         </div>
-                        
                         <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${item.id}, 'ans', this.value)">
                             <option value="">সঠিক উত্তর...</option>
-                            <option value="ক" ${item.ans === 'ক' ? 'selected' : ''}>ক</option>
-                            <option value="খ" ${item.ans === 'খ' ? 'selected' : ''}>খ</option>
-                            <option value="গ" ${item.ans === 'গ' ? 'selected' : ''}>গ</option>
-                            <option value="ঘ" ${item.ans === 'ঘ' ? 'selected' : ''}>ঘ</option>
-                            <option value="ব্যাখ্যা দেখুন" ${item.ans === 'ব্যাখ্যা দেখুন' ? 'selected' : ''}>ব্যাখ্যা দেখুন</option>
+                            <option value="ক" ${item.ans==='ক'?'selected':''}>ক</option>
+                            <option value="খ" ${item.ans==='খ'?'selected':''}>খ</option>
+                            <option value="গ" ${item.ans==='গ'?'selected':''}>গ</option>
+                            <option value="ঘ" ${item.ans==='ঘ'?'selected':''}>ঘ</option>
+                            <option value="ব্যাখ্যা দেখুন" ${item.ans==='ব্যাখ্যা দেখুন'?'selected':''}>ব্যাখ্যা দেখুন</option>
                         </select>
-
                         <textarea class="form-control" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>
                     `;
                 }
+                div.innerHTML = inner;
                 list.appendChild(div);
             });
-            updateSummary();
         }
 
+        // --- SMART PDF RENDERING ENGINE ---
         function updatePDF() {
-            document.getElementById('pTitle').innerText = document.getElementById('headTitle').value;
-            document.getElementById('pSub').innerText = document.getElementById('subTitle').value;
-            document.getElementById('pDate').innerText = document.getElementById('examDate').value;
+            const container = document.getElementById('pdfPreviewContainer');
+            container.innerHTML = ''; // Clear previous pages
 
-            const body = document.getElementById('pdfBody');
-            body.innerHTML = '';
-
+            const headTitle = document.getElementById('headTitle').value;
+            const subTitle = document.getElementById('subTitle').value;
+            const examDate = document.getElementById('examDate').value;
+            
             const banglaNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => banglaNums[x] || x).join('');
-            
+
+            // Helper to create a new blank page
+            function createPage(isFirst) {
+                const page = document.createElement('div');
+                page.className = 'pdf-page';
+                
+                // Header (Only on Page 1)
+                if (isFirst) {
+                    page.innerHTML = `
+                        <div class="pdf-header">
+                            <div class="brand-name-pdf">Interactive Learning</div>
+                            <div class="pdf-main-title">${headTitle}</div>
+                            <div class="pdf-sub-title">${subTitle}</div>
+                            <div class="pdf-meta">${examDate}</div>
+                        </div>
+                    `;
+                }
+                
+                // Footer
+                page.innerHTML += `<div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>`;
+                
+                container.appendChild(page);
+                return page;
+            }
+
+            // Start with Page 1
+            let currentPage = createPage(true);
             let qCount = 0;
 
             items.forEach((item) => {
-                if (item.type === 'header') {
-                    const headerDiv = document.createElement('div');
-                    headerDiv.className = 'section-header-pdf';
-                    headerDiv.innerText = item.title;
-                    body.appendChild(headerDiv);
-                } else if (item.type === 'break') {
-                    // Preview Line
-                    const previewLine = document.createElement('div');
-                    previewLine.className = 'break-line-preview';
-                    previewLine.innerText = '-- PDF PAGE BREAK --';
-                    body.appendChild(previewLine);
+                // If user requests explicit break, make new page immediately
+                if (item.type === 'break') {
+                    currentPage = createPage(false);
+                    return;
+                }
 
-                    // Actual PDF Break Element
-                    const pdfBreak = document.createElement('div');
-                    pdfBreak.className = 'html2pdf__page-break'; 
-                    body.appendChild(pdfBreak);
+                // Create the content element
+                let element = document.createElement('div');
+                
+                if (item.type === 'header') {
+                    element.className = 'section-header-pdf';
+                    element.innerText = item.title;
                 } else {
                     qCount++;
-                    const div = document.createElement('div');
-                    div.className = 'mcq-item';
+                    element.className = 'mcq-item';
                     const expHTML = item.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
-                    
-                    div.innerHTML = `
+                    element.innerHTML = `
                         <span class="q-text">${toBn(qCount)}. ${item.q}</span>
                         <div class="options-grid">
                             <span>ক. ${item.a}</span><span>খ. ${item.b}</span>
@@ -663,69 +458,61 @@
                         <div class="ans-row">উত্তর: ${item.ans}</div>
                         ${expHTML}
                     `;
-                    body.appendChild(div);
+                }
+
+                // Append to current page to check height
+                currentPage.appendChild(element);
+
+                // Check for Overflow
+                // We use scrollHeight vs clientHeight. 
+                // clientHeight is fixed 296mm (~1120px). scrollHeight grows.
+                // A small buffer (20px) is used for footer safety.
+                if (currentPage.scrollHeight > currentPage.clientHeight + 5) {
+                    // It overflowed! Remove it from this page.
+                    currentPage.removeChild(element);
+                    
+                    // Create NEW PAGE
+                    currentPage = createPage(false);
+                    
+                    // Add it to the new page
+                    currentPage.appendChild(element);
                 }
             });
-            
-            checkPageHeight();
-        }
 
-        // Calculate Page Height and Show Status
-        function checkPageHeight() {
-            document.querySelectorAll('.page-limit-line').forEach(e => e.remove());
-            
-            const pdfContent = document.getElementById('pdfContent');
-            const totalHeight = pdfContent.scrollHeight;
-            const a4Height = 1122; 
-            
-            const filledPx = totalHeight % a4Height;
-            const percentage = Math.min(100, Math.round((filledPx / a4Height) * 100));
-            const currentPage = Math.ceil(totalHeight / a4Height);
-            
-            const statusFill = document.getElementById('statusFill');
-            const statusText = document.getElementById('statusText');
-            
-            statusFill.style.width = percentage + "%";
-            statusText.innerText = `Page ${currentPage}: ${percentage}% Full`;
-            
-            if(percentage > 95) statusFill.style.background = "#ef4444"; 
-            else statusFill.style.background = "#22c55e"; 
-
-            for (let i = 1; i < currentPage + 1; i++) {
-                const line = document.createElement('div');
-                line.className = 'page-limit-line';
-                line.style.top = (i * a4Height) + 'px';
-                line.innerHTML = `<span class="page-limit-text">--- End of Page ${i} ---</span>`;
-                pdfContent.appendChild(line);
-            }
+            // Update page count badge
+            document.getElementById('pageCounter').innerText = `Total Pages: ${container.children.length}`;
         }
 
         function downloadPDF() {
-            const element = document.getElementById('pdfContent');
+            // Temporary disable scaling for high-res capture
             const scaleBox = document.querySelector('.scale-box');
-            
-            document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.page-limit-line').forEach(el => el.style.display = 'none');
-
             const originalTransform = scaleBox.style.transform;
-            const originalMargin = scaleBox.style.marginBottom;
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
+            // Select all pages
+            const pages = document.querySelectorAll('.pdf-page');
+            
+            // We'll generate one PDF from ALL pages. 
+            // html2pdf can take an element containing multiple pages, but it might mess up breaks.
+            // BEST PRACTICE: Capture the container, but ensure pages have specific break classes?
+            // Actually, since we simulate pages visually with fixed height, html2pdf needs to know.
+            
             const opt = {
-                margin:       [10, 10, 10, 10], 
-                filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
+                margin:       0, // We handle margins inside .pdf-page
+                filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'] }
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
+
+            // Capture the whole container. 
+            // Since our .pdf-page divs are exactly A4 size, jsPDF should (mostly) respect them.
+            // BUT to be safe, we iterate or rely on good CSS.
             
-            html2pdf().set(opt).from(element).save().then(() => {
+            html2pdf().set(opt).from(scaleBox).save().then(() => {
                 scaleBox.style.transform = originalTransform;
-                scaleBox.style.marginBottom = originalMargin;
-                document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'block');
-                checkPageHeight();
+                scaleBox.style.marginBottom = '-150%';
             });
         }
 
