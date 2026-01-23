@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Question Maker</title>
+    <title>PDF Question Maker | Interactive Learning</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -13,10 +13,12 @@
     
     <style>
         :root {
-            --bg-dark: #020617;
+            --bg-dark: #0f172a;
             --panel-bg: #1e293b;
+            --input-bg: #334155;
             --border-color: rgba(255, 255, 255, 0.1);
             --primary: #8b5cf6;
+            --accent: #fbbf24;
             --text-main: #f1f5f9;
         }
 
@@ -84,37 +86,55 @@
         /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            background: var(--panel-bg); padding: 25px; border-radius: 20px;
             border: 1px solid var(--border-color);
             height: auto; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
+        
+        /* Stylish Inputs */
         .form-control {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);
-            color: white; padding: 10px; border-radius: 8px; font-size: 14px;
+            width: 100%; 
+            background: var(--input-bg); 
+            border: 2px solid transparent;
+            color: white; padding: 12px; border-radius: 12px; font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .form-control:focus {
+            outline: none;
+            background: #1e293b;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
         }
         
         .question-card {
-            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;
-            margin-bottom: 10px; border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px;
+            margin-bottom: 15px; border: 1px solid var(--border-color);
+            position: relative;
         }
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #fbbf24; margin-bottom: 8px; }
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent); margin-bottom: 10px; font-weight: 700; }
         
         .btn-add {
-            width: 100%; padding: 10px; border: 1px dashed var(--primary); background: transparent;
-            color: var(--primary); border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 600;
+            width: 100%; padding: 12px; border: 2px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
+            color: var(--primary); border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: 700;
+            transition: 0.3s;
         }
+        .btn-add:hover { background: var(--primary); color: white; }
         
         .btn-download {
-            width: 100%; padding: 14px; border-radius: 50px; border: none;
-            background: linear-gradient(90deg, #10b981, #3b82f6); color: white;
-            font-weight: 700; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+            width: 100%; padding: 16px; border-radius: 50px; border: none;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6); color: white;
+            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            transition: transform 0.2s;
         }
+        .btn-download:hover { transform: translateY(-2px); }
 
         /* --- RIGHT: PREVIEW CONTAINER --- */
         .preview-wrapper {
@@ -122,9 +142,9 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            background: #334155; 
+            background: #475569; 
             padding: 40px 20px;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: auto; 
             min-height: 600px;
         }
@@ -140,15 +160,15 @@
             min-height: 296mm;
             background: white;
             color: black !important;
-            padding: 12mm 15mm;
+            padding: 15mm;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
-            overflow: hidden; /* Key to prevent blank page overflow */
+            overflow: hidden; 
             
-            /* Watermark Implementation (SVG Background for Multi-page support) */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='50%' font-size='50' fill='rgba(0,0,0,0.03)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 200, 200)'>Interactive Learning</text></svg>");
+            /* Watermark: Increased Opacity */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.1)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
             background-repeat: repeat;
             background-position: center;
         }
@@ -160,67 +180,70 @@
             text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; 
             margin-top: 0;
         }
-        .pdf-main-title {
-            background: #000; color: #fff !important; /* Title Block */
-            display: inline-block;
-            padding: 5px 25px; font-size: 24px; font-weight: 700; margin-bottom: 5px;
-            border-radius: 2px;
+        .brand-name-pdf {
+            font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 5px; display: block; color: #333 !important;
         }
-        .pdf-sub-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+        .pdf-main-title {
+            background: transparent; /* No BG */
+            border: 2px solid #000; /* Optional: Box border like example */
+            color: #000 !important;
+            display: inline-block;
+            padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px;
+        }
+        .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
         /* 2-Column Layout with Vertical Line */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
-            /* VERTICAL LINE */
-            column-rule: 1px solid #999;
+            /* Visible Vertical Line */
+            column-rule: 1px solid #000;
             text-align: left;
             display: block; 
         }
 
         .mcq-item {
             margin-bottom: 15px;
-            break-inside: avoid; /* Keeps question block together */
+            break-inside: avoid;
             page-break-inside: avoid;
-            font-size: 13px;
+            font-size: 14px; /* Better readability */
             line-height: 1.4;
-            /* Padding right to avoid text hitting the vertical line */
             padding-right: 5px;
         }
         
-        .q-text { font-weight: 700; font-size: 14px; margin-bottom: 5px; display: block;}
+        .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
         
         .options-grid {
             display: grid; grid-template-columns: 1fr 1fr; 
-            font-size: 12px; margin-left: 15px; row-gap: 4px;
+            font-size: 13px; margin-left: 15px; row-gap: 4px;
         }
         
-        /* Answer Positioned Below */
+        /* Answer Position: Left Side below options */
         .ans-row {
-            text-align: right; 
-            font-size: 12px; 
+            text-align: left; /* Changed to Left */
+            font-size: 13px; 
             font-weight: 700; 
             margin-top: 5px;
-            padding-top: 2px;
-            border-top: 1px dashed #ccc; /* Subtle separation */
+            margin-left: 15px; /* Align with options */
         }
         
         .exp-box {
-            font-size: 11px; color: #333 !important; margin-top: 3px;
-            font-style: italic;
+            font-size: 12px; color: #333 !important; margin-top: 3px;
+            font-style: italic; margin-left: 15px;
         }
 
         /* Footer */
         .pdf-footer {
-            margin-top: 20px;
+            margin-top: 30px;
             width: 100%;
             text-align: center; 
-            background: transparent; color: #000 !important;
-            padding: 5px; font-size: 11px; font-weight: 600;
-            border-top: 1px solid #ccc;
+            background: transparent; /* No Black BG */
+            padding: 8px; font-size: 12px; font-weight: 600;
+            border-top: 1px solid #000;
         }
-        
+
         /* Mobile Responsive Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
@@ -260,7 +283,7 @@
 
     <div class="container">
         <div class="editor-section">
-            <div class="section-title">PDF Details</div>
+            <div class="section-title">PDF Content</div>
             
             <div class="input-group">
                 <label>Main Heading</label>
@@ -277,7 +300,7 @@
 
             <div id="questionsList"></div>
 
-            <button class="btn-add" onclick="addQuestion()">+ Add Question</button>
+            <button class="btn-add" onclick="addQuestion()">+ Add New Question</button>
             <button class="btn-download" onclick="downloadPDF()">Download PDF</button>
         </div>
 
@@ -285,6 +308,7 @@
             <div class="scale-box">
                 <div id="pdfContent">
                     <div class="pdf-header">
+                        <div class="brand-name-pdf">Interactive Learning</div>
                         <div class="pdf-main-title" id="pTitle">স্থানীয় সরকার বিভাগ</div>
                         <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
                         <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
@@ -344,18 +368,18 @@
                 item.className = 'question-card';
                 item.innerHTML = `
                     <div class="q-header">
-                        <span>#${i+1}</span>
+                        <span>Question ${i+1}</span>
                         <i class="fas fa-trash" onclick="removeQuestion(${q.id})" style="cursor:pointer; color:#ef4444;"></i>
                     </div>
-                    <input class="form-control" style="margin-bottom:5px;" placeholder="Question" value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:5px;">
+                    <input class="form-control" style="margin-bottom:8px;" placeholder="প্রশ্ন লিখুন..." value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
                         <input class="form-control" placeholder="ক" value="${q.a}" oninput="updateData(${q.id}, 'a', this.value)">
                         <input class="form-control" placeholder="খ" value="${q.b}" oninput="updateData(${q.id}, 'b', this.value)">
                         <input class="form-control" placeholder="গ" value="${q.c}" oninput="updateData(${q.id}, 'c', this.value)">
                         <input class="form-control" placeholder="ঘ" value="${q.d}" oninput="updateData(${q.id}, 'd', this.value)">
                     </div>
-                    <input class="form-control" style="margin-bottom:5px;" placeholder="Ans (e.g. ক)" value="${q.ans}" oninput="updateData(${q.id}, 'ans', this.value)">
-                    <textarea class="form-control" style="height:40px;" placeholder="Explanation" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
+                    <input class="form-control" style="margin-bottom:8px;" placeholder="সঠিক উত্তর (যেমন: ক)" value="${q.ans}" oninput="updateData(${q.id}, 'ans', this.value)">
+                    <textarea class="form-control" style="height:50px;" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
                 `;
                 list.appendChild(item);
             });
@@ -377,7 +401,6 @@
                 div.className = 'mcq-item';
                 const expHTML = q.exp ? `<div class="exp-box">${q.exp}</div>` : '';
                 
-                // Updated HTML structure for Answer below options
                 div.innerHTML = `
                     <span class="q-text">${toBn(i+1)}. ${q.q}</span>
                     <div class="options-grid">
@@ -404,13 +427,11 @@
             scaleBox.style.margin = '0';
 
             const opt = {
-                // Reduced margins to prevent blank pages from overflow
                 margin:       [10, 10, 10, 10], 
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                // Use strict page breaking to avoid cutting lines
                 pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
             
