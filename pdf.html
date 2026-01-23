@@ -455,7 +455,7 @@
             const hex = Math.random().toString(16).substring(2, 8);
 
             for (let i = 0; i < pages.length; i++) {
-                const canvas = await html2canvas(pages[i], { scale: 15, useCORS: true });
+                const canvas = await html2canvas(pages[i], { scale: 4, useCORS: true });
                 const link = document.createElement('a');
                 link.download = `Page-${i+1}_${hex}.png`;
                 link.href = canvas.toDataURL("image/png");
