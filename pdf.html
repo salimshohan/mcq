@@ -16,7 +16,7 @@
         :root {
             --bg-dark: #0f172a;
             --panel-bg: #1e293b;
-            --input-bg: #0f172a;
+            --input-bg: #020617;
             --border-color: #334155;
             --primary: #8b5cf6;
             --accent: #fbbf24;
@@ -186,7 +186,6 @@
         /* --- A4 PAPER --- */
         #pdfContent {
             width: 210mm;
-            /* Auto height */
             min-height: 297mm; 
             background: white;
             color: black !important;
@@ -197,10 +196,10 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Repeat on Y axis, sized to A4 height */
+            /* Watermark: Repeat-Y centered */
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
             background-repeat: repeat-y;
-            background-size: 100% 297mm; /* Key for 1 per page */
+            background-size: 100% 297mm; 
             background-position: center top;
         }
         
@@ -233,11 +232,11 @@
             display: block; 
             min-height: 200px;
             position: relative;
-            /* Stronger Vertical Line */
+            /* Thin Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
         }
 
-        /* Simplified Subject Header (No Box) */
+        /* Subject Header */
         .section-header-pdf {
             column-span: all;
             text-align: center;
@@ -246,7 +245,8 @@
             margin-bottom: 15px;
             margin-top: 15px;
             break-inside: avoid;
-            background: white; /* To hide vertical line behind text */
+            /* White background to hide vertical line behind text */
+            background: white; 
             padding: 5px;
             border-bottom: 2px solid #333;
             display: inline-block;
@@ -260,7 +260,8 @@
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            background: white; /* Important to overlay vertical line */
+            /* Transparent background so watermark is visible! */
+            background: transparent; 
             position: relative;
         }
         
@@ -372,6 +373,24 @@
         </div>
     </div>
 
+    <datalist id="subjectOptions">
+        <option value="Bangla">
+        <option value="English">
+        <option value="General Knowledge">
+        <option value="Mathematics">
+        <option value="ICT">
+        <option value="Physics">
+        <option value="Chemistry">
+        <option value="Biology">
+        <option value="Accounting">
+        <option value="Management">
+        <option value="Geography">
+        <option value="International Affairs">
+        <option value="Bangladesh Affairs">
+        <option value="Mental Ability">
+        <option value="Ethics & Governance">
+    </datalist>
+
     <script>
         function toggleMenu() {
             document.getElementById('navMenu').classList.toggle('open');
@@ -440,7 +459,7 @@
             });
 
             if (total === 0) {
-                summaryBox.innerHTML = 'Add items to see summary.';
+                summaryBox.innerHTML = 'Add items to start.';
                 return;
             }
 
@@ -471,7 +490,7 @@
                                 <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
                             </div>
                         </div>
-                        <input class="form-control" placeholder="Subject Name (e.g. বাংলা)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
+                        <input class="form-control" list="subjectOptions" placeholder="Subject Name (e.g. Bangla)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
                     `;
                 } else {
                     qCounter++;
@@ -560,7 +579,6 @@
             scaleBox.style.margin = '0';
 
             const opt = {
-                // Fixed blank page issue with specific margins
                 margin:       [10, 10, 10, 10], 
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
