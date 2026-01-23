@@ -55,9 +55,12 @@
         
         .logo-img { height: 35px; margin-right: 10px; border-radius: 50%; }
 
+        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 14px; }
+        .nav-links a:hover { color: var(--primary); }
+
         /* --- CONTAINER --- */
         .container {
-            margin-top: 100px; /* Space for navbar */
+            margin-top: 90px; /* Space for navbar */
             width: 95%; max-width: 1400px;
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
@@ -91,7 +94,6 @@
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 80px; }
 
-        /* CARDS */
         .question-card {
             background: rgba(30, 41, 59, 0.5); padding: 20px; border-radius: 12px;
             margin-bottom: 20px; border: 1px solid #334155; position: relative;
@@ -129,77 +131,94 @@
 
         /* --- PREVIEW SECTION --- */
         .preview-wrapper {
-            flex: 1.5; display: flex; justify-content: center; align-items: flex-start;
+            flex: 1.5; display: flex; flex-direction: column; align-items: center;
             background: #475569; padding: 30px; border-radius: 20px;
-            overflow: auto; min-height: 600px;
+            overflow: auto; min-height: 600px; gap: 30px;
         }
 
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- PDF DESIGN (A4) --- */
-        #pdfContent {
+        /* --- REAL A4 PAGE --- */
+        .pdf-page {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
             background: white;
             color: black !important;
-            padding: 15mm;
+            padding: 15mm 15mm 10mm 15mm; /* Top Right Bottom Left */
             position: relative;
             box-shadow: 0 5px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            
-            /* Watermark fixed at center of view */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='50' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
-            background-repeat: repeat-y;
-            background-position: center;
-            background-size: 100% 297mm;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
         
         #pdfContent * { color: black !important; }
 
-        /* PDF Header */
+        /* WATERMARK (Smaller & Center) */
+        .watermark-layer {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 40px; /* Smaller */
+            font-weight: 900;
+            color: rgba(0,0,0,0.06); /* Very Light */
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* VERTICAL LINE */
+        .vertical-line {
+            position: absolute;
+            left: 50%; 
+            /* Start below header, end above footer */
+            top: 55mm; bottom: 15mm; 
+            width: 0.5pt;
+            background-color: #999;
+            z-index: 1;
+        }
+
+        /* HEADER */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 0px; 
-            /* Header doesn't have the vertical line */
+            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 5px; 
+            flex-shrink: 0;
         }
         .brand-name-pdf { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
         .pdf-main-title { border: 2px solid #000; display: inline-block; padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* CONTENT BODY (Contains Vertical Line) */
-        .pdf-body {
+        /* CONTENT COLUMNS (Smart Pagination Target) */
+        .pdf-content-area {
+            flex-grow: 1;
             column-count: 2;
             column-gap: 10mm;
-            text-align: left;
-            min-height: 200px;
+            column-fill: auto; /* Key for Left->Right fill */
             position: relative;
-            margin-top: 15px;
-            /* Vertical Line as Background Gradient */
-            background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
-            /* Ensures Left Column fills first */
-            column-fill: auto; 
+            z-index: 2;
+            overflow: hidden; /* Important for JS height calc */
         }
 
-        /* Subject Header */
+        /* Elements */
         .section-header-pdf {
             text-align: center; font-weight: 800; font-size: 16px;
             margin: 15px 0 10px 0;
             break-inside: avoid;
-            background: white; /* Hides line behind text */
+            background: white; 
             padding: 2px 5px;
             display: inline-block;
             width: 100%;
             border-bottom: 1px solid #333;
         }
 
-        /* Questions */
         .mcq-item {
             margin-bottom: 12px;
             break-inside: avoid;
             font-size: 14px; line-height: 1.4;
             padding-right: 8px;
             background: transparent; 
-            /* Shadow to make text readable over line if overlap */
             text-shadow: 3px 0 0 #fff, -3px 0 0 #fff; 
         }
         
@@ -208,22 +227,15 @@
         .ans-row { text-align: left; font-size: 12px; font-weight: 700; margin-top: 4px; margin-left: 15px; }
         .exp-box { font-size: 12px; color: #333 !important; margin-top: 3px; font-style: italic; margin-left: 15px; border-top: 0.5px dotted #ccc; padding-top: 2px; }
 
-        /* Page Break Logic */
-        .html2pdf__page-break {
-            height: 0; margin: 0; border: none;
-            break-after: page; page-break-after: always;
-            column-span: all; display: block;
-        }
-        .break-line-preview {
-            column-span: all; border-top: 2px dashed #ef4444;
-            color: #ef4444; text-align: center; margin: 20px 0;
-            font-size: 10px; font-weight: bold; background: white; padding: 5px;
-        }
-
-        /* Visual Guide for Page Limit */
-        .page-guide {
-            position: absolute; left: 0; width: 100%; height: 1px;
-            border-top: 1px dashed red; opacity: 0.3; pointer-events: none;
+        /* FOOTER */
+        .pdf-footer {
+            text-align: center; 
+            background: transparent;
+            padding-top: 5px; font-size: 11px; font-weight: 600;
+            border-top: 1px solid #000;
+            margin-top: 5px;
+            flex-shrink: 0;
+            z-index: 2;
         }
 
         /* Mobile Scaling */
@@ -242,8 +254,9 @@
             <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
             Interactive Learning
         </div>
-        <div class="hamburger">
-            <span></span><span></span><span></span>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Tools</a>
         </div>
     </header>
 
@@ -276,19 +289,8 @@
         </div>
 
         <div class="preview-wrapper">
-            <div class="scale-box">
-                <div id="pdfContent">
-                    <div class="pdf-header">
-                        <div class="brand-name-pdf">Interactive Learning</div>
-                        <div class="pdf-main-title" id="pTitle">স্থানীয় সরকার বিভাগ</div>
-                        <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
-                        <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
-                    </div>
-
-                    <div class="pdf-body" id="pdfBody">
-                        </div>
+            <div class="scale-box" id="pdfPreviewContainer">
                 </div>
-            </div>
         </div>
     </div>
 
@@ -321,7 +323,7 @@
             if(item) { item[field] = val; updatePDF(); }
         }
 
-        // --- EDITOR UI ---
+        // --- EDITOR RENDER ---
         function renderInputs() {
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
@@ -339,7 +341,7 @@
                 inner += `<div class="control-icons">
                     <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
                     <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
-                    <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
+                    <i class="fas fa-trash fa-lg" style="color:#ef4444" onclick="removeItem(${index})"></i>
                 </div></div>`;
 
                 if(item.type === 'header') {
@@ -369,51 +371,79 @@
             });
         }
 
-        // --- PDF PREVIEW ---
+        // --- SMART PAGINATION LOGIC ---
         function updatePDF() {
-            document.getElementById('pTitle').innerText = document.getElementById('headTitle').value;
-            document.getElementById('pSub').innerText = document.getElementById('subTitle').value;
-            document.getElementById('pDate').innerText = document.getElementById('examDate').value;
+            const container = document.getElementById('pdfPreviewContainer');
+            container.innerHTML = ''; 
 
-            const body = document.getElementById('pdfBody');
-            body.innerHTML = ''; // IMPORTANT: Clears old content to prevent "nothing adding" issue
-
+            const headTitle = document.getElementById('headTitle').value;
+            const subTitle = document.getElementById('subTitle').value;
+            const examDate = document.getElementById('examDate').value;
             const banglaNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => banglaNums[x] || x).join('');
-            
-            let qCount = 0;
 
-            // Draw Red Guide Lines for Pages
-            const guides = document.querySelectorAll('.page-guide');
-            guides.forEach(g => g.remove());
-            const contentBox = document.getElementById('pdfContent');
-            const pageHeight = 1122; // A4 px
-            for(let i=1; i<=5; i++) {
-                let guide = document.createElement('div');
-                guide.className = 'page-guide';
-                guide.style.top = (i * pageHeight) + 'px';
-                contentBox.appendChild(guide);
+            // Helper to create a page
+            function createPage(isFirst) {
+                const page = document.createElement('div');
+                page.className = 'pdf-page';
+                
+                // Add Watermark
+                page.innerHTML += `<div class="watermark-layer">Interactive Learning</div>`;
+                
+                // Add Vertical Line
+                // Calculated relative to header/footer space
+                const line = document.createElement('div');
+                line.className = 'vertical-line';
+                // Adjust line position based on if header exists
+                line.style.top = isFirst ? '65mm' : '20mm';
+                page.appendChild(line);
+
+                // Header (Only on Page 1)
+                if(isFirst) {
+                    page.innerHTML += `
+                        <div class="pdf-header">
+                            <div class="brand-name-pdf">Interactive Learning</div>
+                            <div class="pdf-main-title">${headTitle}</div>
+                            <div class="pdf-sub-title">${subTitle}</div>
+                            <div class="pdf-meta">${examDate}</div>
+                        </div>`;
+                } else {
+                    // Spacer for next pages
+                    const spacer = document.createElement('div');
+                    spacer.style.height = '10px';
+                    spacer.style.flexShrink = '0';
+                    page.appendChild(spacer);
+                }
+
+                // Content Area (Columns)
+                const contentArea = document.createElement('div');
+                contentArea.className = 'pdf-content-area';
+                page.appendChild(contentArea);
+
+                // Footer
+                page.innerHTML += `<div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>`;
+
+                container.appendChild(page);
+                return contentArea;
             }
 
+            let currentContent = createPage(true);
+            let qCount = 0;
+
             items.forEach((item) => {
+                // Handle Manual Page Break
+                if (item.type === 'break') {
+                    currentContent = createPage(false);
+                    return;
+                }
+
+                // Create Content Element
+                const el = document.createElement('div');
                 if (item.type === 'header') {
-                    const el = document.createElement('div');
                     el.className = 'section-header-pdf';
                     el.innerText = item.title;
-                    body.appendChild(el);
-                } else if (item.type === 'break') {
-                    // Preview
-                    const prev = document.createElement('div');
-                    prev.className = 'break-line-preview';
-                    prev.innerText = '-- PAGE BREAK --';
-                    body.appendChild(prev);
-                    // PDF Break
-                    const br = document.createElement('div');
-                    br.className = 'html2pdf__page-break';
-                    body.appendChild(br);
                 } else {
                     qCount++;
-                    const el = document.createElement('div');
                     el.className = 'mcq-item';
                     const expHTML = item.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
                     el.innerHTML = `
@@ -425,39 +455,49 @@
                         <div class="ans-row">উত্তর: ${item.ans}</div>
                         ${expHTML}
                     `;
-                    body.appendChild(el);
+                }
+
+                // Append to check height
+                currentContent.appendChild(el);
+
+                // Overflow Check
+                // We assume A4 content area is roughly fixed.
+                // If scrollHeight > offsetHeight, it means content has spilled over columns
+                // and is now increasing the container's height (or being hidden).
+                // Note: with flex-grow, height is dynamic up to page limit. 
+                // We can check if the page wrapper is overflowing.
+                const currentPage = currentContent.closest('.pdf-page');
+                
+                if (currentPage.scrollHeight > (currentPage.clientHeight + 2)) {
+                    // Overflow detected!
+                    currentContent.removeChild(el); // Undo add
+                    currentContent = createPage(false); // New Page
+                    currentContent.appendChild(el); // Add to new page
                 }
             });
         }
 
         function downloadPDF() {
-            const element = document.getElementById('pdfContent');
+            const element = document.getElementById('pdfPreviewContainer');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Hide preview guides
-            document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.page-guide').forEach(el => el.style.display = 'none');
-
-            // Reset Transform
+            // Reset scale for capture
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             const opt = {
-                margin:       [10, 10, 10, 10], 
+                margin:       0,
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'] }
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
-                document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'block');
-                updatePDF(); // Redraw guides
             });
         }
 
