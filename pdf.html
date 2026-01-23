@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -95,7 +95,6 @@
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Topic Summary Box */
         #topicSummary {
             background: rgba(139, 92, 246, 0.1);
             padding: 10px; border-radius: 8px;
@@ -103,15 +102,15 @@
             border: 1px dashed var(--primary);
         }
 
-        /* PREMIUM INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
+        /* PREMIUM INPUT DESIGN */
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
             border: none;
-            border-bottom: 2px solid #334155; /* Underline style */
+            border-bottom: 2px solid #334155; 
             color: #f1f5f9; padding: 12px 10px; font-size: 14px;
             transition: all 0.3s ease;
             border-radius: 4px 4px 0 0;
@@ -121,7 +120,6 @@
             background: #1e293b;
             border-bottom-color: var(--primary);
         }
-        ::placeholder { color: #475569; }
         
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 80px; border: 1px solid #334155; border-radius: 8px; }
@@ -133,6 +131,8 @@
             position: relative;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        
+        /* Header Input Card */
         .header-card {
             background: linear-gradient(90deg, #1e293b, #0f172a);
             padding: 15px; border-radius: 8px;
@@ -140,8 +140,14 @@
             position: relative;
         }
 
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 10px; font-weight: 600; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #94a3b8; margin-bottom: 12px; font-weight: 700; }
         
+        .control-icons { display: flex; gap: 10px; }
+        .control-icon { cursor: pointer; padding: 5px; border-radius: 4px; transition: 0.2s; }
+        .control-icon:hover { background: rgba(255,255,255,0.1); color: white; }
+        .fa-trash { color: #ef4444; }
+        .fa-arrow-up, .fa-arrow-down { color: var(--primary); }
+
         .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .btn-add {
             flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
@@ -159,7 +165,7 @@
         }
         .btn-download:hover { transform: translateY(-2px); }
 
-        /* --- RIGHT: PREVIEW CONTAINER --- */
+        /* --- PREVIEW --- */
         .preview-wrapper {
             flex: 1.5;
             display: flex;
@@ -177,10 +183,11 @@
             transition: transform 0.3s ease;
         }
 
-        /* --- A4 PAPER DESIGN --- */
+        /* --- A4 PAPER --- */
         #pdfContent {
             width: 210mm;
-            min-height: 296mm;
+            /* Auto height */
+            min-height: 297mm; 
             background: white;
             color: black !important;
             padding: 15mm;
@@ -190,15 +197,16 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark */
+            /* Watermark: Repeat on Y axis, sized to A4 height */
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
-            background-repeat: repeat;
-            background-position: center;
+            background-repeat: repeat-y;
+            background-size: 100% 297mm; /* Key for 1 per page */
+            background-position: center top;
         }
         
         #pdfContent * { color: black !important; }
 
-        /* Header Design */
+        /* Header */
         .pdf-header {
             text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; 
             margin-top: 0;
@@ -217,7 +225,7 @@
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* 2-Column Layout with STRONG VERTICAL LINE */
+        /* Body & Vertical Line */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
@@ -225,22 +233,24 @@
             display: block; 
             min-height: 200px;
             position: relative;
-            /* Stronger Vertical Line logic */
+            /* Stronger Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
         }
 
-        /* Section Header in PDF */
+        /* Simplified Subject Header (No Box) */
         .section-header-pdf {
-            column-span: all; /* Spans across both columns */
-            background: #f1f5f9;
-            border: 1px solid #000;
+            column-span: all;
             text-align: center;
             font-weight: 800;
-            padding: 5px;
+            font-size: 18px;
             margin-bottom: 15px;
-            margin-top: 10px;
-            font-size: 15px;
+            margin-top: 15px;
             break-inside: avoid;
+            background: white; /* To hide vertical line behind text */
+            padding: 5px;
+            border-bottom: 2px solid #333;
+            display: inline-block;
+            width: 100%;
         }
 
         .mcq-item {
@@ -250,7 +260,7 @@
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            background: white; /* Important to overlay the line if text overlaps */
+            background: white; /* Important to overlay vertical line */
             position: relative;
         }
         
@@ -263,17 +273,13 @@
         
         .ans-row {
             text-align: left;
-            font-size: 13px; 
-            font-weight: 700; 
-            margin-top: 6px;
-            margin-left: 15px; 
+            font-size: 13px; font-weight: 700; margin-top: 6px; margin-left: 15px; 
         }
         
         .exp-box {
             font-size: 12px; color: #333 !important; margin-top: 4px;
             font-style: italic; margin-left: 15px;
-            border-top: 0.5px dotted #ccc;
-            padding-top: 2px;
+            border-top: 0.5px dotted #ccc; padding-top: 2px;
         }
 
         /* Footer */
@@ -286,23 +292,16 @@
             border-top: 1px solid #000;
         }
 
-        /* Mobile Responsive Scaling */
+        /* Mobile Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
             .preview-wrapper { width: 100%; padding: 10px; overflow: hidden; justify-content: center;}
-            
-            .scale-box { 
-                transform: scale(0.42); 
-                transform-origin: top center; 
-                margin-bottom: -150%; 
-            }
+            .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
         }
-        
         @media (min-width: 901px) {
             .scale-box { transform: scale(0.85); transform-origin: top center; }
         }
-
     </style>
 </head>
 <body>
@@ -327,7 +326,7 @@
         <div class="editor-section">
             <div class="section-title">PDF Content</div>
             
-            <div id="topicSummary">Total Questions: 0</div>
+            <div id="topicSummary">Add subjects and questions to start.</div>
 
             <div class="input-group">
                 <label>Main Heading</label>
@@ -378,7 +377,6 @@
             document.getElementById('navMenu').classList.toggle('open');
         }
 
-        // List to hold both Headers and Questions
         let items = [];
 
         function init() {
@@ -398,8 +396,18 @@
             updatePDF();
         }
 
-        function removeItem(id) {
-            items = items.filter(item => item.id !== id);
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderInputs();
+            updatePDF();
+        }
+
+        function moveItem(index, direction) {
+            if (direction === 'up' && index > 0) {
+                [items[index], items[index - 1]] = [items[index - 1], items[index]];
+            } else if (direction === 'down' && index < items.length - 1) {
+                [items[index], items[index + 1]] = [items[index + 1], items[index]];
+            }
             renderInputs();
             updatePDF();
         }
@@ -431,6 +439,11 @@
                 }
             });
 
+            if (total === 0) {
+                summaryBox.innerHTML = 'Add items to see summary.';
+                return;
+            }
+
             summaryHTML = `<b>Total: ${total}</b> | `;
             for (const [key, value] of Object.entries(counts)) {
                 if(value > 0) summaryHTML += `${key}: ${value} &nbsp; `;
@@ -442,24 +455,35 @@
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
             
-            items.forEach((item, i) => {
+            let qCounter = 0;
+
+            items.forEach((item, index) => {
                 const div = document.createElement('div');
                 
                 if (item.type === 'header') {
                     div.className = 'header-card';
                     div.innerHTML = `
                         <div class="q-header">
-                            <span>SUBJECT HEADER</span>
-                            <i class="fas fa-trash" onclick="removeItem(${item.id})" style="cursor:pointer; color:#ef4444;"></i>
+                            <span>SUBJECT SECTION</span>
+                            <div class="control-icons">
+                                <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
+                                <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
+                                <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
+                            </div>
                         </div>
                         <input class="form-control" placeholder="Subject Name (e.g. বাংলা)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
                     `;
                 } else {
+                    qCounter++;
                     div.className = 'question-card';
                     div.innerHTML = `
                         <div class="q-header">
-                            <span>Question</span>
-                            <i class="fas fa-trash" onclick="removeItem(${item.id})" style="cursor:pointer; color:#ef4444;"></i>
+                            <span>Question ${qCounter}</span>
+                            <div class="control-icons">
+                                <i class="fas fa-arrow-up control-icon" onclick="moveItem(${index}, 'up')"></i>
+                                <i class="fas fa-arrow-down control-icon" onclick="moveItem(${index}, 'down')"></i>
+                                <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
+                            </div>
                         </div>
                         <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
@@ -470,7 +494,7 @@
                         </div>
                         
                         <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${item.id}, 'ans', this.value)">
-                            <option value="">সঠিক উত্তর নির্বাচন করুন...</option>
+                            <option value="">সঠিক উত্তর...</option>
                             <option value="ক" ${item.ans === 'ক' ? 'selected' : ''}>ক</option>
                             <option value="খ" ${item.ans === 'খ' ? 'selected' : ''}>খ</option>
                             <option value="গ" ${item.ans === 'গ' ? 'selected' : ''}>গ</option>
@@ -536,7 +560,8 @@
             scaleBox.style.margin = '0';
 
             const opt = {
-                margin:       [15, 10, 10, 10], 
+                // Fixed blank page issue with specific margins
+                margin:       [10, 10, 10, 10], 
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
@@ -550,6 +575,7 @@
             });
         }
 
+        // Init
         init();
     </script>
 </body>
