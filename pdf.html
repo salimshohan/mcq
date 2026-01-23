@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart PDF Question Maker</title>
+    <title>PDF Question Maker | Interactive Learning</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,8 @@
         :root {
             --bg-dark: #0f172a;
             --panel-bg: #1e293b;
+            --input-bg: #020617;
+            --border-color: #334155;
             --primary: #6366f1;
             --accent: #fbbf24;
             --text-main: #f1f5f9;
@@ -32,107 +34,130 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER (FIXED NAVBAR) --- */
         header {
             width: 100%;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 5%;
+            padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 1000;
+            position: fixed; top: 0; left: 0; z-index: 9999;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         .brand-logo {
             display: flex; align-items: center;
-            font-size: 18px; font-weight: 700;
+            font-size: 20px; font-weight: 800;
             background: linear-gradient(135deg, #a78bfa, #60a5fa);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         
-        .logo-img { height: 30px; margin-right: 10px; border-radius: 50%; }
+        .logo-img { height: 35px; margin-right: 10px; border-radius: 50%; }
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 80px; width: 95%; max-width: 1400px;
+            margin-top: 100px; /* Space for fixed header */
+            width: 95%; max-width: 1400px;
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- LEFT: EDITOR --- */
+        /* --- LEFT: EDITOR SECTION --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            background: var(--panel-bg); padding: 25px; border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.1);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 16px; font-weight: 700; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Page Count Badge */
-        #pageCounter {
-            background: rgba(99, 102, 241, 0.2); color: #a5b4fc;
-            padding: 8px 12px; border-radius: 6px; font-size: 13px; font-weight: 600;
-            margin-bottom: 15px; border: 1px solid rgba(99, 102, 241, 0.4);
-            text-align: center;
+        #topicSummary {
+            background: rgba(99, 102, 241, 0.15);
+            padding: 12px; border-radius: 8px;
+            margin-bottom: 20px; font-size: 13px; color: #e0e7ff;
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
 
-        /* NEW INPUT DESIGN (Modern Box) */
+        /* INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
+        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         .form-control {
             width: 100%; 
-            background: #020617; 
+            background: var(--input-bg); 
             border: 1px solid #334155; 
-            color: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px;
-            transition: all 0.2s ease;
+            color: #f1f5f9; padding: 12px 14px; font-size: 14px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
         }
         .form-control:focus {
             outline: none;
+            background: #0f172a;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
         
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 80px; }
 
-        /* Cards */
-        .card-base {
-            background: #1e293b; padding: 15px; border-radius: 10px;
-            margin-bottom: 15px; border: 1px solid #334155; position: relative;
+        /* CARDS */
+        .question-card {
+            background: rgba(30, 41, 59, 0.5); 
+            padding: 20px; border-radius: 12px;
+            margin-bottom: 20px; border: 1px solid #334155;
+            position: relative;
         }
-        .header-card { border-left: 4px solid var(--accent); background: linear-gradient(90deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%); }
-        .break-card { border: 1px dashed #ef4444; background: rgba(239, 68, 68, 0.05); color: #ef4444; text-align: center; font-weight: bold; }
+        
+        .header-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(15, 23, 42, 0.5));
+            padding: 15px; border-radius: 8px;
+            margin-bottom: 20px; border: 1px solid var(--primary);
+            position: relative;
+        }
 
-        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
+        .break-card {
+            background: rgba(239, 68, 68, 0.15);
+            padding: 12px; border-radius: 8px;
+            margin-bottom: 20px; border: 1px dashed #ef4444;
+            color: #ef4444; font-weight: 700;
+            text-align: center; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #cbd5e1; margin-bottom: 12px; font-weight: 700; }
         
         .control-icons { display: flex; gap: 8px; }
-        .control-icon { cursor: pointer; padding: 5px; border-radius: 4px; transition: 0.2s; background: rgba(255,255,255,0.05); }
-        .control-icon:hover { background: rgba(255,255,255,0.1); color: white; }
+        .control-icon { 
+            cursor: pointer; padding: 6px; border-radius: 4px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05);
+        }
+        .control-icon:hover { background: rgba(255,255,255,0.15); color: white; }
         .fa-trash { color: #f87171; }
+        .fa-arrow-up, .fa-arrow-down { color: var(--primary); }
 
-        /* Buttons */
-        .btn-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .btn-add {
-            flex: 1; padding: 10px; border: 1px solid #475569; background: #1e293b;
-            color: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;
-            transition: 0.2s; white-space: nowrap;
+            flex: 1; min-width: 120px; padding: 12px; border: 1px solid var(--primary); background: rgba(99, 102, 241, 0.1);
+            color: var(--text-main); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
+            transition: 0.3s;
         }
-        .btn-add:hover { background: #334155; border-color: #94a3b8; }
-        .btn-break { color: #f87171; border-color: #7f1d1d; background: rgba(127, 29, 29, 0.2); }
-        
-        .btn-download {
-            width: 100%; padding: 14px; border-radius: 8px; border: none;
-            background: var(--primary); color: white;
-            font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        }
-        .btn-download:hover { background: #4f46e5; }
+        .btn-add:hover { background: var(--primary); color: white; }
+        .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .btn-break:hover { background: #ef4444; color: white; }
 
-        /* --- PREVIEW WRAPPER --- */
+        .btn-download {
+            width: 100%; padding: 16px; border-radius: 50px; border: none;
+            background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
+            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-download:hover { transform: translateY(-2px); }
+
+        /* --- RIGHT: PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5;
             display: flex;
@@ -140,10 +165,10 @@
             align-items: center;
             background: #475569; 
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: auto; 
             min-height: 600px;
-            gap: 20px; /* Space between pages in preview */
+            gap: 30px;
         }
 
         .scale-box {
@@ -151,103 +176,127 @@
             transition: transform 0.3s ease;
         }
 
-        /* --- THE A4 PAGE (SMART PAGINATION) --- */
+        /* --- REAL A4 PAPER STYLING --- */
         .pdf-page {
             width: 210mm;
-            height: 296mm; /* Fixed A4 Height */
+            height: 297mm; /* Exact A4 Height */
             background: white;
             color: black !important;
             padding: 15mm;
-            position: relative;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            margin-bottom: 20px; /* Gap between pages in preview */
-            
-            /* Column Logic */
-            column-count: 2;
-            column-gap: 10mm;
-            column-fill: auto; /* Ensures L->R flow on THIS page */
-            
-            /* Visuals */
-            background-image: 
-                /* Vertical Line */
-                linear-gradient(to right, transparent 49.8%, #999 49.8%, #999 50.2%, transparent 50.2%),
-                /* Watermark */
-                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='50%' font-size='40' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 200, 200)'>Interactive Learning</text></svg>");
-            background-repeat: no-repeat, no-repeat;
-            background-size: 100% 100%, 100% 100%;
-            background-position: center, center;
-            
-            overflow: hidden; /* Hide overflow to detect breaks */
+            position: relative; /* For absolute positioning of line and watermark */
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            overflow: hidden; 
+            margin-bottom: 20px;
         }
-        
-        .pdf-page * { color: black !important; }
 
-        /* Header (Only on Page 1) */
+        /* WATERMARK LAYER (Under Content) */
+        .watermark-layer {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px;
+            font-weight: 900;
+            color: rgba(0,0,0,0.08); /* Very light grey */
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* VERTICAL LINE (Absolute Position) */
+        .vertical-line {
+            position: absolute;
+            left: 50%; top: 20mm; bottom: 20mm; /* Adjust top/bottom to match content area */
+            width: 0.5pt; /* Hairline width */
+            background-color: #999;
+            z-index: 1;
+        }
+
+        /* HEADER */
         .pdf-header {
             text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; 
-            column-span: all; /* Spans across columns */
+            position: relative; z-index: 2;
         }
         .brand-name-pdf {
             font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
             margin-bottom: 5px; display: block; color: #333 !important;
         }
         .pdf-main-title {
-            border: 2px solid #000; display: inline-block;
+            background: transparent;
+            border: 2px solid #000;
+            color: #000 !important;
+            display: inline-block;
             padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px;
         }
+        .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
+
+        /* CONTENT COLUMNS */
+        .pdf-content-area {
+            column-count: 2;
+            column-gap: 10mm;
+            column-fill: auto; /* Fills left column completely before going right */
+            height: 230mm; /* Approximate content height for A4 minus header/footer */
+            position: relative;
+            z-index: 2; /* Above watermark */
+        }
 
         /* Subject Header */
         .section-header-pdf {
-            text-align: center; font-weight: 800; font-size: 16px;
-            margin: 15px 0 10px 0;
+            text-align: center;
+            font-weight: 800;
+            font-size: 16px;
+            margin-bottom: 10px;
+            margin-top: 15px;
             break-inside: avoid;
-            background: white; /* Hides vertical line behind text */
-            padding: 2px;
-            border-bottom: 1px solid #333;
+            background: transparent; 
+            padding: 5px;
             display: block;
+            border-bottom: 1px solid #333;
+            width: 100%;
         }
 
-        /* Question Item */
         .mcq-item {
             margin-bottom: 12px;
             break-inside: avoid;
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            background: transparent;
+            background: transparent; /* Allows watermark to be seen */
             position: relative;
-            /* White text shadow to separate text from vertical line if they overlap */
-            text-shadow: 3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff; 
         }
         
-        .q-text { font-weight: 700; margin-bottom: 4px; display: block;}
+        .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
         
         .options-grid {
             display: grid; grid-template-columns: 1fr 1fr; 
-            font-size: 13px; margin-left: 15px; row-gap: 2px;
+            font-size: 13px; margin-left: 15px; row-gap: 4px;
         }
         
         .ans-row {
-            text-align: left; font-size: 12px; font-weight: 700; margin-top: 4px; margin-left: 15px; 
+            text-align: left;
+            font-size: 13px; font-weight: 700; margin-top: 6px; margin-left: 15px; 
         }
         
         .exp-box {
-            font-size: 12px; color: #333 !important; margin-top: 3px;
+            font-size: 12px; color: #333 !important; margin-top: 4px;
             font-style: italic; margin-left: 15px;
             border-top: 0.5px dotted #ccc; padding-top: 2px;
         }
 
-        /* Footer */
+        /* FOOTER */
         .pdf-footer {
             position: absolute; bottom: 10mm; left: 0; width: 100%;
-            text-align: center; padding: 5px; font-size: 11px; font-weight: 600;
-            border-top: 1px solid #000; background: white;
+            text-align: center; 
+            background: transparent;
+            padding: 5px; font-size: 11px; font-weight: 600;
+            border-top: 1px solid #000;
+            z-index: 2;
         }
 
         /* Mobile Scaling */
         @media (max-width: 900px) {
-            .container { flex-direction: column; }
+            .container { flex-direction: column; margin-top: 90px; }
             .editor-section { width: 100%; }
             .preview-wrapper { width: 100%; padding: 10px; }
             .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
@@ -264,14 +313,8 @@
             <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
             Interactive Learning
         </div>
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger">
             <span></span><span></span><span></span>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <a href="index.html">MCQ Card</a>
-            <a href="notice.html">Notice Maker</a>
-            <a href="pdf.html" style="color: var(--primary);">PDF Maker</a>
-            <a href="contact.html">Contact</a>
         </div>
     </header>
 
@@ -279,7 +322,7 @@
         <div class="editor-section">
             <div class="section-title">PDF Content</div>
             
-            <div id="pageCounter">Total Pages: 1</div>
+            <div id="topicSummary">Add items to start building your PDF.</div>
 
             <div class="input-group">
                 <label>Main Heading</label>
@@ -317,10 +360,6 @@
     </datalist>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('open');
-        }
-
         let items = [];
 
         function init() {
@@ -328,7 +367,7 @@
             updatePDF();
         }
 
-        // --- DATA MANAGEMENT ---
+        // --- DATA ---
         function addHeader() { items.push({ id: Date.now(), type: 'header', title: '' }); renderInputs(); updatePDF(); }
         function addQuestion() { items.push({ id: Date.now(), type: 'question', q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" }); renderInputs(); updatePDF(); }
         function addPageBreak() { items.push({ id: Date.now(), type: 'break' }); renderInputs(); updatePDF(); }
@@ -341,10 +380,26 @@
         }
         function updateData(id, field, val) {
             const item = items.find(x => x.id === id);
-            if(item) { item[field] = val; updatePDF(); }
+            if(item) { item[field] = val; updatePDF(); updateSummary(); }
         }
 
-        // --- EDITOR RENDERING ---
+        function updateSummary() {
+            const summaryBox = document.getElementById('topicSummary');
+            let counts = {}, total = 0, currentHeader = 'General';
+            items.forEach(item => {
+                if(item.type === 'header') currentHeader = item.title || 'Untitled';
+                else if(item.type === 'question') {
+                    if(!counts[currentHeader]) counts[currentHeader] = 0;
+                    counts[currentHeader]++; total++;
+                }
+            });
+            if(total===0) return;
+            let html = `<b>Total: ${total}</b> | `;
+            for(let [k,v] of Object.entries(counts)) if(v>0) html += `${k}: ${v} &nbsp; `;
+            summaryBox.innerHTML = html;
+        }
+
+        // --- EDITOR UI ---
         function renderInputs() {
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
@@ -352,7 +407,7 @@
 
             items.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = item.type === 'header' ? 'card-base header-card' : item.type === 'break' ? 'card-base break-card' : 'card-base question-card';
+                div.className = item.type === 'header' ? 'header-card' : item.type === 'break' ? 'break-card' : 'question-card';
                 
                 let inner = `<div class="q-header">`;
                 if(item.type === 'header') inner += `<span>SUBJECT</span>`;
@@ -366,10 +421,10 @@
                 </div></div>`;
 
                 if(item.type === 'header') {
-                    inner += `<input class="form-control" list="subjectOptions" placeholder="Subject Name (e.g. Bangla)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
+                    inner += `<input class="form-control" list="subjectOptions" placeholder="Subject Name" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
                 } else if(item.type === 'question') {
                     inner += `
-                        <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
+                        <input class="form-control" style="margin-bottom:10px;" placeholder="Question" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
                             <input class="form-control" placeholder="ক" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
                             <input class="form-control" placeholder="খ" value="${item.b}" oninput="updateData(${item.id}, 'b', this.value)">
@@ -377,14 +432,14 @@
                             <input class="form-control" placeholder="ঘ" value="${item.d}" oninput="updateData(${item.id}, 'd', this.value)">
                         </div>
                         <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${item.id}, 'ans', this.value)">
-                            <option value="">সঠিক উত্তর...</option>
+                            <option value="">Correct Answer...</option>
                             <option value="ক" ${item.ans==='ক'?'selected':''}>ক</option>
                             <option value="খ" ${item.ans==='খ'?'selected':''}>খ</option>
                             <option value="গ" ${item.ans==='গ'?'selected':''}>গ</option>
                             <option value="ঘ" ${item.ans==='ঘ'?'selected':''}>ঘ</option>
                             <option value="ব্যাখ্যা দেখুন" ${item.ans==='ব্যাখ্যা দেখুন'?'selected':''}>ব্যাখ্যা দেখুন</option>
                         </select>
-                        <textarea class="form-control" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>
+                        <textarea class="form-control" placeholder="Explanation" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>
                     `;
                 }
                 div.innerHTML = inner;
@@ -392,56 +447,71 @@
             });
         }
 
-        // --- SMART PDF RENDERING ENGINE ---
+        // --- PDF GENERATION LOGIC ---
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
-            container.innerHTML = ''; // Clear previous pages
+            container.innerHTML = '';
 
             const headTitle = document.getElementById('headTitle').value;
             const subTitle = document.getElementById('subTitle').value;
             const examDate = document.getElementById('examDate').value;
-            
             const banglaNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => banglaNums[x] || x).join('');
 
-            // Helper to create a new blank page
-            function createPage(isFirst) {
+            // Helper to Create New Page
+            function createNewPage(isFirst) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
-                // Header (Only on Page 1)
-                if (isFirst) {
-                    page.innerHTML = `
+                // Add Vertical Line
+                const vLine = document.createElement('div');
+                vLine.className = 'vertical-line';
+                page.appendChild(vLine);
+
+                // Add Watermark
+                const watermark = document.createElement('div');
+                watermark.className = 'watermark-layer';
+                watermark.innerText = 'Interactive Learning';
+                page.appendChild(watermark);
+
+                // Header (Only first page)
+                if(isFirst) {
+                    page.innerHTML += `
                         <div class="pdf-header">
                             <div class="brand-name-pdf">Interactive Learning</div>
                             <div class="pdf-main-title">${headTitle}</div>
                             <div class="pdf-sub-title">${subTitle}</div>
                             <div class="pdf-meta">${examDate}</div>
-                        </div>
-                    `;
+                        </div>`;
+                } else {
+                    // Spacer for subsequent pages so content doesn't hit top edge
+                    const spacer = document.createElement('div');
+                    spacer.style.height = '20px';
+                    page.appendChild(spacer);
                 }
-                
+
+                // Content Container (Columns)
+                const contentArea = document.createElement('div');
+                contentArea.className = 'pdf-content-area';
+                page.appendChild(contentArea);
+
                 // Footer
                 page.innerHTML += `<div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>`;
-                
+
                 container.appendChild(page);
-                return page;
+                return contentArea; // Return the content container, not the page
             }
 
-            // Start with Page 1
-            let currentPage = createPage(true);
+            let currentContentArea = createNewPage(true);
             let qCount = 0;
 
             items.forEach((item) => {
-                // If user requests explicit break, make new page immediately
                 if (item.type === 'break') {
-                    currentPage = createPage(false);
+                    currentContentArea = createNewPage(false);
                     return;
                 }
 
-                // Create the content element
-                let element = document.createElement('div');
-                
+                const element = document.createElement('div');
                 if (item.type === 'header') {
                     element.className = 'section-header-pdf';
                     element.innerText = item.title;
@@ -460,59 +530,49 @@
                     `;
                 }
 
-                // Append to current page to check height
-                currentPage.appendChild(element);
+                // Append to check height
+                currentContentArea.appendChild(element);
 
-                // Check for Overflow
-                // We use scrollHeight vs clientHeight. 
-                // clientHeight is fixed 296mm (~1120px). scrollHeight grows.
-                // A small buffer (20px) is used for footer safety.
-                if (currentPage.scrollHeight > currentPage.clientHeight + 5) {
-                    // It overflowed! Remove it from this page.
-                    currentPage.removeChild(element);
-                    
-                    // Create NEW PAGE
-                    currentPage = createPage(false);
-                    
-                    // Add it to the new page
-                    currentPage.appendChild(element);
+                // Overflow Check: 
+                // A4 Height ~ 1123px. Content Area Height fixed at ~870px (230mm).
+                // Using scrollHeight > offsetHeight to detect overflow.
+                if (currentContentArea.scrollHeight > currentContentArea.offsetHeight) {
+                    currentContentArea.removeChild(element); // Undo add
+                    currentContentArea = createNewPage(false); // Make new page
+                    currentContentArea.appendChild(element); // Add to new page
                 }
             });
-
-            // Update page count badge
-            document.getElementById('pageCounter').innerText = `Total Pages: ${container.children.length}`;
         }
 
         function downloadPDF() {
-            // Temporary disable scaling for high-res capture
+            const element = document.getElementById('pdfPreviewContainer'); // Capture all pages
             const scaleBox = document.querySelector('.scale-box');
+            
             const originalTransform = scaleBox.style.transform;
+            const originalMargin = scaleBox.style.marginBottom;
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             // Select all pages
             const pages = document.querySelectorAll('.pdf-page');
             
-            // We'll generate one PDF from ALL pages. 
-            // html2pdf can take an element containing multiple pages, but it might mess up breaks.
-            // BEST PRACTICE: Capture the container, but ensure pages have specific break classes?
-            // Actually, since we simulate pages visually with fixed height, html2pdf needs to know.
-            
+            // Generate PDF options
             const opt = {
-                margin:       0, // We handle margins inside .pdf-page
+                margin:       0,
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Capture the whole container. 
-            // Since our .pdf-page divs are exactly A4 size, jsPDF should (mostly) respect them.
-            // BUT to be safe, we iterate or rely on good CSS.
+            // Loop through pages and add them to PDF
+            // Note: simple .from(element) might merge them weirdly.
+            // Best approach for multi-page div structure in html2pdf is simply passing the container
+            // provided the pages align with A4 dimensions (which they do).
             
-            html2pdf().set(opt).from(scaleBox).save().then(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
                 scaleBox.style.transform = originalTransform;
-                scaleBox.style.marginBottom = '-150%';
+                scaleBox.style.marginBottom = originalMargin;
             });
         }
 
