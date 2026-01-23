@@ -102,7 +102,7 @@
             width: 100%; 
             background: var(--input-bg); 
             border: 2px solid transparent;
-            color: white; padding: 12px; border-radius: 12px; font-size: 14px;
+            color: white; padding: 12px; border-radius: 10px; font-size: 14px;
             transition: all 0.3s ease;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
@@ -110,18 +110,21 @@
             outline: none;
             background: #1e293b;
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
         }
         
+        select.form-control { cursor: pointer; }
+        textarea.form-control { resize: vertical; min-height: 80px; } /* Bigger explanation box */
+
         .question-card {
             background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px;
-            margin-bottom: 15px; border: 1px solid var(--border-color);
+            margin-bottom: 20px; border: 1px solid var(--border-color);
             position: relative;
         }
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent); margin-bottom: 10px; font-weight: 700; }
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent); margin-bottom: 12px; font-weight: 700; }
         
         .btn-add {
-            width: 100%; padding: 12px; border: 2px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
+            width: 100%; padding: 14px; border: 2px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
             color: var(--primary); border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: 700;
             transition: 0.3s;
         }
@@ -185,8 +188,8 @@
             margin-bottom: 5px; display: block; color: #333 !important;
         }
         .pdf-main-title {
-            background: transparent; /* No BG */
-            border: 2px solid #000; /* Optional: Box border like example */
+            background: transparent;
+            border: 2px solid #000;
             color: #000 !important;
             display: inline-block;
             padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px;
@@ -194,23 +197,28 @@
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* 2-Column Layout with Vertical Line */
+        /* 2-Column Layout with Vertical Line Trick */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
-            /* Visible Vertical Line */
-            column-rule: 1px solid #000;
+            /* Simulating line with gradient as column-rule can be flaky in html2canvas */
+            background: linear-gradient(to right, transparent 49.5%, #000 49.5%, #000 50.5%, transparent 50.5%);
+            background-position: center;
+            background-size: 100% 100%;
             text-align: left;
             display: block; 
+            min-height: 100px; /* Ensure gradient shows */
         }
 
         .mcq-item {
             margin-bottom: 15px;
             break-inside: avoid;
             page-break-inside: avoid;
-            font-size: 14px; /* Better readability */
+            font-size: 14px;
             line-height: 1.4;
-            padding-right: 5px;
+            /* White background to cover the center line if text overlaps (rare) */
+            background: white; 
+            position: relative;
         }
         
         .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
@@ -222,11 +230,11 @@
         
         /* Answer Position: Left Side below options */
         .ans-row {
-            text-align: left; /* Changed to Left */
+            text-align: left;
             font-size: 13px; 
             font-weight: 700; 
             margin-top: 5px;
-            margin-left: 15px; /* Align with options */
+            margin-left: 15px; 
         }
         
         .exp-box {
@@ -239,7 +247,7 @@
             margin-top: 30px;
             width: 100%;
             text-align: center; 
-            background: transparent; /* No Black BG */
+            background: transparent;
             padding: 8px; font-size: 12px; font-weight: 600;
             border-top: 1px solid #000;
         }
@@ -330,10 +338,8 @@
             document.getElementById('navMenu').classList.toggle('open');
         }
 
-        let questions = [
-            { id: 1, q: "পয়োধি শব্দের অর্থ কী?", a: "শৈল", b: "সৈকত", c: "আকাশ", d: "সমুদ্র", ans: "ঘ", exp: "ব্যাখ্যা: ATM Royal Edition পৃষ্ঠা ২৩২" },
-            { id: 2, q: "সূর্যের সমার্থক শব্দ নয় কোনটি?", a: "আদিত্য", b: "শশধর", c: "ভাস্কর", d: "রবি", ans: "খ", exp: "" }
-        ];
+        // Start with Empty Array (No Demo)
+        let questions = [];
 
         function init() {
             renderInputs();
@@ -378,8 +384,17 @@
                         <input class="form-control" placeholder="গ" value="${q.c}" oninput="updateData(${q.id}, 'c', this.value)">
                         <input class="form-control" placeholder="ঘ" value="${q.d}" oninput="updateData(${q.id}, 'd', this.value)">
                     </div>
-                    <input class="form-control" style="margin-bottom:8px;" placeholder="সঠিক উত্তর (যেমন: ক)" value="${q.ans}" oninput="updateData(${q.id}, 'ans', this.value)">
-                    <textarea class="form-control" style="height:50px;" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
+                    
+                    <select class="form-control" style="margin-bottom:8px;" onchange="updateData(${q.id}, 'ans', this.value)">
+                        <option value="">সঠিক উত্তর নির্বাচন করুন...</option>
+                        <option value="ক" ${q.ans === 'ক' ? 'selected' : ''}>ক</option>
+                        <option value="খ" ${q.ans === 'খ' ? 'selected' : ''}>খ</option>
+                        <option value="গ" ${q.ans === 'গ' ? 'selected' : ''}>গ</option>
+                        <option value="ঘ" ${q.ans === 'ঘ' ? 'selected' : ''}>ঘ</option>
+                        <option value="ব্যাখ্যা দেখুন" ${q.ans === 'ব্যাখ্যা দেখুন' ? 'selected' : ''}>ব্যাখ্যা দেখুন</option>
+                    </select>
+
+                    <textarea class="form-control" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
                 `;
                 list.appendChild(item);
             });
@@ -427,11 +442,13 @@
             scaleBox.style.margin = '0';
 
             const opt = {
-                margin:       [10, 10, 10, 10], 
+                // Increased Top Margin for subsequent pages to fix "margin kom hoiche"
+                margin:       [15, 10, 10, 10], 
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                // Use strict page breaking
                 pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
             
