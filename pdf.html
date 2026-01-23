@@ -21,7 +21,6 @@
             --primary: #8b5cf6;
             --accent: #fbbf24;
             --text-main: #f1f5f9;
-            --a4-height-px: 1123px; /* Approx A4 height at 96 DPI */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -92,19 +91,17 @@
             border: 1px solid var(--border-color);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
         }
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* STATUS BAR (Page Percentage) */
+        /* STATUS BAR (Moved down) */
         #pageStatus {
             background: rgba(15, 23, 42, 0.8);
             padding: 10px; border-radius: 8px;
-            margin-bottom: 20px; font-size: 13px; color: #fff;
+            margin-bottom: 15px; font-size: 13px; color: #fff;
             border: 1px solid #334155;
             display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 10;
         }
         .status-bar-bg { width: 100px; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
         .status-bar-fill { height: 100%; background: #22c55e; width: 0%; transition: 0.3s; }
@@ -117,10 +114,10 @@
             border: 1px dashed var(--primary);
         }
 
+        /* PREMIUM INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* PREMIUM INPUT DESIGN */
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
@@ -224,36 +221,14 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Repeat-Y centered */
+            /* Watermark: Centered & Fixed */
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='40' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
             background-repeat: repeat-y;
-            background-size: 100% 297mm; /* Key for 1 per page */
+            background-size: 100% 297mm; 
             background-position: center top;
         }
         
         #pdfContent * { color: black !important; }
-
-        /* VISUAL PAGE GUIDES (Red Lines) */
-        .page-limit-line {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            border-top: 2px dashed #ef4444;
-            pointer-events: none;
-            z-index: 100;
-            opacity: 0.7;
-        }
-        .page-limit-text {
-            position: absolute;
-            right: 10px;
-            top: -15px;
-            color: #ef4444;
-            font-size: 10px;
-            font-weight: bold;
-            background: white;
-            padding: 2px;
-        }
 
         /* Header */
         .pdf-header {
@@ -274,7 +249,7 @@
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* Body & Vertical Line */
+        /* Body & Vertical Line - KEY FIXES HERE */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
@@ -282,28 +257,43 @@
             display: block; 
             min-height: 200px;
             position: relative;
+            /* Thin Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
+            
+            /* KEY FIX: Use auto to fill columns sequentially (Left then Right) */
+            column-fill: auto;
+            /* Height must be auto to let content grow */
+            height: auto; 
         }
 
         /* Subject Header */
         .section-header-pdf {
-            column-span: all;
             text-align: center;
             font-weight: 800;
-            font-size: 18px;
-            margin-bottom: 15px;
-            margin-top: 20px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            /* Prevent breaking inside */
             break-inside: avoid;
             background: white; 
             padding: 5px;
             display: block;
-            text-decoration: underline;
-            text-underline-offset: 5px;
+            border-bottom: 1px solid #333;
+            width: 100%;
         }
 
-        /* Page Break Logic */
+        /* Page Break Logic for PDF */
         .html2pdf__page-break {
-            height: 0; margin: 0; padding: 0; border: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            border: none;
+            display: block;
+            /* Forces page break even inside columns */
+            break-after: page; 
+            page-break-after: always;
+            column-span: all;
+            width: 100%;
         }
 
         /* Visual indicator in Preview */
@@ -319,8 +309,17 @@
             padding: 5px;
         }
 
+        /* Guides */
+        .page-limit-line {
+            position: absolute; left: 0; width: 100%; height: 2px;
+            border-top: 2px dashed #ef4444; pointer-events: none; z-index: 100; opacity: 0.7;
+        }
+        .page-limit-text {
+            position: absolute; right: 10px; top: -15px; color: #ef4444; font-size: 10px; font-weight: bold; background: white; padding: 2px;
+        }
+
         .mcq-item {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             break-inside: avoid;
             page-break-inside: avoid;
             font-size: 14px;
@@ -391,13 +390,6 @@
 
     <div class="container">
         <div class="editor-section">
-            <div id="pageStatus">
-                <span class="status-text" id="statusText">Page 1 Filled: 0%</span>
-                <div class="status-bar-bg">
-                    <div class="status-bar-fill" id="statusFill"></div>
-                </div>
-            </div>
-
             <div class="section-title">PDF Content</div>
             
             <div id="topicSummary">Add subjects and questions to start.</div>
@@ -416,6 +408,13 @@
             </div>
 
             <div id="itemsList"></div>
+
+            <div id="pageStatus">
+                <span class="status-text" id="statusText">Page 1: 0%</span>
+                <div class="status-bar-bg">
+                    <div class="status-bar-fill" id="statusFill"></div>
+                </div>
+            </div>
 
             <div class="btn-group">
                 <button class="btn-add" onclick="addHeader()">+ Add Subject</button>
@@ -671,17 +670,14 @@
             checkPageHeight();
         }
 
-        // --- NEW FUNCTION TO CALCULATE PAGE HEIGHT AND SHOW GUIDES ---
+        // Calculate Page Height and Show Status
         function checkPageHeight() {
-            // Remove old guides
             document.querySelectorAll('.page-limit-line').forEach(e => e.remove());
             
             const pdfContent = document.getElementById('pdfContent');
             const totalHeight = pdfContent.scrollHeight;
-            const a4Height = 1122; // Approx pixels at 96 DPI for 297mm
-            const safeHeight = a4Height - 100; // Minus margins
-
-            // Status Bar Update
+            const a4Height = 1122; 
+            
             const filledPx = totalHeight % a4Height;
             const percentage = Math.min(100, Math.round((filledPx / a4Height) * 100));
             const currentPage = Math.ceil(totalHeight / a4Height);
@@ -690,17 +686,12 @@
             const statusText = document.getElementById('statusText');
             
             statusFill.style.width = percentage + "%";
-            statusText.innerText = `Page ${currentPage} Filled: ${percentage}%`;
+            statusText.innerText = `Page ${currentPage}: ${percentage}% Full`;
             
-            if(percentage > 95) {
-                statusFill.style.background = "#ef4444"; // Red warning
-            } else {
-                statusFill.style.background = "#22c55e"; // Green ok
-            }
+            if(percentage > 95) statusFill.style.background = "#ef4444"; 
+            else statusFill.style.background = "#22c55e"; 
 
-            // Draw Visual Red Lines for user to see Page Breaks
-            const numberOfPages = Math.ceil(totalHeight / a4Height);
-            for (let i = 1; i < numberOfPages + 1; i++) {
+            for (let i = 1; i < currentPage + 1; i++) {
                 const line = document.createElement('div');
                 line.className = 'page-limit-line';
                 line.style.top = (i * a4Height) + 'px';
@@ -713,7 +704,6 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Hide preview elements
             document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.page-limit-line').forEach(el => el.style.display = 'none');
 
@@ -735,11 +725,10 @@
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
                 document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'block');
-                checkPageHeight(); // Restore guides
+                checkPageHeight();
             });
         }
 
-        // Init
         init();
     </script>
 </body>
