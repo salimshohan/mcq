@@ -2,348 +2,365 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notice Maker | Interactive Learning</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+
     <style>
         :root {
             --bg-dark: #0f172a;
-            --panel-bg: #1e293b;
-            --input-bg: #020617;
-            --border-color: #334155;
-            --primary: #6366f1;
+            --panel-bg: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #8b5cf6;
             --accent: #fbbf24;
             --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body { 
+        body {
             font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- HEADER --- */
+        /* ---------- HEADER (Same as Home) ---------- */
         header {
             width: 100%;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(15px);
             padding: 10px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid var(--border-color);
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         .brand-logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 16px; font-weight: 700; color: white;
-            text-transform: uppercase; letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .logo-img { 
-            height: 30px; width: 30px; border-radius: 50%; 
-            border: 1px solid rgba(255,255,255,0.1); /* 1px Border added */
+        .logo-img {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
             object-fit: cover;
         }
 
         .hamburger {
-            cursor: pointer; z-index: 1100;
-            width: 28px; height: 20px;
-            position: relative; display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer;
+            width: 28px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .hamburger span {
-            display: block; height: 2px; width: 100%;
-            background: white; border-radius: 2px; transition: 0.3s;
+            height: 2px;
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            transition: 0.3s;
         }
 
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
 
         .nav-menu {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 260px;
             background: #0f172a;
-            display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+            transition: 0.4s ease;
             border-left: 1px solid var(--border-color);
         }
+
         .nav-menu.open { right: 0; }
+
         .nav-menu a {
-            color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-weight: 500; border-bottom: 1px solid var(--border-color); transition: 0.2s;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 15px 30px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
         }
-        .nav-menu a:hover { padding-left: 35px; color: var(--primary); background: rgba(255,255,255,0.03); }
 
-        /* --- CONTAINER --- */
+        /* ---------- MAIN ---------- */
         .container {
-            margin-top: 90px; width: 95%; max-width: 1200px;
-            display: flex; flex-wrap: wrap; 
-            justify-content: center; align-items: flex-start;
-            gap: 30px; padding-bottom: 40px; flex: 1;
+            margin-top: 90px;
+            width: 95%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding-bottom: 40px;
+            flex: 1;
         }
 
-        /* --- EDITOR --- */
-        .editor-section {
-            flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .editor {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .editor h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            display: block;
+        }
+
         .form-control {
-            width: 100%; background: var(--input-bg); border: 1px solid #334155; 
-            color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
         }
-        select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
 
-        /* --- BUTTONS --- */
+        textarea.form-control {
+            min-height: 110px;
+            resize: vertical;
+        }
+
         .btn-download {
-            width: 100%; padding: 15px; margin-top: 15px; border-radius: 50px; border: none;
-            background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
-            font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
-            text-transform: uppercase; letter-spacing: 1px; font-size: 13px;
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(45deg, #6366f1, #3b82f6);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
         }
 
-        /* --- PREVIEW --- */
-        .preview-wrapper {
-            flex: 1.5; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding-top: 10px;
+        /* ---------- PREVIEW ---------- */
+        .preview {
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
         }
 
-        /* --- NOTICE CARD (New Design) --- */
         #noticeCard {
-            width: 100%; max-width: 450px;
+            width: 100%;
+            max-width: 420px;
             background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            overflow: hidden; position: relative;
+            border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            overflow: hidden;
         }
 
-        /* Header Strip */
         .card-top {
-            background: var(--primary); padding: 8px;
-            text-align: center; color: white; font-size: 11px; font-weight: 800;
-            letter-spacing: 2px; text-transform: uppercase;
+            background: var(--primary);
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        /* Content Body */
-        .card-body { padding: 30px 25px; position: relative; z-index: 2; }
+        .card-body {
+            padding: 25px;
+        }
 
         .notice-badge {
-            display: inline-block; padding: 5px 12px; border-radius: 50px;
-            background: rgba(255,255,255,0.1); color: var(--accent);
-            font-size: 12px; font-weight: 700; margin-bottom: 15px;
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.2);
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 12px;
         }
 
         .notice-text {
-            font-size: 20px; line-height: 1.6; color: #fff; font-weight: 500;
-            margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         .meta-info {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px; font-size: 12px; color: #94a3b8;
+            padding-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
-        /* Source Tag */
-        .source-tag { 
-            display: flex; align-items: center; gap: 5px; 
-            font-weight: 600; color: #cbd5e1; 
-        }
-        .verified-icon { color: #38bdf8; font-size: 14px; }
-
-        /* Watermark */
-        .watermark {
-            position: absolute; bottom: 10px; right: 20px;
-            font-size: 10px; color: rgba(255,255,255,0.1);
-            font-weight: 900; text-transform: uppercase;
-            pointer-events: none; z-index: 1;
+        .source-tag {
+            display: flex;
+            gap: 5px;
+            align-items: center;
         }
 
-        /* Footer */
         footer {
-            margin-top: auto; width: 100%;
-            background: #020617; padding: 20px;
-            text-align: center; border-top: 1px solid #334155;
-            font-size: 13px; color: #64748b;
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
         }
 
-        /* Mobile */
-        @media (max-width: 900px) {
+        @media(max-width: 900px) {
             .container { flex-direction: column; }
-            .editor-section, .preview-wrapper { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand-logo">
-            <div class="logo-icon">IL</div>
-            Interactive Learning
-        </div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-    </header>
+<header>
+    <div class="brand-logo">
+        <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="logo-img">
+        Interactive Learning
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+    <div class="nav-menu" id="navMenu">
+        <a href="../index.html">MCQ Generator</a>
+        <a href="notice.html">Notice Maker</a>
+        <a href="quotes.html">Quote Maker</a>
+        <a href="pdf.html">PDF Tool</a>
+    </div>
+</header>
 
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="/index.html">Home</a>
-        <a href="/data/pdf.html">PDF Tool</a>
-        <a href="/data/quotes.html">Quote Maker</a>
-        <a href="/data/notice.html">Notice Maker</a>
+<div class="container">
+    <div class="editor">
+        <h2>Create Notice</h2>
+
+        <div class="input-group">
+            <label>Category</label>
+            <select id="catInput" class="form-control" onchange="updatePreview()">
+                <option>Breaking News</option>
+                <option>Urgent Notice</option>
+                <option>Exam Routine</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Announcement</label>
+            <textarea id="bodyInput" class="form-control" oninput="updatePreview()"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Source (Optional)</label>
+            <input id="sourceInput" class="form-control" oninput="updatePreview()">
+        </div>
+
+        <button class="btn-download" onclick="downloadImage()">Download Image</button>
     </div>
 
-    <div class="container">
-        
-        <div class="editor-section">
-            <div class="section-title">Create Notice</div>
-            
-            <div class="input-group">
-                <label>Category</label>
-                <select id="catInput" class="form-control" onchange="updatePreview()">
-                    <option>Breaking News</option>
-                    <option>Urgent Notice</option>
-                    <option>Exam Routine</option>
-                    <option>Admit Card</option>
-                    <option>Result Published</option>
-                    <option>Holiday Notice</option>
-                    <option>Admission Update</option>
-                    <option>Scholarship Info</option>
-                    <option>Class Suspension</option>
-                    <option>Important Alert</option>
-                </select>
-            </div>
+    <div class="preview">
+        <div id="noticeCard">
+            <div class="card-top">Official Announcement</div>
+            <div class="card-body">
+                <span id="pCat" class="notice-badge">Breaking News</span>
+                <div id="pBody" class="notice-text">Write your notice here</div>
 
-            <div class="input-group">
-                <label>Announcement Text</label>
-                <textarea id="bodyInput" class="form-control" placeholder="Write your notice here..." oninput="updatePreview()"></textarea>
-            </div>
-
-            <div class="input-group">
-                <label>Source Name (Optional)</label>
-                <input id="sourceInput" class="form-control" placeholder="e.g. Daily Campus" oninput="updatePreview()">
-            </div>
-
-            <div class="input-group">
-                <label>Theme Color</label>
-                <select id="themeInput" class="form-control" onchange="updateTheme()">
-                    <option value="blue">Royal Blue</option>
-                    <option value="red">Red Alert</option>
-                    <option value="green">Emerald Green</option>
-                    <option value="purple">Deep Purple</option>
-                    <option value="dark">Midnight Black</option>
-                </select>
-            </div>
-
-            <button class="btn-download" onclick="downloadImage()">Download Image</button>
-        </div>
-
-        <div class="preview-wrapper">
-            <div id="noticeCard">
-                <div class="card-top">Official Announcement</div>
-                
-                <div class="card-body">
-                    <span id="pCat" class="notice-badge">Breaking News</span>
-                    <div id="pBody" class="notice-text">
-                        Write your announcement content here. It will update automatically.
+                <div class="meta-info">
+                    <div class="source-tag" id="sourceWrap">
+                        <span id="pSource"></span>
+                        <i class="fas fa-check-circle"></i>
                     </div>
-
-                    <div class="meta-info">
-                        <div class="source-tag">
-                            <span id="pSource">Source Name</span>
-                            <i class="fas fa-check-circle verified-icon"></i>
-                        </div>
-                        <div id="pDate">24 Jan, 2026</div>
-                    </div>
+                    <div id="pDate"></div>
                 </div>
-
-                <div class="watermark">Interactive Learning</div>
             </div>
         </div>
-
     </div>
+</div>
 
-    <footer>&copy; 2026 Interactive Learning</footer>
+<footer>&copy; 2026 Interactive Learning</footer>
 
-    <script>
-        // Menu Toggle
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.querySelector('.hamburger').classList.toggle('active');
-        }
+<script>
+function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('open');
+    document.querySelector('.hamburger').classList.toggle('active');
+}
 
-        // Live Update
-        function updatePreview() {
-            const cat = document.getElementById('catInput').value;
-            const body = document.getElementById('bodyInput').value || "Write your announcement content here...";
-            const source = document.getElementById('sourceInput').value || "Source Name";
-            
-            document.getElementById('pCat').innerText = cat;
-            document.getElementById('pBody').innerText = body;
-            document.getElementById('pSource').innerText = source;
+function updatePreview() {
+    const cat = catInput.value;
+    const body = bodyInput.value || "Write your notice here";
+    const source = sourceInput.value.trim();
 
-            // Date
-            const now = new Date();
-            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
+    pCat.innerText = cat;
+    pBody.innerText = body;
 
-        // Themes
-        function updateTheme() {
-            const theme = document.getElementById('themeInput').value;
-            const card = document.getElementById('noticeCard');
-            const top = document.querySelector('.card-top');
-            const badge = document.querySelector('.notice-badge');
+    if(source === "") {
+        sourceWrap.style.display = "none";
+    } else {
+        sourceWrap.style.display = "flex";
+        pSource.innerText = source;
+    }
 
-            let bg, accent;
+    pDate.innerText = new Date().toLocaleDateString('en-GB',{
+        day:'numeric',month:'short',year:'numeric'
+    });
+}
 
-            if(theme === 'blue') { bg = "linear-gradient(145deg, #1e293b, #0f172a)"; accent = "#3b82f6"; }
-            else if(theme === 'red') { bg = "linear-gradient(145deg, #450a0a, #1f0505)"; accent = "#ef4444"; }
-            else if(theme === 'green') { bg = "linear-gradient(145deg, #064e3b, #022c22)"; accent = "#10b981"; }
-            else if(theme === 'purple') { bg = "linear-gradient(145deg, #3b0764, #1e0336)"; accent = "#a855f7"; }
-            else { bg = "#000000"; accent = "#ffffff"; }
+function downloadImage() {
+    html2canvas(noticeCard,{scale:3,backgroundColor:null}).then(c=>{
+        const a=document.createElement('a');
+        a.download=`Notice_${Date.now()}.png`;
+        a.href=c.toDataURL();
+        a.click();
+    });
+}
 
-            card.style.background = bg;
-            top.style.background = accent;
-            badge.style.color = accent;
-            badge.style.borderColor = accent;
-        }
+updatePreview();
+</script>
 
-        // Download
-        function downloadImage() {
-            const element = document.getElementById('noticeCard');
-            html2canvas(element, {
-                scale: 3,
-                backgroundColor: null
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Notice_${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
-        // Init
-        updatePreview();
-    </script>
 </body>
 </html>
