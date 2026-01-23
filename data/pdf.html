@@ -226,6 +226,8 @@
         }
         .q-text { font-weight: 700; display: block; margin-bottom: 2px; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+        
+        /* Updated: No longer used for display, but kept to prevent breaking if referenced elsewhere */
         .ans { font-weight: 700; margin-top: 2px; font-size: 12px; }
         .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
@@ -424,15 +426,22 @@
                     qNum++;
                     el.className = 'mcq-item';
                     const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
+                    
+                    // --- NEW LOGIC START ---
+                    // Highlight Active Answer in Green and Bold
+                    const activeStyle = 'color: #008000; font-weight: 900;';
+                    
                     el.innerHTML = `
                         <span class="q-text">${toBn(qNum)}. ${item.q}</span>
                         <div class="opts">
-                            <span>ক. ${item.a}</span><span>খ. ${item.b}</span>
-                            <span>গ. ${item.c}</span><span>ঘ. ${item.d}</span>
+                            <span ${item.ans === 'ক' ? `style="${activeStyle}"` : ''}>ক. ${item.a}</span>
+                            <span ${item.ans === 'খ' ? `style="${activeStyle}"` : ''}>খ. ${item.b}</span>
+                            <span ${item.ans === 'গ' ? `style="${activeStyle}"` : ''}>গ. ${item.c}</span>
+                            <span ${item.ans === 'ঘ' ? `style="${activeStyle}"` : ''}>ঘ. ${item.d}</span>
                         </div>
-                        <div class="ans">উত্তর: ${item.ans}</div>
                         ${exp}
                     `;
+                    // --- NEW LOGIC END ---
                 }
 
                 currentBody.appendChild(el);
