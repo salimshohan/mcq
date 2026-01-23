@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quote Generator | Interactive Learning</title>
+    <title>Quote Maker | Interactive Learning</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
@@ -33,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER & NAVBAR (SAME AS HOME) --- */
+        /* --- HEADER & NAVBAR --- */
         header {
             width: 100%;
             background: linear-gradient(90deg, #1e1b4b, #312e81);
@@ -83,87 +85,108 @@
         }
         .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
 
-        /* --- MAIN CONTENT --- */
+        /* --- CONTAINER --- */
         .container {
-            margin-top: 90px; flex: 1; width: 100%;
+            margin-top: 90px; flex: 1; width: 95%; max-width: 1200px;
+            display: flex; flex-wrap: wrap; gap: 30px;
+            padding-bottom: 40px; justify-content: center;
+        }
+
+        /* --- EDITOR SECTION (LEFT) --- */
+        .editor-section {
+            flex: 1; min-width: 300px; max-width: 450px;
+            background: var(--panel-bg); padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            height: fit-content;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .section-title { 
+            font-size: 18px; font-weight: 700; color: var(--primary); 
+            margin-bottom: 20px; border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 10px; display: flex; align-items: center; gap: 10px;
+        }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .form-control {
+            width: 100%; background: var(--input-bg); border: 1px solid #334155; 
+            color: #f1f5f9; padding: 15px; font-size: 15px; border-radius: 10px;
+            transition: 0.3s; font-family: 'Anek Bangla', sans-serif;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        
+        .btn {
+            flex: 1; padding: 14px; border-radius: 50px; border: none;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .btn-theme { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3); }
+        .btn-download { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+        
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn:active { transform: scale(0.98); }
+
+        /* --- PREVIEW SECTION (RIGHT) --- */
+        .preview-section {
+            flex: 1.5; min-width: 320px; display: flex; justify-content: center; align-items: flex-start;
+        }
+
+        #quoteWrapper {
+            width: 100%; max-width: 500px; aspect-ratio: 1/1; /* Square for Social Media */
+            position: relative;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); /* Default Theme */
+            padding: 40px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-
-        /* --- QUOTE CARD DESIGN --- */
-        .quote-wrapper {
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            width: 100%; max-width: 600px;
-            position: relative;
-            border: 1px solid #334155;
-        }
-
-        .quote-card {
-            width: 100%;
-            min-height: 400px; /* Standard Post Size */
-            padding: 40px 30px;
-            border-radius: 12px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center;
-            position: relative;
-            background: linear-gradient(135deg, #4f46e5, #9333ea); /* Default */
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
             transition: background 0.5s ease;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.2);
         }
 
-        .quote-icon {
-            font-size: 40px; margin-bottom: 20px; opacity: 0.6; color: rgba(255,255,255,0.8);
+        /* Big Quote Mark */
+        .big-quote-bg {
+            position: absolute; top: -10px; left: 20px;
+            font-size: 150px; font-family: serif;
+            color: rgba(255, 255, 255, 0.08);
+            z-index: 0; line-height: 1; pointer-events: none;
         }
+
+        .quote-content { position: relative; z-index: 2; text-align: center; width: 100%; }
+
+        .quote-icon { font-size: 30px; color: rgba(255,255,255,0.8); margin-bottom: 20px; display: block; }
 
         .quote-text {
-            font-family: 'Tiro Bangla', serif; /* Classic Bangla Font */
-            font-size: 26px; line-height: 1.6; font-weight: 600;
-            color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
+            font-family: 'Tiro Bangla', serif;
+            font-size: 24px; line-height: 1.6; font-weight: 500;
+            color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin-bottom: 25px; white-space: pre-wrap;
+        }
+
+        .divider {
+            width: 50px; height: 3px; background: rgba(255,255,255,0.6);
+            margin: 0 auto 20px auto; border-radius: 2px;
         }
 
         .quote-author {
-            font-size: 16px; font-weight: 500; font-style: italic;
-            color: rgba(255,255,255,0.9);
-            position: relative; padding-top: 15px;
-        }
-        .quote-author::before {
-            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 50px; height: 2px; background: rgba(255,255,255,0.5);
+            font-size: 16px; font-weight: 600; color: #cbd5e1;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .watermark {
             position: absolute; bottom: 15px;
-            font-size: 11px; opacity: 0.6; font-weight: 600;
+            font-size: 11px; opacity: 0.5; font-weight: 600;
             text-transform: uppercase; letter-spacing: 2px;
-            color: white;
+            color: white; z-index: 2;
         }
-
-        /* --- CONTROLS --- */
-        .controls {
-            margin-top: 30px;
-            display: flex; gap: 15px; flex-wrap: wrap;
-            justify-content: center; width: 100%; max-width: 600px;
-        }
-
-        .btn {
-            padding: 12px 25px; border-radius: 50px; border: none;
-            font-size: 14px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; gap: 8px;
-            transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-
-        .btn-theme { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-theme:hover { background: rgba(255,255,255,0.2); }
-
-        .btn-new { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4); }
-        .btn-new:hover { transform: translateY(-2px); background: #4f46e5; }
-
-        .btn-download { background: linear-gradient(135deg, #10b981, #059669); color: white; }
-        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); }
 
         /* --- FOOTER --- */
         footer {
@@ -173,12 +196,12 @@
             font-size: 13px; color: #64748b;
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .preview-section { width: 100%; }
+            #quoteWrapper { aspect-ratio: auto; min-height: 400px; }
             .quote-text { font-size: 20px; }
-            .quote-card { min-height: 350px; padding: 30px 20px; }
-            .controls { flex-direction: column; width: 100%; }
-            .btn { width: 100%; justify-content: center; padding: 15px; }
         }
     </style>
 </head>
@@ -203,25 +226,48 @@
 
     <div class="container">
         
-        <div class="quote-wrapper">
-            <div class="quote-card" id="quoteCard">
-                <i class="fas fa-quote-left quote-icon"></i>
-                <div class="quote-text" id="quoteText">সফলতা কোনো গন্তব্য নয়, এটি একটি যাত্রাপথ।</div>
-                <div class="quote-author" id="quoteAuthor">জিগ জিগলার</div>
-                <div class="watermark">Interactive Learning</div>
+        <div class="editor-section">
+            <div class="section-title">
+                <i class="fas fa-edit"></i> Edit Content
+            </div>
+            
+            <div class="input-group">
+                <label>Quote / উক্তি</label>
+                <textarea id="quoteInput" class="form-control" placeholder="এখানে উক্তি লিখুন..." oninput="updatePreview()"></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Author / বক্তা</label>
+                <input id="authorInput" class="form-control" placeholder="নাম লিখুন..." oninput="updatePreview()">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-theme" onclick="changeTheme()">
+                    <i class="fas fa-palette"></i> Theme
+                </button>
+                <button class="btn btn-download" onclick="downloadQuote()">
+                    <i class="fas fa-download"></i> Save
+                </button>
             </div>
         </div>
 
-        <div class="controls">
-            <button class="btn btn-theme" onclick="changeTheme()">
-                <i class="fas fa-palette"></i> Theme
-            </button>
-            <button class="btn btn-new" onclick="generateQuote()">
-                <i class="fas fa-magic"></i> New Quote
-            </button>
-            <button class="btn btn-download" onclick="downloadImage()">
-                <i class="fas fa-download"></i> Download
-            </button>
+        <div class="preview-section">
+            <div id="quoteWrapper">
+                <div class="big-quote-bg">❝</div>
+                
+                <div class="quote-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <div class="quote-text" id="previewText">
+                        "সাফল্য তখনই আসে যখন প্রস্তুতি এবং সুযোগের মিলন ঘটে।"
+                    </div>
+                    <div class="divider"></div>
+                    <div class="quote-author" id="previewAuthor">
+                        — সংগ্রহীত
+                    </div>
+                </div>
+
+                <div class="watermark">Interactive Learning</div>
+            </div>
         </div>
 
     </div>
@@ -237,76 +283,66 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // Data: Quotes
-        const quotes = [
-            { t: "সফলতা কোনো গন্তব্য নয়, এটি একটি যাত্রাপথ।", a: "জিগ জিগলার" },
-            { t: "হাজার মাইল পথ চলা শুরু হয় একটি ছোট্ট পদক্ষেপের মাধ্যমে।", a: "লাও জু" },
-            { t: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
-            { t: "জ্ঞান অর্জন করো, কারণ তা তোমাকে শক্তিশালী করবে।", a: "ইমাম আলী (রাঃ)" },
-            { t: "স্বপ্ন সেটা নয় যা তুমি ঘুমিয়ে দেখো, স্বপ্ন হলো সেটা যা তোমাকে ঘুমোতে দেয় না।", a: "এ পি জে আব্দুল কালাম" },
-            { t: "Believe you can and you're halfway there.", a: "Theodore Roosevelt" },
-            { t: "যে নিজেকে দমন করতে পারে, সেই প্রকৃত শক্তিশালী।", a: "গৌতম বুদ্ধ" },
-            { t: "Success is not final, failure is not fatal: It is the courage to continue that counts.", a: "Winston Churchill" },
-            { t: "পরিশ্রম সৌভাগ্যের প্রসূতি।", a: "প্রবাদ" },
-            { t: "সময় ও স্রোত কারো জন্য অপেক্ষা করে না।", a: "প্রবাদ" }
-        ];
+        // Live Update
+        function updatePreview() {
+            const quote = document.getElementById('quoteInput').value;
+            const author = document.getElementById('authorInput').value;
 
-        // Logic: 100+ Theme Generator using HSL
+            document.getElementById('previewText').innerText = quote ? `"${quote}"` : '"এখানে উক্তি লিখুন..."';
+            document.getElementById('previewAuthor').innerText = author ? `— ${author}` : '— নাম';
+        }
+
+        // 100+ Custom Themes Generator (Random Gradients)
         function changeTheme() {
-            const card = document.getElementById('quoteCard');
-            // Random Hue (0-360), Saturation (60-90%), Lightness (20-40% for dark bg)
+            const card = document.getElementById('quoteWrapper');
+            
+            // Random HSL Colors for smooth gradients
             const h1 = Math.floor(Math.random() * 360);
-            const h2 = (h1 + 40) % 360; // Complementary-ish color
-            
-            const c1 = `hsl(${h1}, 70%, 30%)`;
-            const c2 = `hsl(${h2}, 80%, 20%)`;
-            const c3 = `hsl(${h1}, 60%, 15%)`;
+            const h2 = (h1 + 40) % 360; 
+            const h3 = (h1 + 180) % 360; 
 
-            // Random Angle
-            const angle = Math.floor(Math.random() * 360);
+            // Different Gradient Types
+            const types = ['135deg', '45deg', 'to right', 'to bottom', 'circle at center'];
+            const type = types[Math.floor(Math.random() * types.length)];
             
-            // Apply Gradient
-            card.style.background = `linear-gradient(${angle}deg, ${c1}, ${c2}, ${c3})`;
+            // Darker colors for white text readability (L < 40%)
+            const c1 = `hsl(${h1}, 70%, 20%)`;
+            const c2 = `hsl(${h2}, 80%, 25%)`;
+            const c3 = `hsl(${h3}, 60%, 15%)`;
+
+            let bg;
+            if(type.includes('circle')) {
+                bg = `radial-gradient(${type}, ${c1}, ${c2})`;
+            } else {
+                bg = `linear-gradient(${type}, ${c1}, ${c2}, ${c3})`;
+            }
+
+            card.style.background = bg;
         }
 
-        function generateQuote() {
-            const rnd = Math.floor(Math.random() * quotes.length);
-            const q = quotes[rnd];
+        // HD Download
+        function downloadQuote() {
+            const element = document.getElementById('quoteWrapper');
+            const btn = document.querySelector('.btn-download');
             
-            const textEl = document.getElementById('quoteText');
-            const authEl = document.getElementById('quoteAuthor');
-            
-            // Simple Fade Animation
-            textEl.style.opacity = 0;
-            authEl.style.opacity = 0;
-            
-            setTimeout(() => {
-                textEl.innerText = q.t;
-                authEl.innerText = q.a;
-                textEl.style.opacity = 1;
-                authEl.style.opacity = 1;
-            }, 300);
-
-            changeTheme(); // New quote = New theme
-        }
-
-        function downloadImage() {
-            const element = document.getElementById('quoteCard');
+            btn.innerText = "Processing...";
             
             html2canvas(element, {
-                scale: 3, // HD Quality
+                scale: 4, // Ultra HD
                 useCORS: true,
-                backgroundColor: null
+                backgroundColor: null, // Transparent edges
+                allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Quote_${Date.now()}.png`;
-                link.href = canvas.toDataURL("image/png");
+                link.href = canvas.toDataURL('image/png');
                 link.click();
+                btn.innerHTML = '<i class="fas fa-download"></i> Save';
             });
         }
 
-        // Init
-        generateQuote();
+        // Initial Theme
+        changeTheme();
     </script>
 </body>
 </html>
