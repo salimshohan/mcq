@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interactive Learning | PDF Maker</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -34,10 +31,10 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVBAR (TOGGLE FIXED) --- */
+        /* --- NAVBAR (FIXED TOGGLE) --- */
         header {
             width: 100%;
-            background: linear-gradient(90deg, #1e1b4b, #312e81); /* Restored Gradient */
+            background: linear-gradient(90deg, #1e1b4b, #312e81);
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; left: 0; z-index: 2000;
@@ -59,19 +56,18 @@
         .hamburger {
             cursor: pointer; width: 30px; height: 20px;
             display: flex; flex-direction: column; justify-content: space-between;
-            z-index: 2001; position: relative;
+            z-index: 2001;
         }
         .hamburger span { 
             display: block; height: 3px; width: 100%; background: white; 
             border-radius: 2px; transition: 0.3s; 
         }
         
-        /* Hamburger Animation */
+        /* Animation Classes */
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-        /* Mobile Menu */
         .mobile-menu {
             position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
             background: #1e1b4b; border-left: 1px solid rgba(255,255,255,0.1);
@@ -83,25 +79,21 @@
         .mobile-menu a {
             color: #cbd5e1; text-decoration: none; padding: 15px 30px;
             font-size: 16px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
         }
-        .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
 
-        /* --- CONTAINER --- */
+        /* --- LAYOUT --- */
         .container {
-            margin-top: 90px;
-            width: 95%; max-width: 1400px;
+            margin-top: 90px; width: 95%; max-width: 1400px;
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- LEFT: EDITOR --- */
+        /* --- EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
-            height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
@@ -109,56 +101,39 @@
 
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
-        
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #334155; 
             color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
-            transition: 0.3s;
         }
-        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
-        
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 70px; }
 
-        /* CARDS */
-        .card-base {
-            padding: 15px; border-radius: 10px; margin-bottom: 15px; position: relative;
-        }
+        .card-base { padding: 15px; border-radius: 10px; margin-bottom: 15px; position: relative; }
         .question-card { background: rgba(30, 41, 59, 0.6); border: 1px solid #334155; }
         .header-card { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(30, 41, 59, 0.6)); border: 1px solid var(--primary); }
         .break-card { border: 1px dashed #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-align: center; font-weight: bold; }
 
         .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
-        
         .control-icons i { cursor: pointer; padding: 5px; margin-left: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); }
         .fa-trash { color: #f87171; }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn-add {
-            flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(99, 102, 241, 0.1);
-            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; min-width: 100px;
-        }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-add { flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(99, 102, 241, 0.1); color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; }
         .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-        
-        .btn-download {
-            width: 100%; padding: 15px; border-radius: 50px; border: none;
-            background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
-            font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
-        }
+        .btn-download { width: 100%; padding: 15px; border-radius: 50px; border: none; background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; font-weight: 700; cursor: pointer; }
 
         /* --- PREVIEW --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
             background: #334155; padding: 30px; border-radius: 16px;
-            overflow: auto; min-height: 600px; gap: 20px;
+            overflow: auto; min-height: 600px; width: 100%;
         }
-
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- PDF PAGE (A4 Fixed) --- */
+        /* --- A4 PAGE DESIGN --- */
         .pdf-page {
             width: 210mm;
-            height: 297mm; /* Fixed Height */
+            height: 297mm; /* Fixed Height is Crucial */
             background: white;
             color: black !important;
             padding: 15mm;
@@ -168,82 +143,55 @@
             display: flex; flex-direction: column;
             margin-bottom: 20px;
         }
-        
         #pdfContent * { color: black !important; }
 
-        /* Watermark */
+        /* Watermark & Line */
         .watermark {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; font-weight: 900;
-            color: rgba(0,0,0,0.05); /* Light Opacity */
-            white-space: nowrap; pointer-events: none; z-index: 0;
-            font-family: 'Courier New', monospace;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 40px; font-weight: 900; color: rgba(0,0,0,0.06); white-space: nowrap; pointer-events: none;
         }
-
-        /* Vertical Line */
         .v-line {
-            position: absolute; left: 50%; 
-            top: 55mm; /* Below Header */
-            bottom: 15mm; /* Above Footer */
-            width: 0.5px; background: #999; z-index: 1;
+            position: absolute; left: 50%; top: 55mm; bottom: 15mm; width: 0.5px; background: #999; z-index: 1;
         }
 
-        /* Header */
+        /* Header & Footer */
         .pdf-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 5px; flex-shrink: 0; z-index: 2; position: relative; }
-        .brand-name { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
+        .brand-name { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
         .main-title { border: 2px solid #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
         .sub-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
         .meta-info { font-size: 12px; margin-top: 4px; }
+        
+        .pdf-footer { text-align: center; border-top: 1px solid #000; padding-top: 5px; font-size: 11px; font-weight: 600; flex-shrink: 0; z-index: 2; margin-top: auto; }
 
-        /* Body (2 COLUMNS USING FLEX) */
+        /* SMART BODY: Columns */
         .pdf-body {
             flex-grow: 1;
-            display: flex; 
-            flex-direction: row;
+            /* CRITICAL for Left->Right Flow */
+            column-count: 2; 
+            column-gap: 10mm;
+            column-fill: auto; /* This forces filling left col first if height is fixed */
+            
             position: relative; z-index: 2;
             overflow: hidden;
-            /* Height is handled by page size, but we restrict rendering height via JS */
+            /* Fixed height for content area is mandatory for column-fill: auto to work */
+            height: 220mm; 
         }
-
-        .pdf-col {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-        }
-        .col-left { padding-right: 5mm; }
-        .col-right { padding-left: 5mm; }
 
         /* Items */
-        .section-header {
-            text-align: center; font-weight: 800; font-size: 16px;
-            margin: 10px 0; border-bottom: 1px solid #333;
-            background: white; padding: 2px;
-            display: block; width: 100%;
-        }
-
-        .mcq-item {
-            margin-bottom: 12px; 
-            font-size: 13px; line-height: 1.4; padding-right: 5px;
-            background: transparent; text-shadow: 3px 0 0 #fff, -3px 0 0 #fff; 
-        }
+        .section-header { text-align: center; font-weight: 800; font-size: 16px; margin: 10px 0; border-bottom: 1px solid #333; background: white; padding: 2px; display: inline-block; width: 100%; break-inside: avoid; }
+        .mcq-item { margin-bottom: 12px; break-inside: avoid; font-size: 13px; line-height: 1.4; padding-right: 5px; position: relative; }
         .q-text { font-weight: 700; display: block; margin-bottom: 3px; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .ans { font-weight: 700; margin-top: 3px; font-size: 12px; }
         .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
-        /* Footer */
-        .pdf-footer {
-            text-align: center; border-top: 1px solid #000;
-            padding-top: 5px; font-size: 11px; font-weight: 600;
-            flex-shrink: 0; z-index: 2; margin-top: auto;
-        }
-
         /* Mobile Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
-            .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
+            .preview-wrapper { width: 100%; padding: 10px; }
+            /* Only scale Visual Preview, not download logic */
+            .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -155%; }
         }
     </style>
 </head>
@@ -304,28 +252,10 @@
     <script>
         let items = [];
 
-        // Correct toggle logic
         function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const hamburger = document.querySelector('.hamburger');
-            
-            // Toggle active class
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active');
-                hamburger.classList.remove('active');
-            } else {
-                menu.classList.add('active');
-                hamburger.classList.add('active');
-            }
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.hamburger').classList.toggle('active');
         }
-
-        // Close menu when clicking links
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.remove('active');
-                document.querySelector('.hamburger').classList.remove('active');
-            });
-        });
 
         function init() { addItem('question'); }
 
@@ -367,7 +297,7 @@
                     </div></div>`;
 
                 if(item.type === 'header') {
-                    html += `<input class="form-control" list="subjects" placeholder="Subject" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
+                    html += `<input class="form-control" list="subjects" placeholder="Subject Name" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
                 } else if(item.type === 'question') {
                     html += `<input class="form-control" style="margin-bottom:5px" placeholder="Question" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:5px">
@@ -393,10 +323,10 @@
             });
         }
 
-        // --- EXPLICIT COLUMN PDF RENDERER (Guaranteed Flow) ---
+        // --- SMART PAGINATION RENDERER ---
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clean start
 
             const title = document.getElementById('headTitle').value;
             const sub = document.getElementById('subTitle').value;
@@ -404,11 +334,12 @@
             const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
-            // Page Creator
+            // Helper: Create a Page
             function createPage(isFirst) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
+                // Add fixed elements
                 page.innerHTML = `
                     <div class="watermark">Interactive Learning</div>
                     <div class="v-line"></div>
@@ -418,41 +349,31 @@
                         <div class="sub-title">${sub}</div>
                         <div class="meta-info">${date}</div>
                     </div>
-                    <div class="pdf-body">
-                        <div class="pdf-col col-left"></div>
-                        <div class="pdf-col col-right"></div>
-                    </div>
+                    <div class="pdf-body"></div>
                     <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
                 `;
                 
+                // On subsequent pages, hide main header to save space, adjust line
                 if(!isFirst) {
                     page.querySelector('.pdf-header').style.display = 'none';
-                    page.querySelector('.v-line').style.top = '15mm';
+                    page.querySelector('.v-line').style.top = '15mm'; // Start higher
                 }
 
                 container.appendChild(page);
-                // Return access to columns
-                const body = page.querySelector('.pdf-body');
-                return {
-                    left: page.querySelector('.col-left'),
-                    right: page.querySelector('.col-right'),
-                    page: page,
-                    body: body
-                };
+                return page.querySelector('.pdf-body');
             }
 
-            let currentPage = createPage(true);
-            let currentColumn = currentPage.left;
+            // Start Filling
+            let currentBody = createPage(true);
             let qNum = 0;
 
-            // CONTENT FILLING LOGIC
             items.forEach(item => {
                 if(item.type === 'break') {
-                    currentPage = createPage(false);
-                    currentColumn = currentPage.left;
+                    currentBody = createPage(false);
                     return;
                 }
 
+                // Create Content Element
                 const el = document.createElement('div');
                 if(item.type === 'header') {
                     el.className = 'section-header';
@@ -472,41 +393,16 @@
                     `;
                 }
 
-                // Add to current column
-                currentColumn.appendChild(el);
+                // Append to measure height
+                currentBody.appendChild(el);
 
-                // Calculate limits (Approx height of content area)
-                // First page has header, others don't.
-                // 297mm height - margins. Safe height approx 950px - header.
-                // We use offsetHeight of the column wrapper.
-                // Safest way: Check against a pixel limit. 
-                // A4 Height = ~1123px. 
-                // Header ~150px. Footer ~50px. Padding ~60px.
-                // First Page Limit ~850px. Others ~1000px.
-                
-                const isFirst = (container.children.length === 1);
-                const limit = isFirst ? 750 : 950;
-
-                if(currentColumn.offsetHeight > limit) {
-                    // Overflow! Move to next spot
-                    currentColumn.removeChild(el); // Take back
-
-                    if(currentColumn === currentPage.left) {
-                        currentColumn = currentPage.right; // Switch to Right
-                        currentColumn.appendChild(el);
-                        // Check right immediate overflow (big item)
-                        if(currentColumn.offsetHeight > limit) {
-                            currentColumn.removeChild(el);
-                            currentPage = createPage(false);
-                            currentColumn = currentPage.left;
-                            currentColumn.appendChild(el);
-                        }
-                    } else {
-                        // Right full -> New Page
-                        currentPage = createPage(false);
-                        currentColumn = currentPage.left;
-                        currentColumn.appendChild(el);
-                    }
+                // Check Overflow (scrollHeight vs clientHeight)
+                // We assume A4 content area height is roughly fixed by CSS (220mm)
+                // If it grows larger, it spills.
+                if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
+                    currentBody.removeChild(el); // Undo
+                    currentBody = createPage(false); // New Page
+                    currentBody.appendChild(el); // Add to new
                 }
             });
         }
