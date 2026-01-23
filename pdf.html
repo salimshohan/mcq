@@ -86,7 +86,6 @@
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid var(--border-color);
-            /* Fixed height removed for better mobile experience */
             height: auto; 
         }
 
@@ -123,16 +122,13 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            /* Dark background to make the white paper pop */
             background: #334155; 
             padding: 40px 20px;
             border-radius: 10px;
-            /* Horizontal scroll for small screens if needed */
             overflow: auto; 
             min-height: 600px;
         }
 
-        /* This box handles the scaling for mobile view */
         .scale-box {
             transform-origin: top center;
             transition: transform 0.3s ease;
@@ -141,32 +137,34 @@
         /* --- A4 PAPER DESIGN (FIXED SIZE) --- */
         #pdfContent {
             width: 210mm;
-            min-height: 296mm; /* Almost A4 height */
+            min-height: 296mm;
             background: white;
-            color: black !important; /* Force black text */
-            padding: 10mm;
+            color: black !important;
+            padding: 15mm; /* Increased padding for better spacing */
             position: relative;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            /* Better font rendering */
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
-            /* Ensure text color applies to everything inside */
+            /* Watermark on every page using background image */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.05)' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
+            background-repeat: repeat;
+            background-position: center;
         }
         
         #pdfContent * {
-            color: black !important; /* Crucial for PDF generation */
+            color: black !important;
         }
 
         /* Header Design */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; 
+            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; 
             margin-top: 0;
         }
         .pdf-main-title {
-            background: #000; color: #fff !important; /* Exception for title bg */
+            /* Removed black background */
+            background: transparent; color: #000 !important;
             display: inline-block;
-            padding: 5px 25px; font-size: 24px; font-weight: 700; margin-bottom: 5px;
-            border-radius: 2px;
+            padding: 0; font-size: 24px; font-weight: 700; margin-bottom: 5px;
         }
         .pdf-sub-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
@@ -174,54 +172,47 @@
         /* 2-Column Layout */
         .pdf-body {
             column-count: 2;
-            column-gap: 8mm;
+            column-gap: 10mm;
             column-rule: 1px solid #ccc;
             text-align: left;
             display: block; 
         }
 
         .mcq-item {
-            margin-bottom: 12px;
-            /* Prevent cutting inside a question */
+            margin-bottom: 15px;
             break-inside: avoid;
             page-break-inside: avoid;
             font-size: 13px;
-            line-height: 1.3;
+            line-height: 1.4;
         }
         
-        .q-text { font-weight: 700; font-size: 14px; margin-bottom: 3px; display: block;}
+        .q-text { font-weight: 700; font-size: 14px; margin-bottom: 5px; display: block;}
         
         .options-grid {
             display: grid; grid-template-columns: 1fr 1fr; 
-            font-size: 12px; margin-left: 15px; row-gap: 2px;
+            font-size: 12px; margin-left: 15px; row-gap: 4px;
         }
         
         .ans-row {
-            text-align: right; font-size: 11px; font-weight: 700; margin-top: 2px;
+            text-align: right; font-size: 11px; font-weight: 700; margin-top: 4px;
         }
         .exp-box {
-            font-size: 10px; color: #333 !important; margin-top: 2px;
-            font-style: italic; border-top: 1px dotted #999;
-        }
-
-        /* Watermark */
-        .watermark {
-            position: absolute; top: 300px; left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 70px; font-weight: 900;
-            color: rgba(0,0,0,0.05) !important; /* Very light grey */
-            white-space: nowrap; pointer-events: none; z-index: 0;
+            font-size: 10px; color: #333 !important; margin-top: 4px;
+            font-style: italic; border-top: 1px dotted #999; padding-top: 2px;
         }
 
         /* Footer */
         .pdf-footer {
-            margin-top: 20px;
+            margin-top: 30px;
             width: 100%;
-            text-align: center; background: #000; 
-            padding: 4px; font-size: 11px; font-weight: 600;
+            text-align: center; 
+            /* Removed black background */
+            background: transparent; color: #000 !important;
+            padding: 5px; font-size: 11px; font-weight: 600;
+            border-top: 1px solid #ccc; /* Added a light border instead */
         }
         
-        .footer-text { color: #fff !important; }
+        .footer-text { color: #000 !important; }
 
         /* Mobile Responsive Scaling for Preview Only */
         @media (max-width: 900px) {
@@ -229,13 +220,9 @@
             .editor-section { width: 100%; }
             .preview-wrapper { width: 100%; padding: 10px; overflow: hidden; justify-content: center;}
             
-            /* Scale down the A4 paper to fit mobile screen.
-               We use CSS transform so it LOOKS small but IS actually big.
-            */
             .scale-box { 
                 transform: scale(0.42); 
                 transform-origin: top center; 
-                /* Negative margin to remove the whitespace created by scaling */
                 margin-bottom: -150%; 
             }
         }
@@ -295,8 +282,6 @@
                         <div class="pdf-sub-title" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
                         <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
                     </div>
-
-                    <div class="watermark">Interactive Learning</div>
 
                     <div class="pdf-body" id="pdfBody">
                         </div>
@@ -399,33 +384,25 @@
         }
 
         function downloadPDF() {
-            // 1. Get the element and the scaling wrapper
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
-            // 2. Save current Scale state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
-            // 3. RESET SCALE for PDF Generation (Crucial Step!)
-            // This ensures html2pdf sees the element at full size (210mm wide)
-            // instead of the shrunken mobile version.
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
-            // 4. Configuration
             const opt = {
-                margin:       0,
+                // Added margins to fix top/bottom spacing issues on pages
+                margin:       [10, 10, 10, 10],
                 filename:     'Question_Paper.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                // scale 2 ensures high quality text
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
-            // 5. Generate and Save
             html2pdf().set(opt).from(element).save().then(() => {
-                // 6. Restore Mobile Preview State
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
             });
