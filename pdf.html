@@ -16,11 +16,11 @@
         :root {
             --bg-dark: #0f172a;
             --panel-bg: #1e293b;
-            --input-bg: #020617;
+            --input-bg: #0f172a;
             --border-color: #334155;
-            --primary: #6366f1; /* Indigo */
+            --primary: #8b5cf6;
             --accent: #fbbf24;
-            --text-main: #f8fafc;
+            --text-main: #f1f5f9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -87,56 +87,74 @@
         /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            background: var(--panel-bg); padding: 25px; border-radius: 20px;
             border: 1px solid var(--border-color);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 16px; font-weight: 700; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
+        /* Topic Summary Box */
+        #topicSummary {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 10px; border-radius: 8px;
+            margin-bottom: 20px; font-size: 13px; color: #cbd5e1;
+            border: 1px dashed var(--primary);
+        }
+
+        /* PREMIUM INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* NEW INPUT DESIGN */
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
-            border: 1px solid var(--border-color);
-            color: #f1f5f9; padding: 14px; border-radius: 8px; font-size: 14px;
-            transition: all 0.2s ease;
+            border: none;
+            border-bottom: 2px solid #334155; /* Underline style */
+            color: #f1f5f9; padding: 12px 10px; font-size: 14px;
+            transition: all 0.3s ease;
+            border-radius: 4px 4px 0 0;
         }
         .form-control:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-            background: #0f172a;
+            background: #1e293b;
+            border-bottom-color: var(--primary);
         }
         ::placeholder { color: #475569; }
         
-        select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 0.65em auto; }
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        select.form-control { cursor: pointer; }
+        textarea.form-control { resize: vertical; min-height: 80px; border: 1px solid #334155; border-radius: 8px; }
 
         .question-card {
-            background: rgba(15, 23, 42, 0.5); 
+            background: #1e293b; 
             padding: 20px; border-radius: 12px;
-            margin-bottom: 20px; border: 1px solid var(--border-color);
+            margin-bottom: 20px; border: 1px solid #334155;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header-card {
+            background: linear-gradient(90deg, #1e293b, #0f172a);
+            padding: 15px; border-radius: 8px;
+            margin-bottom: 20px; border-left: 4px solid var(--accent);
             position: relative;
         }
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; margin-bottom: 12px; font-weight: 600; }
+
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 10px; font-weight: 600; }
         
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .btn-add {
-            width: 100%; padding: 14px; border: 1px dashed #475569; background: transparent;
-            color: #94a3b8; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 600;
+            flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
+            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
             transition: 0.3s;
         }
-        .btn-add:hover { border-color: var(--primary); color: var(--primary); background: rgba(99, 102, 241, 0.05); }
+        .btn-add:hover { background: var(--primary); color: white; }
         
         .btn-download {
             width: 100%; padding: 16px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
-            font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
             transition: transform 0.2s;
         }
         .btn-download:hover { transform: translateY(-2px); }
@@ -182,7 +200,7 @@
 
         /* Header Design */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; 
+            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; 
             margin-top: 0;
         }
         .brand-name-pdf {
@@ -199,15 +217,30 @@
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* 2-Column Layout with THIN LINE */
+        /* 2-Column Layout with STRONG VERTICAL LINE */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
-            /* Ultra Thin vertical line */
-            column-rule: 0.5pt solid #bbb;
             text-align: left;
             display: block; 
             min-height: 200px;
+            position: relative;
+            /* Stronger Vertical Line logic */
+            background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
+        }
+
+        /* Section Header in PDF */
+        .section-header-pdf {
+            column-span: all; /* Spans across both columns */
+            background: #f1f5f9;
+            border: 1px solid #000;
+            text-align: center;
+            font-weight: 800;
+            padding: 5px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            font-size: 15px;
+            break-inside: avoid;
         }
 
         .mcq-item {
@@ -216,7 +249,9 @@
             page-break-inside: avoid;
             font-size: 14px;
             line-height: 1.4;
-            padding-right: 8px; /* Gap from the vertical line */
+            padding-right: 8px;
+            background: white; /* Important to overlay the line if text overlaps */
+            position: relative;
         }
         
         .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
@@ -226,7 +261,6 @@
             font-size: 13px; margin-left: 15px; row-gap: 4px;
         }
         
-        /* Answer Position: Left Side */
         .ans-row {
             text-align: left;
             font-size: 13px; 
@@ -293,6 +327,8 @@
         <div class="editor-section">
             <div class="section-title">PDF Content</div>
             
+            <div id="topicSummary">Total Questions: 0</div>
+
             <div class="input-group">
                 <label>Main Heading</label>
                 <input id="headTitle" class="form-control" value="স্থানীয় সরকার বিভাগ" oninput="updatePDF()">
@@ -306,9 +342,13 @@
                 <input id="examDate" class="form-control" value="তারিখ: ২৩ জানুয়ারি, ২০২৬" oninput="updatePDF()">
             </div>
 
-            <div id="questionsList"></div>
+            <div id="itemsList"></div>
 
-            <button class="btn-add" onclick="addQuestion()">+ Add New Question</button>
+            <div class="btn-group">
+                <button class="btn-add" onclick="addHeader()">+ Add Subject</button>
+                <button class="btn-add" onclick="addQuestion()">+ Add Question</button>
+            </div>
+            
             <button class="btn-download" onclick="downloadPDF()">Download PDF</button>
         </div>
 
@@ -338,66 +378,112 @@
             document.getElementById('navMenu').classList.toggle('open');
         }
 
-        // Start with Empty Array
-        let questions = [];
+        // List to hold both Headers and Questions
+        let items = [];
 
         function init() {
             renderInputs();
             updatePDF();
         }
 
-        function addQuestion() {
-            questions.push({ id: Date.now(), q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" });
+        function addHeader() {
+            items.push({ id: Date.now(), type: 'header', title: '' });
             renderInputs();
             updatePDF();
         }
 
-        function removeQuestion(id) {
-            questions = questions.filter(q => q.id !== id);
+        function addQuestion() {
+            items.push({ id: Date.now(), type: 'question', q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" });
+            renderInputs();
+            updatePDF();
+        }
+
+        function removeItem(id) {
+            items = items.filter(item => item.id !== id);
             renderInputs();
             updatePDF();
         }
 
         function updateData(id, field, val) {
-            const q = questions.find(x => x.id === id);
-            if(q) {
-                q[field] = val;
+            const item = items.find(x => x.id === id);
+            if(item) {
+                item[field] = val;
                 updatePDF();
+                if(item.type === 'header') updateSummary();
             }
         }
 
-        function renderInputs() {
-            const list = document.getElementById('questionsList');
-            list.innerHTML = '';
-            questions.forEach((q, i) => {
-                const item = document.createElement('div');
-                item.className = 'question-card';
-                item.innerHTML = `
-                    <div class="q-header">
-                        <span>Question ${i+1}</span>
-                        <i class="fas fa-trash" onclick="removeQuestion(${q.id})" style="cursor:pointer; color:#ef4444;"></i>
-                    </div>
-                    <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-                        <input class="form-control" placeholder="ক" value="${q.a}" oninput="updateData(${q.id}, 'a', this.value)">
-                        <input class="form-control" placeholder="খ" value="${q.b}" oninput="updateData(${q.id}, 'b', this.value)">
-                        <input class="form-control" placeholder="গ" value="${q.c}" oninput="updateData(${q.id}, 'c', this.value)">
-                        <input class="form-control" placeholder="ঘ" value="${q.d}" oninput="updateData(${q.id}, 'd', this.value)">
-                    </div>
-                    
-                    <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${q.id}, 'ans', this.value)">
-                        <option value="">সঠিক উত্তর নির্বাচন করুন...</option>
-                        <option value="ক" ${q.ans === 'ক' ? 'selected' : ''}>ক</option>
-                        <option value="খ" ${q.ans === 'খ' ? 'selected' : ''}>খ</option>
-                        <option value="গ" ${q.ans === 'গ' ? 'selected' : ''}>গ</option>
-                        <option value="ঘ" ${q.ans === 'ঘ' ? 'selected' : ''}>ঘ</option>
-                        <option value="ব্যাখ্যা দেখুন" ${q.ans === 'ব্যাখ্যা দেখুন' ? 'selected' : ''}>ব্যাখ্যা দেখুন</option>
-                    </select>
+        function updateSummary() {
+            const summaryBox = document.getElementById('topicSummary');
+            let summaryHTML = '';
+            let currentHeader = 'General';
+            let counts = {};
+            let total = 0;
 
-                    <textarea class="form-control" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
-                `;
-                list.appendChild(item);
+            items.forEach(item => {
+                if(item.type === 'header') {
+                    currentHeader = item.title || 'Untitled';
+                    if(!counts[currentHeader]) counts[currentHeader] = 0;
+                } else {
+                    if(!counts[currentHeader]) counts[currentHeader] = 0;
+                    counts[currentHeader]++;
+                    total++;
+                }
             });
+
+            summaryHTML = `<b>Total: ${total}</b> | `;
+            for (const [key, value] of Object.entries(counts)) {
+                if(value > 0) summaryHTML += `${key}: ${value} &nbsp; `;
+            }
+            summaryBox.innerHTML = summaryHTML;
+        }
+
+        function renderInputs() {
+            const list = document.getElementById('itemsList');
+            list.innerHTML = '';
+            
+            items.forEach((item, i) => {
+                const div = document.createElement('div');
+                
+                if (item.type === 'header') {
+                    div.className = 'header-card';
+                    div.innerHTML = `
+                        <div class="q-header">
+                            <span>SUBJECT HEADER</span>
+                            <i class="fas fa-trash" onclick="removeItem(${item.id})" style="cursor:pointer; color:#ef4444;"></i>
+                        </div>
+                        <input class="form-control" placeholder="Subject Name (e.g. বাংলা)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
+                    `;
+                } else {
+                    div.className = 'question-card';
+                    div.innerHTML = `
+                        <div class="q-header">
+                            <span>Question</span>
+                            <i class="fas fa-trash" onclick="removeItem(${item.id})" style="cursor:pointer; color:#ef4444;"></i>
+                        </div>
+                        <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                            <input class="form-control" placeholder="ক" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
+                            <input class="form-control" placeholder="খ" value="${item.b}" oninput="updateData(${item.id}, 'b', this.value)">
+                            <input class="form-control" placeholder="গ" value="${item.c}" oninput="updateData(${item.id}, 'c', this.value)">
+                            <input class="form-control" placeholder="ঘ" value="${item.d}" oninput="updateData(${item.id}, 'd', this.value)">
+                        </div>
+                        
+                        <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${item.id}, 'ans', this.value)">
+                            <option value="">সঠিক উত্তর নির্বাচন করুন...</option>
+                            <option value="ক" ${item.ans === 'ক' ? 'selected' : ''}>ক</option>
+                            <option value="খ" ${item.ans === 'খ' ? 'selected' : ''}>খ</option>
+                            <option value="গ" ${item.ans === 'গ' ? 'selected' : ''}>গ</option>
+                            <option value="ঘ" ${item.ans === 'ঘ' ? 'selected' : ''}>ঘ</option>
+                            <option value="ব্যাখ্যা দেখুন" ${item.ans === 'ব্যাখ্যা দেখুন' ? 'selected' : ''}>ব্যাখ্যা দেখুন</option>
+                        </select>
+
+                        <textarea class="form-control" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>
+                    `;
+                }
+                list.appendChild(div);
+            });
+            updateSummary();
         }
 
         function updatePDF() {
@@ -410,22 +496,32 @@
 
             const banglaNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => banglaNums[x] || x).join('');
+            
+            let qCount = 0;
 
-            questions.forEach((q, i) => {
-                const div = document.createElement('div');
-                div.className = 'mcq-item';
-                const expHTML = q.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${q.exp}</div>` : '';
-                
-                div.innerHTML = `
-                    <span class="q-text">${toBn(i+1)}. ${q.q}</span>
-                    <div class="options-grid">
-                        <span>ক. ${q.a}</span><span>খ. ${q.b}</span>
-                        <span>গ. ${q.c}</span><span>ঘ. ${q.d}</span>
-                    </div>
-                    <div class="ans-row">উত্তর: ${q.ans}</div>
-                    ${expHTML}
-                `;
-                body.appendChild(div);
+            items.forEach((item) => {
+                if (item.type === 'header') {
+                    const headerDiv = document.createElement('div');
+                    headerDiv.className = 'section-header-pdf';
+                    headerDiv.innerText = item.title;
+                    body.appendChild(headerDiv);
+                } else {
+                    qCount++;
+                    const div = document.createElement('div');
+                    div.className = 'mcq-item';
+                    const expHTML = item.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
+                    
+                    div.innerHTML = `
+                        <span class="q-text">${toBn(qCount)}. ${item.q}</span>
+                        <div class="options-grid">
+                            <span>ক. ${item.a}</span><span>খ. ${item.b}</span>
+                            <span>গ. ${item.c}</span><span>ঘ. ${item.d}</span>
+                        </div>
+                        <div class="ans-row">উত্তর: ${item.ans}</div>
+                        ${expHTML}
+                    `;
+                    body.appendChild(div);
+                }
             });
         }
 
@@ -433,11 +529,9 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Save state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
-            // Reset for full quality capture
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
@@ -451,7 +545,6 @@
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore mobile preview
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
             });
