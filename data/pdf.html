@@ -457,24 +457,44 @@
 
         // --- DOWNLOAD PDF (Random Hex) ---
         function downloadPDF() {
-            const element = document.getElementById('pdfPreviewContainer');
-            const scaleBox = document.querySelector('.scale-box');
-            const pages = document.querySelectorAll('.pdf-page');
-
-            // আগের স্টাইল সেভ করে রাখা
-            const oldTransform = scaleBox.style.transform;
-            const oldMargin = scaleBox.style.marginBottom;
-
-            // ১. স্কেলিং রিসেট
-            scaleBox.style.transform = 'none';
-            scaleBox.style.margin = '0';
+            // ১. মূল পেজগুলো সিলেক্ট করা
+            const originals = document.querySelectorAll('.pdf-page');
             
-            // ২. পেজের মার্জিন এবং শ্যাডো রিমুভ করা (গুরুত্বপূর্ণ)
-            pages.forEach(page => {
-                page.style.marginBottom = '0';
-                page.style.boxShadow = 'none'; // শ্যাডো অফ করা হলো
+            // ২. পিডিএফ জেনারেশনের জন্য একটি সম্পূর্ণ নতুন অস্থায়ী ডিভ তৈরি করা
+            const printContainer = document.createElement('div');
+            
+            // এই ডিভটিকে স্ক্রিনের বাইরে রাখা হবে যাতে ইউজার না দেখে, কিন্তু জেনারেট হতে পারে
+            printContainer.style.position = 'absolute';
+            printContainer.style.top = '0';
+            printContainer.style.left = '0';
+            printContainer.style.width = '210mm'; // ফিক্সড A4 সাইজ
+            printContainer.style.zIndex = '-9999'; // সবার নিচে লুকিয়ে রাখা
+            printContainer.style.background = '#fff'; // ব্যাকগ্রাউন্ড সাদা
+            printContainer.style.margin = '0';
+            printContainer.style.padding = '0';
+
+            // ৩. প্রতিটি পেজ ক্লোন (কপি) করে ক্লিন করা
+            originals.forEach(orig => {
+                const clone = orig.cloneNode(true);
+                
+                // প্রিভিউ-এর সব স্টাইল মুছে ফেলা (যাতে কোনো গ্যাপ না থাকে)
+                clone.style.margin = '0'; 
+                clone.style.marginBottom = '0';
+                clone.style.boxShadow = 'none';
+                clone.style.transform = 'none';
+                clone.style.display = 'block';
+                clone.style.overflow = 'hidden'; // ভেতরের কিছু উপচে পড়া আটকাবে
+                
+                // নিশ্চিত করা যাতে হাইট ফিক্সড থাকে
+                clone.style.height = '297mm'; 
+                
+                printContainer.appendChild(clone);
             });
 
+            // বডি-তে টেম্পোরারি ডিভ যোগ করা
+            document.body.appendChild(printContainer);
+
+            // ৪. পিডিএফ জেনারেট করা (ক্লিন ডিভ থেকে)
             const hex = Math.random().toString(16).substring(2, 8);
             const opt = {
                 margin: 0,
@@ -484,14 +504,9 @@
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                // ৩. ডাউনলোড শেষে আগের স্টাইল ফিরিয়ে আনা
-                scaleBox.style.transform = oldTransform;
-                scaleBox.style.marginBottom = oldMargin;
-                pages.forEach(page => {
-                    page.style.marginBottom = ''; // CSS ক্লাসের মার্জিন ফিরে আসবে
-                    page.style.boxShadow = '';    // CSS ক্লাসের শ্যাডো ফিরে আসবে
-                });
+            html2pdf().set(opt).from(printContainer).save().then(() => {
+                // ৫. কাজ শেষে টেম্পোরারি ডিভ ডিলিট করে দেওয়া
+                document.body.removeChild(printContainer);
             });
         }
         // --- DOWNLOAD PNG (Random Hex) ---
