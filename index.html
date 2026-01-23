@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Generator Pro</title>
+    <title>MCQ Generator | Interactive Learning</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root {
             --bg-dark: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.4);
-            --border-color: rgba(255, 255, 255, 0.08);
+            --panel-bg: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
             --primary: #8b5cf6;
             --accent: #fbbf24;
             --text-main: #f1f5f9;
@@ -32,36 +34,32 @@
                 radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
         }
 
-        /* --- STYLISH HEADER --- */
+        /* --- HEADER --- */
         header {
             width: 100%;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(15px);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
+            padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         .brand-logo {
-            font-size: 15px; /* Bigger Text */
-            font-weight: 900;
-            background: linear-gradient(135deg, #60a5fa 0%, #c084fc 50%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 18px; font-weight: 700; color: white;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .logo-img { 
+            height: 35px; width: 35px; border-radius: 50%; 
+            border: 1px solid rgba(255,255,255,0.5); /* 1px Border added */
+            object-fit: cover;
         }
 
         .hamburger {
@@ -97,14 +95,14 @@
         /* --- CONTAINER --- */
         .container {
             margin-top: 90px;
-            width: 95%; max-width: 1000px;
-            display: flex; flex-wrap: wrap; justify-content: center;
+            width: 95%; max-width: 1200px;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
         /* --- EDITOR BOX --- */
         .editor-box {
-            flex: 1; min-width: 350px;
+            flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg);
             backdrop-filter: blur(10px);
             padding: 25px;
@@ -136,10 +134,8 @@
             text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        /* --- GLASSY INPUTS --- */
         .form-control {
             width: 100%;
-            /* Semi-transparent Glassy Look */
             background: rgba(15, 23, 42, 0.6); 
             border: 1px solid rgba(148, 163, 184, 0.2);
             color: #f1f5f9;
@@ -149,117 +145,82 @@
             font-family: 'Lexend', 'Anek Bangla', sans-serif;
             transition: all 0.3s ease;
         }
-
         .form-control::placeholder { color: #64748b; font-size: 13px; }
-
         .form-control:focus {
-            outline: none;
-            border-color: #8b5cf6;
+            outline: none; border-color: #8b5cf6;
             background: rgba(15, 23, 42, 0.9);
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
         }
 
-        /* Select styling */
-        select.form-control {
-            cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a78bfa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 10px auto;
-            appearance: none;
-        }
-
+        select.form-control { cursor: pointer; }
+        
         .row-inputs { display: flex; gap: 12px; }
         .row-inputs > div { flex: 1; }
 
-        .btn-generate {
-            width: 100%; padding: 14px; margin-top: 10px;
-            border-radius: 12px; border: none;
-            color: white; font-weight: 700; cursor: pointer;
-            font-size: 15px; letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
-            transition: transform 0.2s;
-        }
-        .btn-generate:hover { transform: translateY(-2px); filter: brightness(1.1); }
-
-        /* --- STYLISH DOWNLOAD BUTTON --- */
+        /* Download Button */
         .btn-download {
-            width: 100%; padding: 14px; margin-top: 15px;
+            width: 100%; padding: 15px; margin-top: 20px;
             border-radius: 50px; border: none;
-            /* Hot Orange/Red Gradient */
             background: linear-gradient(45deg, #FF512F 0%, #DD2476 100%);
-            color: white; font-weight: 700; cursor: pointer; display: none;
-            text-transform: uppercase; font-size: 13px; letter-spacing: 1px;
+            color: white; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; font-size: 14px; letter-spacing: 1px;
             box-shadow: 0 5px 20px rgba(221, 36, 118, 0.4);
             transition: all 0.3s ease;
         }
-        .btn-download:hover {
-            box-shadow: 0 8px 25px rgba(221, 36, 118, 0.6);
-            transform: scale(1.02);
-        }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(221, 36, 118, 0.6); }
 
-        /* --- PREVIEW --- */
+        /* --- PREVIEW BOX --- */
         .preview-box {
-            flex: 1; min-width: 350px;
+            flex: 1.2; min-width: 350px;
             display: flex; justify-content: center; align-items: flex-start;
             padding-top: 10px;
         }
 
-        /* --- COMPACT MCQ CARD --- */
+        /* --- MCQ CARD --- */
         #mcqWrapper {
-            width: 100%; max-width: 380px;
-            /* Background set by JS */
-            border-radius: 3px;
-            /* Drastically reduced padding */
-            padding: 15px 15px; 
-            display: none; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.15);
+            width: 100%; max-width: 450px;
+            border-radius: 12px;
+            padding: 25px; 
+            display: flex; flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
             position: relative;
+            transition: background 0.3s ease;
         }
 
-        /* Compact Question */
-        .question-box { 
-            display: flex; gap: 8px; 
-            margin-bottom: 12px; /* Less Margin */
-        }
-        .q-prefix { color: #fbbf24; font-size: 18px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
-        .q-text { color: #fff; font-size: 17px; font-weight: 600; line-height: 1.4; }
+        .question-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .q-prefix { font-size: 20px; font-weight: 800; line-height: 1.3; flex-shrink: 0; }
+        .q-text { font-size: 18px; font-weight: 600; line-height: 1.5; }
 
-        /* Compact Options */
-        .options-list { 
-            display: flex; flex-direction: column; 
-            gap: 6px; /* Tight Gap */
-        }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
         
         .opt-item {
             display: flex; align-items: center;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px; 
-            padding: 6px 10px; /* Slim Padding */
+            border-radius: 8px; 
+            padding: 8px 12px; 
         }
         
         .opt-circle {
-            width: 24px; height: 24px; flex-shrink: 0;
+            width: 26px; height: 26px; flex-shrink: 0;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.15);
-            color: #fff;
             display: flex; justify-content: center; align-items: center;
-            font-size: 11px; font-weight: 700; margin-right: 10px;
+            font-size: 12px; font-weight: 700; margin-right: 12px;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .opt-text { color: #e2e8f0; font-size: 14px; font-weight: 500; }
+        .opt-text { font-size: 15px; font-weight: 500; }
 
-        .card-footer { margin-top: 15px; text-align: center; }
-        .card-line { width: 30px; height: 3px; background: #fbbf24; margin: 0 auto 6px; border-radius: 2px; }
-        .card-brand { color: rgba(255, 255, 255, 0.6); font-size: 10px; font-weight: 500; letter-spacing: 1px; }
+        .card-footer { margin-top: 20px; text-align: center; }
+        .card-line { width: 40px; height: 3px; margin: 0 auto 8px; border-radius: 2px; }
+        .card-brand { font-size: 11px; font-weight: 600; letter-spacing: 1px; opacity: 0.7; }
 
+        /* Footer */
         footer {
             width: 100%; padding: 20px; text-align: center;
-            background: var(--header-bg); border-top: 1px solid var(--border-color);
-            margin-top: auto; font-size: 12px; color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color);
+            margin-top: auto; font-size: 13px; color: var(--text-muted);
         }
 
         @media (max-width: 768px) {
@@ -271,15 +232,17 @@
 <body>
 
     <header>
-        <div class="brand-logo">Interactive Learning</div>
+        <div class="brand-logo">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            Interactive Learning
+        </div>
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
         <div class="nav-menu" id="navMenu">
-            <a href="index.html">Home</a>
             <a href="notice.html">Notice Maker</a>
-            <a href="quotation.html">Quotes Maker</a>
-            <a href="data/pdf.html">Question Paper Maker</a>
+            <a href="data/quotes.html">Quote Maker</a>
+            <a href="data/pdf.html">PDF Tool</a>
         </div>
     </header>
 
@@ -315,13 +278,13 @@
                         <option value="roman">i, ii, iii, iv</option>
                         <option value="number">1, 2, 3, 4</option>
                         <option value="bangla">১, ২, ৩, ৪</option>
-<option value="bangla2">ক, খ, গ, ঘ</option>
+                        <option value="bangla2">ক, খ, গ, ঘ</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group">
-                <label>Theme</label>
+                <label>Theme (80+ Options)</label>
                 <select id="themeSelector" class="form-control" onchange="updateLive()">
                     </select>
             </div>
@@ -339,8 +302,9 @@
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
             </div>
 
-            <button class="btn-generate" onclick="generate()">Generate</button>
-            <button class="btn-download" id="dlBtn" onclick="downloadImage()">Download Image</button>
+            <button class="btn-download" id="dlBtn" onclick="downloadImage()">
+                <i class="fas fa-download"></i> Download Image
+            </button>
         </div>
 
         <div class="preview-box">
@@ -357,7 +321,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="card-line"></div>
-                    <div class="card-brand">Follow: Interactive Learning</div>
+                    <div class="card-brand">Interactive Learning</div>
                 </div>
             </div>
         </div>
@@ -374,28 +338,33 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // --- THEMES ---
+        // --- EXTENDED THEMES (80+) ---
         const themes = [
+            // Dark & Deep
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
             { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
             { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd" },
-            { name: "Facebook Style", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#ffffff" },
-            { name: "Twitter Dark", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
-            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
-            { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05" },
-            { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff" },
-            { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff" },
-            { name: "Deep Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
             { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff" },
             { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff" },
             { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff" },
             { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ffffff" },
-            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#ffffff" },
+            { name: "Deep Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
             { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#ffffff" },
             { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#ffffff" },
             { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#ffffff" },
             { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#ffffff" },
+            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Midnight", bg: "linear-gradient(135deg, #232526, #414345)", accent: "#ffffff" },
+            { name: "Metal", bg: "linear-gradient(135deg, #2c3e50, #000000)", accent: "#bdc3c7" },
+            { name: "Shadow", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
+            { name: "Carbon", bg: "linear-gradient(135deg, #093028, #237a57)", accent: "#ffffff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
+            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff" },
+            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff" },
+            
+            // Nature & Green
             { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
             { name: "Forest", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
             { name: "Spotify", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff" },
@@ -403,9 +372,11 @@
             { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#ffffff" },
             { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#ffffff" },
             { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#ffffff" },
-            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
             { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
             { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#ffffff" },
+            { name: "Aurora", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#ffffff" },
+            
+            // Warm & Hot
             { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
             { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
             { name: "Youtube", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff" },
@@ -416,28 +387,48 @@
             { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#ffffff" },
             { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#ffffff" },
             { name: "Rose", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#ffffff" },
-            { name: "Pure Black", bg: "linear-gradient(135deg, #000000, #111111)", accent: "#ffffff" },
-            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
-            { name: "Midnight", bg: "linear-gradient(135deg, #232526, #414345)", accent: "#ffffff" },
-            { name: "Metal", bg: "linear-gradient(135deg, #2c3e50, #000000)", accent: "#bdc3c7" },
-            { name: "Shadow", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
-            { name: "Carbon", bg: "linear-gradient(135deg, #093028, #237a57)", accent: "#ffffff" },
-            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
-            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff" },
-            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#ffffff" },
+            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff" },
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
-            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000" },
-            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
             { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#ffffff" },
             { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#ffffff" },
+            
+            // Light & Clean
+            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
+            { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05" },
+            { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff" },
+            { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
+            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
+            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000" },
             { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff" },
-            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#ffffff" },
             { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff" },
             { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff" },
-            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff" }
+            
+            // New Added
+            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
+            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
+            { name: "Dark Ocean", bg: "linear-gradient(135deg, #373B44, #4286f4)", accent: "#fff" },
+            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff" },
+            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786, #f7797d)", accent: "#333" },
+            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#fff" },
+            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0, #ec38bc, #fdeff9)", accent: "#fff" },
+            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333" },
+            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff" },
+            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff" },
+            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff" },
+            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff" },
+            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff" },
+            { name: "A Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
+            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
+            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
+            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" }
         ];
 
+        // Populate Theme Dropdown
         const tSelect = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
             let opt = document.createElement('option');
@@ -452,8 +443,59 @@
             roman: ['i', 'ii', 'iii', 'iv'],
             number: ['1', '2', '3', '4'],
             bangla: ['১', '২', '৩', '৪'],
-     bangla2: ['ক','খ','গ','ঘ']
+            bangla2: ['ক','খ','গ','ঘ']
         };
+
+        // --- LIVE UPDATE LOGIC ---
+        function updateLive() {
+            // Get Values
+            const q = document.getElementById('qInput').value || "এখানে প্রশ্ন দেখা যাবে...";
+            document.getElementById('pQ').innerText = q;
+            document.getElementById('pA').innerText = document.getElementById('optA').value || "Option A";
+            document.getElementById('pB').innerText = document.getElementById('optB').value || "Option B";
+            document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
+            document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
+
+            // Set Style
+            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
+            const optStyle = document.getElementById('optStyle').value;
+            const labels = optionTypes[optStyle];
+            document.getElementById('oc1').innerText = labels[0];
+            document.getElementById('oc2').innerText = labels[1];
+            document.getElementById('oc3').innerText = labels[2];
+            document.getElementById('oc4').innerText = labels[3];
+
+            // Apply Theme
+            const tIdx = document.getElementById('themeSelector').value;
+            const theme = themes[tIdx];
+            const wrapper = document.getElementById('mcqWrapper');
+            
+            wrapper.style.background = theme.bg;
+            document.querySelector('.q-prefix').style.color = theme.accent;
+            document.querySelector('.card-line').style.background = theme.accent;
+
+            // Smart Text Color
+            const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold", "Teal Love", "Piggy Pink", "Mega Tron", "Argon", "A Lost Memory"].includes(theme.name);
+            const textColor = isLight ? "#222" : "#fff";
+            const subColor = isLight ? "#444" : "#e2e8f0";
+            const borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
+            const itemBg = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.08)";
+
+            document.querySelector('.q-text').style.color = textColor;
+            document.querySelectorAll('.opt-text').forEach(el => el.style.color = subColor);
+            
+            document.querySelectorAll('.opt-circle').forEach(el => {
+                el.style.color = textColor;
+                el.style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.15)";
+                el.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
+            });
+            
+            document.querySelectorAll('.opt-item').forEach(el => {
+                el.style.borderColor = borderColor;
+                el.style.background = itemBg;
+            });
+            document.querySelector('.card-brand').style.color = isLight ? "#555" : "rgba(255,255,255,0.6)";
+        }
 
         // --- RESET & UNDO ---
         let lastState = null;
@@ -475,9 +517,6 @@
             document.getElementById('optB').value = '';
             document.getElementById('optC').value = '';
             document.getElementById('optD').value = '';
-            document.getElementById('qStyle').selectedIndex = 0;
-            document.getElementById('optStyle').selectedIndex = 0;
-            document.getElementById('themeSelector').selectedIndex = 0;
             
             document.getElementById('undoBtn').style.display = 'flex';
             updateLive();
@@ -498,73 +537,29 @@
             updateLive();
         }
 
-        function updateLive() {
-            const q = document.getElementById('qInput').value || "প্রশ্ন এখানে দেখা যাবে...";
-            document.getElementById('pQ').innerText = q;
-            document.getElementById('pA').innerText = document.getElementById('optA').value || "Option A";
-            document.getElementById('pB').innerText = document.getElementById('optB').value || "Option B";
-            document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
-            document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
-
-            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
-
-            const optStyle = document.getElementById('optStyle').value;
-            const labels = optionTypes[optStyle];
-            document.getElementById('oc1').innerText = labels[0];
-            document.getElementById('oc2').innerText = labels[1];
-            document.getElementById('oc3').innerText = labels[2];
-            document.getElementById('oc4').innerText = labels[3];
-
-            // Theme
-            const tIdx = document.getElementById('themeSelector').value;
-            const theme = themes[tIdx];
-            const wrapper = document.getElementById('mcqWrapper');
-            
-            wrapper.style.background = theme.bg;
-            document.querySelector('.q-prefix').style.color = theme.accent;
-            document.querySelector('.card-line').style.background = theme.accent;
-
-            // Light Theme Adjustment
-            const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold"].includes(theme.name);
-            const textColor = isLight ? "#222" : "#fff";
-            document.querySelector('.q-text').style.color = textColor;
-            document.querySelectorAll('.opt-text').forEach(el => el.style.color = textColor);
-            
-            document.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.color = textColor;
-                el.style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.15)";
-                el.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
-            });
-            
-            document.querySelectorAll('.opt-item').forEach(el => {
-                el.style.borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
-                el.style.background = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.08)";
-            });
-            document.querySelector('.card-brand').style.color = isLight ? "#555" : "rgba(255,255,255,0.6)";
-        }
-
-        function generate() {
-            updateLive();
-            const wrapper = document.getElementById('mcqWrapper');
-            wrapper.style.display = 'flex';
-            document.getElementById('dlBtn').style.display = 'block';
-            if(window.innerWidth < 768) wrapper.scrollIntoView({behavior: 'smooth', block: 'center'});
-        }
-
         function downloadImage() {
             const wrapper = document.getElementById('mcqWrapper');
-            // Scale 4 for HD Quality
+            const btn = document.getElementById('dlBtn');
+            btn.innerText = "Processing...";
+            
             html2canvas(wrapper, {
-                scale: 35,
+                scale: 4, // Ultra HD
                 backgroundColor: null,
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'mcq_mcqmake_' + Date.now() + '.png';
+                link.download = 'mcq_' + Date.now() + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+                btn.innerHTML = '<i class="fas fa-download"></i> Download Image';
             });
         }
+
+        // Initialize Live Preview
+        updateLive();
+        // Show mcqWrapper initially
+        document.getElementById('mcqWrapper').style.display = 'flex';
+
     </script>
 </body>
 </html>
