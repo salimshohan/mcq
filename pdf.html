@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Question Maker | Interactive Learning</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,10 +16,10 @@
         :root {
             --bg-dark: #0f172a;
             --panel-bg: #1e293b;
-            --input-bg: #334155;
-            --border-color: rgba(255, 255, 255, 0.1);
+            /* Purple Themed Inputs */
+            --input-bg: rgba(30, 27, 75, 0.6); 
+            --input-border: rgba(139, 92, 246, 0.3);
             --primary: #8b5cf6;
-            --accent: #fbbf24;
             --text-main: #f1f5f9;
         }
 
@@ -41,7 +42,7 @@
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .brand-logo {
@@ -67,12 +68,12 @@
             background: var(--bg-dark);
             display: flex; flex-direction: column; padding-top: 80px;
             transition: 0.4s; box-shadow: -5px 0 30px rgba(0,0,0,0.6);
-            border-left: 1px solid var(--border-color);
+            border-left: 1px solid rgba(255,255,255,0.1);
         }
         .nav-menu.open { right: 0; }
         .nav-menu a {
             color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-weight: 500; border-bottom: 1px solid var(--border-color);
+            font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         /* --- CONTAINER --- */
@@ -87,41 +88,42 @@
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255,255,255,0.1);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
         
-        /* Stylish Inputs */
+        /* Purple Stylish Inputs */
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
-            border: 2px solid transparent;
+            border: 1px solid var(--input-border);
             color: white; padding: 12px; border-radius: 10px; font-size: 14px;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
         .form-control:focus {
             outline: none;
-            background: #1e293b;
-            border-color: var(--primary);
+            background: rgba(46, 16, 101, 0.8);
+            border-color: #a78bfa;
             box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
         }
+        ::placeholder { color: rgba(255,255,255,0.3); }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 80px; } /* Bigger explanation box */
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
         .question-card {
-            background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px;
-            margin-bottom: 20px; border: 1px solid var(--border-color);
+            background: rgba(139, 92, 246, 0.05); /* Slight purple tint */
+            padding: 20px; border-radius: 16px;
+            margin-bottom: 20px; border: 1px solid var(--input-border);
             position: relative;
         }
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent); margin-bottom: 12px; font-weight: 700; }
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #a78bfa; margin-bottom: 12px; font-weight: 700; }
         
         .btn-add {
             width: 100%; padding: 14px; border: 2px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
@@ -132,9 +134,9 @@
         
         .btn-download {
             width: 100%; padding: 16px; border-radius: 50px; border: none;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6); color: white;
+            background: linear-gradient(90deg, #7c3aed, #2563eb); color: white;
             font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
             transition: transform 0.2s;
         }
         .btn-download:hover { transform: translateY(-2px); }
@@ -145,7 +147,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            background: #475569; 
+            background: #334155; 
             padding: 40px 20px;
             border-radius: 20px;
             overflow: auto; 
@@ -170,8 +172,8 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Increased Opacity */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.1)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
+            /* Watermark: Lighter & Centered */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
             background-repeat: repeat;
             background-position: center;
         }
@@ -197,17 +199,15 @@
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* 2-Column Layout with Vertical Line Trick */
+        /* 2-Column Layout with THIN LINE */
         .pdf-body {
             column-count: 2;
             column-gap: 10mm;
-            /* Simulating line with gradient as column-rule can be flaky in html2canvas */
-            background: linear-gradient(to right, transparent 49.5%, #000 49.5%, #000 50.5%, transparent 50.5%);
-            background-position: center;
-            background-size: 100% 100%;
+            /* Thin vertical line */
+            column-rule: 0.5px solid #bbb;
             text-align: left;
             display: block; 
-            min-height: 100px; /* Ensure gradient shows */
+            min-height: 200px;
         }
 
         .mcq-item {
@@ -216,9 +216,7 @@
             page-break-inside: avoid;
             font-size: 14px;
             line-height: 1.4;
-            /* White background to cover the center line if text overlaps (rare) */
-            background: white; 
-            position: relative;
+            padding-right: 5px;
         }
         
         .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
@@ -228,18 +226,20 @@
             font-size: 13px; margin-left: 15px; row-gap: 4px;
         }
         
-        /* Answer Position: Left Side below options */
+        /* Answer Position: Left Side */
         .ans-row {
             text-align: left;
             font-size: 13px; 
             font-weight: 700; 
-            margin-top: 5px;
+            margin-top: 6px;
             margin-left: 15px; 
         }
         
         .exp-box {
-            font-size: 12px; color: #333 !important; margin-top: 3px;
+            font-size: 12px; color: #333 !important; margin-top: 4px;
             font-style: italic; margin-left: 15px;
+            border-top: 0.5px dotted #ccc;
+            padding-top: 2px;
         }
 
         /* Footer */
@@ -377,15 +377,15 @@
                         <span>Question ${i+1}</span>
                         <i class="fas fa-trash" onclick="removeQuestion(${q.id})" style="cursor:pointer; color:#ef4444;"></i>
                     </div>
-                    <input class="form-control" style="margin-bottom:8px;" placeholder="প্রশ্ন লিখুন..." value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
+                    <input class="form-control" style="margin-bottom:10px;" placeholder="প্রশ্ন লিখুন..." value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
                         <input class="form-control" placeholder="ক" value="${q.a}" oninput="updateData(${q.id}, 'a', this.value)">
                         <input class="form-control" placeholder="খ" value="${q.b}" oninput="updateData(${q.id}, 'b', this.value)">
                         <input class="form-control" placeholder="গ" value="${q.c}" oninput="updateData(${q.id}, 'c', this.value)">
                         <input class="form-control" placeholder="ঘ" value="${q.d}" oninput="updateData(${q.id}, 'd', this.value)">
                     </div>
                     
-                    <select class="form-control" style="margin-bottom:8px;" onchange="updateData(${q.id}, 'ans', this.value)">
+                    <select class="form-control" style="margin-bottom:10px;" onchange="updateData(${q.id}, 'ans', this.value)">
                         <option value="">সঠিক উত্তর নির্বাচন করুন...</option>
                         <option value="ক" ${q.ans === 'ক' ? 'selected' : ''}>ক</option>
                         <option value="খ" ${q.ans === 'খ' ? 'selected' : ''}>খ</option>
@@ -414,7 +414,7 @@
             questions.forEach((q, i) => {
                 const div = document.createElement('div');
                 div.className = 'mcq-item';
-                const expHTML = q.exp ? `<div class="exp-box">${q.exp}</div>` : '';
+                const expHTML = q.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${q.exp}</div>` : '';
                 
                 div.innerHTML = `
                     <span class="q-text">${toBn(i+1)}. ${q.q}</span>
@@ -442,13 +442,11 @@
             scaleBox.style.margin = '0';
 
             const opt = {
-                // Increased Top Margin for subsequent pages to fix "margin kom hoiche"
                 margin:       [15, 10, 10, 10], 
-                filename:     'Question_Paper.pdf',
+                filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                // Use strict page breaking
                 pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
             };
             
