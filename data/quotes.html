@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quote Maker | Interactive Learning</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -20,7 +18,6 @@
             --input-bg: #020617;
             --border-color: #334155;
             --primary: #6366f1;
-            --accent: #fbbf24;
             --text-main: #f1f5f9;
         }
 
@@ -39,7 +36,7 @@
         header {
             width: 100%;
             background: linear-gradient(90deg, #1e1b4b, #312e81);
-            padding: 15px 5%;
+            padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; left: 0; z-index: 2000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -47,18 +44,17 @@
         }
 
         .brand-logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 20px; font-weight: 700; color: white;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 18px; font-weight: 700; color: white;
+            text-decoration: none;
         }
         
-        .logo-icon { 
-            width: 35px; height: 35px; background: var(--primary); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px; color: white;
+        .logo-img { 
+            height: 35px; width: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
         }
 
         .hamburger {
-            cursor: pointer; width: 30px; height: 20px;
+            cursor: pointer; width: 28px; height: 20px;
             display: flex; flex-direction: column; justify-content: space-between;
             z-index: 2001;
         }
@@ -80,14 +76,14 @@
         .mobile-menu.active { right: 0; }
         .mobile-menu a {
             color: #cbd5e1; text-decoration: none; padding: 15px 30px;
-            font-size: 16px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
             transition: 0.2s;
         }
         .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 90px; flex: 1; width: 95%; max-width: 1200px;
+            margin-top: 80px; flex: 1; width: 95%; max-width: 1100px;
             display: flex; flex-wrap: wrap; gap: 30px;
             padding-bottom: 40px; justify-content: center;
         }
@@ -95,40 +91,41 @@
         /* --- EDITOR SECTION (LEFT) --- */
         .editor-section {
             flex: 1; min-width: 300px; max-width: 450px;
-            background: var(--panel-bg); padding: 25px; border-radius: 20px;
+            background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
             height: fit-content;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .section-title { 
-            font-size: 18px; font-weight: 700; color: var(--primary); 
+            font-size: 16px; font-weight: 700; color: var(--primary); 
             margin-bottom: 20px; border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 10px; display: flex; align-items: center; gap: 10px;
+            padding-bottom: 10px; display: flex; align-items: center; gap: 8px;
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #334155; 
-            color: #f1f5f9; padding: 15px; font-size: 15px; border-radius: 10px;
+            color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
             transition: 0.3s; font-family: 'Anek Bangla', sans-serif;
         }
         .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
-        textarea.form-control { resize: vertical; min-height: 100px; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
         
         .btn {
-            flex: 1; padding: 14px; border-radius: 50px; border: none;
-            font-size: 14px; font-weight: 700; cursor: pointer;
+            flex: 1; padding: 12px; border-radius: 50px; border: none;
+            font-size: 13px; font-weight: 700; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .btn-theme { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3); }
-        .btn-download { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+        .btn-theme { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+        .btn-download { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         
         .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .btn:active { transform: scale(0.98); }
@@ -138,69 +135,66 @@
             flex: 1.5; min-width: 320px; display: flex; justify-content: center; align-items: flex-start;
         }
 
+        /* Fixed Ratio or Auto Height */
         #quoteWrapper {
-            width: 100%; max-width: 500px; aspect-ratio: 1/1; /* Square for Social Media */
+            width: 100%; max-width: 500px;
+            min-height: 300px; /* Reduced Height */
             position: relative;
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); /* Default Theme */
-            padding: 40px; 
+            /* Default Theme */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
             transition: background 0.5s ease;
         }
 
-        /* Big Quote Mark */
-        .big-quote-bg {
-            position: absolute; top: -10px; left: 20px;
-            font-size: 150px; font-family: serif;
-            color: rgba(255, 255, 255, 0.08);
-            z-index: 0; line-height: 1; pointer-events: none;
-        }
-
         .quote-content { position: relative; z-index: 2; text-align: center; width: 100%; }
 
-        .quote-icon { font-size: 30px; color: rgba(255,255,255,0.8); margin-bottom: 20px; display: block; }
+        .quote-icon { font-size: 30px; color: rgba(255,255,255,0.7); margin-bottom: 15px; display: block; }
 
         .quote-text {
             font-family: 'Tiro Bangla', serif;
-            font-size: 24px; line-height: 1.6; font-weight: 500;
-            color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            margin-bottom: 25px; white-space: pre-wrap;
+            font-size: 24px; line-height: 1.5; font-weight: 500;
+            color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 15px; white-space: pre-wrap;
         }
 
         .divider {
-            width: 50px; height: 3px; background: rgba(255,255,255,0.6);
-            margin: 0 auto 20px auto; border-radius: 2px;
+            width: 40px; height: 3px; background: rgba(255,255,255,0.6);
+            margin: 0 auto 15px auto; border-radius: 2px;
+            display: none; /* Hidden by default */
         }
 
         .quote-author {
-            font-size: 16px; font-weight: 600; color: #cbd5e1;
+            font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.95);
             text-transform: uppercase; letter-spacing: 1px;
             font-family: 'Poppins', sans-serif;
+            display: none; /* Hidden by default */
         }
 
         .watermark {
-            position: absolute; bottom: 15px;
-            font-size: 11px; opacity: 0.5; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 2px;
+            position: absolute; bottom: 12px;
+            font-size: 10px; opacity: 0.5; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1.5px;
             color: white; z-index: 2;
         }
 
         /* --- FOOTER --- */
         footer {
             margin-top: auto; width: 100%;
-            background: #020617; padding: 20px;
+            background: #020617; padding: 15px;
             text-align: center; border-top: 1px solid #334155;
-            font-size: 13px; color: #64748b;
+            font-size: 12px; color: #64748b;
         }
 
-        /* Mobile Responsive */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .container { flex-direction: column; }
+            .container { flex-direction: column; margin-top: 70px; }
             .preview-section { width: 100%; }
-            #quoteWrapper { aspect-ratio: auto; min-height: 400px; }
+            #quoteWrapper { min-height: 280px; padding: 30px 20px; }
             .quote-text { font-size: 20px; }
         }
     </style>
@@ -208,10 +202,10 @@
 <body>
 
     <header>
-        <div class="brand-logo">
-            <div class="logo-icon">IL</div>
+        <a href="../index.html" class="brand-logo">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
             Interactive Learning
-        </div>
+        </a>
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
@@ -221,14 +215,13 @@
         <a href="../index.html">Home</a>
         <a href="pdf.html">PDF Tool</a>
         <a href="quotes.html">Quote Maker</a>
-        <a href="#">Contact</a>
     </div>
 
     <div class="container">
         
         <div class="editor-section">
             <div class="section-title">
-                <i class="fas fa-edit"></i> Edit Content
+                <i class="fas fa-edit"></i> Customize Quote
             </div>
             
             <div class="input-group">
@@ -237,23 +230,22 @@
             </div>
             
             <div class="input-group">
-                <label>Author / বক্তা</label>
+                <label>Author / বক্তা (Optional)</label>
                 <input id="authorInput" class="form-control" placeholder="নাম লিখুন..." oninput="updatePreview()">
             </div>
 
             <div class="btn-group">
                 <button class="btn btn-theme" onclick="changeTheme()">
-                    <i class="fas fa-palette"></i> Theme
+                    <i class="fas fa-palette"></i> Change Theme
                 </button>
                 <button class="btn btn-download" onclick="downloadQuote()">
-                    <i class="fas fa-download"></i> Save
+                    <i class="fas fa-download"></i> Save Image
                 </button>
             </div>
         </div>
 
         <div class="preview-section">
             <div id="quoteWrapper">
-                <div class="big-quote-bg">❝</div>
                 
                 <div class="quote-content">
                     <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
@@ -283,41 +275,56 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
-        // Live Update
+        // Live Update & Auto Hide Logic
         function updatePreview() {
             const quote = document.getElementById('quoteInput').value;
-            const author = document.getElementById('authorInput').value;
+            const author = document.getElementById('authorInput').value.trim();
 
             document.getElementById('previewText').innerText = quote ? `"${quote}"` : '"এখানে উক্তি লিখুন..."';
-            document.getElementById('previewAuthor').innerText = author ? `— ${author}` : '— নাম';
+            
+            // Logic to hide Author & Divider if input is empty
+            const authorEl = document.getElementById('previewAuthor');
+            const dividerEl = document.querySelector('.divider');
+
+            if (author) {
+                authorEl.innerText = `— ${author}`;
+                authorEl.style.display = 'block';
+                dividerEl.style.display = 'block';
+            } else {
+                authorEl.style.display = 'none';
+                dividerEl.style.display = 'none';
+            }
         }
 
-        // 100+ Custom Themes Generator (Random Gradients)
+        // Curated Premium Themes (No muddy colors)
+        const themes = [
+            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", // Purple Bliss
+            "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)", // Deep Blue
+            "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)", // Greenish
+            "linear-gradient(135deg, #FC466B 0%, #3F5EFB 100%)", // Pink Blue
+            "linear-gradient(135deg, #FDBB2D 0%, #22C1C3 100%)", // Gold Teal
+            "linear-gradient(135deg, #360033 0%, #0b8793 100%)", // Deep Purple Teal
+            "linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)", // Instagram Style
+            "linear-gradient(135deg, #20002c 0%, #cbb4d4 100%)", // Dark Violet
+            "linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%)", // Sunset
+            "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)", // Dark Ocean
+            "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)", // Fresh Green
+            "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)", // Electric Violet
+            "linear-gradient(135deg, #b92b27 0%, #1565C0 100%)", // Red Blue
+            "linear-gradient(135deg, #cc2b5e 0%, #753a88 100%)", // Pink Purple
+            "linear-gradient(135deg, #42275a 0%, #734b6d 100%)", // Grape
+            "linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%)", // Calm Blue
+            "linear-gradient(135deg, #232526 0%, #414345 100%)", // Midnight City
+            "linear-gradient(135deg, #1A2980 0%, #26D0CE 100%)", // Aqua Marine
+            "linear-gradient(135deg, #FF512F 0%, #DD2476 100%)", // Bloody Mary
+            "linear-gradient(135deg, #4568DC 0%, #B06AB3 100%)"  // Soft Violet
+        ];
+
         function changeTheme() {
             const card = document.getElementById('quoteWrapper');
-            
-            // Random HSL Colors for smooth gradients
-            const h1 = Math.floor(Math.random() * 360);
-            const h2 = (h1 + 40) % 360; 
-            const h3 = (h1 + 180) % 360; 
-
-            // Different Gradient Types
-            const types = ['135deg', '45deg', 'to right', 'to bottom', 'circle at center'];
-            const type = types[Math.floor(Math.random() * types.length)];
-            
-            // Darker colors for white text readability (L < 40%)
-            const c1 = `hsl(${h1}, 70%, 20%)`;
-            const c2 = `hsl(${h2}, 80%, 25%)`;
-            const c3 = `hsl(${h3}, 60%, 15%)`;
-
-            let bg;
-            if(type.includes('circle')) {
-                bg = `radial-gradient(${type}, ${c1}, ${c2})`;
-            } else {
-                bg = `linear-gradient(${type}, ${c1}, ${c2}, ${c3})`;
-            }
-
-            card.style.background = bg;
+            // Pick a random theme from the curated list
+            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            card.style.background = randomTheme;
         }
 
         // HD Download
@@ -325,23 +332,25 @@
             const element = document.getElementById('quoteWrapper');
             const btn = document.querySelector('.btn-download');
             
-            btn.innerText = "Processing...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
             
             html2canvas(element, {
-                scale: 4, // Ultra HD
+                scale: 3, // High quality
                 useCORS: true,
-                backgroundColor: null, // Transparent edges
+                backgroundColor: null, 
                 allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Quote_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.innerHTML = '<i class="fas fa-download"></i> Save';
+                btn.innerHTML = '<i class="fas fa-download"></i> Save Image';
             });
         }
 
-        // Initial Theme
+        // Initialize empty state logic
+        updatePreview();
+        // Set first theme
         changeTheme();
     </script>
 </body>
