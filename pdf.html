@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -97,13 +97,11 @@
 
         #topicSummary {
             background: rgba(139, 92, 246, 0.1);
-            padding: 12px; border-radius: 8px;
+            padding: 10px; border-radius: 8px;
             margin-bottom: 20px; font-size: 13px; color: #cbd5e1;
             border: 1px dashed var(--primary);
-            line-height: 1.6;
         }
 
-        /* PREMIUM INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
@@ -112,9 +110,9 @@
             background: var(--input-bg); 
             border: none;
             border-bottom: 2px solid #334155; 
-            color: #f1f5f9; padding: 12px 14px; font-size: 14px;
+            color: #f1f5f9; padding: 12px 10px; font-size: 14px;
             transition: all 0.3s ease;
-            border-radius: 8px;
+            border-radius: 4px 4px 0 0;
         }
         .form-control:focus {
             outline: none;
@@ -123,10 +121,10 @@
         }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        textarea.form-control { resize: vertical; min-height: 80px; border: 1px solid #334155; border-radius: 8px; }
 
         .question-card {
-            background: rgba(30, 41, 59, 0.5); 
+            background: #1e293b; 
             padding: 20px; border-radius: 12px;
             margin-bottom: 20px; border: 1px solid #334155;
             position: relative;
@@ -134,21 +132,21 @@
         }
         
         .header-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(15, 23, 42, 0.5));
+            background: linear-gradient(90deg, #1e293b, #0f172a);
             padding: 15px; border-radius: 8px;
             margin-bottom: 20px; border-left: 4px solid var(--accent);
-            border: 1px solid #334155; border-left-width: 4px;
+            position: relative;
         }
 
         .break-card {
-            background: rgba(239, 68, 68, 0.1);
-            padding: 10px; border-radius: 8px;
+            background: rgba(239, 68, 68, 0.15);
+            padding: 12px; border-radius: 8px;
             margin-bottom: 20px; border: 1px dashed #ef4444;
             color: #ef4444; font-weight: 700;
             text-align: center; display: flex; justify-content: space-between; align-items: center;
         }
 
-        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #a78bfa; margin-bottom: 12px; font-weight: 700; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #94a3b8; margin-bottom: 12px; font-weight: 700; }
         
         .control-icons { display: flex; gap: 8px; }
         .control-icon { 
@@ -200,20 +198,20 @@
         /* --- A4 PAPER --- */
         #pdfContent {
             width: 210mm;
-            min-height: 297mm; 
+            min-height: 297mm; /* Ensure full page */
             background: white;
             color: black !important;
-            padding: 15mm;
+            padding: 12mm 15mm;
             position: relative;
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Centered and Smaller */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='35' fill='rgba(0,0,0,0.08)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
+            /* Watermark: Small & Centered - Fixed on Page */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='40' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
             background-repeat: repeat-y;
-            background-size: 100% 297mm; 
+            background-size: 100% 297mm; /* Ensure one watermark per A4 page height */
             background-position: center top;
         }
         
@@ -244,8 +242,9 @@
             column-gap: 10mm;
             text-align: left;
             display: block; 
-            min-height: 200px;
+            min-height: 100px;
             position: relative;
+            /* Thin Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
         }
 
@@ -265,25 +264,25 @@
             text-underline-offset: 5px;
         }
 
-        /* Manual Page Break Marker in PDF */
-        .page-break-marker {
-            column-span: all;
-            break-before: page;
+        /* FORCE PAGE BREAK CLASS */
+        .html2pdf__page-break {
             height: 0;
             margin: 0;
+            padding: 0;
             border: none;
+            /* This class is recognized by html2pdf to force a break */
         }
-        
-        /* Visual indicator for Page Break in Preview */
-        .page-break-preview {
+
+        /* Preview Only Break Line */
+        .break-line-preview {
             column-span: all;
             border-top: 2px dashed #ef4444;
             color: #ef4444;
             text-align: center;
             margin: 20px 0;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
-            background: white;
+            background: #fff;
             padding: 5px;
         }
 
@@ -600,15 +599,15 @@
                     headerDiv.innerText = item.title;
                     body.appendChild(headerDiv);
                 } else if (item.type === 'break') {
-                    // Visual Preview
-                    const breakDiv = document.createElement('div');
-                    breakDiv.className = 'page-break-preview';
-                    breakDiv.innerText = '--- NEW PAGE STARTS HERE ---';
-                    body.appendChild(breakDiv);
-                    
+                    // Preview Line
+                    const previewLine = document.createElement('div');
+                    previewLine.className = 'break-line-preview';
+                    previewLine.innerText = '-- PDF WILL BREAK HERE --';
+                    body.appendChild(previewLine);
+
                     // Actual PDF Break Element
                     const pdfBreak = document.createElement('div');
-                    pdfBreak.className = 'page-break-marker';
+                    pdfBreak.className = 'html2pdf__page-break'; // Special Class
                     body.appendChild(pdfBreak);
                 } else {
                     qCount++;
@@ -634,35 +633,36 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Hide visual markers for download
-            document.querySelectorAll('.page-break-preview').forEach(el => el.style.display = 'none');
+            // Hide preview lines
+            document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'none');
 
             // Save state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
+            // Reset for capture
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             const opt = {
-                margin:       [10, 10, 10, 10], 
+                // Adjust margins slightly to ensure first page top doesn't get cut
+                margin:       [5, 10, 10, 10], 
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                pagebreak:    { mode: ['css', 'legacy'] }
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore state
+                // Restore
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
-                // Show visual markers again
-                document.querySelectorAll('.page-break-preview').forEach(el => el.style.display = 'block');
+                // Show preview lines
+                document.querySelectorAll('.break-line-preview').forEach(el => el.style.display = 'block');
             });
         }
 
-        // Init
         init();
     </script>
 </body>
