@@ -31,30 +31,35 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVBAR --- */
+        /* --- HEADER & NAVBAR --- */
         header {
             width: 100%;
             background: linear-gradient(90deg, #1e1b4b, #312e81);
-            padding: 15px 5%;
+            padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; left: 0; z-index: 2000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .brand-logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 20px; font-weight: 700; color: white;
+        .brand-link {
+            text-decoration: none; display: flex; align-items: center; gap: 12px;
+            transition: 0.3s;
+        }
+        .brand-link:hover { opacity: 0.9; }
+
+        .brand-text {
+            font-size: 18px; font-weight: 700; color: white;
+            text-transform: uppercase; letter-spacing: 1px;
         }
         
-        .logo-icon { 
-            width: 35px; height: 35px; background: var(--primary); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px; color: white;
+        .logo-img { 
+            height: 35px; width: 35px; border-radius: 50%; 
+            object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
         }
 
         .hamburger {
-            cursor: pointer; width: 30px; height: 20px;
+            cursor: pointer; width: 28px; height: 20px;
             display: flex; flex-direction: column; justify-content: space-between;
             z-index: 2001;
         }
@@ -76,37 +81,44 @@
         .mobile-menu.active { right: 0; }
         .mobile-menu a {
             color: #cbd5e1; text-decoration: none; padding: 15px 30px;
-            font-size: 16px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
         }
+        .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 90px; width: 95%; max-width: 1200px;
-            display: flex; flex-wrap: wrap; 
-            justify-content: center; align-items: flex-start;
-            gap: 30px; padding-bottom: 40px; flex: 1;
+            margin-top: 80px; flex: 1; width: 95%; max-width: 1100px;
+            display: flex; flex-wrap: wrap; gap: 30px;
+            padding-bottom: 40px; justify-content: center;
         }
 
-        /* --- EDITOR --- */
+        /* --- EDITOR SECTION --- */
         .editor-section {
-            flex: 1; min-width: 350px; max-width: 500px;
+            flex: 1; min-width: 320px; max-width: 450px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
+            height: fit-content;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .section-title { 
+            font-size: 16px; font-weight: 700; color: var(--primary); 
+            margin-bottom: 20px; border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
+        
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #334155; 
             color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
+            transition: 0.3s; font-family: 'Anek Bangla', sans-serif;
         }
-        select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
 
-        /* --- BUTTONS --- */
         .btn-download {
             width: 100%; padding: 15px; margin-top: 15px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
@@ -114,62 +126,66 @@
             text-transform: uppercase; letter-spacing: 1px; font-size: 13px;
         }
 
-        /* --- PREVIEW --- */
+        /* --- PREVIEW SECTION --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding-top: 10px;
         }
 
-        /* --- NOTICE CARD (New Design) --- */
+        /* --- NOTICE CARD (Classic Style) --- */
         #noticeCard {
             width: 100%; max-width: 450px;
+            /* Default Theme */
             background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border-radius: 6px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             overflow: hidden; position: relative;
             border: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.3s ease;
         }
 
-        /* Header Strip */
-        .card-top {
-            background: var(--primary); padding: 8px;
-            text-align: center; color: white; font-size: 11px; font-weight: 800;
-            letter-spacing: 2px; text-transform: uppercase;
+        /* Top Header Strip */
+        .top-header {
+            background: rgba(0,0,0,0.3); padding: 12px;
+            text-align: center; color: rgba(255,255,255,0.9);
+            font-size: 11px; font-weight: 800; letter-spacing: 3px;
+            text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
         /* Content Body */
-        .card-body { padding: 30px 25px; position: relative; z-index: 2; }
+        .card-body { padding: 25px 30px; position: relative; z-index: 2; min-height: 300px; display: flex; flex-direction: column; }
 
         .notice-badge {
-            display: inline-block; padding: 5px 12px; border-radius: 50px;
-            background: rgba(255,255,255,0.1); color: var(--accent);
-            font-size: 12px; font-weight: 700; margin-bottom: 15px;
+            display: inline-block; padding: 6px 14px; border-radius: 50px;
+            background: rgba(255,255,255,0.15); color: var(--accent);
+            font-size: 13px; font-weight: 700; margin-bottom: 5px;
             border: 1px solid rgba(255,255,255,0.2);
         }
 
+        .date-info { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 20px; font-weight: 500; }
+
         .notice-text {
-            font-size: 20px; line-height: 1.6; color: #fff; font-weight: 500;
-            margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-size: 22px; line-height: 1.5; color: #fff; font-weight: 500;
+            margin-bottom: auto; text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            white-space: pre-wrap;
         }
 
-        .meta-info {
-            display: flex; justify-content: space-between; align-items: center;
+        /* Footer Source */
+        .source-box {
+            margin-top: 30px; padding-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px; font-size: 12px; color: #94a3b8;
+            display: none; /* Auto Hidden */
         }
+        .source-label { font-size: 10px; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
+        .source-name { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+        .verified { color: #38bdf8; font-size: 14px; }
 
-        /* Source Tag */
-        .source-tag { 
-            display: flex; align-items: center; gap: 5px; 
-            font-weight: 600; color: #cbd5e1; 
-        }
-        .verified-icon { color: #38bdf8; font-size: 14px; }
-
-        /* Watermark */
+        /* Watermark (Visible) */
         .watermark {
-            position: absolute; bottom: 10px; right: 20px;
-            font-size: 10px; color: rgba(255,255,255,0.1);
-            font-weight: 900; text-transform: uppercase;
+            position: absolute; bottom: 15px; right: 20px;
+            font-size: 11px; color: rgba(255,255,255,0.25); /* Increased Visibility */
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
             pointer-events: none; z-index: 1;
         }
 
@@ -181,7 +197,6 @@
             font-size: 13px; color: #64748b;
         }
 
-        /* Mobile */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section, .preview-wrapper { width: 100%; }
@@ -191,10 +206,10 @@
 <body>
 
     <header>
-        <div class="brand-logo">
-            <div class="logo-icon">IL</div>
-            Interactive Learning
-        </div>
+        <a href="index.html" class="brand-link">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            <span class="brand-text">Interactive Learning</span>
+        </a>
         <div class="hamburger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
@@ -210,8 +225,14 @@
     <div class="container">
         
         <div class="editor-section">
-            <div class="section-title">Create Notice</div>
+            <div class="section-title">Announcement Settings</div>
             
+            <div class="input-group">
+                <label>Theme (100 Curated Styles)</label>
+                <select id="themeSelector" class="form-control" onchange="updatePreview()">
+                    </select>
+            </div>
+
             <div class="input-group">
                 <label>Category</label>
                 <select id="catInput" class="form-control" onchange="updatePreview()">
@@ -238,36 +259,29 @@
                 <input id="sourceInput" class="form-control" placeholder="e.g. Daily Campus" oninput="updatePreview()">
             </div>
 
-            <div class="input-group">
-                <label>Theme Color</label>
-                <select id="themeInput" class="form-control" onchange="updateTheme()">
-                    <option value="blue">Royal Blue</option>
-                    <option value="red">Red Alert</option>
-                    <option value="green">Emerald Green</option>
-                    <option value="purple">Deep Purple</option>
-                    <option value="dark">Midnight Black</option>
-                </select>
-            </div>
-
             <button class="btn-download" onclick="downloadImage()">Download Image</button>
         </div>
 
         <div class="preview-wrapper">
             <div id="noticeCard">
-                <div class="card-top">Official Announcement</div>
+                <div class="top-header"><i class="fas fa-bullhorn"></i> Announcement</div>
                 
                 <div class="card-body">
-                    <span id="pCat" class="notice-badge">Breaking News</span>
+                    <div>
+                        <span id="pCat" class="notice-badge">Breaking News</span>
+                        <div id="pDate" class="date-info">24 Jan, 2026</div>
+                    </div>
+                    
                     <div id="pBody" class="notice-text">
                         Write your announcement content here. It will update automatically.
                     </div>
 
-                    <div class="meta-info">
-                        <div class="source-tag">
+                    <div class="source-box" id="sourceBox">
+                        <div class="source-label">Source</div>
+                        <div class="source-name">
                             <span id="pSource">Source Name</span>
-                            <i class="fas fa-check-circle verified-icon"></i>
+                            <i class="fas fa-check-circle verified"></i>
                         </div>
-                        <div id="pDate">24 Jan, 2026</div>
                     </div>
                 </div>
 
@@ -286,40 +300,147 @@
             document.querySelector('.hamburger').classList.toggle('active');
         }
 
+        // --- 100 CURATED THEMES ---
+        const themes = [
+            // Dark Gradients
+            { name: "Midnight Purple", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ff0099" },
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
+            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
+            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Red Alert", bg: "linear-gradient(135deg, #450a0a, #7f1d1d)", accent: "#f87171" },
+            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
+            { name: "Cyberpunk", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#00fff2" },
+            { name: "Sunset Vibes", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Discord Style", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#ffffff" },
+            { name: "Spotify Green", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#1ed760" },
+            
+            // Light Gradients
+            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
+            { name: "Morning Sky", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#fff" },
+            { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
+            
+            // Solid Colors
+            { name: "Pure Black", bg: "#000000", accent: "#ffffff" },
+            { name: "Slate Grey", bg: "#334155", accent: "#94a3b8" },
+            { name: "Hot Pink", bg: "#db2777", accent: "#fbcfe8" },
+            
+            // More Gradients (Generating varied styles)
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Forest", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "YouTube Red", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#fff" },
+            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#fff" },
+            { name: "Twitter", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
+            { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#fff" },
+            { name: "Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000" },
+            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#fff" },
+            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#fff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
+            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#fff" },
+            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#fff" },
+            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8)", accent: "#fff" },
+            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#fff" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#fff" },
+            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#fff" },
+            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#fff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#fff" },
+            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#fff" },
+            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
+            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#fff" },
+            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3)", accent: "#fff" },
+            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
+            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
+            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff" },
+            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786)", accent: "#333" },
+            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43)", accent: "#fff" },
+            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0)", accent: "#fff" },
+            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333" },
+            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff" },
+            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff" },
+            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff" },
+            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff" },
+            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff" },
+            { name: "Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
+            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
+            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
+            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
+            { name: "Mantle", bg: "linear-gradient(135deg, #24c6dc, #514a9d)", accent: "#fff" },
+            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424, #4A569D)", accent: "#fff" },
+            { name: "Mouse", bg: "linear-gradient(135deg, #200122, #6f0000)", accent: "#fff" },
+            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff" },
+            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333" },
+            { name: "Chocolate", bg: "linear-gradient(135deg, #56392d, #9e6f59)", accent: "#fff" },
+            { name: "Candy", bg: "linear-gradient(135deg, #D4145A, #FBB03B)", accent: "#fff" },
+            { name: "Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Mirage", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
+            { name: "Steel", bg: "linear-gradient(135deg, #1F1C2C, #928DAB)", accent: "#fff" }
+        ];
+
+        // Populate Theme Selector
+        const select = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `${i+1}. ${t.name}`;
+            select.appendChild(opt);
+        });
+
         // Live Update
         function updatePreview() {
+            // Text
             const cat = document.getElementById('catInput').value;
             const body = document.getElementById('bodyInput').value || "Write your announcement content here...";
-            const source = document.getElementById('sourceInput').value || "Source Name";
+            const source = document.getElementById('sourceInput').value.trim();
             
             document.getElementById('pCat').innerText = cat;
             document.getElementById('pBody').innerText = body;
-            document.getElementById('pSource').innerText = source;
+
+            // Source Visibility Logic
+            const sourceBox = document.getElementById('sourceBox');
+            if (source === "") {
+                sourceBox.style.display = "none";
+            } else {
+                sourceBox.style.display = "block";
+                document.getElementById('pSource').innerText = source;
+            }
 
             // Date
             const now = new Date();
-            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
+            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
 
-        // Themes
-        function updateTheme() {
-            const theme = document.getElementById('themeInput').value;
+            // Theme Application
+            const themeIdx = document.getElementById('themeSelector').value;
+            const theme = themes[themeIdx];
             const card = document.getElementById('noticeCard');
-            const top = document.querySelector('.card-top');
             const badge = document.querySelector('.notice-badge');
+            
+            card.style.background = theme.bg;
+            badge.style.color = theme.accent;
+            badge.style.borderColor = theme.accent;
 
-            let bg, accent;
-
-            if(theme === 'blue') { bg = "linear-gradient(145deg, #1e293b, #0f172a)"; accent = "#3b82f6"; }
-            else if(theme === 'red') { bg = "linear-gradient(145deg, #450a0a, #1f0505)"; accent = "#ef4444"; }
-            else if(theme === 'green') { bg = "linear-gradient(145deg, #064e3b, #022c22)"; accent = "#10b981"; }
-            else if(theme === 'purple') { bg = "linear-gradient(145deg, #3b0764, #1e0336)"; accent = "#a855f7"; }
-            else { bg = "#000000"; accent = "#ffffff"; }
-
-            card.style.background = bg;
-            top.style.background = accent;
-            badge.style.color = accent;
-            badge.style.borderColor = accent;
+            // Text Color Logic for Light Themes
+            const isLight = ["Silver", "Gold Rush", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
+            const textCol = isLight ? "#222" : "#fff";
+            
+            document.getElementById('pBody').style.color = textCol;
+            document.querySelector('.source-name').style.color = textCol;
+            document.querySelector('.date-info').style.color = isLight ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.6)";
+            
+            // Watermark Color
+            document.querySelector('.watermark').style.color = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.25)";
         }
 
         // Download
