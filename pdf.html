@@ -185,18 +185,18 @@
         /* --- REDUCED SPACING STYLES --- */
         .section-header { 
             text-align: center; font-weight: 800; font-size: 16px;
-            margin: 8px 0; border-bottom: 1px solid #333; /* Reduced margin */
+            margin: 8px 0; border-bottom: 1px solid #333;
             background: white; padding: 2px; display: inline-block; width: 100%; break-inside: avoid; 
         }
         .mcq-item { 
-            margin-bottom: 6px; /* Reduced from 12px */
+            margin-bottom: 6px; 
             break-inside: avoid; 
             font-size: 13px; 
-            line-height: 1.2; /* Tightened from 1.4 */
+            line-height: 1.2; 
             padding-right: 5px; position: relative; 
         }
-        .q-text { font-weight: 700; display: block; margin-bottom: 2px; /* Reduced */ }
-        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; /* Reduced gap */ }
+        .q-text { font-weight: 700; display: block; margin-bottom: 2px; }
+        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         .ans { font-weight: 700; margin-top: 2px; font-size: 12px; }
         .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
@@ -417,7 +417,7 @@
             });
         }
 
-        // --- DOWNLOAD HANDLERS ---
+        // --- DOWNLOAD PDF (Random Hex) ---
         function downloadPDF() {
             const element = document.getElementById('pdfPreviewContainer');
             const scaleBox = document.querySelector('.scale-box');
@@ -427,9 +427,10 @@
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
+            const hex = Math.random().toString(16).substring(2, 8);
             const opt = {
                 margin: 0,
-                filename: `Question_${Math.floor(Math.random()*10000)}.pdf`,
+                filename: `question_${hex}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -441,27 +442,26 @@
             });
         }
 
-        // PNG Download Logic
+        // --- DOWNLOAD PNG (Random Hex) ---
         async function downloadPNG() {
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Temporary styles for clean capture
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.marginBottom;
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
-            // Loop and save each page
+            const hex = Math.random().toString(16).substring(2, 8);
+
             for (let i = 0; i < pages.length; i++) {
-                const canvas = await html2canvas(pages[i], { scale: 3, useCORS: true });
+                const canvas = await html2canvas(pages[i], { scale: 15, useCORS: true });
                 const link = document.createElement('a');
-                link.download = `Page_${i+1}.png`;
+                link.download = `Page-${i+1}_${hex}.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             }
 
-            // Restore styles
             scaleBox.style.transform = oldTransform;
             scaleBox.style.marginBottom = oldMargin;
         }
