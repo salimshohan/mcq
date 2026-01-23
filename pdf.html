@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -95,7 +95,6 @@
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Topic Summary */
         #topicSummary {
             background: rgba(139, 92, 246, 0.1);
             padding: 12px; border-radius: 8px;
@@ -104,23 +103,23 @@
             line-height: 1.6;
         }
 
-        /* PREMIUM INPUT DESIGN (Purple Theme) */
+        /* PREMIUM INPUT DESIGN */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
-            border: 1px solid #334155; 
+            border: none;
+            border-bottom: 2px solid #334155; 
             color: #f1f5f9; padding: 12px 14px; font-size: 14px;
             transition: all 0.3s ease;
             border-radius: 8px;
         }
         .form-control:focus {
             outline: none;
-            background: #0f172a;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            background: #1e293b;
+            border-bottom-color: var(--primary);
         }
         
         select.form-control { cursor: pointer; }
@@ -134,12 +133,19 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
-        /* Header Input Card */
         .header-card {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(15, 23, 42, 0.5));
             padding: 15px; border-radius: 8px;
             margin-bottom: 20px; border-left: 4px solid var(--accent);
             border: 1px solid #334155; border-left-width: 4px;
+        }
+
+        .break-card {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 10px; border-radius: 8px;
+            margin-bottom: 20px; border: 1px dashed #ef4444;
+            color: #ef4444; font-weight: 700;
+            text-align: center; display: flex; justify-content: space-between; align-items: center;
         }
 
         .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #a78bfa; margin-bottom: 12px; font-weight: 700; }
@@ -153,14 +159,17 @@
         .fa-trash { color: #f87171; }
         .fa-arrow-up, .fa-arrow-down { color: var(--primary); }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .btn-add {
-            flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
+            flex: 1; min-width: 120px; padding: 12px; border: 1px dashed var(--primary); background: rgba(139, 92, 246, 0.1);
             color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;
             transition: 0.3s;
         }
         .btn-add:hover { background: var(--primary); color: white; }
         
+        .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .btn-break:hover { background: #ef4444; color: white; }
+
         .btn-download {
             width: 100%; padding: 16px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
@@ -201,8 +210,8 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Fixed Center, Better Font */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='50' fill='rgba(0,0,0,0.08)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
+            /* Watermark: Centered and Smaller */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='35' fill='rgba(0,0,0,0.08)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
             background-repeat: repeat-y;
             background-size: 100% 297mm; 
             background-position: center top;
@@ -237,11 +246,10 @@
             display: block; 
             min-height: 200px;
             position: relative;
-            /* Strong, Thin Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
         }
 
-        /* Subject Header (No Box) */
+        /* Subject Header */
         .section-header-pdf {
             column-span: all;
             text-align: center;
@@ -250,11 +258,33 @@
             margin-bottom: 15px;
             margin-top: 20px;
             break-inside: avoid;
-            background: white; /* Hide vertical line */
+            background: white; 
             padding: 5px;
             display: block;
             text-decoration: underline;
             text-underline-offset: 5px;
+        }
+
+        /* Manual Page Break Marker in PDF */
+        .page-break-marker {
+            column-span: all;
+            break-before: page;
+            height: 0;
+            margin: 0;
+            border: none;
+        }
+        
+        /* Visual indicator for Page Break in Preview */
+        .page-break-preview {
+            column-span: all;
+            border-top: 2px dashed #ef4444;
+            color: #ef4444;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 12px;
+            font-weight: bold;
+            background: white;
+            padding: 5px;
         }
 
         .mcq-item {
@@ -264,10 +294,8 @@
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            /* Transparent BG to show Watermark */
             background: transparent; 
             position: relative;
-            /* White shadow behind text to make it readable over vertical line if overlap */
             text-shadow: 2px 0 0 #fff, -2px 0 0 #fff; 
         }
         
@@ -353,6 +381,7 @@
             <div class="btn-group">
                 <button class="btn-add" onclick="addHeader()">+ Add Subject</button>
                 <button class="btn-add" onclick="addQuestion()">+ Add Question</button>
+                <button class="btn-add btn-break" onclick="addPageBreak()">+ Page Break</button>
             </div>
             
             <button class="btn-download" onclick="downloadPDF()">Download PDF</button>
@@ -421,6 +450,12 @@
             updatePDF();
         }
 
+        function addPageBreak() {
+            items.push({ id: Date.now(), type: 'break' });
+            renderInputs();
+            updatePDF();
+        }
+
         function removeItem(index) {
             items.splice(index, 1);
             renderInputs();
@@ -457,7 +492,7 @@
                 if(item.type === 'header') {
                     currentHeader = item.title || 'Untitled';
                     if(!counts[currentHeader]) counts[currentHeader] = 0;
-                } else {
+                } else if(item.type === 'question') {
                     if(!counts[currentHeader]) counts[currentHeader] = 0;
                     counts[currentHeader]++;
                     total++;
@@ -497,6 +532,16 @@
                             </div>
                         </div>
                         <input class="form-control" list="subjectOptions" placeholder="Subject Name (e.g. Bangla)" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">
+                    `;
+                } else if (item.type === 'break') {
+                    div.className = 'break-card';
+                    div.innerHTML = `
+                        <span>--- PAGE BREAK ---</span>
+                        <div class="control-icons">
+                            <i class="fas fa-arrow-up control-icon" style="color:#ef4444" onclick="moveItem(${index}, 'up')"></i>
+                            <i class="fas fa-arrow-down control-icon" style="color:#ef4444" onclick="moveItem(${index}, 'down')"></i>
+                            <i class="fas fa-trash control-icon" onclick="removeItem(${index})"></i>
+                        </div>
                     `;
                 } else {
                     qCounter++;
@@ -554,6 +599,17 @@
                     headerDiv.className = 'section-header-pdf';
                     headerDiv.innerText = item.title;
                     body.appendChild(headerDiv);
+                } else if (item.type === 'break') {
+                    // Visual Preview
+                    const breakDiv = document.createElement('div');
+                    breakDiv.className = 'page-break-preview';
+                    breakDiv.innerText = '--- NEW PAGE STARTS HERE ---';
+                    body.appendChild(breakDiv);
+                    
+                    // Actual PDF Break Element
+                    const pdfBreak = document.createElement('div');
+                    pdfBreak.className = 'page-break-marker';
+                    body.appendChild(pdfBreak);
                 } else {
                     qCount++;
                     const div = document.createElement('div');
@@ -578,16 +634,17 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
+            // Hide visual markers for download
+            document.querySelectorAll('.page-break-preview').forEach(el => el.style.display = 'none');
+
             // Save state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
-            // Reset for full quality capture
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             const opt = {
-                // Margins to prevent content overlap
                 margin:       [10, 10, 10, 10], 
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
@@ -597,9 +654,11 @@
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore mobile preview
+                // Restore state
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
+                // Show visual markers again
+                document.querySelectorAll('.page-break-preview').forEach(el => el.style.display = 'block');
             });
         }
 
