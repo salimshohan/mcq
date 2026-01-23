@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PDF Question Maker | Interactive Learning</title>
+    <title>Interactive Learning | PDF Maker</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,64 +31,61 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; /* Fix width overflow */
+            overflow-x: hidden;
         }
 
-        /* --- ANIMATIONS --- */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInRight { from { right: -100%; } to { right: 0; } }
-
-        /* --- NAVBAR --- */
+        /* --- NAVBAR (TOGGLE FIXED) --- */
         header {
             width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(90deg, #1e1b4b, #312e81); /* Restored Gradient */
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; left: 0; z-index: 1000;
+            position: fixed; top: 0; left: 0; z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            animation: fadeInDown 0.6s ease-out;
         }
 
         .brand-logo {
             display: flex; align-items: center; gap: 10px;
-            font-size: 20px; font-weight: 800;
-            background: linear-gradient(135deg, #a78bfa, #60a5fa);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 20px; font-weight: 700; color: white;
         }
         
-        .logo-img { height: 35px; border-radius: 50%; }
+        .logo-icon { 
+            width: 35px; height: 35px; background: var(--primary); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 18px; color: white;
+        }
 
-        /* Mobile Menu Button */
         .hamburger {
             cursor: pointer; width: 30px; height: 20px;
             display: flex; flex-direction: column; justify-content: space-between;
-            z-index: 1002;
+            z-index: 2001; position: relative;
         }
-        .hamburger span { display: block; height: 3px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
+        .hamburger span { 
+            display: block; height: 3px; width: 100%; background: white; 
+            border-radius: 2px; transition: 0.3s; 
+        }
         
-        /* Mobile Menu Overlay */
-        .mobile-menu {
-            position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
-            background: var(--panel-bg); border-left: 1px solid var(--border-color);
-            display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s ease-in-out; z-index: 1001;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-        }
-        .mobile-menu.active { right: 0; }
-        .mobile-menu a {
-            color: var(--text-main); text-decoration: none; padding: 15px 30px;
-            font-size: 16px; font-weight: 500; border-bottom: 1px solid var(--border-color);
-            transition: 0.2s;
-        }
-        .mobile-menu a:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
-
         /* Hamburger Animation */
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
+            background: #1e1b4b; border-left: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s ease-in-out; z-index: 1999;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            color: #cbd5e1; text-decoration: none; padding: 15px 30px;
+            font-size: 16px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+        .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
 
         /* --- CONTAINER --- */
         .container {
@@ -97,81 +94,71 @@
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
-            animation: fadeInUp 0.8s ease-out;
         }
 
         /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 20px;
+            background: var(--panel-bg); padding: 25px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
         
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #334155; 
-            color: #f1f5f9; padding: 12px 14px; font-size: 14px;
-            transition: all 0.3s ease; border-radius: 8px;
+            color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
+            transition: 0.3s;
         }
-        .form-control:focus { outline: none; background: #0f172a; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        textarea.form-control { resize: vertical; min-height: 70px; }
 
-        /* CARDS WITH ANIMATION */
+        /* CARDS */
         .card-base {
             padding: 15px; border-radius: 10px; margin-bottom: 15px; position: relative;
-            animation: fadeInUp 0.4s ease-out;
         }
         .question-card { background: rgba(30, 41, 59, 0.6); border: 1px solid #334155; }
         .header-card { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(30, 41, 59, 0.6)); border: 1px solid var(--primary); }
         .break-card { border: 1px dashed #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-align: center; font-weight: bold; }
 
-        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
         
-        .control-icons i { cursor: pointer; padding: 5px; margin-left: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); transition: 0.2s; }
-        .control-icons i:hover { transform: scale(1.1); background: rgba(255,255,255,0.2); }
+        .control-icons i { cursor: pointer; padding: 5px; margin-left: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); }
         .fa-trash { color: #f87171; }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .btn-add {
             flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(99, 102, 241, 0.1);
-            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s;
+            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; min-width: 100px;
         }
-        .btn-add:hover { background: var(--primary); color: white; transform: translateY(-2px); }
-        
         .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-        .btn-break:hover { background: #ef4444; }
         
         .btn-download {
             width: 100%; padding: 15px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
             font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
-            transition: transform 0.2s;
         }
-        .btn-download:active { transform: scale(0.98); }
 
         /* --- PREVIEW --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #475569; padding: 30px; border-radius: 16px;
-            overflow: hidden; /* Fix Width Overflow */
-            min-height: 600px; gap: 20px;
-            width: 100%; /* Ensure fit */
+            background: #334155; padding: 30px; border-radius: 16px;
+            overflow: auto; min-height: 600px; gap: 20px;
         }
 
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- PDF PAGE --- */
+        /* --- PDF PAGE (A4 Fixed) --- */
         .pdf-page {
             width: 210mm;
-            height: 297mm;
+            height: 297mm; /* Fixed Height */
             background: white;
             color: black !important;
             padding: 15mm;
@@ -185,55 +172,65 @@
         #pdfContent * { color: black !important; }
 
         /* Watermark */
-        .watermark-layer {
+        .watermark {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 40px; font-weight: 900;
-            color: rgba(0,0,0,0.05);
+            color: rgba(0,0,0,0.05); /* Light Opacity */
             white-space: nowrap; pointer-events: none; z-index: 0;
             font-family: 'Courier New', monospace;
         }
 
-        /* Vertical Line (Restricted to Content Area logic) */
+        /* Vertical Line */
         .v-line {
             position: absolute; left: 50%; 
-            top: 55mm; bottom: 15mm; /* Starts below header */
+            top: 55mm; /* Below Header */
+            bottom: 15mm; /* Above Footer */
             width: 0.5px; background: #999; z-index: 1;
         }
 
         /* Header */
         .pdf-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 5px; flex-shrink: 0; z-index: 2; position: relative; }
-        .brand-name-pdf { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
-        .pdf-main-title { border: 2px solid #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
-        .pdf-sub-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-        .pdf-meta { font-size: 12px; display: flex; justify-content: center; gap: 20px; }
+        .brand-name { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
+        .main-title { border: 2px solid #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
+        .sub-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .meta-info { font-size: 12px; margin-top: 4px; }
 
-        /* Body */
+        /* Body (2 COLUMNS USING FLEX) */
         .pdf-body {
             flex-grow: 1;
-            column-count: 2; column-gap: 10mm;
-            column-fill: auto; /* Fill Left then Right */
+            display: flex; 
+            flex-direction: row;
             position: relative; z-index: 2;
             overflow: hidden;
-            height: 230mm;
+            /* Height is handled by page size, but we restrict rendering height via JS */
         }
 
+        .pdf-col {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+        .col-left { padding-right: 5mm; }
+        .col-right { padding-left: 5mm; }
+
         /* Items */
-        .section-header-pdf {
+        .section-header {
             text-align: center; font-weight: 800; font-size: 16px;
             margin: 10px 0; border-bottom: 1px solid #333;
-            break-inside: avoid; background: white; padding: 2px;
-            display: inline-block; width: 100%;
+            background: white; padding: 2px;
+            display: block; width: 100%;
         }
 
         .mcq-item {
-            margin-bottom: 12px; break-inside: avoid;
+            margin-bottom: 12px; 
             font-size: 13px; line-height: 1.4; padding-right: 5px;
             background: transparent; text-shadow: 3px 0 0 #fff, -3px 0 0 #fff; 
         }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 13px; margin-left: 15px; }
-        .ans-row { font-weight: 700; margin-top: 3px; font-size: 12px; margin-left: 15px; }
-        .exp-box { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; margin-left: 15px; }
+        .q-text { font-weight: 700; display: block; margin-bottom: 3px; }
+        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .ans { font-weight: 700; margin-top: 3px; font-size: 12px; }
+        .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
         /* Footer */
         .pdf-footer {
@@ -244,10 +241,9 @@
 
         /* Mobile Scaling */
         @media (max-width: 900px) {
-            .container { flex-direction: column; margin-top: 80px; }
-            .editor-section { width: 100%; min-width: 100%; }
-            .preview-wrapper { width: 100%; padding: 10px; overflow-x: hidden; }
-            .scale-box { transform: scale(0.43); transform-origin: top center; margin-bottom: -155%; }
+            .container { flex-direction: column; }
+            .editor-section { width: 100%; }
+            .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
         }
     </style>
 </head>
@@ -255,7 +251,7 @@
 
     <header>
         <div class="brand-logo">
-            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            <div class="logo-icon">IL</div>
             Interactive Learning
         </div>
         <div class="hamburger" onclick="toggleMenu()">
@@ -308,10 +304,28 @@
     <script>
         let items = [];
 
+        // Correct toggle logic
         function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.querySelector('.hamburger').classList.toggle('active');
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            
+            // Toggle active class
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                hamburger.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+                hamburger.classList.add('active');
+            }
         }
+
+        // Close menu when clicking links
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('active');
+                document.querySelector('.hamburger').classList.remove('active');
+            });
+        });
 
         function init() { addItem('question'); }
 
@@ -379,7 +393,7 @@
             });
         }
 
-        // --- SMART PDF RENDERER ---
+        // --- EXPLICIT COLUMN PDF RENDERER (Guaranteed Flow) ---
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = '';
@@ -390,73 +404,109 @@
             const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
-            // Function to create a clean page
+            // Page Creator
             function createPage(isFirst) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
                 page.innerHTML = `
-                    <div class="watermark-layer">Interactive Learning</div>
+                    <div class="watermark">Interactive Learning</div>
                     <div class="v-line"></div>
                     <div class="pdf-header">
-                        <div class="brand-name-pdf">Interactive Learning</div>
-                        <div class="pdf-main-title">${title}</div>
-                        <div class="pdf-sub-title">${sub}</div>
-                        <div class="pdf-meta">${date}</div>
+                        <div class="brand-name">Interactive Learning</div>
+                        <div class="main-title">${title}</div>
+                        <div class="sub-title">${sub}</div>
+                        <div class="meta-info">${date}</div>
                     </div>
-                    <div class="pdf-body"></div>
+                    <div class="pdf-body">
+                        <div class="pdf-col col-left"></div>
+                        <div class="pdf-col col-right"></div>
+                    </div>
                     <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
                 `;
                 
-                // Adjust header visibility and line position
                 if(!isFirst) {
                     page.querySelector('.pdf-header').style.display = 'none';
-                    // Header is hidden, so vertical line can start higher
                     page.querySelector('.v-line').style.top = '15mm';
                 }
 
                 container.appendChild(page);
-                return page.querySelector('.pdf-body');
+                // Return access to columns
+                const body = page.querySelector('.pdf-body');
+                return {
+                    left: page.querySelector('.col-left'),
+                    right: page.querySelector('.col-right'),
+                    page: page,
+                    body: body
+                };
             }
 
-            let currentBody = createPage(true);
+            let currentPage = createPage(true);
+            let currentColumn = currentPage.left;
             let qNum = 0;
 
+            // CONTENT FILLING LOGIC
             items.forEach(item => {
-                // Handle Break
                 if(item.type === 'break') {
-                    currentBody = createPage(false);
+                    currentPage = createPage(false);
+                    currentColumn = currentPage.left;
                     return;
                 }
 
                 const el = document.createElement('div');
                 if(item.type === 'header') {
-                    el.className = 'section-header-pdf';
+                    el.className = 'section-header';
                     el.innerText = item.title;
                 } else {
                     qNum++;
                     el.className = 'mcq-item';
-                    const exp = item.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
+                    const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
                     el.innerHTML = `
-                        <span class="q-text"><b>${toBn(qNum)}.</b> ${item.q}</span>
-                        <div class="options-grid">
+                        <span class="q-text">${toBn(qNum)}. ${item.q}</span>
+                        <div class="opts">
                             <span>ক. ${item.a}</span><span>খ. ${item.b}</span>
                             <span>গ. ${item.c}</span><span>ঘ. ${item.d}</span>
                         </div>
-                        <div class="ans-row">উত্তর: ${item.ans}</div>
+                        <div class="ans">উত্তর: ${item.ans}</div>
                         ${exp}
                     `;
                 }
 
-                // Add to body
-                currentBody.appendChild(el);
+                // Add to current column
+                currentColumn.appendChild(el);
 
-                // Smart Page Break Check
-                // We use a small buffer (2px) to detect overflow
-                if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
-                    currentBody.removeChild(el); // Oops, too big
-                    currentBody = createPage(false); // Make new page
-                    currentBody.appendChild(el); // Add there
+                // Calculate limits (Approx height of content area)
+                // First page has header, others don't.
+                // 297mm height - margins. Safe height approx 950px - header.
+                // We use offsetHeight of the column wrapper.
+                // Safest way: Check against a pixel limit. 
+                // A4 Height = ~1123px. 
+                // Header ~150px. Footer ~50px. Padding ~60px.
+                // First Page Limit ~850px. Others ~1000px.
+                
+                const isFirst = (container.children.length === 1);
+                const limit = isFirst ? 750 : 950;
+
+                if(currentColumn.offsetHeight > limit) {
+                    // Overflow! Move to next spot
+                    currentColumn.removeChild(el); // Take back
+
+                    if(currentColumn === currentPage.left) {
+                        currentColumn = currentPage.right; // Switch to Right
+                        currentColumn.appendChild(el);
+                        // Check right immediate overflow (big item)
+                        if(currentColumn.offsetHeight > limit) {
+                            currentColumn.removeChild(el);
+                            currentPage = createPage(false);
+                            currentColumn = currentPage.left;
+                            currentColumn.appendChild(el);
+                        }
+                    } else {
+                        // Right full -> New Page
+                        currentPage = createPage(false);
+                        currentColumn = currentPage.left;
+                        currentColumn.appendChild(el);
+                    }
                 }
             });
         }
