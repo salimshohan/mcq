@@ -2,8 +2,8 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Learning | PDF Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PDF Question Maker | Interactive Learning</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,36 +31,64 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Fix width overflow */
         }
 
-        /* --- NAVBAR (RESTORED) --- */
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { right: -100%; } to { right: 0; } }
+
+        /* --- NAVBAR --- */
         header {
             width: 100%;
-            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; left: 0; z-index: 9999;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: fixed; top: 0; left: 0; z-index: 1000;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            animation: fadeInDown 0.6s ease-out;
         }
 
         .brand-logo {
             display: flex; align-items: center; gap: 10px;
-            font-size: 20px; font-weight: 700; color: white;
+            font-size: 20px; font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         
-        .logo-icon { 
-            width: 35px; height: 35px; background: var(--primary); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px;
-        }
+        .logo-img { height: 35px; border-radius: 50%; }
 
+        /* Mobile Menu Button */
         .hamburger {
-            cursor: pointer; width: 25px; height: 20px;
+            cursor: pointer; width: 30px; height: 20px;
             display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 1002;
         }
-        .hamburger span { display: block; height: 3px; width: 100%; background: white; border-radius: 2px; }
+        .hamburger span { display: block; height: 3px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
+        
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
+            background: var(--panel-bg); border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s ease-in-out; z-index: 1001;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            color: var(--text-main); text-decoration: none; padding: 15px 30px;
+            font-size: 16px; font-weight: 500; border-bottom: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+        .mobile-menu a:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
+
+        /* Hamburger Animation */
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
         /* --- CONTAINER --- */
         .container {
@@ -69,71 +97,81 @@
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            background: var(--panel-bg); padding: 25px; border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.1);
             height: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+        .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; }
         
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #334155; 
-            color: #f1f5f9; padding: 12px; font-size: 14px; border-radius: 8px;
-            transition: 0.3s;
+            color: #f1f5f9; padding: 12px 14px; font-size: 14px;
+            transition: all 0.3s ease; border-radius: 8px;
         }
-        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+        .form-control:focus { outline: none; background: #0f172a; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 70px; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
-        /* CARDS */
+        /* CARDS WITH ANIMATION */
         .card-base {
             padding: 15px; border-radius: 10px; margin-bottom: 15px; position: relative;
+            animation: fadeInUp 0.4s ease-out;
         }
         .question-card { background: rgba(30, 41, 59, 0.6); border: 1px solid #334155; }
         .header-card { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(30, 41, 59, 0.6)); border: 1px solid var(--primary); }
         .break-card { border: 1px dashed #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; text-align: center; font-weight: bold; }
 
-        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #cbd5e1; margin-bottom: 10px; font-weight: 600; }
         
-        .control-icons i { cursor: pointer; padding: 5px; margin-left: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); }
+        .control-icons i { cursor: pointer; padding: 5px; margin-left: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); transition: 0.2s; }
+        .control-icons i:hover { transform: scale(1.1); background: rgba(255,255,255,0.2); }
         .fa-trash { color: #f87171; }
 
         .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .btn-add {
             flex: 1; padding: 12px; border: 1px dashed var(--primary); background: rgba(99, 102, 241, 0.1);
-            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600;
+            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s;
         }
+        .btn-add:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+        
         .btn-break { border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .btn-break:hover { background: #ef4444; }
         
         .btn-download {
             width: 100%; padding: 15px; border-radius: 50px; border: none;
             background: linear-gradient(135deg, #6366f1, #3b82f6); color: white;
             font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s;
         }
+        .btn-download:active { transform: scale(0.98); }
 
         /* --- PREVIEW --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #334155; padding: 30px; border-radius: 16px;
-            overflow: auto; min-height: 600px; gap: 20px;
+            background: #475569; padding: 30px; border-radius: 16px;
+            overflow: hidden; /* Fix Width Overflow */
+            min-height: 600px; gap: 20px;
+            width: 100%; /* Ensure fit */
         }
 
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- PDF PAGE (A4 Fixed) --- */
+        /* --- PDF PAGE --- */
         .pdf-page {
             width: 210mm;
-            height: 297mm; /* Fixed Height for A4 */
+            height: 297mm;
             background: white;
             color: black !important;
             padding: 15mm;
@@ -147,43 +185,41 @@
         #pdfContent * { color: black !important; }
 
         /* Watermark */
-        .watermark {
+        .watermark-layer {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 40px; font-weight: 900;
-            color: rgba(0,0,0,0.05); /* Light Opacity */
+            color: rgba(0,0,0,0.05);
             white-space: nowrap; pointer-events: none; z-index: 0;
             font-family: 'Courier New', monospace;
         }
 
-        /* Vertical Line */
+        /* Vertical Line (Restricted to Content Area logic) */
         .v-line {
             position: absolute; left: 50%; 
-            top: 50mm; /* Starts below header */
-            bottom: 15mm; /* Ends above footer */
+            top: 55mm; bottom: 15mm; /* Starts below header */
             width: 0.5px; background: #999; z-index: 1;
         }
 
         /* Header */
         .pdf-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 5px; flex-shrink: 0; z-index: 2; position: relative; }
-        .brand-name { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .main-title { border: 2px solid #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
-        .sub-title { font-size: 15px; font-weight: 600; }
-        .meta-info { font-size: 12px; margin-top: 4px; }
+        .brand-name-pdf { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
+        .pdf-main-title { border: 2px solid #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
+        .pdf-sub-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .pdf-meta { font-size: 12px; display: flex; justify-content: center; gap: 20px; }
 
-        /* Body (Columns) */
+        /* Body */
         .pdf-body {
             flex-grow: 1;
-            column-count: 2;
-            column-gap: 10mm;
-            column-fill: auto; /* CRITICAL: Fills Left then Right */
+            column-count: 2; column-gap: 10mm;
+            column-fill: auto; /* Fill Left then Right */
             position: relative; z-index: 2;
             overflow: hidden;
-            height: 230mm; /* Fixed height to force column break */
+            height: 230mm;
         }
 
         /* Items */
-        .section-header {
+        .section-header-pdf {
             text-align: center; font-weight: 800; font-size: 16px;
             margin: 10px 0; border-bottom: 1px solid #333;
             break-inside: avoid; background: white; padding: 2px;
@@ -193,12 +229,11 @@
         .mcq-item {
             margin-bottom: 12px; break-inside: avoid;
             font-size: 13px; line-height: 1.4; padding-right: 5px;
-            position: relative;
+            background: transparent; text-shadow: 3px 0 0 #fff, -3px 0 0 #fff; 
         }
-        .q-text { font-weight: 700; display: block; margin-bottom: 3px; }
-        .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-        .ans { font-weight: 700; margin-top: 3px; font-size: 12px; }
-        .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 13px; margin-left: 15px; }
+        .ans-row { font-weight: 700; margin-top: 3px; font-size: 12px; margin-left: 15px; }
+        .exp-box { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; margin-left: 15px; }
 
         /* Footer */
         .pdf-footer {
@@ -207,10 +242,12 @@
             flex-shrink: 0; z-index: 2; margin-top: auto;
         }
 
+        /* Mobile Scaling */
         @media (max-width: 900px) {
-            .container { flex-direction: column; }
-            .editor-section { width: 100%; }
-            .scale-box { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
+            .container { flex-direction: column; margin-top: 80px; }
+            .editor-section { width: 100%; min-width: 100%; }
+            .preview-wrapper { width: 100%; padding: 10px; overflow-x: hidden; }
+            .scale-box { transform: scale(0.43); transform-origin: top center; margin-bottom: -155%; }
         }
     </style>
 </head>
@@ -218,11 +255,20 @@
 
     <header>
         <div class="brand-logo">
-            <div class="logo-icon">IL</div>
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
             Interactive Learning
         </div>
-        <div class="hamburger"><span></span><span></span><span></span></div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
     </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#">Home</a>
+        <a href="#">MCQ Maker</a>
+        <a href="#">PDF Tool</a>
+        <a href="#">Contact</a>
+    </div>
 
     <div class="container">
         <div class="editor-section">
@@ -261,6 +307,11 @@
 
     <script>
         let items = [];
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.hamburger').classList.toggle('active');
+        }
 
         function init() { addItem('question'); }
 
@@ -328,7 +379,7 @@
             });
         }
 
-        // --- PDF RENDERER (Logic: Fill Page -> Overflow -> New Page) ---
+        // --- SMART PDF RENDERER ---
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = '';
@@ -345,24 +396,22 @@
                 page.className = 'pdf-page';
                 
                 page.innerHTML = `
-                    <div class="watermark">Interactive Learning</div>
+                    <div class="watermark-layer">Interactive Learning</div>
                     <div class="v-line"></div>
                     <div class="pdf-header">
-                        <div class="brand-name">Interactive Learning</div>
-                        <div class="main-title">${title}</div>
-                        <div class="sub-title">${sub}</div>
-                        <div class="meta-info">${date}</div>
+                        <div class="brand-name-pdf">Interactive Learning</div>
+                        <div class="pdf-main-title">${title}</div>
+                        <div class="pdf-sub-title">${sub}</div>
+                        <div class="pdf-meta">${date}</div>
                     </div>
                     <div class="pdf-body"></div>
                     <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
                 `;
                 
-                // Adjust vertical line for first page header height
+                // Adjust header visibility and line position
                 if(!isFirst) {
-                    page.querySelector('.pdf-header').style.display = 'none'; // Only show main header on page 1? usually yes.
-                    // Let's keep simple: Show header on all pages or just 1? 
-                    // Requirement implies clean layout. I'll hide big header on subsequent pages to save space
-                    // But keep a small spacer.
+                    page.querySelector('.pdf-header').style.display = 'none';
+                    // Header is hidden, so vertical line can start higher
                     page.querySelector('.v-line').style.top = '15mm';
                 }
 
@@ -374,6 +423,7 @@
             let qNum = 0;
 
             items.forEach(item => {
+                // Handle Break
                 if(item.type === 'break') {
                     currentBody = createPage(false);
                     return;
@@ -381,31 +431,32 @@
 
                 const el = document.createElement('div');
                 if(item.type === 'header') {
-                    el.className = 'section-header';
+                    el.className = 'section-header-pdf';
                     el.innerText = item.title;
                 } else {
                     qNum++;
                     el.className = 'mcq-item';
-                    const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
+                    const exp = item.exp ? `<div class="exp-box"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
                     el.innerHTML = `
-                        <span class="q-text">${toBn(qNum)}. ${item.q}</span>
-                        <div class="opts">
+                        <span class="q-text"><b>${toBn(qNum)}.</b> ${item.q}</span>
+                        <div class="options-grid">
                             <span>ক. ${item.a}</span><span>খ. ${item.b}</span>
                             <span>গ. ${item.c}</span><span>ঘ. ${item.d}</span>
                         </div>
-                        <div class="ans">উত্তর: ${item.ans}</div>
+                        <div class="ans-row">উত্তর: ${item.ans}</div>
                         ${exp}
                     `;
                 }
 
-                // Add to DOM to calculate height
+                // Add to body
                 currentBody.appendChild(el);
 
-                // Check Overflow (Allow small buffer)
+                // Smart Page Break Check
+                // We use a small buffer (2px) to detect overflow
                 if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
-                    currentBody.removeChild(el); // Remove
-                    currentBody = createPage(false); // New Page
-                    currentBody.appendChild(el); // Add to new
+                    currentBody.removeChild(el); // Oops, too big
+                    currentBody = createPage(false); // Make new page
+                    currentBody.appendChild(el); // Add there
                 }
             });
         }
