@@ -34,7 +34,7 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVBAR --- */
+        /* --- HEADER --- */
         header {
             width: 100%;
             background: rgba(15, 23, 42, 0.95);
@@ -55,19 +55,16 @@
         
         .logo-img { height: 35px; margin-right: 10px; border-radius: 50%; }
 
-        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 14px; }
-        .nav-links a:hover { color: var(--primary); }
-
         /* --- CONTAINER --- */
         .container {
-            margin-top: 90px; /* Space for navbar */
+            margin-top: 100px;
             width: 95%; max-width: 1400px;
             display: flex; flex-wrap: wrap; 
             justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR SECTION --- */
+        /* --- LEFT: EDITOR --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 25px; border-radius: 20px;
@@ -129,7 +126,7 @@
             box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
         }
 
-        /* --- PREVIEW SECTION --- */
+        /* --- PREVIEW --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
             background: #475569; padding: 30px; border-radius: 20px;
@@ -138,88 +135,85 @@
 
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- REAL A4 PAGE --- */
+        /* --- A4 PAGE --- */
         .pdf-page {
             width: 210mm;
             height: 297mm;
             background: white;
             color: black !important;
-            padding: 15mm 15mm 10mm 15mm; /* Top Right Bottom Left */
             position: relative;
             box-shadow: 0 5px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px;
         }
         
         #pdfContent * { color: black !important; }
 
-        /* WATERMARK (Smaller & Center) */
-        .watermark-layer {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; /* Smaller */
-            font-weight: 900;
-            color: rgba(0,0,0,0.06); /* Very Light */
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 0;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* VERTICAL LINE */
-        .vertical-line {
-            position: absolute;
-            left: 50%; 
-            /* Start below header, end above footer */
-            top: 55mm; bottom: 15mm; 
-            width: 0.5pt;
-            background-color: #999;
-            z-index: 1;
-        }
-
         /* HEADER */
         .pdf-header {
-            text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 5px; 
-            flex-shrink: 0;
+            padding: 10mm 15mm 5mm 15mm;
+            text-align: center; border-bottom: 2px solid #000;
+            z-index: 10; background: white;
         }
         .brand-name-pdf { font-size: 14px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #333 !important; }
         .pdf-main-title { border: 2px solid #000; display: inline-block; padding: 5px 30px; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
         .pdf-sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
         .pdf-meta { font-size: 13px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
 
-        /* CONTENT COLUMNS (Smart Pagination Target) */
-        .pdf-content-area {
+        /* CONTENT BODY (Split Columns) */
+        .pdf-body {
             flex-grow: 1;
-            column-count: 2;
-            column-gap: 10mm;
-            column-fill: auto; /* Key for Left->Right fill */
+            padding: 5mm 15mm;
+            display: flex;
             position: relative;
-            z-index: 2;
-            overflow: hidden; /* Important for JS height calc */
+            overflow: hidden;
         }
 
-        /* Elements */
+        /* TWO COLUMNS */
+        .column {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            /* No padding here, padding is on wrapper */
+        }
+        .column-left {
+            padding-right: 5mm;
+            border-right: 0.5pt solid #999; /* Vertical Line Here */
+        }
+        .column-right {
+            padding-left: 5mm;
+        }
+
+        /* WATERMARK */
+        .watermark-layer {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 40px; font-weight: 900;
+            color: rgba(0,0,0,0.06);
+            white-space: nowrap; pointer-events: none; z-index: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* FOOTER */
+        .pdf-footer {
+            padding: 5mm 15mm 10mm 15mm;
+            text-align: center; font-size: 11px; font-weight: 600;
+            border-top: 1px solid #000; z-index: 10; background: white;
+        }
+
+        /* CONTENT ITEMS */
         .section-header-pdf {
             text-align: center; font-weight: 800; font-size: 16px;
-            margin: 15px 0 10px 0;
-            break-inside: avoid;
-            background: white; 
-            padding: 2px 5px;
-            display: inline-block;
-            width: 100%;
-            border-bottom: 1px solid #333;
+            margin: 10px 0; padding: 2px 0;
+            border-bottom: 1px solid #333; width: 100%;
         }
 
         .mcq-item {
-            margin-bottom: 12px;
-            break-inside: avoid;
-            font-size: 14px; line-height: 1.4;
-            padding-right: 8px;
-            background: transparent; 
-            text-shadow: 3px 0 0 #fff, -3px 0 0 #fff; 
+            margin-bottom: 12px; font-size: 14px; line-height: 1.4;
+            position: relative; z-index: 5;
         }
         
         .q-text { font-weight: 700; margin-bottom: 4px; display: block;}
@@ -227,18 +221,12 @@
         .ans-row { text-align: left; font-size: 12px; font-weight: 700; margin-top: 4px; margin-left: 15px; }
         .exp-box { font-size: 12px; color: #333 !important; margin-top: 3px; font-style: italic; margin-left: 15px; border-top: 0.5px dotted #ccc; padding-top: 2px; }
 
-        /* FOOTER */
-        .pdf-footer {
-            text-align: center; 
-            background: transparent;
-            padding-top: 5px; font-size: 11px; font-weight: 600;
-            border-top: 1px solid #000;
-            margin-top: 5px;
-            flex-shrink: 0;
-            z-index: 2;
+        /* Preview Break Line */
+        .break-marker {
+            width: 100%; border-top: 2px dashed #ef4444; margin: 10px 0;
+            text-align: center; color: #ef4444; font-size: 10px; font-weight: bold;
         }
 
-        /* Mobile Scaling */
         @media (max-width: 900px) {
             .container { flex-direction: column; margin-top: 90px; }
             .editor-section { width: 100%; }
@@ -254,10 +242,7 @@
             <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
             Interactive Learning
         </div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Tools</a>
-        </div>
+        <div class="hamburger"><span></span><span></span><span></span></div>
     </header>
 
     <div class="container">
@@ -302,16 +287,12 @@
     <script>
         let items = [];
 
-        function init() {
-            renderInputs();
-            updatePDF();
-        }
+        function init() { renderInputs(); updatePDF(); }
 
-        // --- DATA ---
+        // Data Functions
         function addHeader() { items.push({ id: Date.now(), type: 'header', title: '' }); renderInputs(); updatePDF(); }
         function addQuestion() { items.push({ id: Date.now(), type: 'question', q: "", a: "", b: "", c: "", d: "", ans: "", exp: "" }); renderInputs(); updatePDF(); }
         function addPageBreak() { items.push({ id: Date.now(), type: 'break' }); renderInputs(); updatePDF(); }
-        
         function removeItem(index) { items.splice(index, 1); renderInputs(); updatePDF(); }
         function moveItem(index, dir) {
             if (dir === 'up' && index > 0) [items[index], items[index-1]] = [items[index-1], items[index]];
@@ -323,7 +304,7 @@
             if(item) { item[field] = val; updatePDF(); }
         }
 
-        // --- EDITOR RENDER ---
+        // Editor Render
         function renderInputs() {
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
@@ -371,10 +352,10 @@
             });
         }
 
-        // --- SMART PAGINATION LOGIC ---
+        // --- EXPLICIT PAGINATION LOGIC ---
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
-            container.innerHTML = ''; 
+            container.innerHTML = '';
 
             const headTitle = document.getElementById('headTitle').value;
             const subTitle = document.getElementById('subTitle').value;
@@ -382,23 +363,15 @@
             const banglaNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => banglaNums[x] || x).join('');
 
-            // Helper to create a page
+            // Helper: Create Blank Page Structure
             function createPage(isFirst) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
-                // Add Watermark
+                // Watermark
                 page.innerHTML += `<div class="watermark-layer">Interactive Learning</div>`;
-                
-                // Add Vertical Line
-                // Calculated relative to header/footer space
-                const line = document.createElement('div');
-                line.className = 'vertical-line';
-                // Adjust line position based on if header exists
-                line.style.top = isFirst ? '65mm' : '20mm';
-                page.appendChild(line);
 
-                // Header (Only on Page 1)
+                // Header
                 if(isFirst) {
                     page.innerHTML += `
                         <div class="pdf-header">
@@ -407,37 +380,44 @@
                             <div class="pdf-sub-title">${subTitle}</div>
                             <div class="pdf-meta">${examDate}</div>
                         </div>`;
-                } else {
-                    // Spacer for next pages
-                    const spacer = document.createElement('div');
-                    spacer.style.height = '10px';
-                    spacer.style.flexShrink = '0';
-                    page.appendChild(spacer);
                 }
 
-                // Content Area (Columns)
-                const contentArea = document.createElement('div');
-                contentArea.className = 'pdf-content-area';
-                page.appendChild(contentArea);
+                // Body Container (Flex Row)
+                const body = document.createElement('div');
+                body.className = 'pdf-body';
+                
+                const leftCol = document.createElement('div');
+                leftCol.className = 'column column-left';
+                
+                const rightCol = document.createElement('div');
+                rightCol.className = 'column column-right';
+                
+                body.appendChild(leftCol);
+                body.appendChild(rightCol);
+                page.appendChild(body);
 
                 // Footer
                 page.innerHTML += `<div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>`;
 
                 container.appendChild(page);
-                return contentArea;
+                return { page, left: leftCol, right: rightCol, body };
             }
 
-            let currentContent = createPage(true);
+            // Initialization
+            let currentPageObj = createPage(true);
+            let currentColumn = currentPageObj.left;
             let qCount = 0;
 
+            // Content Filling Loop
             items.forEach((item) => {
-                // Handle Manual Page Break
+                // Manual Break
                 if (item.type === 'break') {
-                    currentContent = createPage(false);
+                    currentPageObj = createPage(false);
+                    currentColumn = currentPageObj.left;
                     return;
                 }
 
-                // Create Content Element
+                // Create Element
                 const el = document.createElement('div');
                 if (item.type === 'header') {
                     el.className = 'section-header-pdf';
@@ -457,22 +437,48 @@
                     `;
                 }
 
-                // Append to check height
-                currentContent.appendChild(el);
+                // Append to current column
+                currentColumn.appendChild(el);
 
-                // Overflow Check
-                // We assume A4 content area is roughly fixed.
-                // If scrollHeight > offsetHeight, it means content has spilled over columns
-                // and is now increasing the container's height (or being hidden).
-                // Note: with flex-grow, height is dynamic up to page limit. 
-                // We can check if the page wrapper is overflowing.
-                const currentPage = currentContent.closest('.pdf-page');
+                // Height Check (Manually checking against body height)
+                // The body height grows, but page height is fixed (297mm).
+                // We check if the body's bottom exceeds page's footer start.
                 
-                if (currentPage.scrollHeight > (currentPage.clientHeight + 2)) {
-                    // Overflow detected!
-                    currentContent.removeChild(el); // Undo add
-                    currentContent = createPage(false); // New Page
-                    currentContent.appendChild(el); // Add to new page
+                // Get absolute bottom of element and page content area limit
+                // This is tricky in a hidden container or non-rendered state.
+                // Simpler: Check if column height exceeds ~230mm (approx content area)
+                // 1mm ~ 3.78px. 230mm ~ 870px.
+                
+                // Using a safe limit for content height (A4 height - header - footer - margins)
+                // First page has header, subsequent don't.
+                // Let's use a rough pixel limit: 950px for subsequent, 750px for first.
+                
+                const isFirst = (container.children.length === 1);
+                const limit = isFirst ? 780 : 980; // Adjusted for font sizes
+                
+                if (currentColumn.offsetHeight > limit) {
+                    // Overflowed!
+                    currentColumn.removeChild(el); // Remove from here
+                    
+                    // Switch Column or New Page
+                    if (currentColumn === currentPageObj.left) {
+                        // Switch to Right
+                        currentColumn = currentPageObj.right;
+                        currentColumn.appendChild(el);
+                        
+                        // Check if right column immediately overflows (rare but possible with big element)
+                        if (currentColumn.offsetHeight > limit) {
+                            currentColumn.removeChild(el);
+                            currentPageObj = createPage(false);
+                            currentColumn = currentPageObj.left;
+                            currentColumn.appendChild(el);
+                        }
+                    } else {
+                        // Switch to New Page Left
+                        currentPageObj = createPage(false);
+                        currentColumn = currentPageObj.left;
+                        currentColumn.appendChild(el);
+                    }
                 }
             });
         }
@@ -481,7 +487,6 @@
             const element = document.getElementById('pdfPreviewContainer');
             const scaleBox = document.querySelector('.scale-box');
             
-            // Reset scale for capture
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             scaleBox.style.transform = 'none';
