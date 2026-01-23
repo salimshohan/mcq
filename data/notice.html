@@ -1,365 +1,344 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notice Maker | Interactive Learning</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notice Maker | Interactive Learning</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <style>
-        :root {
-            --bg-dark: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.6);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --primary: #8b5cf6;
-            --accent: #fbbf24;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-        }
+<style>
+:root{
+--bg:#0f172a;
+--panel:rgba(30,41,59,.6);
+--border:rgba(255,255,255,.1);
+--primary:#8b5cf6;
+--text:#f1f5f9;
+--muted:#94a3b8;
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0}
 
-        body {
-            font-family: 'Lexend', 'Anek Bangla', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+body{
+font-family:'Lexend','Anek Bangla',sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
 
-        /* ---------- HEADER (Same as Home) ---------- */
-        header {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
+/* ===== HEADER (HOME STYLE) ===== */
+header{
+width:100%;
+background:rgba(15,23,42,.95);
+backdrop-filter:blur(15px);
+padding:10px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:fixed;
+top:0;
+z-index:1000;
+border-bottom:1px solid var(--border);
+}
 
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.brand-logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+letter-spacing:1px;
+}
 
-        .logo-img {
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.1);
-            object-fit: cover;
-        }
+.logo-img{
+width:30px;height:30px;border-radius:50%;
+border:1px solid rgba(255,255,255,.1)
+}
 
-        .hamburger {
-            cursor: pointer;
-            width: 28px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+.hamburger{
+width:28px;height:20px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+cursor:pointer;
+}
 
-        .hamburger span {
-            height: 2px;
-            width: 100%;
-            background: white;
-            border-radius: 2px;
-            transition: 0.3s;
-        }
+.hamburger span{
+height:2px;background:#fff;border-radius:2px;
+transition:.3s
+}
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-        .nav-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            height: 100vh;
-            width: 260px;
-            background: #0f172a;
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px;
-            transition: 0.4s ease;
-            border-left: 1px solid var(--border-color);
-        }
+.nav-menu{
+position:fixed;
+top:0;
+right:-100%;
+width:260px;
+height:100vh;
+background:#0f172a;
+padding-top:80px;
+display:flex;
+flex-direction:column;
+transition:.4s cubic-bezier(.4,0,.2,1);
+border-left:1px solid var(--border);
+}
 
-        .nav-menu.open { right: 0; }
+.nav-menu.open{right:0}
 
-        .nav-menu a {
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 15px 30px;
-            font-weight: 500;
-            border-bottom: 1px solid var(--border-color);
-        }
+.nav-menu a{
+color:var(--text);
+text-decoration:none;
+padding:15px 30px;
+border-bottom:1px solid var(--border)
+}
 
-        /* ---------- MAIN ---------- */
-        .container {
-            margin-top: 90px;
-            width: 95%;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding-bottom: 40px;
-            flex: 1;
-        }
+/* ===== MAIN ===== */
+.container{
+margin-top:90px;
+width:95%;
+max-width:1200px;
+margin-inline:auto;
+display:flex;
+flex-wrap:wrap;
+gap:30px;
+padding-bottom:40px;
+flex:1;
+}
 
-        .editor {
-            flex: 1;
-            min-width: 320px;
-            max-width: 450px;
-            background: var(--panel-bg);
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-        }
+.editor{
+flex:1;
+min-width:320px;
+max-width:480px;
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:18px;
+padding:25px;
+}
 
-        .editor h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
+.editor h2{
+color:var(--primary);
+margin-bottom:20px;
+}
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+.input-group{margin-bottom:15px}
+label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block}
 
-        .input-group label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            display: block;
-        }
+.form-control{
+width:100%;
+background:rgba(15,23,42,.7);
+border:1px solid rgba(255,255,255,.15);
+color:#fff;
+padding:12px;
+border-radius:10px;
+font-size:14px;
+}
 
-        .form-control {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
+textarea{min-height:120px;resize:vertical}
 
-        textarea.form-control {
-            min-height: 110px;
-            resize: vertical;
-        }
+.btn-download{
+width:100%;
+padding:15px;
+border-radius:50px;
+border:none;
+background:linear-gradient(45deg,#6366f1,#3b82f6);
+color:#fff;
+font-weight:700;
+cursor:pointer;
+}
 
-        .btn-download {
-            width: 100%;
-            padding: 15px;
-            border-radius: 50px;
-            border: none;
-            background: linear-gradient(45deg, #6366f1, #3b82f6);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-        }
+/* ===== PREVIEW ===== */
+.preview{
+flex:1.2;
+display:flex;
+justify-content:center;
+}
 
-        /* ---------- PREVIEW ---------- */
-        .preview {
-            flex: 1.2;
-            display: flex;
-            justify-content: center;
-        }
+#noticeCard{
+width:100%;
+max-width:430px;
+border-radius:16px;
+overflow:hidden;
+border:1px solid var(--border);
+box-shadow:0 20px 50px rgba(0,0,0,.6);
+}
 
-        #noticeCard {
-            width: 100%;
-            max-width: 420px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            overflow: hidden;
-        }
+.card-top{
+padding:10px;
+text-align:center;
+font-weight:800;
+letter-spacing:1px;
+display:flex;
+gap:8px;
+justify-content:center;
+align-items:center;
+}
 
-        .card-top {
-            background: var(--primary);
-            padding: 8px;
-            text-align: center;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+.card-body{padding:25px}
 
-        .card-body {
-            padding: 25px;
-        }
+.notice-badge{
+display:inline-block;
+padding:5px 14px;
+border-radius:50px;
+font-size:12px;
+font-weight:700;
+margin-bottom:15px;
+}
 
-        .notice-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--accent);
-            margin-bottom: 15px;
-            font-weight: 700;
-            font-size: 12px;
-        }
+.notice-text{
+font-size:18px;
+line-height:1.6;
+margin-bottom:25px;
+}
 
-        .notice-text {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
+.meta-info{
+display:flex;
+justify-content:space-between;
+border-top:1px solid var(--border);
+padding-top:12px;
+font-size:12px;
+}
 
-        .meta-info {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 12px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+.right-meta{text-align:right}
 
-        .source-tag {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
+.watermark{
+margin-top:5px;
+font-size:10px;
+opacity:.4;
+}
 
-        footer {
-            text-align: center;
-            padding: 15px;
-            font-size: 13px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-        }
-
-        @media(max-width: 900px) {
-            .container { flex-direction: column; }
-        }
-    </style>
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+.container{flex-direction:column}
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <div class="brand-logo">
-        <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="logo-img">
-        Interactive Learning
-    </div>
-    <div class="hamburger" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
-    <div class="nav-menu" id="navMenu">
-        <a href="../index.html">MCQ Generator</a>
-        <a href="notice.html">Notice Maker</a>
-        <a href="quotes.html">Quote Maker</a>
-        <a href="pdf.html">PDF Tool</a>
-    </div>
+<div class="brand-logo">
+<img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="logo-img">
+Interactive Learning
+</div>
+<div class="hamburger" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</div>
+<div class="nav-menu" id="navMenu">
+<a href="../index.html">MCQ Generator</a>
+<a href="notice.html">Notice Maker</a>
+<a href="quotes.html">Quote Maker</a>
+<a href="pdf.html">PDF Tool</a>
+</div>
 </header>
 
 <div class="container">
-    <div class="editor">
-        <h2>Create Notice</h2>
 
-        <div class="input-group">
-            <label>Category</label>
-            <select id="catInput" class="form-control" onchange="updatePreview()">
-                <option>Breaking News</option>
-                <option>Urgent Notice</option>
-                <option>Exam Routine</option>
-            </select>
-        </div>
+<div class="editor">
+<h2>Create Notice</h2>
 
-        <div class="input-group">
-            <label>Announcement</label>
-            <textarea id="bodyInput" class="form-control" oninput="updatePreview()"></textarea>
-        </div>
+<div class="input-group">
+<label>Category</label>
+<input class="form-control" id="catInput" placeholder="e.g. Exam Notice" oninput="updatePreview()">
+</div>
 
-        <div class="input-group">
-            <label>Source (Optional)</label>
-            <input id="sourceInput" class="form-control" oninput="updatePreview()">
-        </div>
+<div class="input-group">
+<label>Notice Text</label>
+<textarea class="form-control" id="bodyInput" placeholder="Write notice details..." oninput="updatePreview()"></textarea>
+</div>
 
-        <button class="btn-download" onclick="downloadImage()">Download Image</button>
-    </div>
+<div class="input-group">
+<label>Source (Optional)</label>
+<input class="form-control" id="sourceInput" placeholder="e.g. Education Board" oninput="updatePreview()">
+</div>
 
-    <div class="preview">
-        <div id="noticeCard">
-            <div class="card-top">Official Announcement</div>
-            <div class="card-body">
-                <span id="pCat" class="notice-badge">Breaking News</span>
-                <div id="pBody" class="notice-text">Write your notice here</div>
+<div class="input-group">
+<label>Theme</label>
+<select class="form-control" id="themeInput" onchange="applyTheme()"></select>
+</div>
 
-                <div class="meta-info">
-                    <div class="source-tag" id="sourceWrap">
-                        <span id="pSource"></span>
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div id="pDate"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+<button class="btn-download" onclick="downloadImage()">Download Image</button>
+</div>
+
+<div class="preview">
+<div id="noticeCard">
+<div class="card-top" id="cardTop">
+<i class="fas fa-microphone"></i> Announcement
+</div>
+
+<div class="card-body">
+<span class="notice-badge" id="pCat">Notice</span>
+<div class="notice-text" id="pBody">Your notice preview will appear here.</div>
+
+<div class="meta-info">
+<div id="sourceWrap">
+<span id="pSource"></span>
+</div>
+<div class="right-meta">
+<div id="pDate"></div>
+<div class="watermark">Interactive Learning</div>
+</div>
+</div>
+</div>
+</div>
+
 </div>
 
 <footer>&copy; 2026 Interactive Learning</footer>
 
 <script>
-function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('open');
-    document.querySelector('.hamburger').classList.toggle('active');
+/* MENU */
+function toggleMenu(){
+navMenu.classList.toggle("open");
+document.querySelector(".hamburger").classList.toggle("active");
 }
 
-function updatePreview() {
-    const cat = catInput.value;
-    const body = bodyInput.value || "Write your notice here";
-    const source = sourceInput.value.trim();
+/* THEMES (50+) */
+const themes=[...Array(50)].map((_,i)=>({
+bg:`linear-gradient(135deg,hsl(${i*7},70%,25%),hsl(${i*7+20},70%,15%))`,
+accent:`hsl(${i*7},80%,60%)`
+}));
 
-    pCat.innerText = cat;
-    pBody.innerText = body;
+themes.forEach((t,i)=>{
+let o=document.createElement("option");
+o.value=i;o.textContent=`Theme ${i+1}`;
+themeInput.appendChild(o);
+});
 
-    if(source === "") {
-        sourceWrap.style.display = "none";
-    } else {
-        sourceWrap.style.display = "flex";
-        pSource.innerText = source;
-    }
+/* UPDATE */
+function updatePreview(){
+pCat.textContent=catInput.value||"Notice";
+pBody.textContent=bodyInput.value||"Your notice preview will appear here.";
 
-    pDate.innerText = new Date().toLocaleDateString('en-GB',{
-        day:'numeric',month:'short',year:'numeric'
-    });
+const src=sourceInput.value.trim();
+sourceWrap.style.display=src? "block":"none";
+pSource.textContent=src;
+
+pDate.textContent=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
 }
 
-function downloadImage() {
-    html2canvas(noticeCard,{scale:3,backgroundColor:null}).then(c=>{
-        const a=document.createElement('a');
-        a.download=`Notice_${Date.now()}.png`;
-        a.href=c.toDataURL();
-        a.click();
-    });
+/* APPLY THEME */
+function applyTheme(){
+const t=themes[themeInput.value];
+noticeCard.style.background=t.bg;
+cardTop.style.background=t.accent;
+pCat.style.color=t.accent;
 }
 
-updatePreview();
+/* DOWNLOAD */
+function downloadImage(){
+html2canvas(noticeCard,{scale:3,backgroundColor:null}).then(c=>{
+const a=document.createElement("a");
+a.href=c.toDataURL();a.download=`Notice_${Date.now()}.png`;a.click();
+});
+}
+
+updatePreview();applyTheme();
 </script>
 
 </body>
