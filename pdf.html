@@ -95,37 +95,39 @@
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
+        /* Topic Summary */
         #topicSummary {
             background: rgba(139, 92, 246, 0.1);
-            padding: 10px; border-radius: 8px;
+            padding: 12px; border-radius: 8px;
             margin-bottom: 20px; font-size: 13px; color: #cbd5e1;
             border: 1px dashed var(--primary);
+            line-height: 1.6;
         }
 
+        /* PREMIUM INPUT DESIGN (Purple Theme) */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* PREMIUM INPUT DESIGN */
         .form-control {
             width: 100%; 
             background: var(--input-bg); 
-            border: none;
-            border-bottom: 2px solid #334155; 
-            color: #f1f5f9; padding: 12px 10px; font-size: 14px;
+            border: 1px solid #334155; 
+            color: #f1f5f9; padding: 12px 14px; font-size: 14px;
             transition: all 0.3s ease;
-            border-radius: 4px 4px 0 0;
+            border-radius: 8px;
         }
         .form-control:focus {
             outline: none;
-            background: #1e293b;
-            border-bottom-color: var(--primary);
+            background: #0f172a;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
         }
         
         select.form-control { cursor: pointer; }
-        textarea.form-control { resize: vertical; min-height: 80px; border: 1px solid #334155; border-radius: 8px; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
         .question-card {
-            background: #1e293b; 
+            background: rgba(30, 41, 59, 0.5); 
             padding: 20px; border-radius: 12px;
             margin-bottom: 20px; border: 1px solid #334155;
             position: relative;
@@ -134,18 +136,21 @@
         
         /* Header Input Card */
         .header-card {
-            background: linear-gradient(90deg, #1e293b, #0f172a);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(15, 23, 42, 0.5));
             padding: 15px; border-radius: 8px;
             margin-bottom: 20px; border-left: 4px solid var(--accent);
-            position: relative;
+            border: 1px solid #334155; border-left-width: 4px;
         }
 
-        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #94a3b8; margin-bottom: 12px; font-weight: 700; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #a78bfa; margin-bottom: 12px; font-weight: 700; }
         
-        .control-icons { display: flex; gap: 10px; }
-        .control-icon { cursor: pointer; padding: 5px; border-radius: 4px; transition: 0.2s; }
-        .control-icon:hover { background: rgba(255,255,255,0.1); color: white; }
-        .fa-trash { color: #ef4444; }
+        .control-icons { display: flex; gap: 8px; }
+        .control-icon { 
+            cursor: pointer; padding: 6px; border-radius: 4px; transition: 0.2s; 
+            background: rgba(255,255,255,0.05);
+        }
+        .control-icon:hover { background: rgba(255,255,255,0.15); color: white; }
+        .fa-trash { color: #f87171; }
         .fa-arrow-up, .fa-arrow-down { color: var(--primary); }
 
         .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -196,8 +201,8 @@
             -webkit-font-smoothing: antialiased;
             overflow: hidden; 
             
-            /* Watermark: Repeat-Y centered */
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-size='60' fill='rgba(0,0,0,0.06)' font-weight='bold' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 250)'>Interactive Learning</text></svg>");
+            /* Watermark: Fixed Center, Better Font */
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='800'><text x='50%' y='50%' font-size='50' fill='rgba(0,0,0,0.08)' font-weight='bold' font-family='Courier New, monospace' text-anchor='middle' dominant-baseline='middle' transform='rotate(-45, 250, 400)'>Interactive Learning</text></svg>");
             background-repeat: repeat-y;
             background-size: 100% 297mm; 
             background-position: center top;
@@ -232,25 +237,24 @@
             display: block; 
             min-height: 200px;
             position: relative;
-            /* Thin Vertical Line */
+            /* Strong, Thin Vertical Line */
             background: linear-gradient(to right, transparent 49.8%, #000 49.8%, #000 50.2%, transparent 50.2%);
         }
 
-        /* Subject Header */
+        /* Subject Header (No Box) */
         .section-header-pdf {
             column-span: all;
             text-align: center;
             font-weight: 800;
             font-size: 18px;
             margin-bottom: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
             break-inside: avoid;
-            /* White background to hide vertical line behind text */
-            background: white; 
+            background: white; /* Hide vertical line */
             padding: 5px;
-            border-bottom: 2px solid #333;
-            display: inline-block;
-            width: 100%;
+            display: block;
+            text-decoration: underline;
+            text-underline-offset: 5px;
         }
 
         .mcq-item {
@@ -260,9 +264,11 @@
             font-size: 14px;
             line-height: 1.4;
             padding-right: 8px;
-            /* Transparent background so watermark is visible! */
+            /* Transparent BG to show Watermark */
             background: transparent; 
             position: relative;
+            /* White shadow behind text to make it readable over vertical line if overlap */
+            text-shadow: 2px 0 0 #fff, -2px 0 0 #fff; 
         }
         
         .q-text { font-weight: 700; margin-bottom: 5px; display: block;}
@@ -463,9 +469,9 @@
                 return;
             }
 
-            summaryHTML = `<b>Total: ${total}</b> | `;
+            summaryHTML = `<b>Total Questions: ${total}</b> <br> `;
             for (const [key, value] of Object.entries(counts)) {
-                if(value > 0) summaryHTML += `${key}: ${value} &nbsp; `;
+                if(value > 0) summaryHTML += `<span style="color:#a78bfa; margin-right:10px;">${key}: ${value}</span>`;
             }
             summaryBox.innerHTML = summaryHTML;
         }
@@ -572,13 +578,16 @@
             const element = document.getElementById('pdfContent');
             const scaleBox = document.querySelector('.scale-box');
             
+            // Save state
             const originalTransform = scaleBox.style.transform;
             const originalMargin = scaleBox.style.marginBottom;
             
+            // Reset for full quality capture
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
             const opt = {
+                // Margins to prevent content overlap
                 margin:       [10, 10, 10, 10], 
                 filename:     'Question_' + Math.floor(Math.random() * 10000) + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
@@ -588,6 +597,7 @@
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
+                // Restore mobile preview
                 scaleBox.style.transform = originalTransform;
                 scaleBox.style.marginBottom = originalMargin;
             });
