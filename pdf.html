@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ PDF Maker | Interactive Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --panel-bg: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #8b5cf6;
+            --accent: #fbbf24;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER (Same as other pages) --- */
+        header {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-logo {
+            display: flex; align-items: center;
+            font-size: 18px; font-weight: 700;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        
+        .logo-img {
+            height: 30px; width: 30px; margin-right: 10px;
+            border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.15);
+            object-fit: cover;
+        }
+
+        .hamburger {
+            cursor: pointer; z-index: 1100; width: 24px; height: 18px;
+            position: relative; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .hamburger span { display: block; height: 2px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 4px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -4px); }
+
+        .nav-menu {
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
+            background: var(--bg-dark);
+            display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s; box-shadow: -5px 0 30px rgba(0,0,0,0.6);
+            border-left: 1px solid var(--border-color);
+        }
+        .nav-menu.open { right: 0; }
+        .nav-menu a {
+            color: var(--text-main); text-decoration: none; padding: 15px 30px;
+            font-weight: 500; border-bottom: 1px solid var(--border-color);
+        }
+
+        /* --- CONTAINER --- */
+        .container {
+            margin-top: 80px; width: 95%; max-width: 1400px;
+            display: flex; flex-wrap: wrap; 
+            justify-content: center; align-items: flex-start;
+            gap: 40px; padding-bottom: 40px; flex: 1;
+        }
+
+        /* --- LEFT: EDITOR --- */
+        .editor-section {
+            flex: 1; min-width: 350px; max-width: 500px;
+            background: var(--panel-bg); backdrop-filter: blur(12px);
+            padding: 25px; border-radius: 20px; border: 1px solid var(--border-color);
+            height: 85vh; overflow-y: auto;
+            position: sticky; top: 90px;
+        }
+        /* Custom Scrollbar */
+        .editor-section::-webkit-scrollbar { width: 6px; }
+        .editor-section::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+        .form-control {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);
+            color: white; padding: 10px; border-radius: 8px; font-size: 13px;
+        }
+        
+        .question-card {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;
+            margin-bottom: 15px; border: 1px solid var(--border-color);
+        }
+        .q-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent); margin-bottom: 10px; }
+        
+        .btn-add {
+            width: 100%; padding: 10px; border: 1px dashed var(--primary); background: transparent;
+            color: var(--primary); border-radius: 8px; cursor: pointer; margin-bottom: 20px;
+        }
+        .btn-add:hover { background: rgba(139, 92, 246, 0.1); }
+
+        .btn-download {
+            width: 100%; padding: 14px; border-radius: 50px; border: none;
+            background: linear-gradient(90deg, #10b981, #3b82f6); color: white;
+            font-weight: 700; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* --- RIGHT: A4 PREVIEW (White Paper) --- */
+        .preview-section {
+            flex: 1.5; display: flex; justify-content: center;
+            overflow-x: auto; padding-bottom: 20px;
+        }
+
+        #pdfWrapper {
+            width: 210mm; /* A4 Width */
+            min-height: 297mm; /* A4 Height */
+            background: white;
+            color: black;
+            padding: 15mm;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            font-family: 'Anek Bangla', sans-serif;
+        }
+
+        /* --- PDF DESIGN (Matches 24123.jpg) --- */
+        .pdf-header {
+            text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;
+        }
+        .pdf-title-box {
+            background: black; color: white; display: inline-block;
+            padding: 5px 20px; font-size: 24px; font-weight: 700; margin-bottom: 5px;
+        }
+        .pdf-subtitle { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+        .pdf-meta { font-size: 14px; font-weight: 500; display: flex; justify-content: center; gap: 20px; }
+        
+        .badge-common {
+            position: absolute; top: 15mm; right: 15mm;
+            background: #facc15; border: 1px solid #000;
+            padding: 5px 10px; text-align: center; font-size: 12px; font-weight: 700;
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* Two Column Layout */
+        .pdf-body {
+            column-count: 2;
+            column-gap: 10mm;
+            column-rule: 1px solid #ddd;
+            text-align: justify;
+        }
+
+        .mcq-item {
+            margin-bottom: 15px;
+            break-inside: avoid; /* Prevent breaking across columns */
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .q-text { font-weight: 700; display: block; margin-bottom: 4px; }
+        
+        .options-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
+            margin-left: 15px; font-size: 13px;
+        }
+        
+        .answer-row {
+            text-align: right; font-size: 12px; font-weight: 700; margin-top: 2px;
+        }
+        
+        .explanation {
+            font-size: 12px; color: #444; margin-top: 2px;
+            font-style: italic; border-top: 1px dotted #ccc; padding-top: 2px;
+        }
+
+        /* Watermark */
+        .pdf-watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px; color: rgba(0,0,0,0.05);
+            font-weight: 800; white-space: nowrap; pointer-events: none;
+        }
+
+        /* Footer */
+        .pdf-footer {
+            position: absolute; bottom: 10mm; left: 0; width: 100%;
+            text-align: center; background: black; color: white;
+            padding: 5px; font-size: 12px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            #pdfWrapper { transform: scale(0.6); transform-origin: top left; margin-bottom: -40%; }
+            .container { flex-direction: column; align-items: center; }
+            .editor-section { width: 100%; position: static; height: auto;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-logo">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            Interactive Learning
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html">MCQ Card</a>
+            <a href="notice.html">Notice Maker</a>
+            <a href="pdf.html" style="color: var(--primary);">PDF Maker</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="editor-section">
+            <div class="section-title">PDF Details</div>
+            
+            <div class="input-group">
+                <label>Header Title</label>
+                <input id="headTitle" class="form-control" value="স্থানীয় সরকার বিভাগ" oninput="updatePDF()">
+            </div>
+            <div class="input-group">
+                <label>Sub Title (Post/Exam Name)</label>
+                <input id="subTitle" class="form-control" value="পদ: উপ সহকারী প্রকৌশলী" oninput="updatePDF()">
+            </div>
+            <div class="input-group">
+                <label>Date</label>
+                <input id="examDate" class="form-control" value="তারিখ: ২৩ জানুয়ারি, ২০২৬" oninput="updatePDF()">
+            </div>
+
+            <div id="questionsList">
+                </div>
+
+            <button class="btn-add" onclick="addQuestionInput()">+ Add New Question</button>
+            <button class="btn-download" onclick="generatePDF()">Download PDF</button>
+        </div>
+
+        <div class="preview-section">
+            <div id="pdfWrapper">
+                <div class="badge-common">
+                    ১০০% কমন<br><span style="font-size:10px; font-weight:400;">০৮টির মধ্যে ০৮টি কমন</span>
+                </div>
+
+                <div class="pdf-header">
+                    <div class="pdf-title-box" id="pTitle">স্থানীয় সরকার বিভাগ</div>
+                    <div class="pdf-subtitle" id="pSub">পদ: উপ সহকারী প্রকৌশলী</div>
+                    <div class="pdf-meta" id="pDate">তারিখ: ২৩ জানুয়ারি, ২০২৬</div>
+                </div>
+
+                <div class="pdf-body" id="pdfBody">
+                    </div>
+
+                <div class="pdf-watermark">Interactive Learning</div>
+
+                <div class="pdf-footer">
+                    Interactive Learning • BCS & Competitive Exam Preparation
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; <span id="year"></span> Interactive Learning</footer>
+
+    <script>
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('open');
+        }
+
+        let questions = [];
+
+        // Initialize with one empty question
+        function init() {
+            addQuestionInput();
+        }
+
+        function addQuestionInput() {
+            const id = Date.now();
+            questions.push({
+                id: id,
+                q: "",
+                a: "", b: "", c: "", d: "",
+                ans: "",
+                exp: ""
+            });
+            renderInputs();
+            updatePDF();
+        }
+
+        function renderInputs() {
+            const container = document.getElementById('questionsList');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-card';
+                div.innerHTML = `
+                    <div class="q-header">
+                        <span>Question ${index + 1}</span>
+                        <i class="fas fa-trash" style="cursor:pointer; color:#ef4444;" onclick="removeQuestion(${q.id})"></i>
+                    </div>
+                    <input class="form-control" style="margin-bottom:5px;" placeholder="প্রশ্ন লিখুন..." value="${q.q}" oninput="updateData(${q.id}, 'q', this.value)">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:5px;">
+                        <input class="form-control" placeholder="ক" value="${q.a}" oninput="updateData(${q.id}, 'a', this.value)">
+                        <input class="form-control" placeholder="খ" value="${q.b}" oninput="updateData(${q.id}, 'b', this.value)">
+                        <input class="form-control" placeholder="গ" value="${q.c}" oninput="updateData(${q.id}, 'c', this.value)">
+                        <input class="form-control" placeholder="ঘ" value="${q.d}" oninput="updateData(${q.id}, 'd', this.value)">
+                    </div>
+                    <input class="form-control" style="margin-bottom:5px;" placeholder="সঠিক উত্তর (যেমন: ক)" value="${q.ans}" oninput="updateData(${q.id}, 'ans', this.value)">
+                    <textarea class="form-control" style="height:50px;" placeholder="ব্যাখ্যা (Optional)" oninput="updateData(${q.id}, 'exp', this.value)">${q.exp}</textarea>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function removeQuestion(id) {
+            questions = questions.filter(q => q.id !== id);
+            renderInputs();
+            updatePDF();
+        }
+
+        function updateData(id, field, value) {
+            const q = questions.find(item => item.id === id);
+            if (q) {
+                q[field] = value;
+                updatePDF(); // Real-time preview
+            }
+        }
+
+        function updatePDF() {
+            // Header
+            document.getElementById('pTitle').innerText = document.getElementById('headTitle').value;
+            document.getElementById('pSub').innerText = document.getElementById('subTitle').value;
+            document.getElementById('pDate').innerText = document.getElementById('examDate').value;
+
+            // Body
+            const pdfBody = document.getElementById('pdfBody');
+            pdfBody.innerHTML = '';
+
+            // Bengali Number Map
+            const banNum = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            const toBangla = (n) => n.toString().split('').map(c => banNum[c] || c).join('');
+
+            questions.forEach((q, index) => {
+                const item = document.createElement('div');
+                item.className = 'mcq-item';
+                
+                // Only show explanation if it exists
+                const expHtml = q.exp ? `<div class="explanation">ব্যাখ্যা: ${q.exp}</div>` : '';
+                
+                item.innerHTML = `
+                    <span class="q-text">${toBangla(index + 1)}. ${q.q || 'প্রশ্ন...'}</span>
+                    <div class="options-grid">
+                        <span>ক. ${q.a}</span>
+                        <span>খ. ${q.b}</span>
+                        <span>গ. ${q.c}</span>
+                        <span>ঘ. ${q.d}</span>
+                    </div>
+                    <div class="answer-row">উঃ ${q.ans}</div>
+                    ${expHtml}
+                `;
+                pdfBody.appendChild(item);
+            });
+        }
+
+        function generatePDF() {
+            const element = document.getElementById('pdfWrapper');
+            const opt = {
+                margin:       0,
+                filename:     'Exam_Paper.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
