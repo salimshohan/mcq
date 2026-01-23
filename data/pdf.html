@@ -155,10 +155,29 @@
 
         /* Watermark & Line */
         .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 40px; font-weight: 900; color: rgba(0,0,0,0.06); white-space: nowrap; pointer-events: none; z-index: 0;
-            font-family: 'Courier New', monospace;
-        }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+
+  font-size: 42px;
+  font-weight: 900; /* সবচেয়ে মোটা */
+  letter-spacing: 2px; /* লেখা আরও bold দেখাবে */
+
+  color: rgba(0, 0, 0, 0.08);
+
+  text-shadow: 
+    1px 0 0 rgba(0,0,0,0.08),
+    -1px 0 0 rgba(0,0,0,0.08),
+    0 1px 0 rgba(0,0,0,0.08),
+    0 -1px 0 rgba(0,0,0,0.08);
+
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+
+  font-family: 'Arial Black', Impact, 'Courier New', monospace;
+}
         .v-line {
             position: absolute; left: 50%; top: 55mm; bottom: 15mm; width: 0.5px; background: #999; z-index: 1;
         }
