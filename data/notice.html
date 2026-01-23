@@ -5,32 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Notice Maker | Interactive Learning</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
 :root{
---bg:#0f172a;
---panel:rgba(30,41,59,.6);
---border:rgba(255,255,255,.1);
+--bg-dark:#0f172a;
+--panel-bg:rgba(30,41,59,.6);
+--border-color:rgba(255,255,255,.1);
 --primary:#8b5cf6;
---text:#f1f5f9;
---muted:#94a3b8;
+--accent:#fbbf24;
+--text-main:#f1f5f9;
+--text-muted:#94a3b8;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
 font-family:'Lexend','Anek Bangla',sans-serif;
-background:var(--bg);
-color:var(--text);
+background:var(--bg-dark);
+color:var(--text-main);
 min-height:100vh;
 display:flex;
 flex-direction:column;
 }
 
-/* ===== HEADER (HOME STYLE) ===== */
+/* ===== HEADER (HOME EXACT) ===== */
 header{
 width:100%;
 background:rgba(15,23,42,.95);
@@ -42,33 +45,42 @@ align-items:center;
 position:fixed;
 top:0;
 z-index:1000;
-border-bottom:1px solid var(--border);
+border-bottom:1px solid var(--border-color);
+box-shadow:0 4px 20px rgba(0,0,0,.4);
 }
 
 .brand-logo{
 display:flex;
 align-items:center;
 gap:10px;
+font-size:16px;
 font-weight:700;
 letter-spacing:1px;
+text-transform:uppercase;
 }
 
 .logo-img{
-width:30px;height:30px;border-radius:50%;
-border:1px solid rgba(255,255,255,.1)
+width:30px;
+height:30px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,.1);
+object-fit:cover;
 }
 
 .hamburger{
-width:28px;height:20px;
+cursor:pointer;
+width:28px;
+height:20px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-cursor:pointer;
 }
 
 .hamburger span{
-height:2px;background:#fff;border-radius:2px;
-transition:.3s
+height:2px;
+background:#fff;
+border-radius:2px;
+transition:.3s;
 }
 
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -86,16 +98,17 @@ padding-top:80px;
 display:flex;
 flex-direction:column;
 transition:.4s cubic-bezier(.4,0,.2,1);
-border-left:1px solid var(--border);
+border-left:1px solid var(--border-color);
 }
 
 .nav-menu.open{right:0}
 
 .nav-menu a{
-color:var(--text);
+color:var(--text-main);
 text-decoration:none;
 padding:15px 30px;
-border-bottom:1px solid var(--border)
+font-weight:500;
+border-bottom:1px solid var(--border-color);
 }
 
 /* ===== MAIN ===== */
@@ -115,8 +128,8 @@ flex:1;
 flex:1;
 min-width:320px;
 max-width:480px;
-background:var(--panel);
-border:1px solid var(--border);
+background:var(--panel-bg);
+border:1px solid var(--border-color);
 border-radius:18px;
 padding:25px;
 }
@@ -127,7 +140,14 @@ margin-bottom:20px;
 }
 
 .input-group{margin-bottom:15px}
-label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block}
+
+label{
+font-size:12px;
+font-weight:600;
+color:var(--text-muted);
+margin-bottom:6px;
+display:block;
+}
 
 .form-control{
 width:100%;
@@ -139,7 +159,10 @@ border-radius:10px;
 font-size:14px;
 }
 
-textarea{min-height:120px;resize:vertical}
+textarea.form-control{
+min-height:120px;
+resize:vertical;
+}
 
 .btn-download{
 width:100%;
@@ -164,8 +187,9 @@ width:100%;
 max-width:430px;
 border-radius:16px;
 overflow:hidden;
-border:1px solid var(--border);
+border:1px solid var(--border-color);
 box-shadow:0 20px 50px rgba(0,0,0,.6);
+background:linear-gradient(145deg,#1e293b,#0f172a);
 }
 
 .card-top{
@@ -177,6 +201,7 @@ display:flex;
 gap:8px;
 justify-content:center;
 align-items:center;
+background:var(--primary);
 }
 
 .card-body{padding:25px}
@@ -185,9 +210,11 @@ align-items:center;
 display:inline-block;
 padding:5px 14px;
 border-radius:50px;
+border:1px solid rgba(255,255,255,.2);
 font-size:12px;
 font-weight:700;
 margin-bottom:15px;
+color:var(--accent);
 }
 
 .notice-text{
@@ -199,17 +226,40 @@ margin-bottom:25px;
 .meta-info{
 display:flex;
 justify-content:space-between;
-border-top:1px solid var(--border);
+align-items:flex-start;
+border-top:1px solid var(--border-color);
 padding-top:12px;
 font-size:12px;
+color:var(--text-muted);
 }
 
-.right-meta{text-align:right}
+.source-tag{
+display:flex;
+gap:6px;
+align-items:center;
+}
+
+.verified{color:#38bdf8}
+
+.right-meta{
+text-align:right;
+}
 
 .watermark{
-margin-top:5px;
+margin-top:4px;
 font-size:10px;
 opacity:.4;
+}
+
+/* ===== FOOTER (HOME STYLE) ===== */
+footer{
+width:100%;
+padding:20px;
+text-align:center;
+background:rgba(15,23,42,.95);
+border-top:1px solid var(--border-color);
+font-size:13px;
+color:var(--text-muted);
 }
 
 /* ===== MOBILE ===== */
@@ -244,22 +294,25 @@ Interactive Learning
 
 <div class="input-group">
 <label>Category</label>
-<input class="form-control" id="catInput" placeholder="e.g. Exam Notice" oninput="updatePreview()">
+<select id="catInput" class="form-control" onchange="updatePreview()">
+<option>Breaking News</option>
+<option>Urgent Notice</option>
+<option>Exam Routine</option>
+<option>Result Published</option>
+<option>Holiday Notice</option>
+<option>Admission Update</option>
+<option>Important Alert</option>
+</select>
 </div>
 
 <div class="input-group">
 <label>Notice Text</label>
-<textarea class="form-control" id="bodyInput" placeholder="Write notice details..." oninput="updatePreview()"></textarea>
+<textarea id="bodyInput" class="form-control" placeholder="Write notice details..." oninput="updatePreview()"></textarea>
 </div>
 
 <div class="input-group">
 <label>Source (Optional)</label>
-<input class="form-control" id="sourceInput" placeholder="e.g. Education Board" oninput="updatePreview()">
-</div>
-
-<div class="input-group">
-<label>Theme</label>
-<select class="form-control" id="themeInput" onchange="applyTheme()"></select>
+<input id="sourceInput" class="form-control" placeholder="e.g. The Ironic Bro" oninput="updatePreview()">
 </div>
 
 <button class="btn-download" onclick="downloadImage()">Download Image</button>
@@ -267,78 +320,75 @@ Interactive Learning
 
 <div class="preview">
 <div id="noticeCard">
-<div class="card-top" id="cardTop">
+
+<div class="card-top">
 <i class="fas fa-microphone"></i> Announcement
 </div>
 
 <div class="card-body">
-<span class="notice-badge" id="pCat">Notice</span>
-<div class="notice-text" id="pBody">Your notice preview will appear here.</div>
+<span id="pCat" class="notice-badge">Breaking News</span>
+
+<div id="pBody" class="notice-text">
+Your notice preview will appear here.
+</div>
 
 <div class="meta-info">
-<div id="sourceWrap">
+<div id="sourceWrap" class="source-tag">
+<span>Source:</span>
 <span id="pSource"></span>
+<i class="fas fa-check-circle verified"></i>
 </div>
+
 <div class="right-meta">
 <div id="pDate"></div>
 <div class="watermark">Interactive Learning</div>
 </div>
 </div>
+
+</div>
 </div>
 </div>
 
 </div>
 
-<footer>&copy; 2026 Interactive Learning</footer>
+<footer>&copy; <span id="year"></span> Interactive Learning</footer>
 
 <script>
+document.getElementById("year").innerText=new Date().getFullYear();
+
 /* MENU */
 function toggleMenu(){
 navMenu.classList.toggle("open");
 document.querySelector(".hamburger").classList.toggle("active");
 }
 
-/* THEMES (50+) */
-const themes=[...Array(50)].map((_,i)=>({
-bg:`linear-gradient(135deg,hsl(${i*7},70%,25%),hsl(${i*7+20},70%,15%))`,
-accent:`hsl(${i*7},80%,60%)`
-}));
-
-themes.forEach((t,i)=>{
-let o=document.createElement("option");
-o.value=i;o.textContent=`Theme ${i+1}`;
-themeInput.appendChild(o);
-});
-
 /* UPDATE */
 function updatePreview(){
-pCat.textContent=catInput.value||"Notice";
-pBody.textContent=bodyInput.value||"Your notice preview will appear here.";
+pCat.innerText=catInput.value;
+pBody.innerText=bodyInput.value||"Your notice preview will appear here.";
 
 const src=sourceInput.value.trim();
-sourceWrap.style.display=src? "block":"none";
-pSource.textContent=src;
-
-pDate.textContent=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+if(src===""){
+sourceWrap.style.display="none";
+}else{
+sourceWrap.style.display="flex";
+pSource.innerText=src;
 }
 
-/* APPLY THEME */
-function applyTheme(){
-const t=themes[themeInput.value];
-noticeCard.style.background=t.bg;
-cardTop.style.background=t.accent;
-pCat.style.color=t.accent;
+pDate.innerText=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
 }
 
 /* DOWNLOAD */
 function downloadImage(){
 html2canvas(noticeCard,{scale:3,backgroundColor:null}).then(c=>{
 const a=document.createElement("a");
-a.href=c.toDataURL();a.download=`Notice_${Date.now()}.png`;a.click();
+a.href=c.toDataURL();
+a.download=`Notice_${Date.now()}.png`;
+a.click();
 });
 }
 
-updatePreview();applyTheme();
+updatePreview();
 </script>
 
 </body>
