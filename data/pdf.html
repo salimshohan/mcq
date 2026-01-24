@@ -202,7 +202,7 @@
   z-index: 0; opacity: 0.04
 }
         .v-line {
-            position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1;
+            position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
         /* Header & Footer */
@@ -469,36 +469,104 @@
         }
 
         // --- DOWNLOAD PDF (Random Hex) ---
-        function downloadPDF() {
-            const element = document.getElementById('pdfPreviewContainer');
-            const scaleBox = document.querySelector('.scale-box');
-            const pages = document.querySelectorAll('.pdf-page'); // সব পেজ সিলেক্ট করা হলো
+        function updatePDF() {
+            const container = document.getElementById('pdfPreviewContainer');
+            container.innerHTML = '';
 
-            // আগের স্টাইল সেভ করে রাখা
-            const oldTransform = scaleBox.style.transform;
-            const oldMargin = scaleBox.style.marginBottom;
+            const title = document.getElementById('headTitle').value;
+            const sub = document.getElementById('subTitle').value;
+            const date = document.getElementById('examDate').value;
+            const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
-            // পিডিএফ জেনারেশনের জন্য টেম্পোরারি স্টাইল সেট করা
-            scaleBox.style.transform = 'none';
-            scaleBox.style.margin = '0';
-            
-            // পেজের নিচের মার্জিন ০ করে দেওয়া যাতে এক্সট্রা পেজ না আসে
-            pages.forEach(page => page.style.marginBottom = '0');
+            // Helper to create page
+            function createPage(isFirst) {
+                const page = document.createElement('div');
+                page.className = 'pdf-page';
+                
+                page.innerHTML = `
+                    <div class="watermark">Interactive Learning</div>
+                    <div class="v-line" id="vline-${Date.now()}"></div> <div class="pdf-header">
+                        <div class="brand-name">Interactive Learning</div>
+                        <div class="main-title">${title}</div>
+                        <div class="sub-title">${sub}</div>
+                        <div class="meta-info">${date}</div>
+                    </div>
+                    <div class="pdf-body"></div>
+                    <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
+                `;
+                
+                if(!isFirst) {
+                    page.querySelector('.pdf-header').style.display = 'none';
+                    page.querySelector('.v-line').style.top = '15mm';
+                }
 
-            const hex = Math.random().toString(16).substring(2, 8);
-            const opt = {
-                margin: 0,
-                filename: `question_${hex}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+                container.appendChild(page);
+                return { body: page.querySelector('.pdf-body'), page: page };
+            }
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                // ডাউনলোড শেষে আগের স্টাইল ফিরিয়ে আনা
-                scaleBox.style.transform = oldTransform;
-                scaleBox.style.marginBottom = oldMargin;
-                pages.forEach(page => page.style.marginBottom = '20px'); // মার্জিন রিস্টোর করা
+            let currentObj = createPage(true);
+            let currentBody = currentObj.body;
+            let currentPage = currentObj.page;
+            let qNum = 0;
+
+            items.forEach(item => {
+                if(item.type === 'break') {
+                    currentObj = createPage(false);
+                    currentBody = currentObj.body;
+                    currentPage = currentObj.page;
+                    return;
+                }
+
+                const el = document.createElement('div');
+                if(item.type === 'header') {
+                    el.className = 'section-header';
+                    el.innerText = item.title;
+                } else {
+                    qNum++;
+                    el.className = 'mcq-item';
+                    const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
+                    
+                    const activeStyle = 'color: #008000; font-weight: 900;';
+                    
+                    el.innerHTML = `
+                        <span class="q-text">${toBn(qNum)}. ${item.q}</span>
+                        <div class="opts">
+                            <span ${item.ans === 'ক' ? `style="${activeStyle}"` : ''}>ক. ${item.a}</span>
+                            <span ${item.ans === 'খ' ? `style="${activeStyle}"` : ''}>খ. ${item.b}</span>
+                            <span ${item.ans === 'গ' ? `style="${activeStyle}"` : ''}>গ. ${item.c}</span>
+                            <span ${item.ans === 'ঘ' ? `style="${activeStyle}"` : ''}>ঘ. ${item.d}</span>
+                        </div>
+                        ${exp}
+                    `;
+                }
+
+                currentBody.appendChild(el);
+
+                // --- NEW LOGIC: Check if item is in Right Column ---
+                // যদি এলিমেন্টের বাম পাশের দূরত্ব কন্টেইনারের অর্ধেক এর বেশি হয়, তার মানে এটি ডান কলামে আছে
+                if (el.offsetLeft > currentBody.offsetWidth / 2) {
+                    const line = currentPage.querySelector('.v-line');
+                    if (line) line.style.display = 'block';
+                }
+
+                // Smart Break Check
+                if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
+                    currentBody.removeChild(el); 
+                    
+                    // নতুন পেজ তৈরি
+                    currentObj = createPage(false); 
+                    currentBody = currentObj.body;
+                    currentPage = currentObj.page;
+                    
+                    currentBody.appendChild(el); 
+                    
+                    // নতুন পেজে এসেও চেক করতে হবে এটি ডানে পড়ল কিনা (যদিও শুরুতে বামেই পরবে)
+                    if (el.offsetLeft > currentBody.offsetWidth / 2) {
+                        const line = currentPage.querySelector('.v-line');
+                        if (line) line.style.display = 'block';
+                    }
+                }
             });
         }
         // --- DOWNLOAD PNG (Random Hex) ---
