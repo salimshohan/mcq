@@ -1,1 +1,4 @@
-document.getElementById('js').innerHTML = '<script type="text/javascript" src="/javascript/footer.js"></script>';
+const script = document.createElement('script');
+script.src = '/javascript/footer.js';
+script.type = 'text/javascript';
+document.body.appendChild(script);
