@@ -169,7 +169,7 @@ header {
     <a href="/"><i class="fa-solid fa-house"></i> Home</a>
     <a href="/data/pdf.html"><i class="fa-solid fa-file-pdf"></i> PDF Tool</a>
     <a href="/data/quotes.html"><i class="fa-solid fa-quote-left"></i> Quotes Maker</a>
-    <a href="/data/note.html"><i class="fa-solid fa-pen-to-square"></i> Short Note Generator</a>
+   <!-- <a href="/data/note.html"><i class="fa-solid fa-pen-to-square"></i> Short Note Generator</a>-->
     <a href="/data/notice.html"><i class="fa-solid fa-bullhorn"></i> Notice Maker</a>
 </div>
 `);
