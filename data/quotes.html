@@ -32,55 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER & NAVBAR --- */
-        header {
-            width: 100%;
-            background: linear-gradient(90deg, #1e1b4b, #312e81);
-            padding: 12px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; left: 0; z-index: 2000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .brand-logo {
-            display: flex; align-items: center; gap: 12px;
-            font-size: 18px; font-weight: 700; color: white;
-            text-decoration: none;
-        }
         
-        .logo-img { 
-            height: 35px; width: 35px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        .hamburger {
-            cursor: pointer; width: 28px; height: 20px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            z-index: 2001;
-        }
-        .hamburger span { 
-            display: block; height: 3px; width: 100%; background: white; 
-            border-radius: 2px; transition: 0.3s; 
-        }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
-
-        .mobile-menu {
-            position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
-            background: #1e1b4b; border-left: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s ease-in-out; z-index: 1999;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-        }
-        .mobile-menu.active { right: 0; }
-        .mobile-menu a {
-            color: #cbd5e1; text-decoration: none; padding: 15px 30px;
-            font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
-        .mobile-menu a:hover { background: rgba(255,255,255,0.1); color: var(--primary); }
-
         /* --- CONTAINER --- */
         .container {
             margin-top: 80px; flex: 1; width: 95%; max-width: 1100px;
@@ -201,21 +153,7 @@
 </head>
 <body>
 <script type="text/javascript" src="/javascript/header.js"></script>
-    <header>
-        <a href="../index.html" class="brand-logo">
-            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
-            Interactive Learning
-        </a>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-    </header>
-
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="../index.html">Home</a>
-        <a href="pdf.html">PDF Tool</a>
-        <a href="quotes.html">Quote Maker</a>
-    </div>
+    
 
     <div class="container">
         
@@ -269,11 +207,7 @@
     </footer>
 
     <script>
-        // Toggle Navbar
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.querySelector('.hamburger').classList.toggle('active');
-        }
+      
 
         // Live Update & Auto Hide Logic
         function updatePreview() {
