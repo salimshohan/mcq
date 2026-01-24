@@ -27,7 +27,7 @@ header {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: white;
     text-transform: uppercase;
