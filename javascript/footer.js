@@ -1,10 +1,22 @@
-function loadFooter() {
+
   const footer = document.getElementById("footer");
   if (!footer) return;
 
-  footer.innerHTML = `
-    &copy; ${new Date().getFullYear()} Interactive Learning
-  `;
-}
+  const year = new Date().getFullYear();
 
-document.addEventListener("DOMContentLoaded", loadFooter);
+  footer.style.cssText = `
+    width:100%;
+    padding:15px;
+    text-align:center;
+    background:#1f2937;
+    border-top:1px solid #dadada;
+    font-size:14px;
+    color:white;
+  `;
+
+  footer.innerHTML = `
+    <div class="site-footer">
+      &copy; ${year} Interactive Learning<br>
+      All rights reserved.
+    </div>
+  `;
