@@ -569,7 +569,44 @@
                 }
             });
         }
-        // --- DOWNLOAD PNG (Random Hex) ---
+       function downloadPDF() {
+    const element = document.getElementById('pdfPreviewContainer');
+    const scaleBox = document.querySelector('.scale-box');
+    
+    // ১. জুম বা স্কেল রিসেট করা (যাতে পিডিএফ এ সাইজ ঠিক থাকে)
+    const oldTransform = scaleBox.style.transform;
+    const oldMargin = scaleBox.style.margin;
+    
+    scaleBox.style.transform = 'none';
+    scaleBox.style.margin = '0';
+    
+    // ২. অপশন সেট করা
+    const hex = Math.random().toString(16).substring(2, 8);
+    const opt = {
+        margin: 0,
+        filename: `question_${hex}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // ৩. পিডিএফ জেনারেট এবং সেভ
+    html2pdf().set(opt).from(element).save()
+    .then(() => {
+        // কাজ শেষে আগের অবস্থায় ফিরিয়ে আনা
+        scaleBox.style.transform = oldTransform;
+        scaleBox.style.margin = oldMargin;
+    })
+    .catch((err) => {
+        // যদি কোনো এরর হয়, তবে অ্যালার্ট দিবে এবং স্টাইল ঠিক করে দিবে
+        alert("Download Failed: " + err.message);
+        console.error(err);
+        scaleBox.style.transform = oldTransform;
+        scaleBox.style.margin = oldMargin;
+    });
+}
+
+ // --- DOWNLOAD PNG (Random Hex) ---
         async function downloadPNG() {
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
