@@ -205,6 +205,19 @@
             position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
+.passage-box {
+            font-size: 12px;
+            line-height: 1.4;
+            text-align: justify;
+            margin-bottom: 10px;
+            white-space: pre-wrap; /* লাইন ব্রেক ঠিক রাখবে */
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid #6366f1; /* বামে নীল বর্ডার */
+            padding: 8px;
+            break-inside: avoid; /* প্যাসেজ যেন দুই পেজে না ভাঙ্গে */
+        }
+
         /* Header & Footer */
         .pdf-header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 5px; margin-bottom: 3px; flex-shrink: 0; z-index: 2; position: relative; }
         .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 3px; }
@@ -293,7 +306,7 @@
 
             <div class="btn-group">
                 <button class="btn-add" onclick="addItem('header')">+ Subject</button>
-                <button class="btn-add" onclick="addItem('question')">+ Question</button>
+                <button class="btn-add" onclick="addItem('question')">+ Question</button><button class="btn-add" style="border-color:#fbbf24; color:#fbbf24; background:rgba(251,191,36,0.1)" onclick="addItem('passage')">+ Passage</button>
                 <button class="btn-add btn-break" onclick="addItem('break')">+ Page Break</button>
             </div>
             
@@ -310,7 +323,7 @@
 
     <datalist id="subjects"><option value="Bangla"><option value="English"><option value="General Knowledge"><option value="Math"><option value="ICT"></datalist>
 
-    <script>
+   <script>
         let items = [];
 
         function toggleMenu() {
@@ -320,9 +333,11 @@
 
         function init() { addItem('question'); }
 
+        // ১. addItem আপডেট করা হয়েছে (Passage সহ)
         function addItem(type) {
             const id = Date.now();
             if(type === 'header') items.push({ id, type, title: '' });
+            else if(type === 'passage') items.push({ id, type, text: '' }); // নতুন
             else if(type === 'break') items.push({ id, type });
             else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' });
             renderInputs(); updatePDF();
@@ -341,6 +356,7 @@
             if(item) { item[field] = val; updatePDF(); }
         }
 
+        // ২. renderInputs আপডেট করা হয়েছে (Passage এর জন্য ইনপুট বক্স)
         function renderInputs() {
             const list = document.getElementById('itemsList');
             list.innerHTML = '';
@@ -359,7 +375,11 @@
 
                 if(item.type === 'header') {
                     html += `<input class="form-control" list="subjects" placeholder="Subject Name" value="${item.title}" oninput="updateData(${item.id}, 'title', this.value)">`;
-                } else if(item.type === 'question') {
+                } 
+                else if(item.type === 'passage') { // প্যাসেজ ইনপুট
+                    html += `<textarea class="form-control" style="min-height:100px; font-family:inherit;" placeholder="Paste or write your passage here..." oninput="updateData(${item.id}, 'text', this.value)">${item.text}</textarea>`;
+                }
+                else if(item.type === 'question') {
                     html += `<input class="form-control" style="margin-bottom:5px" placeholder="Question" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:5px">
                         <input class="form-control" placeholder="A" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
@@ -384,7 +404,7 @@
             });
         }
 
-        // --- SMART RENDERER ---
+        // ৩. updatePDF আপডেট করা হয়েছে (প্যাসেজ রেন্ডার + লাইন চেক)
         function updatePDF() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = '';
@@ -395,98 +415,14 @@
             const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
-            // Helper to create page
             function createPage(isFirst) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
                 page.innerHTML = `
                     <div class="watermark">Interactive Learning</div>
-                    <div class="v-line"></div>
+                    <div class="v-line" style="display:none"></div>
                     <div class="pdf-header">
-                        <div class="brand-name">Interactive Learning</div>
-                        <div class="main-title">${title}</div>
-                        <div class="sub-title">${sub}</div>
-                        <div class="meta-info">${date}</div>
-                    </div>
-                    <div class="pdf-body"></div>
-                    <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
-                `;
-                
-                if(!isFirst) {
-                    page.querySelector('.pdf-header').style.display = 'none';
-                    page.querySelector('.v-line').style.top = '15mm';
-                }
-
-                container.appendChild(page);
-                return page.querySelector('.pdf-body');
-            }
-
-            let currentBody = createPage(true);
-            let qNum = 0;
-
-            items.forEach(item => {
-                if(item.type === 'break') {
-                    currentBody = createPage(false);
-                    return;
-                }
-
-                const el = document.createElement('div');
-                if(item.type === 'header') {
-                    el.className = 'section-header';
-                    el.innerText = item.title;
-                } else {
-                    qNum++;
-                    el.className = 'mcq-item';
-                    const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
-                    
-                    // --- NEW LOGIC START ---
-                    // Highlight Active Answer in Green and Bold
-                    const activeStyle = 'color: #008000; font-weight: 900;';
-                    
-                    el.innerHTML = `
-                        <span class="q-text">${toBn(qNum)}. ${item.q}</span>
-                        <div class="opts">
-                            <span ${item.ans === 'ক' ? `style="${activeStyle}"` : ''}>ক. ${item.a}</span>
-                            <span ${item.ans === 'খ' ? `style="${activeStyle}"` : ''}>খ. ${item.b}</span>
-                            <span ${item.ans === 'গ' ? `style="${activeStyle}"` : ''}>গ. ${item.c}</span>
-                            <span ${item.ans === 'ঘ' ? `style="${activeStyle}"` : ''}>ঘ. ${item.d}</span>
-                        </div>
-                        ${exp}
-                    `;
-                    // --- NEW LOGIC END ---
-                }
-
-                currentBody.appendChild(el);
-
-                // Smart Break Check
-                if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
-                    currentBody.removeChild(el); 
-                    currentBody = createPage(false); 
-                    currentBody.appendChild(el); 
-                }
-            });
-        }
-
-        // --- DOWNLOAD PDF (Random Hex) ---
-        function updatePDF() {
-            const container = document.getElementById('pdfPreviewContainer');
-            container.innerHTML = '';
-
-            const title = document.getElementById('headTitle').value;
-            const sub = document.getElementById('subTitle').value;
-            const date = document.getElementById('examDate').value;
-            const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-            const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
-
-            // Helper to create page
-            function createPage(isFirst) {
-                const page = document.createElement('div');
-                page.className = 'pdf-page';
-                
-                page.innerHTML = `
-                    <div class="watermark">Interactive Learning</div>
-                    <div class="v-line" id="vline-${Date.now()}"></div> <div class="pdf-header">
                         <div class="brand-name">Interactive Learning</div>
                         <div class="main-title">${title}</div>
                         <div class="sub-title">${sub}</div>
@@ -519,14 +455,20 @@
                 }
 
                 const el = document.createElement('div');
+
+                // --- ITEM RENDERING LOGIC ---
                 if(item.type === 'header') {
                     el.className = 'section-header';
                     el.innerText = item.title;
-                } else {
+                } 
+                else if(item.type === 'passage') { // প্যাসেজ প্রিভিউ
+                    el.className = 'passage-box';
+                    el.innerText = item.text;
+                }
+                else {
                     qNum++;
                     el.className = 'mcq-item';
                     const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
-                    
                     const activeStyle = 'color: #008000; font-weight: 900;';
                     
                     el.innerHTML = `
@@ -543,25 +485,20 @@
 
                 currentBody.appendChild(el);
 
-                // --- NEW LOGIC: Check if item is in Right Column ---
-                // যদি এলিমেন্টের বাম পাশের দূরত্ব কন্টেইনারের অর্ধেক এর বেশি হয়, তার মানে এটি ডান কলামে আছে
+                // --- LINE CHECK LOGIC ---
                 if (el.offsetLeft > currentBody.offsetWidth / 2) {
                     const line = currentPage.querySelector('.v-line');
                     if (line) line.style.display = 'block';
                 }
 
-                // Smart Break Check
+                // --- PAGE BREAK LOGIC ---
                 if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
                     currentBody.removeChild(el); 
-                    
-                    // নতুন পেজ তৈরি
                     currentObj = createPage(false); 
                     currentBody = currentObj.body;
                     currentPage = currentObj.page;
-                    
                     currentBody.appendChild(el); 
                     
-                    // নতুন পেজে এসেও চেক করতে হবে এটি ডানে পড়ল কিনা (যদিও শুরুতে বামেই পরবে)
                     if (el.offsetLeft > currentBody.offsetWidth / 2) {
                         const line = currentPage.querySelector('.v-line');
                         if (line) line.style.display = 'block';
@@ -569,50 +506,41 @@
                 }
             });
         }
-       function downloadPDF() {
-    const element = document.getElementById('pdfPreviewContainer');
-    const scaleBox = document.querySelector('.scale-box');
-    
-    // ১. জুম বা স্কেল রিসেট করা (যাতে পিডিএফ এ সাইজ ঠিক থাকে)
-    const oldTransform = scaleBox.style.transform;
-    const oldMargin = scaleBox.style.margin;
-    
-    scaleBox.style.transform = 'none';
-    scaleBox.style.margin = '0';
-    
-    // ২. অপশন সেট করা
-    const hex = Math.random().toString(16).substring(2, 8);
-    const opt = {
-        margin: 0,
-        filename: `question_${hex}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
 
-    // ৩. পিডিএফ জেনারেট এবং সেভ
-    html2pdf().set(opt).from(element).save()
-    .then(() => {
-        // কাজ শেষে আগের অবস্থায় ফিরিয়ে আনা
-        scaleBox.style.transform = oldTransform;
-        scaleBox.style.margin = oldMargin;
-    })
-    .catch((err) => {
-        // যদি কোনো এরর হয়, তবে অ্যালার্ট দিবে এবং স্টাইল ঠিক করে দিবে
-        alert("Download Failed: " + err.message);
-        console.error(err);
-        scaleBox.style.transform = oldTransform;
-        scaleBox.style.margin = oldMargin;
-    });
-}
+        // সিম্পল ডাউনলোড ফাংশন (কোনো জটিলতা ছাড়া)
+        function downloadPDF() {
+            const element = document.getElementById('pdfPreviewContainer');
+            const scaleBox = document.querySelector('.scale-box');
+            
+            const oldTransform = scaleBox.style.transform;
+            const oldMargin = scaleBox.style.margin;
+            
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
+            
+            const hex = Math.random().toString(16).substring(2, 8);
+            const opt = {
+                margin: 0,
+                filename: `question_${hex}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
 
- // --- DOWNLOAD PNG (Random Hex) ---
+            html2pdf().set(opt).from(element).save()
+            .then(() => {
+                scaleBox.style.transform = oldTransform;
+                scaleBox.style.margin = oldMargin;
+            });
+        }
+        
+        // PNG ডাউনলোড ফাংশন
         async function downloadPNG() {
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
             
             const oldTransform = scaleBox.style.transform;
-            const oldMargin = scaleBox.style.marginBottom;
+            const oldMargin = scaleBox.style.margin;
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
 
@@ -627,7 +555,7 @@
             }
 
             scaleBox.style.transform = oldTransform;
-            scaleBox.style.marginBottom = oldMargin;
+            scaleBox.style.margin = oldMargin;
         }
 
         init();
