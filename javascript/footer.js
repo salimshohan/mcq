@@ -1,5 +1,4 @@
-const footer = document.getElementById("footer");
-if (!footer) return;
+let footer = document.getElementById("footer");
 
 const year = new Date().getFullYear();
 
