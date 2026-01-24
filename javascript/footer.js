@@ -1,5 +1,5 @@
 let footer = document.getElementById("footer");
-let year = ;
+let year = new Date().getFullYear();
 footer.innerHTML = '<style>footer {
     width: 100%; padding: 15px; text-align: center;
     background: #1f2937;
