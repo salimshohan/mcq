@@ -10,6 +10,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
@@ -99,34 +100,32 @@ header {
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
+/* --- ICON STYLES --- */
 
-/* --- MOBILE SIDEBAR MENU --- */
-/* Matching the white sidebar in the second screenshot */
-.mobile-menu {
-    position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
-    background: #ffffff; /* White background */
-    display: flex; flex-direction: column; padding-top: 80px;
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1999;
-    box-shadow: -5px 0 25px rgba(0,0,0,0.15); /* Soft shadow on the left */
-}
-
-.mobile-menu.active { right: 0; }
-
+/* Align icon and text */
 .mobile-menu a {
-    color: #333333; /* Dark grey text */
-    text-decoration: none; padding: 15px 25px;
-    font-size: 15px; font-weight: 500; 
-    border-bottom: 1px solid #f0f0f0; /* Light grey separators */
-    display: flex; align-items: center; gap: 10px; /* Gap for icons */
-    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between icon and text */
 }
 
-/* Hover and Active State similar to "Dashboard" highlight */
-.mobile-menu a:hover, .mobile-menu a.active {
-    background: #eff0ff; /* Light purple/blue highlight */
-    color: #564ad3; /* Primary theme color text */
-    border-left: 4px solid #564ad3; /* Optional: Accent line on left */
+/* Style the icons specifically */
+.mobile-menu a i {
+    width: 20px; /* Fixed width ensures text aligns vertically even if icon shapes differ */
+    text-align: center;
+    font-size: 16px;
+    color: #564ad3; /* Primary color for icons */
+    transition: color 0.2s ease;
+}
+
+/* Change icon color on hover */
+.mobile-menu a:hover i {
+    color: #322a96; /* Darker blue on hover */
+}
+
+/* Specific style for Logout icon (Red) */
+.mobile-menu a[style*="color: #dc2626"] i {
+    color: #dc2626;
 }
 
         /* --- LAYOUT --- */
