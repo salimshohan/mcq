@@ -141,7 +141,7 @@
         /* --- A4 PAGE DESIGN --- */
         .pdf-page {
             width: 210mm;
-            height: 297mm; /* Fixed Height */
+            height: 296mm; /* Fixed Height */
             background: white;
             color: black !important;
             padding: 15mm;
@@ -150,6 +150,19 @@
             overflow: hidden;
             display: flex; flex-direction: column;
             margin-bottom: 20px;
+        }
+/* শেষের পেজের মার্জিন এবং শ্যাডো রিমুভ করার কোড */
+        .pdf-page:last-child {
+            margin-bottom: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        /* প্রিন্ট বা ডাউনলোডের সময় সব পেজের মার্জিন ০ করা */
+        @media print {
+            .pdf-page {
+                margin-bottom: 0 !important;
+                box-shadow: none !important;
+            }
         }
         #pdfContent * { color: black !important; }
 
