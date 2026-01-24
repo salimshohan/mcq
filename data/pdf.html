@@ -100,33 +100,58 @@ header {
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-/* --- ICON STYLES --- */
+/* --- MOBILE MENU CONTAINER --- */
+.mobile-menu {
+    position: fixed; 
+    top: 0; 
+    right: -100%; /* শুরুতে স্ক্রিনের বাইরে থাকবে */
+    width: 280px; 
+    height: 100vh;
+    background: white; /* RU থিম অনুযায়ী সাদা ব্যাকগ্রাউন্ড */
+    display: flex; 
+    flex-direction: column; 
+    padding-top: 80px; /* হেডার এর জন্য উপরে জায়গা ছাড়া */
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* স্মুথ স্লাইড এনিমেশন */
+    z-index: 1999;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.1); /* হালকা শ্যাডো */
+}
 
-/* Align icon and text */
+/* এই ক্লাসটা JS দিয়ে অ্যাড হলে মেনু দেখা যাবে */
+.mobile-menu.active { 
+    right: 0; 
+}
+
+/* --- MENU LINKS --- */
 .mobile-menu a {
-    display: flex;
-    align-items: center;
-    gap: 12px; /* Space between icon and text */
+    color: #333; /* টেক্সট কালার কালো */
+    text-decoration: none; 
+    padding: 15px 25px;
+    font-size: 15px; 
+    font-weight: 500;
+    border-bottom: 1px solid #f1f1f1; /* হালকা বর্ডার */
+    display: flex; 
+    align-items: center; 
+    gap: 15px; /* আইকন থেকে লেখার দূরত্ব */
+    transition: 0.2s ease;
 }
 
-/* Style the icons specifically */
+/* --- ICONS --- */
 .mobile-menu a i {
-    width: 20px; /* Fixed width ensures text aligns vertically even if icon shapes differ */
-    text-align: center;
+    width: 20px; 
+    text-align: center; 
+    color: #4c46c9; /* আইকন কালার (নীল) */
     font-size: 16px;
-    color: #564ad3; /* Primary color for icons */
-    transition: color 0.2s ease;
 }
 
-/* Change icon color on hover */
-.mobile-menu a:hover i {
-    color: #322a96; /* Darker blue on hover */
+/* --- HOVER & ACTIVE STATE --- */
+/* RU ড্যাশবোর্ডের মতো হাইলাইট ইফেক্ট */
+.mobile-menu a:hover, 
+.mobile-menu a.highlight {
+    background: #eff0ff; /* খুব হালকা নীল ব্যাকগ্রাউন্ড */
+    color: #4c46c9; /* টেক্সট নীল হয়ে যাবে */
+    border-left: 4px solid #4c46c9; /* বাম পাশে নীল বর্ডার */
 }
 
-/* Specific style for Logout icon (Red) */
-.mobile-menu a[style*="color: #dc2626"] i {
-    color: #dc2626;
-}
 
         /* --- LAYOUT --- */
         .container {
