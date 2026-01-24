@@ -33,91 +33,100 @@
             overflow-x: hidden;
         }
 
-      
-/* --- NAVBAR (Light & Stylish) --- */
+      /* --- NAVBAR (RU Admission Theme) --- */
 
 header {
     width: 100%;
-    /* Dark gradient সরিয়ে Glass effect দেওয়া হলো */
-    background: rgba(255, 255, 255, 0.85); 
-    backdrop-filter: blur(12px); /* ব্লার ইফেক্ট */
-    -webkit-backdrop-filter: blur(12px);
-    padding: 15px 5%;
+    /* Matching the Deep Indigo/Royal Blue gradient from the screenshot */
+    background: linear-gradient(90deg, #302b63, #4c46c9); 
+    padding: 12px 5%;
     display: flex; 
     justify-content: space-between; 
     align-items: center;
     position: fixed; top: 0; left: 0; z-index: 2000;
-    /* শ্যাডো হালকা করা হয়েছে */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-    transition: all 0.3s ease;
+    /* Soft shadow to separate from content */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    border-bottom: none;
 }
 
 .brand-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 22px; font-weight: 800; 
-    /* সাদা টেক্সট সরিয়ে ডার্ক গ্রে */
-    color: #333; 
-    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 20px; font-weight: 700; 
+    color: white; /* Text must be white on this background */
+    text-transform: uppercase; /* Matching the uppercase style in image */
+    letter-spacing: 0.5px;
     text-decoration: none;
 }
 
 .logo-icon { 
-    width: 38px; height: 38px; 
-    /* var(--primary) এর বদলে ডাইরেক্ট গ্রেডিয়েন্ট */
-    background: linear-gradient(135deg, #6a11cb, #2575fc); 
+    width: 40px; height: 40px; 
+    background: white; /* White background for the icon circle */
     border-radius: 50%; 
     display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 18px; color: white;
-    /* আইকনে হালকা গ্লো */
-    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3); 
+    font-weight: bold; font-size: 20px; 
+    color: #302b63; /* Icon text color matches the header background */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+/* Hamburger Menu - Styled like the button in the screenshot */
 .hamburger {
-    cursor: pointer; width: 30px; height: 20px;
-    display: flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer; 
+    width: 45px; height: 42px; /* Fixed size for button look */
+    display: flex; flex-direction: column; justify-content: center; gap: 5px; /* Gap instead of space-between */
+    align-items: center;
     z-index: 2001;
+    /* The translucent box effect seen in the screenshot */
+    background: rgba(255, 255, 255, 0.15); 
+    border-radius: 8px; /* Rounded corners */
+    transition: background 0.3s ease;
+}
+
+.hamburger:hover {
+    background: rgba(255, 255, 255, 0.25); /* Slightly lighter on hover */
 }
 
 .hamburger span { 
-    display: block; height: 3px; width: 100%; 
-    /* ব্যাকগ্রাউন্ড লাইট, তাই হ্যামবার্গার কালো করা হলো */
-    background: #333; 
+    display: block; height: 3px; width: 22px; /* Fixed width for lines inside the box */
+    background: white; 
     border-radius: 2px; transition: 0.3s ease-in-out; 
 }
 
-/* Hamburger Active Animation (সেম লজিক, শুধু কালার অ্যাডজাস্টমেন্ট হতে পারে) */
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); background: #2575fc; }
+/* Hamburger Active Animation */
+.hamburger.active {
+    background: transparent; /* Remove box background when active if preferred */
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); background: #2575fc; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
+/* Mobile Menu Slide-out */
 .mobile-menu {
     position: fixed; top: 0; right: -100%; width: 260px; height: 100vh;
-    /* মেনুর ব্যাকগ্রাউন্ড এখন সাদা/গ্লাস */
-    background: rgba(255, 255, 255, 0.98); 
-    border-left: 1px solid rgba(0,0,0,0.05);
+    /* Matching the header background color */
+    background: #302b63; 
+    border-left: 1px solid rgba(255,255,255,0.1);
     display: flex; flex-direction: column; padding-top: 90px;
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* স্মুথ এনিমেশন */
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1999;
-    box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+    box-shadow: -5px 0 25px rgba(0,0,0,0.3);
 }
 
 .mobile-menu.active { right: 0; }
 
 .mobile-menu a {
-    /* লিংকের কালার এখন ডার্ক */
-    color: #444; 
+    color: rgba(255, 255, 255, 0.9); /* White text */
     text-decoration: none; padding: 15px 30px;
-    font-size: 16px; font-weight: 600; 
-    border-bottom: 1px solid rgba(0,0,0,0.03);
+    font-size: 16px; font-weight: 500; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Subtle separators */
     transition: all 0.3s ease;
 }
 
 .mobile-menu a:hover {
-    color: #2575fc; /* হোভারে নীল কালার */
-    background: rgba(37, 117, 252, 0.05); /* হালকা নীল ব্যাকগ্রাউন্ড */
-    padding-left: 38px; /* একটু ডানে সরে যাবে */
+    background: rgba(255, 255, 255, 0.1); /* Light highlight on hover */
+    padding-left: 35px;
+    color: white;
 }
+
         /* --- LAYOUT --- */
         .container {
             margin-top: 90px; width: 95%; max-width: 1400px;
