@@ -33,98 +33,100 @@
             overflow-x: hidden;
         }
 
-      /* --- NAVBAR (RU Admission Theme) --- */
-
+      /* --- HEADER STYLES --- */
 header {
     width: 100%;
-    /* Matching the Deep Indigo/Royal Blue gradient from the screenshot */
-    background: linear-gradient(90deg, #302b63, #4c46c9); 
-    padding: 12px 5%;
+    /* Gradient matching the RU Admission header (Royal Blue/Indigo) */
+    background: linear-gradient(90deg, #564ad3, #322a96); 
+    padding: 10px 15px; /* Adjusted padding for mobile look */
     display: flex; 
     justify-content: space-between; 
     align-items: center;
     position: fixed; top: 0; left: 0; z-index: 2000;
-    /* Soft shadow to separate from content */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
     border-bottom: none;
 }
 
+/* Brand/Logo Section */
 .brand-logo {
     display: flex; align-items: center; gap: 12px;
-    font-size: 20px; font-weight: 700; 
-    color: white; /* Text must be white on this background */
-    text-transform: uppercase; /* Matching the uppercase style in image */
-    letter-spacing: 0.5px;
+    font-size: 18px; font-weight: 700; 
+    color: white; 
+    text-transform: uppercase;
+    line-height: 1.2; /* Better spacing for multi-line text if needed */
     text-decoration: none;
 }
 
+/* Logo Icon - Styled as the white rounded box in the image */
 .logo-icon { 
-    width: 40px; height: 40px; 
-    background: white; /* White background for the icon circle */
-    border-radius: 50%; 
+    width: 42px; height: 42px; 
+    background: white; /* White background box */
+    border-radius: 10px; /* Rounded corners like the screenshot */
     display: flex; align-items: center; justify-content: center;
     font-weight: bold; font-size: 20px; 
-    color: #302b63; /* Icon text color matches the header background */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    color: #322a96; /* Icon/Text color matches theme */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex-shrink: 0; /* Prevents shrinking on small screens */
 }
 
-/* Hamburger Menu - Styled like the button in the screenshot */
+/* --- HAMBURGER MENU BUTTON --- */
+/* Styled exactly like the translucent button in the top-right */
 .hamburger {
     cursor: pointer; 
-    width: 45px; height: 42px; /* Fixed size for button look */
-    display: flex; flex-direction: column; justify-content: center; gap: 5px; /* Gap instead of space-between */
-    align-items: center;
+    width: 45px; height: 45px; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    gap: 5px; 
     z-index: 2001;
-    /* The translucent box effect seen in the screenshot */
+    /* Semi-transparent white background */
     background: rgba(255, 255, 255, 0.15); 
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px; 
     transition: background 0.3s ease;
 }
 
 .hamburger:hover {
-    background: rgba(255, 255, 255, 0.25); /* Slightly lighter on hover */
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .hamburger span { 
-    display: block; height: 3px; width: 22px; /* Fixed width for lines inside the box */
+    display: block; height: 3px; width: 24px; 
     background: white; 
-    border-radius: 2px; transition: 0.3s ease-in-out; 
+    border-radius: 2px; 
+    transition: 0.3s ease-in-out; 
 }
 
-/* Hamburger Active Animation */
-.hamburger.active {
-    background: transparent; /* Remove box background when active if preferred */
-}
+/* Hamburger Animation */
 .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-/* Mobile Menu Slide-out */
+
+/* --- MOBILE SIDEBAR MENU --- */
+/* Matching the white sidebar in the second screenshot */
 .mobile-menu {
-    position: fixed; top: 0; right: -100%; width: 260px; height: 100vh;
-    /* Matching the header background color */
-    background: #fff; 
-    border-left: 1px solid rgba(230,230,240,0.1);
-    display: flex; flex-direction: column; padding-top: 90px;
+    position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+    background: #ffffff; /* White background */
+    display: flex; flex-direction: column; padding-top: 80px;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1999;
-    box-shadow: -5px 0 25px rgba(0,0,0,0.3);
+    box-shadow: -5px 0 25px rgba(0,0,0,0.15); /* Soft shadow on the left */
 }
 
 .mobile-menu.active { right: 0; }
 
 .mobile-menu a {
-    color: rgba(0, 0, 0, 0.9); /* White text */
-    text-decoration: none; padding: 15px 30px;
-    font-size: 16px; font-weight: 500; 
-    border-bottom: 1px solid rgba(255,255,255,0.1); /* Subtle separators */
-    transition: all 0.3s ease;
+    color: #333333; /* Dark grey text */
+    text-decoration: none; padding: 15px 25px;
+    font-size: 15px; font-weight: 500; 
+    border-bottom: 1px solid #f0f0f0; /* Light grey separators */
+    display: flex; align-items: center; gap: 10px; /* Gap for icons */
+    transition: all 0.2s ease;
 }
 
-.mobile-menu a:hover {
-    background: rgba(255, 255, 255, 0.1); /* Light highlight on hover */
-    padding-left: 35px;
-    color: white;
+/* Hover and Active State similar to "Dashboard" highlight */
+.mobile-menu a:hover, .mobile-menu a.active {
+    background: #eff0ff; /* Light purple/blue highlight */
+    color: #564ad3; /* Primary theme color text */
+    border-left: 4px solid #564ad3; /* Optional: Accent line on left */
 }
 
         /* --- LAYOUT --- */
