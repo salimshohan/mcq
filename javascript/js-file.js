@@ -1,10 +1,11 @@
-function loadScript(url) {
-    const script = document.createElement('script');
-    script.src = url;
-    script.type = 'text/javascript';
-    document.body.appendChild(script);
-}
+// 1. Header Script Load
+const headerScript = document.createElement('script');
+headerScript.src = '/javascript/header.js';
+headerScript.type = 'text/javascript';
+document.body.appendChild(headerScript);
 
-// You may add js file here.
-loadScript('/javascript/header.js');
-loadScript('/javascript/footer.js');
+// 2. Footer Script Load
+const footerScript = document.createElement('script');
+footerScript.src = '/javascript/footer.js';
+footerScript.type = 'text/javascript';
+document.body.appendChild(footerScript);
