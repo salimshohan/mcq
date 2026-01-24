@@ -15,7 +15,7 @@ footer.style.cssText = `
 
 footer.innerHTML = `
   <div class="site-footer">
-    &copy; ${year} Interactive Learning<br>
+    &copy; Interactive Learning<br>
     All rights reserved.
   </div>
 `;
