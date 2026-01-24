@@ -1,14 +1,11 @@
-// Function to load scripts efficiently
-function loadScript(url) {
-    const script = document.createElement('script');
-    script.src = url;
-    script.type = 'text/javascript';
-    script.defer = true; // HTML লোড হওয়া পর্যন্ত অপেক্ষা করবে
-    document.body.appendChild(script);
-}
+// 1. Header Script Load
+const headerScript = document.createElement('script');
+headerScript.src = '/javascript/header.js';
+headerScript.type = 'text/javascript';
+document.body.appendChild(headerScript);
 
-// Load Header
-loadScript('/javascript/header.js');
-
-// Load Footer
-loadScript('/javascript/footer.js');
+// 2. Footer Script Load
+const footerScript = document.createElement('script');
+footerScript.src = '/javascript/footer.js';
+footerScript.type = 'text/javascript';
+document.body.appendChild(footerScript);
