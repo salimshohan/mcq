@@ -1,0 +1,1 @@
+let js = document.getElementById('js').innerHTML = '<script type="text/javascript" src="/javascript/footer.js"></script>';
