@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
       /* Body padding fix for fixed header */
       body {
-          padding-top: 60px; margin: 0;
+          padding-top: 5px; margin: 0;
       }
     `;
   
