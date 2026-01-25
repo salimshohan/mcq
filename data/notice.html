@@ -1,335 +1,474 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notice Maker | Interactive Learning</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notice Maker | Interactive Learning</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* --- HOME PAGE STYLE VARIABLES --- */
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: rgba(30, 41, 59, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #8b5cf6;
+            --accent: #fbbf24;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-:root{
---bg-dark:#0f172a;
---panel-bg:rgba(30,41,59,.6);
---border-color:rgba(255,255,255,.1);
---primary:#8b5cf6;
---accent:#fbbf24;
---text-main:#f1f5f9;
---text-muted:#94a3b8;
-}
+        body { 
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            background-color: var(--bg-dark);
+            /* Home Page Background */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
 
-*{box-sizing:border-box;margin:0;padding:0}
+        /* --- NAVBAR (Home Page Style) --- */
+        header {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; left: 0; z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--border-color);
+        }
 
-body{
-font-family:'Lexend','Anek Bangla',sans-serif;
-background:var(--bg-dark);
-color:var(--text-main);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-}
+        .brand-link {
+            text-decoration: none; display: flex; align-items: center; gap: 10px;
+            transition: 0.3s;
+        }
+        .brand-text {
+            font-size: 18px; font-weight: 700; color: white;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .logo-img { 
+            height: 35px; width: 35px; border-radius: 50%; 
+            object-fit: cover; border: 1px solid rgba(255,255,255,0.5);
+        }
 
+        .hamburger {
+            cursor: pointer; width: 28px; height: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 2001;
+        }
+        .hamburger span { 
+            display: block; height: 2px; width: 100%; background: white; 
+            border-radius: 2px; transition: 0.3s; 
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-/* ===== MAIN ===== */
-.container{
-margin-top:90px;
-width:95%;
-max-width:1200px;
-margin-inline:auto;
-display:flex;
-flex-wrap:wrap;
-gap:30px;
-padding-bottom:40px;
-flex:1;
-}
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 260px; height: 100vh;
+            background: #0f172a; border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s; z-index: 1999;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            color: var(--text-main); text-decoration: none; padding: 15px 30px;
+            font-size: 15px; font-weight: 500; border-bottom: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+        .mobile-menu a:hover { background: rgba(255,255,255,0.03); color: var(--primary); padding-left: 35px; }
 
-.editor{
-flex:1;
-min-width:320px;
-max-width:480px;
-background:var(--panel-bg);
-border:1px solid var(--border-color);
-border-radius:18px;
-padding:25px;
-}
+        /* --- CONTAINER --- */
+        .container {
+            margin-top: 90px; flex: 1; width: 95%; max-width: 1100px;
+            display: flex; flex-wrap: wrap; gap: 30px;
+            padding-bottom: 40px; justify-content: center; align-items: flex-start;
+        }
 
-.editor h2{
-color:var(--primary);
-margin-bottom:20px;
-}
+        /* --- EDITOR SECTION (Home Page Inputs Style) --- */
+        .editor-section {
+            flex: 1; min-width: 320px; max-width: 450px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
 
-.input-group{margin-bottom:15px}
+        .section-title { 
+            font-size: 18px; font-weight: 700; color: var(--primary); 
+            margin-bottom: 25px; border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
 
-label{
-font-size:12px;
-font-weight:600;
-color:var(--text-muted);
-margin-bottom:6px;
-display:block;
-}
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
+            display: block; font-size: 11px; font-weight: 700;
+            color: #94a3b8; margin-bottom: 6px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        
+        /* Glassy Inputs like Home Page */
+        .form-control {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #f1f5f9; padding: 12px 15px;
+            border-radius: 10px; font-size: 14px;
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none; border-color: #8b5cf6;
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        select.form-control { cursor: pointer; }
 
-.form-control{
-width:100%;
-background:rgba(15,23,42,.7);
-border:1px solid rgba(255,255,255,.15);
-color:#fff;
-padding:12px;
-border-radius:10px;
-font-size:14px;
-}
+        /* Download Button like Home Page */
+        .btn-download {
+            width: 100%; padding: 15px; margin-top: 20px;
+            border-radius: 50px; border: none;
+            background: linear-gradient(45deg, #FF512F 0%, #DD2476 100%);
+            color: white; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; font-size: 14px; letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(221, 36, 118, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(221, 36, 118, 0.6); }
 
-textarea.form-control{
-min-height:120px;
-resize:vertical;
-}
+        /* --- PREVIEW SECTION --- */
+        .preview-wrapper {
+            flex: 1.5; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding-top: 10px;
+        }
 
-.btn-download{
-width:100%;
-padding:15px;
-border-radius:50px;
-border:none;
-background:linear-gradient(45deg,#6366f1,#3b82f6);
-color:#fff;
-font-weight:700;
-cursor:pointer;
-}
+        /* --- NOTICE CARD --- */
+        #noticeCard {
+            width: 100%; max-width: 450px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-radius: 6px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            overflow: hidden; position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: background 0.3s ease;
+        }
 
-/* ===== PREVIEW ===== */
-.preview{
-flex:1.2;
-display:flex;
-justify-content:center;
-}
+        .card-top {
+            background: rgba(0,0,0,0.3); padding: 12px;
+            text-align: center; color: rgba(255,255,255,0.9);
+            font-size: 11px; font-weight: 800; letter-spacing: 2px;
+            text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
 
-#noticeCard{
-width:100%;
-max-width:430px;
-border-radius:4px;
-overflow:hidden;
-border:1px solid var(--border-color);
-box-shadow:0 20px 50px rgba(0,0,0,.6);
-background:linear-gradient(145deg,#1e293b,#0f172a);
-}
+        .card-body { padding: 25px 30px; position: relative; z-index: 2; min-height: 300px; display: flex; flex-direction: column; }
 
-.card-top{
-padding:10px;
-text-align:center;
-font-weight:800;
-letter-spacing:1px;
-display:flex;
-gap:8px;
-justify-content:center;
-align-items:center;
-background:var(--primary);
-}
+        .notice-badge {
+            display: inline-block; padding: 6px 14px; border-radius: 50px;
+            background: rgba(255,255,255,0.15); color: var(--accent);
+            font-size: 13px; font-weight: 700; margin-bottom: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
 
-.card-body{padding:25px}
+        .date-info { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 20px; font-weight: 500; }
 
-.notice-badge{
-display:inline-block;
-padding:5px 14px;
-border-radius:50px;
-border:1px solid rgba(255,255,255,.2);
-font-size:12px;
-font-weight:700;
-margin-bottom:15px;
-color:var(--accent);
-}
+        .notice-text {
+            font-size: 22px; line-height: 1.5; color: #fff; font-weight: 500;
+            margin-bottom: auto; text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            white-space: pre-wrap;
+        }
 
-.notice-text{
-font-size:18px;
-line-height:1.6;
-margin-bottom:25px;
-}
+        .source-box {
+            margin-top: 30px; padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: none; /* Auto Hidden */
+        }
+        .source-label { font-size: 10px; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
+        .source-name { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+        .verified { color: #38bdf8; font-size: 14px; }
 
-.meta-info{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-border-top:1px solid var(--border-color);
-padding-top:12px;
-font-size:12px;
-color:var(--text-muted);
-}
+        .watermark {
+            position: absolute; bottom: 15px; right: 20px;
+            font-size: 11px; color: rgba(255,255,255,0.25);
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
+            pointer-events: none; z-index: 1;
+        }
 
-.source-tag{
-display:flex;
-gap:6px;
-align-items:center;
-}
+        /* --- FOOTER --- */
+        footer {
+            width: 100%; padding: 20px; text-align: center;
+            background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color);
+            margin-top: auto; font-size: 13px; color: var(--text-muted);
+        }
 
-.verified{color:#38bdf8}
-
-.right-meta{
-text-align:right;
-}
-
-.watermark{
-margin-top:4px;
-font-size:10px;
-opacity:.4;
-}
-
-/* ===== FOOTER (HOME SAME) ===== */
-footer {
-    width: 100%; padding: 15px; text-align: center;
-    background: #1f2937;
-    border-top: 1px solid #dadada;
-    margin-top: auto; font-size: 14px; color: white;
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:900px){
-.container{flex-direction:column}
-}
-</style>
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .editor-section, .preview-wrapper { width: 100%; }
+        }
+    </style>
 </head>
-
 <body>
-<div id="header"></div>
-<script src="/js/header.js" type="text/javascript">
-</script>
 
-<div class="container">
+    <header>
+        <a href="../index.html" class="brand-link">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            <span class="brand-text">Interactive Learning</span>
+        </a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
 
-<div class="editor">
-<h2>Create Notice</h2>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../index.html">Home</a>
+        <a href="pdf.html">PDF Tool</a>
+        <a href="quotes.html">Quote Maker</a>
+        <a href="#">Contact</a>
+    </div>
 
-<div class="input-group">
-<label>Category</label>
-<select id="catInput" class="form-control" onchange="updatePreview()">
-<option>Breaking News</option>
-<option>Urgent Notice</option>
-<option>Exam Routine</option>
-<option>Result Published</option>
-<option>Holiday Notice</option>
-<option>Admission Update</option>
-<option>Important Alert</option>
-</select>
-</div>
+    <div class="container">
+        
+        <div class="editor-section">
+            <div class="section-title">Announcement Settings</div>
+            
+            <div class="input-group">
+                <label>Theme (100 Styles)</label>
+                <select id="themeSelector" class="form-control" onchange="updatePreview()">
+                    </select>
+            </div>
 
-<div class="input-group">
-<label>Notice Text</label>
-<textarea id="bodyInput" class="form-control" placeholder="Write notice details..." oninput="updatePreview()"></textarea>
-</div>
+            <div class="input-group">
+                <label>Category</label>
+                <select id="catInput" class="form-control" onchange="updatePreview()">
+                    <option>Breaking News</option>
+                    <option>Urgent Notice</option>
+                    <option>Exam Routine</option>
+                    <option>Admit Card</option>
+                    <option>Result Published</option>
+                    <option>Holiday Notice</option>
+                    <option>Admission Update</option>
+                    <option>Scholarship Info</option>
+                    <option>Class Suspension</option>
+                    <option>Important Alert</option>
+                </select>
+            </div>
 
-<div class="input-group">
-<label>Source (Optional)</label>
-<input id="sourceInput" class="form-control" placeholder="e.g. The Ironic Bro" oninput="updatePreview()">
-</div>
+            <div class="input-group">
+                <label>Announcement Text</label>
+                <textarea id="bodyInput" class="form-control" placeholder="Write your notice here..." oninput="updatePreview()"></textarea>
+            </div>
 
-<div class="input-group">
-<label>Theme</label>
-<select id="themeInput" class="form-control" onchange="applyTheme()"></select>
-</div>
+            <div class="input-group">
+                <label>Source Name (Optional)</label>
+                <input id="sourceInput" class="form-control" placeholder="e.g. Daily Campus" oninput="updatePreview()">
+            </div>
 
-<button class="btn-download" onclick="downloadImage()">Download Image</button>
-</div>
+            <button class="btn-download" onclick="downloadImage()">Download Image</button>
+        </div>
 
-<div class="preview">
-<div id="noticeCard">
+        <div class="preview-wrapper">
+            <div id="noticeCard">
+                <div class="card-top"><i class="fas fa-bullhorn"></i> Announcement</div>
+                
+                <div class="card-body">
+                    <div>
+                        <span id="pCat" class="notice-badge">Breaking News</span>
+                        <div id="pDate" class="date-info">24 Jan, 2026</div>
+                    </div>
+                    
+                    <div id="pBody" class="notice-text">
+                        Write your announcement content here. It will update automatically.
+                    </div>
 
-<div class="card-top" id="cardTop"> 📢 Announcement
-</div>
+                    <div class="source-box" id="sourceBox">
+                        <div class="source-label">Source</div>
+                        <div class="source-name">
+                            <span id="pSource">Source Name</span>
+                            <i class="fas fa-check-circle verified"></i>
+                        </div>
+                    </div>
+                </div>
 
-<div class="card-body">
-<span id="pCat" class="notice-badge">Breaking News</span>
+                <div class="watermark">Interactive Learning</div>
+            </div>
+        </div>
 
-<div id="pBody" class="notice-text">
-Your notice preview will appear here.
-</div>
+    </div>
 
-<div class="meta-info">
-<div id="sourceWrap" class="source-tag">
-<span>Source:</span>
-<span id="pSource"></span>
-<i class="fas fa-check-circle verified"></i>
-</div>
+    <footer>&copy; 2026 Interactive Learning</footer>
 
-<div class="right-meta">
-<div id="pDate"></div>
-<div class="watermark">Interactive Learning</div>
-</div>
-</div>
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.hamburger').classList.toggle('active');
+        }
 
-</div>
-</div>
-</div>
+        // --- 100 THEMES (Curated) ---
+        const themes = [
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
+            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
+            { name: "Red Alert", bg: "linear-gradient(135deg, #450a0a, #7f1d1d)", accent: "#f87171" },
+            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
+            { name: "Midnight Purple", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ff0099" },
+            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Cyberpunk", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#00fff2" },
+            { name: "Sunset Vibes", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Spotify Green", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#1ed760" },
+            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
+            { name: "Morning Sky", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#fff" },
+            { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
+            { name: "Pure Black", bg: "#000000", accent: "#ffffff" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Forest", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "YouTube Red", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#fff" },
+            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#fff" },
+            { name: "Twitter", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
+            { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#fff" },
+            { name: "Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000" },
+            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#fff" },
+            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#fff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
+            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#fff" },
+            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#fff" },
+            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8)", accent: "#fff" },
+            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#fff" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#fff" },
+            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#fff" },
+            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#fff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#fff" },
+            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#fff" },
+            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
+            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#fff" },
+            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3)", accent: "#fff" },
+            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
+            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
+            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff" },
+            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786)", accent: "#333" },
+            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43)", accent: "#fff" },
+            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0)", accent: "#fff" },
+            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333" },
+            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff" },
+            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff" },
+            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff" },
+            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff" },
+            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff" },
+            { name: "Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
+            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
+            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
+            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
+            { name: "Mantle", bg: "linear-gradient(135deg, #24c6dc, #514a9d)", accent: "#fff" },
+            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424, #4A569D)", accent: "#fff" },
+            { name: "Mouse", bg: "linear-gradient(135deg, #200122, #6f0000)", accent: "#fff" },
+            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff" },
+            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333" },
+            { name: "Chocolate", bg: "linear-gradient(135deg, #56392d, #9e6f59)", accent: "#fff" },
+            { name: "Candy", bg: "linear-gradient(135deg, #D4145A, #FBB03B)", accent: "#fff" },
+            { name: "Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
+            { name: "Mirage", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
+            { name: "Steel", bg: "linear-gradient(135deg, #1F1C2C, #928DAB)", accent: "#fff" },
+            { name: "Electric Violet", bg: "linear-gradient(135deg, #4776E6, #8E54E9)", accent: "#fff" },
+            { name: "Kashmir", bg: "linear-gradient(135deg, #614385, #516395)", accent: "#fff" },
+            { name: "Witching Hour", bg: "linear-gradient(135deg, #c31432, #240b36)", accent: "#fff" },
+            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "Metapolis", bg: "linear-gradient(135deg, #659999, #f4791f)", accent: "#fff" },
+            { name: "Kyoo Pal", bg: "linear-gradient(135deg, #dd3e54, #6be585)", accent: "#fff" },
+            { name: "Kye Meh", bg: "linear-gradient(135deg, #8360c3, #2ebf91)", accent: "#fff" }
+        ];
 
-</div>
+        // Populate Theme Selector
+        const select = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `${i+1}. ${t.name}`;
+            select.appendChild(opt);
+        });
 
-<footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
+        function updatePreview() {
+            const cat = document.getElementById('catInput').value;
+            const body = document.getElementById('bodyInput').value || "Write your announcement content here...";
+            const source = document.getElementById('sourceInput').value.trim();
+            
+            document.getElementById('pCat').innerText = cat;
+            document.getElementById('pBody').innerText = body;
 
-<script>
-document.getElementById("year").innerText=new Date().getFullYear();
+            // Source Hiding Logic
+            const sourceBox = document.getElementById('sourceBox');
+            if (source === "") {
+                sourceBox.style.display = "none";
+            } else {
+                sourceBox.style.display = "block";
+                document.getElementById('pSource').innerText = source;
+            }
 
-/* ===== NAVBAR TOGGLE (FIXED) ===== */
-function toggleMenu(){
-const menu=document.getElementById("navMenu");
-const burger=document.querySelector(".hamburger");
-menu.classList.toggle("open");
-burger.classList.toggle("active");
-}
+            // Date
+            const now = new Date();
+            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-/* ===== 1000 THEMES ===== */
-const themes=[];
-for(let i=0;i<1000;i++){
-const h1=(i*7)%360;
-const h2=(h1+40)%360;
-themes.push({
-bg:`linear-gradient(135deg,hsl(${h1},70%,22%),hsl(${h2},70%,14%))`,
-accent:`hsl(${h1},80%,60%)`
-});
-}
+            // Apply Theme
+            const themeIdx = document.getElementById('themeSelector').value;
+            const theme = themes[themeIdx];
+            const card = document.getElementById('noticeCard');
+            const badge = document.querySelector('.notice-badge');
+            
+            card.style.background = theme.bg;
+            badge.style.color = theme.accent;
+            badge.style.borderColor = theme.accent;
 
-themes.forEach((t,i)=>{
-const opt=document.createElement("option");
-opt.value=i;
-opt.textContent=`Theme ${i+1}`;
-themeInput.appendChild(opt);
-});
+            // Auto-detect light theme for text color
+            const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
+            const textCol = isLight ? "#222" : "#fff";
+            
+            document.getElementById('pBody').style.color = textCol;
+            document.querySelector('.source-name').style.color = textCol;
+            document.querySelector('.date-info').style.color = isLight ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.6)";
+            
+            // Watermark Visibility
+            document.querySelector('.watermark').style.color = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.25)";
+        }
 
-/* ===== UPDATE PREVIEW ===== */
-function updatePreview(){
-pCat.innerText=catInput.value;
-pBody.innerText=bodyInput.value||"Your notice preview will appear here.";
+        function downloadImage() {
+            const element = document.getElementById('noticeCard');
+            html2canvas(element, {
+                scale: 3,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Notice_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
 
-const src=sourceInput.value.trim();
-if(src===""){
-sourceWrap.style.display="none";
-}else{
-sourceWrap.style.display="flex";
-pSource.innerText=src;
-}
-
-pDate.innerText=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
-}
-
-/* ===== APPLY THEME ===== */
-function applyTheme(){
-const t=themes[themeInput.value];
-noticeCard.style.background=t.bg;
-cardTop.style.background=t.accent;
-pCat.style.color=t.accent;
-}
-
-/* ===== DOWNLOAD ===== */
-function downloadImage(){
-html2canvas(noticeCard,{scale:3,backgroundColor:null}).then(c=>{
-const a=document.createElement("a");
-a.href=c.toDataURL();
-a.download=`Notice_${Date.now()}.png`;
-a.click();
-});
-}
-
-updatePreview();
-applyTheme();
-</script>
-
+        // Init
+        updatePreview();
+    </script>
 </body>
 </html>
