@@ -1,1 +1,0 @@
-document.write("<script src='/javasctipt/footer.js'></script>");
