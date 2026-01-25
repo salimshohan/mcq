@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
       header {
           width: 100%;
           background: linear-gradient(90deg, #564ad3, #322a96);
-          padding: 10px 15px;
+          padding: 8px 15px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
       /* Body padding fix for fixed header */
       body {
-          padding-top: 70px; 
+          padding-top: 60px; margin: 0;
       }
     `;
   
