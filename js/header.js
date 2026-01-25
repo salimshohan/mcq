@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <a href="/data/notice.html">
               <i class="fa-solid fa-bullhorn"></i> Notice Maker
           </a>
+<a href="/data/notes-to-pdf.html"><i class="fa-solid fa-file-lines"></i> Notes to PDF Tool</a>
       </div>
     `;
   
