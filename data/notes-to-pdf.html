@@ -102,13 +102,19 @@
         /* --- A4 PAGE DESIGN --- */
         .pdf-page {
             width: 210mm; height: 297mm; /* Fixed A4 */
-            background: white; padding: 10mm 15mm;
+            background: white; 
             position: relative; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column;
             color: black; margin-bottom: 20px;
         }
         .pdf-page:last-child { margin-bottom: 0; }
+
+        /* Content Container (Padded) */
+        .page-content {
+            padding: 10mm 15mm 25mm 15mm; /* Bottom padding increased for footer */
+            flex: 1; display: flex; flex-direction: column;
+        }
 
         /* Watermark */
         .watermark {
@@ -119,7 +125,7 @@
             font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
         }
 
-        /* Compact Header */
+        /* Header Styles */
         .pdf-header { text-align: center; margin-bottom: 5px; position: relative; z-index: 2; flex-shrink: 0; }
         
         .brand-top { 
@@ -148,15 +154,16 @@
         .q-text { font-weight: 600; color: #000; }
         .a-text { font-weight: 700; color: #16a34a; /* Green Answer */ }
 
-        /* Footer Section (Updated) */
-        .footer-wrapper {
-            margin-top: auto; padding-top: 8px;
-            position: relative; z-index: 2; flex-shrink: 0;
+        /* Footer Section (FIXED POSITION) */
+        .footer-fixed {
+            position: absolute; bottom: 10mm; left: 15mm; right: 15mm;
+            z-index: 5; text-align: center; background: white; /* Ensure bg to cover watermark */
         }
         
         .promo-text {
-            text-align: center; color: #ea580c; 
-            font-size: 18px; font-weight: 800; margin-bottom: 5px;
+            color: #ea580c; /* Orange */
+            font-size: 16px; font-weight: 800; margin-bottom: 5px;
+            display: block; line-height: 1.4;
         }
 
         .pdf-footer {
@@ -184,16 +191,16 @@
         <div class="editor-box">
             <div class="section-title">Page Setup</div>
             <div class="input-group">
-                <label>বিষয় (Main Title)</label>
-                <input id="subjectInput" class="form-control" value="সাধারণ জ্ঞান (সাম্প্রতিক)" oninput="updatePDF()">
+                <label>বিষয় (File Name)</label>
+                <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="renderPages()">
             </div>
             <div class="input-group">
                 <label>টপিক (Sub Title)</label>
-                <input id="topicInput" class="form-control" value="বাংলাদেশ ও আন্তর্জাতিক" oninput="updatePDF()">
+                <input id="topicInput" class="form-control" value="International & National" oninput="renderPages()">
             </div>
             <div class="input-group">
                 <label>তারিখ (Date)</label>
-                <input type="text" id="dateInput" class="form-control" oninput="updatePDF()">
+                <input type="text" id="dateInput" class="form-control" oninput="renderPages()">
             </div>
 
             <div class="section-title" style="margin-top: 20px;">Add Q&A</div>
@@ -236,7 +243,7 @@
         ];
 
         // --- RENDER LOGIC ---
-        function updatePDF() {
+        function renderPages() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = ''; 
 
@@ -247,8 +254,9 @@
             function createPage(pageNum) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
+                page.id = `page-${pageNum}`;
                 
-                // Header: Detailed for Page 1, Minimal for Page 2+
+                // Header Logic
                 let headerHTML = '';
                 if(pageNum === 1) {
                     headerHTML = `
@@ -268,10 +276,13 @@
 
                 page.innerHTML = `
                     <div class="watermark">INTERACTIVE LEARNING</div>
-                    ${headerHTML}
-                    <div class="pdf-body"></div>
                     
-                    <div class="footer-wrapper">
+                    <div class="page-content">
+                        ${headerHTML}
+                        <div class="pdf-body"></div>
+                    </div>
+
+                    <div class="footer-fixed">
                         <div class="promo-text">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
                         <div class="pdf-footer">
                             <span>Interactive Learning</span>
@@ -300,10 +311,14 @@
                 
                 currentBody.appendChild(row);
 
-                // Height check (Header size varies, so usable height varies)
-                const usableHeight = pageNum === 1 ? 920 : 1000;
+                // Height check: Total height ~1122px (A4). 
+                // Header (1st page) ~180px. Footer zone (fixed) ~150px. 
+                // Safe content height ~ 790px for first page, ~900px for others.
+                
+                const currentHeight = currentBody.offsetHeight; // Actual height of body content
+                const safeLimit = pageNum === 1 ? 780 : 920; 
 
-                if (currentBody.scrollHeight > usableHeight) {
+                if (currentBody.scrollHeight > safeLimit) {
                     currentBody.removeChild(row);
                     pageNum++;
                     currentPage = createPage(pageNum);
@@ -347,15 +362,15 @@
 
             items.push({ q: qIn.value.trim(), a: aIn.value.trim() });
             qIn.value = ''; aIn.value = ''; qIn.focus();
-            updatePDF();
+            renderPages();
         }
 
-        function deleteItem(i) { items.splice(i, 1); updatePDF(); }
+        function deleteItem(i) { items.splice(i, 1); renderPages(); }
 
         function moveItem(i, dir) {
             if (i + dir >= 0 && i + dir < items.length) {
                 [items[i], items[i + dir]] = [items[i + dir], items[i]];
-                updatePDF();
+                renderPages();
             }
         }
 
@@ -365,7 +380,9 @@
             const scaleBox = document.querySelector('.scale-box');
             const btn = document.querySelector('.btn-pdf');
             
-            const filename = document.getElementById('subjectInput').value.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'notes';
+            // Dynamic Filename
+            const rawName = document.getElementById('subjectInput').value;
+            const filename = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') + '.pdf' : 'Notes.pdf';
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
@@ -376,7 +393,7 @@
 
             const opt = {
                 margin: 0,
-                filename: `${filename}.pdf`,
+                filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -395,7 +412,8 @@
             const btn = document.querySelector('.btn-img');
             const scaleBox = document.querySelector('.scale-box');
             
-            const filename = document.getElementById('subjectInput').value.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'notes';
+            const rawName = document.getElementById('subjectInput').value;
+            const filenameBase = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') : 'Note';
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
 
@@ -406,7 +424,7 @@
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
                 const link = document.createElement('a');
-                link.download = `${filename}_page-${i+1}.png`;
+                link.download = `${filenameBase}_page-${i+1}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }
@@ -417,7 +435,7 @@
         }
 
         // Init
-        updatePDF();
+        renderPages();
     </script>
 </body>
 </html>
