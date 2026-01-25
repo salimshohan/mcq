@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        /* --- HOME PAGE THEME VARIABLES --- */
         :root {
             --bg-body: #f3f4f6;
             --panel-bg: #ffffff;
@@ -20,7 +19,7 @@
             --primary-soft: rgba(79, 70, 229, 0.1);
             --text-main: #111827;
             --border-light: #e5e7eb;
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --error: #ef4444;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -42,11 +41,12 @@
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR SECTION (Left) --- */
+        /* --- EDITOR BOX --- */
         .editor-box {
             flex: 1; min-width: 350px; max-width: 450px;
             background: var(--panel-bg); padding: 25px; border-radius: 16px;
-            border: 1px solid var(--border-light); box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             position: sticky; top: 90px; height: fit-content;
         }
 
@@ -63,116 +63,118 @@
             padding: 12px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
         }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+        
+        /* Error State */
+        .form-control.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+            animation: shake 0.3s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); }
+        }
 
-        /* Add Button */
+        /* Buttons */
         .btn-add {
             width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: none;
-            background: rgba(79, 70, 229, 0.1); color: var(--primary); font-weight: 700; cursor: pointer;
+            background: #e0e7ff; color: var(--primary); font-weight: 700; cursor: pointer;
             border: 1px dashed var(--primary); transition: 0.2s;
         }
-        .btn-add:hover { background: rgba(79, 70, 229, 0.2); }
+        .btn-add:hover { background: #c7d2fe; }
 
-        /* Action Buttons */
         .action-btns { display: flex; gap: 10px; margin-top: 20px; }
         .btn-dl {
             flex: 1; padding: 14px; border-radius: 8px; border: none;
             color: white; font-weight: 600; cursor: pointer; font-size: 13px;
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;
         }
         .btn-pdf { background: #ef4444; }
         .btn-img { background: #111827; }
         .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* --- PREVIEW SECTION (Right) --- */
+        /* Items Manager */
+        .items-manager { 
+            margin-top: 20px; max-height: 200px; overflow-y: auto; 
+            border: 1px solid #eee; border-radius: 8px; 
+        }
+        .manage-item { 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px; border-bottom: 1px solid #f3f4f6; 
+            font-size: 12px; background: #fff;
+        }
+        .del-btn { color: #ef4444; cursor: pointer; padding: 4px; }
+
+        /* --- PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5; display: flex; justify-content: center;
-            overflow-x: auto; padding: 10px;
+            background: #e5e7eb; padding: 20px; border-radius: 12px;
+            overflow: auto;
         }
 
-        /* A4 PAGE STYLING */
+        /* --- A4 PDF PAGE DESIGN --- */
         .a4-page {
             width: 210mm; min-height: 297mm;
             background: white; padding: 15mm;
             position: relative; overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
             display: flex; flex-direction: column;
+            color: black;
         }
 
-        /* Watermark (Text, 45deg) */
+        /* Watermark (Middle, 45deg) */
         .watermark {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 60px; font-weight: 900; color: rgba(0,0,0,0.04);
+            font-size: 50px; font-weight: 900; color: rgba(0,0,0,0.06);
             white-space: nowrap; pointer-events: none; z-index: 0;
-            text-transform: uppercase; letter-spacing: 5px;
+            font-family: sans-serif; text-transform: uppercase;
         }
 
-        /* Header */
+        /* PDF Header (Like 25410.jpg) */
         .pdf-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #111827; padding-bottom: 15px; margin-bottom: 25px;
+            text-align: center; margin-bottom: 20px;
             position: relative; z-index: 2;
         }
-        .header-brand { display: flex; align-items: center; gap: 15px; }
-        .header-logo { 
-            height: 50px; width: 50px; border-radius: 50%; 
-            border: 2px solid #111827; padding: 2px;
+        .brand-top { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000; }
+        .main-subject { 
+            border: 2px solid #000; display: inline-block; padding: 5px 30px; 
+            font-size: 20px; font-weight: 800; margin: 5px 0; color: #000;
         }
-        .header-titles { display: flex; flex-direction: column; }
-        .main-title { font-size: 22px; font-weight: 800; color: #111827; text-transform: uppercase; line-height: 1.2; }
-        .sub-title { font-size: 14px; font-weight: 600; color: #dc2626; } /* Red Accent */
+        .sub-topic { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .dotted-line { 
+            border-bottom: 2px dotted #999; width: 100%; margin-top: 5px; 
+        }
+        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #555; }
 
-        .header-meta { text-align: right; }
-        .meta-date { 
-            font-size: 13px; color: #fff; background: #111827; 
-            padding: 4px 10px; border-radius: 4px; font-weight: 600; 
+        /* PDF Content Body */
+        .pdf-body {
+            flex: 1; display: flex; flex-direction: column; gap: 12px;
+            position: relative; z-index: 2; padding-top: 10px;
         }
-
-        /* List Content */
-        .notes-list { flex: 1; display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
-        
-        .note-item {
-            display: flex; align-items: flex-start; gap: 12px;
-            font-size: 16px; line-height: 1.6; color: #333;
-            border-bottom: 1px dotted #e5e7eb; padding-bottom: 10px;
+        .note-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 15px; line-height: 1.5;
         }
-        .note-item:last-child { border-bottom: none; }
-
-        .note-icon { 
-            color: #16a34a; /* Green Check */
-            font-size: 18px; margin-top: 4px; flex-shrink: 0;
-        }
+        .note-icon { color: #16a34a; font-size: 16px; margin-top: 3px; flex-shrink: 0; } /* Green Check */
         .note-content { flex: 1; }
-        .q-text { font-weight: 600; color: #1f2937; margin-right: 6px; }
-        .a-text { font-weight: 700; color: #dc2626; /* Red Answer */ }
+        .q-text { font-weight: 600; color: #000; margin-right: 5px; }
+        .a-text { font-weight: 700; color: #dc2626; } /* Red Answer */
 
-        /* Footer */
+        /* PDF Footer (Like 25410.jpg) */
         .pdf-footer {
-            margin-top: auto; padding-top: 10px;
-            border-top: 1px solid #111827;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 12px; font-weight: 600; color: #4b5563;
+            margin-top: auto; padding-top: 5px;
+            border-top: 2px dotted #999;
+            text-align: center; font-size: 11px; font-weight: 700; color: #000;
             position: relative; z-index: 2;
         }
-        .footer-brand { display: flex; align-items: center; gap: 5px; }
-        .footer-logo-sm { height: 16px; width: 16px; border-radius: 50%; }
-
-        /* Items Manager in Editor */
-        .items-manager { margin-top: 20px; max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
-        .manage-item { 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff;
-        }
-        .manage-item:last-child { border-bottom: none; }
-        .del-btn { color: #ef4444; cursor: pointer; padding: 5px; background: #fee2e2; border-radius: 4px; }
 
         /* Mobile Scale */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box { width: 100%; position: relative; top: 0; }
-            .a4-page { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
-            .preview-wrapper { width: 100%; overflow: hidden; height: 550px; }
+            .preview-wrapper { overflow-x: auto; justify-content: flex-start; }
+            .a4-page { transform: scale(0.6); transform-origin: top left; margin-bottom: -120%; }
         }
     </style>
 </head>
@@ -187,12 +189,12 @@
             <div class="section-title">Page Setup</div>
             
             <div class="input-group">
-                <label>Subject / Heading</label>
+                <label>Subject / Box Title</label>
                 <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="updatePreview()">
             </div>
             
             <div class="input-group">
-                <label>Topic / Sub-heading</label>
+                <label>Topic / Sub Title</label>
                 <input id="topicInput" class="form-control" value="International & National" oninput="updatePreview()">
             </div>
 
@@ -201,16 +203,16 @@
                 <input type="text" id="dateInput" class="form-control" oninput="updatePreview()">
             </div>
 
-            <div class="section-title" style="margin-top: 20px;">Add Content</div>
+            <div class="section-title" style="margin-top: 20px;">Add Q&A</div>
             
             <div class="input-group">
-                <label>Question / Topic Line</label>
-                <input id="qInput" class="form-control" placeholder="e.g. বাংলাদেশের বর্তমান প্রধানমন্ত্রী কে?">
+                <label>Question</label>
+                <input id="qInput" class="form-control" placeholder="e.g. বাংলাদেশের বর্তমান প্রধানমন্ত্রী কে?" oninput="clearError(this)">
             </div>
             
             <div class="input-group">
-                <label>Answer / Highlight</label>
-                <input id="aInput" class="form-control" placeholder="e.g. ড. মুহাম্মদ ইউনূস" style="color: #dc2626; font-weight: 700;">
+                <label>Answer (Red Highlight)</label>
+                <input id="aInput" class="form-control" placeholder="e.g. ড. মুহাম্মদ ইউনূস" oninput="clearError(this)">
             </div>
 
             <button class="btn-add" onclick="addItem()">
@@ -218,7 +220,7 @@
             </button>
 
             <div class="items-manager" id="itemsManager">
-                <div style="padding: 10px; color: #999; text-align: center; font-size: 12px;">No items added yet.</div>
+                <div style="padding:10px; color:#999; text-align:center; font-size:12px;">No items added.</div>
             </div>
 
             <div class="action-btns">
@@ -233,43 +235,18 @@
                 <div class="watermark">Interactive Learning</div>
 
                 <div class="pdf-header">
-                    <div class="header-brand">
-                        <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="header-logo">
-                        <div class="header-titles">
-                            <div class="main-title" id="pSubject">GK Recent Affairs</div>
-                            <div class="sub-title" id="pTopic">International & National</div>
-                        </div>
-                    </div>
-                    <div class="header-meta">
-                        <div class="meta-date" id="pDate">24 Jan 2026</div>
-                    </div>
+                    <div class="brand-top">INTERACTIVE LEARNING</div>
+                    <div class="main-subject" id="pSubject">GK Recent Affairs</div>
+                    <div class="sub-topic" id="pTopic">International & National</div>
+                    <div class="date-line" id="pDate">Date: 24 Jan 2026</div>
+                    <div class="dotted-line"></div>
                 </div>
 
-                <div class="notes-list" id="notesList">
-                    <div class="note-item">
-                        <i class="fas fa-check-circle note-icon"></i>
-                        <div class="note-content">
-                            <span class="q-text">সম্প্রতি B ক্যাটাগরি হতে A ক্যাটাগরিতে উন্নীত হয়েছে কোন জেলা?</span>
-                            <br>
-                            <span class="a-text">সাতক্ষীরা</span>
-                        </div>
+                <div class="pdf-body" id="notesList">
                     </div>
-                    <div class="note-item">
-                        <i class="fas fa-check-circle note-icon"></i>
-                        <div class="note-content">
-                            <span class="q-text">বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?</span>
-                            <br>
-                            <span class="a-text">২৭টি</span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="pdf-footer">
-                    <div class="footer-brand">
-                        <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="footer-logo-sm">
-                        <span>Interactive Learning</span>
-                    </div>
-                    <div>Prepared by: Admin</div>
+                    Interactive Learning • BCS, Job & Admission Preparation
                 </div>
             </div>
         </div>
@@ -277,10 +254,9 @@
     </div>
 
     <script>
-        // Set Current Date
+        // Default Date
         const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
         document.getElementById('dateInput').value = "Update: " + today;
-        document.getElementById('pDate').innerText = "Update: " + today;
         
         let items = [
             { q: "সম্প্রতি B ক্যাটাগরি হতে A ক্যাটাগরিতে উন্নীত হয়েছে কোন জেলা?", a: "সাতক্ষীরা" },
@@ -291,20 +267,36 @@
             document.getElementById('pSubject').innerText = document.getElementById('subjectInput').value;
             document.getElementById('pTopic').innerText = document.getElementById('topicInput').value;
             document.getElementById('pDate').innerText = document.getElementById('dateInput').value;
+            renderList();
+        }
+
+        function clearError(input) {
+            input.classList.remove('error');
         }
 
         function addItem() {
-            const q = document.getElementById('qInput').value.trim();
-            const a = document.getElementById('aInput').value.trim();
+            const qInput = document.getElementById('qInput');
+            const aInput = document.getElementById('aInput');
+            const q = qInput.value.trim();
+            const a = aInput.value.trim();
             
-            if(q) {
+            let isValid = true;
+
+            if(!q) {
+                qInput.classList.add('error');
+                isValid = false;
+            }
+            if(!a) {
+                aInput.classList.add('error');
+                isValid = false;
+            }
+
+            if(isValid) {
                 items.push({ q, a });
-                document.getElementById('qInput').value = '';
-                document.getElementById('aInput').value = '';
-                document.getElementById('qInput').focus();
+                qInput.value = '';
+                aInput.value = '';
+                qInput.focus();
                 renderList();
-            } else {
-                alert("Please write a question!");
             }
         }
 
@@ -321,29 +313,28 @@
             managerEl.innerHTML = '';
 
             if(items.length === 0) {
-                managerEl.innerHTML = '<div style="padding: 10px; color: #999; text-align: center; font-size: 12px;">No items added yet.</div>';
+                managerEl.innerHTML = '<div style="padding:10px; color:#999; text-align:center; font-size:12px;">No items added.</div>';
             }
 
             items.forEach((item, index) => {
-                // Render in PDF Preview
+                // PDF Preview Item
                 const row = document.createElement('div');
-                row.className = 'note-item';
+                row.className = 'note-row';
                 row.innerHTML = `
-                    <i class="fas fa-check-circle note-icon"></i>
+                    <i class="fas fa-check note-icon"></i>
                     <div class="note-content">
-                        <span class="q-text">${item.q}</span>
-                        <br> 
+                        <span class="q-text">${item.q}</span><br>
                         <span class="a-text">${item.a}</span>
                     </div>
                 `;
                 listEl.appendChild(row);
 
-                // Render in Manager
+                // Manager Item
                 const mgrRow = document.createElement('div');
                 mgrRow.className = 'manage-item';
                 mgrRow.innerHTML = `
-                    <div style="width: 85%">
-                        <strong>${index + 1}.</strong> ${item.q.substring(0, 30)}...
+                    <div style="width:90%">
+                        <strong>${index + 1}.</strong> ${item.q.substring(0, 25)}...
                     </div>
                     <i class="fas fa-trash del-btn" onclick="deleteItem(${index})"></i>
                 `;
@@ -355,12 +346,12 @@
         function downloadPDF() {
             const element = document.getElementById('pdfContent');
             const btn = document.querySelector('.btn-pdf');
-            const originalText = btn.innerHTML;
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // Reset scale for print
-            const wrapper = document.querySelector('.preview-wrapper');
-            const page = document.querySelector('.a4-page');
+            // Clone to remove scale transform for cleaner PDF
+            const clone = element.cloneNode(true);
+            clone.style.transform = 'none';
+            clone.style.margin = '0';
             
             const opt = {
                 margin: 0,
@@ -371,7 +362,7 @@
             };
             
             html2pdf().set(opt).from(element).save().then(() => {
-                btn.innerHTML = originalText;
+                btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
             });
         }
 
@@ -379,7 +370,6 @@
         function downloadImage() {
             const element = document.getElementById('pdfContent');
             const btn = document.querySelector('.btn-img');
-            const originalText = btn.innerHTML;
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
 
             html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
@@ -387,12 +377,12 @@
                 link.download = `Notes_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.innerHTML = originalText;
+                btn.innerHTML = `<i class="fas fa-image"></i> Download Image`;
             });
         }
 
         // Init
-        renderList();
+        updatePreview();
     </script>
 </body>
 </html>
