@@ -16,7 +16,6 @@
             --bg-body: #f3f4f6;
             --panel-bg: #ffffff;
             --primary: #4f46e5;
-            --primary-soft: rgba(79, 70, 229, 0.1);
             --text-main: #111827;
             --border-light: #e5e7eb;
             --error: #ef4444;
@@ -62,9 +61,8 @@
             width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
             padding: 12px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
         }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         
-        /* Error State */
         .form-control.error {
             border-color: var(--error);
             box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
@@ -93,33 +91,44 @@
         .btn-img { background: #111827; }
         .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Items Manager */
+        /* Items Manager (With Reorder) */
         .items-manager { 
-            margin-top: 20px; max-height: 200px; overflow-y: auto; 
+            margin-top: 20px; max-height: 250px; overflow-y: auto; 
             border: 1px solid #eee; border-radius: 8px; 
         }
         .manage-item { 
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 12px; border-bottom: 1px solid #f3f4f6; 
-            font-size: 12px; background: #fff;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; 
+            font-size: 13px; background: #fff; gap: 5px;
         }
-        .del-btn { color: #ef4444; cursor: pointer; padding: 4px; }
+        .item-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+        .item-controls { display: flex; gap: 5px; }
+        .ctrl-btn { 
+            padding: 4px 6px; border-radius: 4px; cursor: pointer; 
+            font-size: 10px; color: white; border: none;
+        }
+        .btn-up { background: #3b82f6; }
+        .btn-down { background: #3b82f6; }
+        .btn-del { background: #ef4444; }
 
-        /* --- PREVIEW WRAPPER --- */
+        /* --- PREVIEW WRAPPER (Responsive Fit) --- */
         .preview-wrapper {
             flex: 1.5; display: flex; justify-content: center;
             background: #e5e7eb; padding: 20px; border-radius: 12px;
-            overflow: auto;
+            overflow: hidden; /* Changed from auto to hidden for scale fit */
+            align-items: flex-start;
         }
 
         /* --- A4 PDF PAGE DESIGN --- */
         .a4-page {
-            width: 210mm; min-height: 297mm;
+            width: 210mm; 
+            min-height: 297mm; /* Standard A4 Height */
             background: white; padding: 15mm;
-            position: relative; overflow: hidden;
+            position: relative; 
             box-shadow: 0 5px 25px rgba(0,0,0,0.2);
             display: flex; flex-direction: column;
             color: black;
+            transform-origin: top center;
         }
 
         /* Watermark (Middle, 45deg) */
@@ -131,7 +140,7 @@
             font-family: sans-serif; text-transform: uppercase;
         }
 
-        /* PDF Header (Like 25410.jpg) */
+        /* PDF Header */
         .pdf-header {
             text-align: center; margin-bottom: 20px;
             position: relative; z-index: 2;
@@ -139,42 +148,53 @@
         .brand-top { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000; }
         .main-subject { 
             border: 2px solid #000; display: inline-block; padding: 5px 30px; 
-            font-size: 20px; font-weight: 800; margin: 5px 0; color: #000;
+            font-size: 20px; font-weight: 800; margin: 8px 0; color: #000;
         }
-        .sub-topic { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .sub-topic { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 5px; }
         .dotted-line { 
-            border-bottom: 2px dotted #999; width: 100%; margin-top: 5px; 
+            border-bottom: 2px dotted #999; width: 100%; margin-top: 8px; 
         }
-        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #555; }
+        .date-line { font-size: 12px; text-align: right; margin-top: 4px; color: #555; font-weight: 600; }
 
         /* PDF Content Body */
         .pdf-body {
-            flex: 1; display: flex; flex-direction: column; gap: 12px;
-            position: relative; z-index: 2; padding-top: 10px;
+            flex: 1; display: flex; flex-direction: column; gap: 14px;
+            position: relative; z-index: 2; padding-top: 15px;
         }
         .note-row {
             display: flex; align-items: flex-start; gap: 10px;
-            font-size: 15px; line-height: 1.5;
+            font-size: 16px; line-height: 1.5;
         }
-        .note-icon { color: #16a34a; font-size: 16px; margin-top: 3px; flex-shrink: 0; } /* Green Check */
+        .note-icon { color: #16a34a; font-size: 16px; margin-top: 4px; flex-shrink: 0; } /* Green Check */
         .note-content { flex: 1; }
         .q-text { font-weight: 600; color: #000; margin-right: 5px; }
         .a-text { font-weight: 700; color: #dc2626; } /* Red Answer */
 
-        /* PDF Footer (Like 25410.jpg) */
+        /* PDF Footer (Stick to Bottom) */
         .pdf-footer {
-            margin-top: auto; padding-top: 5px;
+            margin-top: auto; padding-top: 8px;
             border-top: 2px dotted #999;
-            text-align: center; font-size: 11px; font-weight: 700; color: #000;
+            text-align: center; font-size: 12px; font-weight: 700; color: #000;
             position: relative; z-index: 2;
+            width: 100%;
         }
 
-        /* Mobile Scale */
+        /* Mobile Scale Logic */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box { width: 100%; position: relative; top: 0; }
-            .preview-wrapper { overflow-x: auto; justify-content: flex-start; }
-            .a4-page { transform: scale(0.6); transform-origin: top left; margin-bottom: -120%; }
+            .preview-wrapper { 
+                width: 100%; 
+                padding: 10px;
+                background: #333; /* Contrast bg for preview */
+                min-height: 500px;
+            }
+            .a4-page { 
+                /* Force Fit Mobile Width */
+                transform: scale(0.44); 
+                margin-bottom: -150%; 
+                border: none;
+            }
         }
     </style>
 </head>
@@ -211,7 +231,7 @@
             </div>
             
             <div class="input-group">
-                <label>Answer (Red Highlight)</label>
+                <label>Answer (Auto Red & Hyphen)</label>
                 <input id="aInput" class="form-control" placeholder="e.g. ড. মুহাম্মদ ইউনূস" oninput="clearError(this)">
             </div>
 
@@ -224,8 +244,8 @@
             </div>
 
             <div class="action-btns">
-                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                <button class="btn-dl btn-img" onclick="downloadImage()"><i class="fas fa-image"></i> Download Image</button>
+                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="btn-dl btn-img" onclick="downloadImage()"><i class="fas fa-image"></i> Image</button>
             </div>
         </div>
 
@@ -282,14 +302,8 @@
             
             let isValid = true;
 
-            if(!q) {
-                qInput.classList.add('error');
-                isValid = false;
-            }
-            if(!a) {
-                aInput.classList.add('error');
-                isValid = false;
-            }
+            if(!q) { qInput.classList.add('error'); isValid = false; }
+            if(!a) { aInput.classList.add('error'); isValid = false; }
 
             if(isValid) {
                 items.push({ q, a });
@@ -298,6 +312,15 @@
                 qInput.focus();
                 renderList();
             }
+        }
+
+        function moveItem(index, dir) {
+            if (dir === 'up' && index > 0) {
+                [items[index], items[index - 1]] = [items[index - 1], items[index]];
+            } else if (dir === 'down' && index < items.length - 1) {
+                [items[index], items[index + 1]] = [items[index + 1], items[index]];
+            }
+            renderList();
         }
 
         function deleteItem(index) {
@@ -324,19 +347,23 @@
                     <i class="fas fa-check note-icon"></i>
                     <div class="note-content">
                         <span class="q-text">${item.q}</span><br>
-                        <span class="a-text">${item.a}</span>
+                        <span class="a-text">- ${item.a}</span>
                     </div>
                 `;
                 listEl.appendChild(row);
 
-                // Manager Item
+                // Manager Item with Controls
                 const mgrRow = document.createElement('div');
                 mgrRow.className = 'manage-item';
                 mgrRow.innerHTML = `
-                    <div style="width:90%">
-                        <strong>${index + 1}.</strong> ${item.q.substring(0, 25)}...
+                    <div class="item-text">
+                        <strong>${index + 1}.</strong> ${item.q}
                     </div>
-                    <i class="fas fa-trash del-btn" onclick="deleteItem(${index})"></i>
+                    <div class="item-controls">
+                        <button class="ctrl-btn btn-up" onclick="moveItem(${index}, 'up')"><i class="fas fa-arrow-up"></i></button>
+                        <button class="ctrl-btn btn-down" onclick="moveItem(${index}, 'down')"><i class="fas fa-arrow-down"></i></button>
+                        <button class="ctrl-btn btn-del" onclick="deleteItem(${index})"><i class="fas fa-trash"></i></button>
+                    </div>
                 `;
                 managerEl.appendChild(mgrRow);
             });
@@ -348,10 +375,10 @@
             const btn = document.querySelector('.btn-pdf');
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // Clone to remove scale transform for cleaner PDF
-            const clone = element.cloneNode(true);
-            clone.style.transform = 'none';
-            clone.style.margin = '0';
+            // Reset scale for print
+            const elementClone = element.cloneNode(true);
+            elementClone.style.transform = 'none';
+            elementClone.style.margin = '0';
             
             const opt = {
                 margin: 0,
@@ -382,7 +409,7 @@
         }
 
         // Init
-        updatePreview();
+        renderList();
     </script>
 </body>
 </html>
