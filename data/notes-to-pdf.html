@@ -111,14 +111,20 @@
             position: relative; overflow: hidden;
             display: flex; flex-direction: column;
             color: black; box-sizing: border-box;
+            margin-bottom: 20px; /* Gap for preview */
         }
 
-        /* Watermark (UPDATED OPACITY) */
+        /* FIX: Last page shouldn't have margin in preview to align perfectly in PDF clone */
+        .a4-page:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Watermark (Opacity 0.15) */
         .watermark {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 60px; font-weight: 900; 
-            color: #000; opacity: 0.15; /* Updated as requested */
+            color: #000; opacity: 0.15;
             white-space: nowrap; pointer-events: none; z-index: 0;
             font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
         }
@@ -204,7 +210,7 @@
         <div class="editor-box">
             <div class="section-title">Page Setup</div>
             <div class="input-group">
-                <label>বিষয় (Subject - File Name)</label>
+                <label>বিষয় (Subject)</label>
                 <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="renderPages()">
             </div>
             <div class="input-group">
@@ -319,22 +325,20 @@
                 
                 currentBody.appendChild(row);
 
-                // --- ROBUST OVERFLOW CHECK (Collision Detection) ---
+                // --- ROBUST OVERFLOW CHECK ---
                 const rowRect = row.getBoundingClientRect();
                 const footerRect = currentFooter.getBoundingClientRect();
 
-                // If Row Bottom hits Footer Top (with 20px buffer)
+                // If Row Bottom hits Footer Top (buffer 20px)
                 if (rowRect.bottom > footerRect.top - 20) {
-                    currentBody.removeChild(row); // Remove from current page
+                    currentBody.removeChild(row); 
                     
-                    // Create new page
                     pageNum++;
                     currentPage = createPage(pageNum);
                     currentBody = currentPage.querySelector('.pdf-body');
                     currentFooter = currentPage.querySelector('.footer-fixed');
                     container.appendChild(currentPage);
                     
-                    // Add to new page
                     currentBody.appendChild(row);
                 }
             });
@@ -385,27 +389,31 @@
             }
         }
 
-        // --- DOWNLOAD PDF (Fixes "Print != Preview") ---
+        // --- DOWNLOAD PDF (Correct Clone & Random Name) ---
         function downloadPDF() {
-            const btn = document.querySelector('.btn-pdf');
             const container = document.getElementById('pdfPreviewContainer');
+            const btn = document.querySelector('.btn-pdf');
             
+            // Random Name: notes_ + random
             const rand = Math.random().toString(36).substring(2, 7);
-            const subject = document.getElementById('subjectInput').value.replace(/[^a-z0-9]/gi, '_') || 'Notes';
-            const filename = `${subject}_${rand}.pdf`;
+            const filename = `notes_${rand}.pdf`;
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // CLONE STRATEGY: Clone the container to manipulate it safely
+            // CLONE LOGIC to fix blank page issue
             const clone = container.cloneNode(true);
             
-            // Force strict styling on clone for PDF
-            clone.style.transform = 'none'; // Remove any scale
-            clone.style.gap = '0'; // Remove gaps between pages
-            clone.style.margin = '0'; 
-            clone.style.width = '210mm'; // Force A4 width
+            // Force styles on clone for PDF generation
+            clone.style.transform = 'none';
+            clone.style.gap = '0';
+            clone.style.margin = '0';
+            clone.style.width = '210mm';
             
-            // Create a temporary wrapper to hold the clone off-screen
+            // Ensure no margins on pages in the clone
+            const clonePages = clone.querySelectorAll('.a4-page');
+            clonePages.forEach(p => p.style.marginBottom = '0');
+
+            // Off-screen wrapper
             const tempWrapper = document.createElement('div');
             tempWrapper.style.position = 'absolute';
             tempWrapper.style.left = '-9999px';
@@ -413,17 +421,16 @@
             tempWrapper.appendChild(clone);
             document.body.appendChild(tempWrapper);
 
-            // Configure html2pdf
             const opt = {
                 margin: 0,
                 filename: filename,
                 image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0, windowWidth: 800 }, // Fixes mobile capture
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(clone).save().then(() => {
-                document.body.removeChild(tempWrapper); // Clean up
+                document.body.removeChild(tempWrapper); // Cleanup
                 btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
             });
         }
@@ -436,9 +443,8 @@
             const pages = document.querySelectorAll('.a4-page');
             const zip = new JSZip();
             const rand = Math.random().toString(36).substring(2, 7);
-            const subject = document.getElementById('subjectInput').value.replace(/[^a-z0-9]/gi, '_') || 'Notes';
 
-            // Temporarily remove scale from the live view for capture
+            // Temporarily remove scale
             const scaleBox = document.querySelector('.scale-box');
             const oldTransform = scaleBox.style.transform;
             scaleBox.style.transform = 'none';
@@ -446,14 +452,14 @@
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
                 const data = canvas.toDataURL('image/png').split(',')[1];
-                zip.file(`${subject}_Page-${i + 1}.png`, data, { base64: true });
+                zip.file(`notes_${rand}_page-${i + 1}.png`, data, { base64: true });
             }
 
             // Restore scale
             scaleBox.style.transform = oldTransform;
 
             zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `${subject}_${rand}.zip`);
+                saveAs(content, `notes_${rand}_images.zip`);
                 btn.innerHTML = `<i class="fas fa-images"></i> Download Images`;
             });
         }
