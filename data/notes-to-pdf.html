@@ -60,7 +60,7 @@
         textarea.form-control { resize: vertical; min-height: 80px; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         .form-control.error { border-color: var(--error); animation: shake 0.3s; }
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} 100% {transform: translateX(0);} }
 
         .btn-add {
             width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
@@ -246,7 +246,7 @@
             { q: "বর্তমানে দেশে B ক্যাটাগরির জেলা কয়টি?", a: "২৬টি" }
         ];
 
-        // --- RENDER LOGIC ---
+        // --- RENDER LOGIC (FIXED HEIGHT) ---
         function renderPages() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = ''; 
@@ -314,15 +314,12 @@
                 
                 currentList.appendChild(row);
 
-                // Calculation:
-                // Total Height = 1122px (approx 297mm)
-                // Footer Height = 120px (reserved)
-                // Padding Top = ~40px
-                // Available content height = 1122 - 120 = 1000px approx.
-                // We check if contentArea height exceeds ~980px to be safe.
+                // --- HEIGHT CALCULATION FIX ---
+                // We measure if content overflows the allocated area (Total A4 - Footer - Padding)
+                // Approx safe height in px: 1122 - 120 (footer) - 40 (padding) = 962px.
                 
-                if (contentArea.scrollHeight > 980) {
-                    currentList.removeChild(row); 
+                if (contentArea.scrollHeight > 960) {
+                    currentList.removeChild(row); // Remove overflowing item
                     
                     pageNum++;
                     currentPage = createPage(pageNum);
@@ -330,11 +327,11 @@
                     contentArea = currentPage.querySelector('.page-content');
                     container.appendChild(currentPage);
                     
-                    currentList.appendChild(row);
+                    currentList.appendChild(row); // Add to new page
                 }
             });
 
-            // Prevent blank last page if item removal caused empty page
+            // Blank page cleanup: only remove if it's truly empty AND not the first page
             if (currentList.children.length === 0 && pageNum > 1) {
                 container.removeChild(currentPage);
             }
@@ -385,55 +382,71 @@
             }
         }
 
-        // --- PDF DOWNLOAD ---
+        // --- DOWNLOAD PDF ---
         function downloadPDF() {
             const element = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
             
-            // Random Filename
-            const rand = Math.random().toString(36).substring(2, 8);
-            const filename = `Notes_${rand}.pdf`;
+            // Random Filename based on Subject
+            const rawName = document.getElementById('subjectInput').value;
+            const filename = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') + '.pdf' : 'Notes.pdf';
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // Prep: Remove gap for seamless PDF
-            const originalGap = element.style.gap;
-            element.style.gap = '0';
+            // Prep: Remove scale & gaps
+            const scaleBox = document.querySelector('.scale-box');
+            const oldTransform = scaleBox.style.transform;
+            const oldMargin = scaleBox.style.margin;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
+            scaleBox.style.gap = '0'; // Remove gap between pages for PDF
 
             const opt = {
                 margin: 0,
                 filename: filename,
                 image: { type: 'jpeg', quality: 1 },
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
+                // Restore
+                scaleBox.style.transform = oldTransform;
+                scaleBox.style.gap = '30px'; // Restore preview gap
+                if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
                 btn.innerHTML = `<i class="fas fa-file-pdf"></i> PDF`;
-                element.style.gap = originalGap; // Restore
             });
         }
 
-        // --- IMAGES DOWNLOAD ---
+        // --- DOWNLOAD IMAGES ---
         async function downloadImagesZip() {
             const btn = document.querySelector('.btn-img');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Zipping...`;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
 
             const pages = document.querySelectorAll('.a4-page');
-            const zip = new JSZip();
-            const rand = Math.random().toString(36).substring(2, 8);
+            const scaleBox = document.querySelector('.scale-box');
+            
+            // Random Name
+            const rawName = document.getElementById('subjectInput').value;
+            const baseName = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') : 'Note';
+
+            // Prep
+            const oldTransform = scaleBox.style.transform;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
 
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
-                const data = canvas.toDataURL('image/png').split(',')[1];
-                zip.file(`Note_Page-${i + 1}.png`, data, { base64: true });
+                const link = document.createElement('a');
+                link.download = `${baseName}_Page-${i + 1}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
             }
 
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `Notes_${rand}.zip`);
-                btn.innerHTML = `<i class="fas fa-images"></i> Images (ZIP)`;
-            });
+            // Restore
+            scaleBox.style.transform = oldTransform;
+            if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
+            btn.innerHTML = `<i class="fas fa-image"></i> Images`;
         }
 
         // Init
