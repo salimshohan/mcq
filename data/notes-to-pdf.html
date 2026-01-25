@@ -37,7 +37,7 @@
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 80px; width: 95%; max-width: 1300px;
+            margin-top: 80px; width: 95%; max-width: 1400px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
@@ -99,65 +99,80 @@
             display: flex; flex-direction: column;
         }
 
-        /* Watermark */
+        /* Watermark (Text, 45deg) */
         .watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            opacity: 0.08; width: 60%; z-index: 0; pointer-events: none;
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px; font-weight: 900; color: rgba(0,0,0,0.04);
+            white-space: nowrap; pointer-events: none; z-index: 0;
+            text-transform: uppercase; letter-spacing: 5px;
         }
 
         /* Header */
         .pdf-header {
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 20px;
+            border-bottom: 2px solid #111827; padding-bottom: 15px; margin-bottom: 25px;
             position: relative; z-index: 2;
         }
-        .header-brand { display: flex; align-items: center; gap: 10px; }
-        .header-logo { height: 40px; width: 40px; }
-        .header-title { font-size: 24px; font-weight: 800; color: #111827; text-transform: uppercase; }
+        .header-brand { display: flex; align-items: center; gap: 15px; }
+        .header-logo { 
+            height: 50px; width: 50px; border-radius: 50%; 
+            border: 2px solid #111827; padding: 2px;
+        }
+        .header-titles { display: flex; flex-direction: column; }
+        .main-title { font-size: 22px; font-weight: 800; color: #111827; text-transform: uppercase; line-height: 1.2; }
+        .sub-title { font-size: 14px; font-weight: 600; color: #dc2626; } /* Red Accent */
+
         .header-meta { text-align: right; }
-        .meta-topic { font-size: 16px; font-weight: 700; color: var(--primary); }
-        .meta-date { font-size: 12px; color: #666; font-weight: 600; margin-top: 2px; }
+        .meta-date { 
+            font-size: 13px; color: #fff; background: #111827; 
+            padding: 4px 10px; border-radius: 4px; font-weight: 600; 
+        }
 
         /* List Content */
-        .notes-list { flex: 1; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2; }
+        .notes-list { flex: 1; display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
         
         .note-item {
-            display: flex; align-items: flex-start; gap: 10px;
-            font-size: 15px; line-height: 1.5; color: #333;
-            border-bottom: 1px dashed #eee; padding-bottom: 8px;
+            display: flex; align-items: flex-start; gap: 12px;
+            font-size: 16px; line-height: 1.6; color: #333;
+            border-bottom: 1px dotted #e5e7eb; padding-bottom: 10px;
         }
+        .note-item:last-child { border-bottom: none; }
+
         .note-icon { 
-            color: #10b981; /* Green Check */
-            font-size: 14px; margin-top: 4px; flex-shrink: 0;
+            color: #16a34a; /* Green Check */
+            font-size: 18px; margin-top: 4px; flex-shrink: 0;
         }
         .note-content { flex: 1; }
-        .q-text { font-weight: 600; color: #1f2937; margin-right: 5px; }
-        .a-text { font-weight: 700; color: #dc2626; /* Red Answer like reference */ }
+        .q-text { font-weight: 600; color: #1f2937; margin-right: 6px; }
+        .a-text { font-weight: 700; color: #dc2626; /* Red Answer */ }
 
         /* Footer */
         .pdf-footer {
             margin-top: auto; padding-top: 10px;
             border-top: 1px solid #111827;
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 11px; font-weight: 600; color: #4b5563;
+            font-size: 12px; font-weight: 600; color: #4b5563;
             position: relative; z-index: 2;
         }
+        .footer-brand { display: flex; align-items: center; gap: 5px; }
+        .footer-logo-sm { height: 16px; width: 16px; border-radius: 50%; }
 
         /* Items Manager in Editor */
-        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        .items-manager { margin-top: 20px; max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
         .manage-item { 
-            display: flex; justify-content: space-between; padding: 8px 10px; 
-            border-bottom: 1px solid #f3f4f6; font-size: 12px; background: #fff;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff;
         }
         .manage-item:last-child { border-bottom: none; }
-        .del-btn { color: #ef4444; cursor: pointer; }
+        .del-btn { color: #ef4444; cursor: pointer; padding: 5px; background: #fee2e2; border-radius: 4px; }
 
         /* Mobile Scale */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box { width: 100%; position: relative; top: 0; }
-            .a4-page { transform: scale(0.45); transform-origin: top left; margin-bottom: -140%; }
-            .preview-wrapper { justify-content: flex-start; overflow: hidden; height: 500px; }
+            .a4-page { transform: scale(0.42); transform-origin: top center; margin-bottom: -150%; }
+            .preview-wrapper { width: 100%; overflow: hidden; height: 550px; }
         }
     </style>
 </head>
@@ -172,13 +187,13 @@
             <div class="section-title">Page Setup</div>
             
             <div class="input-group">
-                <label>Subject / Main Title</label>
+                <label>Subject / Heading</label>
                 <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="updatePreview()">
             </div>
             
             <div class="input-group">
-                <label>Topic / Sub Title</label>
-                <input id="topicInput" class="form-control" value="International Affairs" oninput="updatePreview()">
+                <label>Topic / Sub-heading</label>
+                <input id="topicInput" class="form-control" value="International & National" oninput="updatePreview()">
             </div>
 
             <div class="input-group">
@@ -198,44 +213,62 @@
                 <input id="aInput" class="form-control" placeholder="e.g. ড. মুহাম্মদ ইউনূস" style="color: #dc2626; font-weight: 700;">
             </div>
 
-            <button class="btn-add" onclick="addItem()">+ Add to List</button>
+            <button class="btn-add" onclick="addItem()">
+                <i class="fas fa-plus"></i> Add to List
+            </button>
 
-            <div class="items-manager" id="itemsManager"></div>
+            <div class="items-manager" id="itemsManager">
+                <div style="padding: 10px; color: #999; text-align: center; font-size: 12px;">No items added yet.</div>
+            </div>
 
             <div class="action-btns">
-                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-                <button class="btn-dl btn-img" onclick="downloadImage()"><i class="fas fa-image"></i> Image</button>
+                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn-dl btn-img" onclick="downloadImage()"><i class="fas fa-image"></i> Download Image</button>
             </div>
         </div>
 
         <div class="preview-wrapper">
             <div class="a4-page" id="pdfContent">
                 
-                <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="watermark" alt="Watermark">
+                <div class="watermark">Interactive Learning</div>
 
                 <div class="pdf-header">
                     <div class="header-brand">
                         <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="header-logo">
-                        <div class="header-title" id="pSubject">GK Recent Affairs</div>
+                        <div class="header-titles">
+                            <div class="main-title" id="pSubject">GK Recent Affairs</div>
+                            <div class="sub-title" id="pTopic">International & National</div>
+                        </div>
                     </div>
                     <div class="header-meta">
-                        <div class="meta-topic" id="pTopic">International Affairs</div>
-                        <div class="meta-date" id="pDate">Date: 24 Jan 2026</div>
+                        <div class="meta-date" id="pDate">24 Jan 2026</div>
                     </div>
                 </div>
 
                 <div class="notes-list" id="notesList">
                     <div class="note-item">
-                        <i class="fas fa-check note-icon"></i>
+                        <i class="fas fa-check-circle note-icon"></i>
                         <div class="note-content">
-                            <span class="q-text">Sample Question Text Here?</span>
-                            <span class="a-text">Sample Answer</span>
+                            <span class="q-text">সম্প্রতি B ক্যাটাগরি হতে A ক্যাটাগরিতে উন্নীত হয়েছে কোন জেলা?</span>
+                            <br>
+                            <span class="a-text">সাতক্ষীরা</span>
+                        </div>
+                    </div>
+                    <div class="note-item">
+                        <i class="fas fa-check-circle note-icon"></i>
+                        <div class="note-content">
+                            <span class="q-text">বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?</span>
+                            <br>
+                            <span class="a-text">২৭টি</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="pdf-footer">
-                    <div>Interactive Learning • www.iledu.vercel.app</div>
+                    <div class="footer-brand">
+                        <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="footer-logo-sm">
+                        <span>Interactive Learning</span>
+                    </div>
                     <div>Prepared by: Admin</div>
                 </div>
             </div>
@@ -247,18 +280,17 @@
         // Set Current Date
         const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
         document.getElementById('dateInput').value = "Update: " + today;
+        document.getElementById('pDate').innerText = "Update: " + today;
         
         let items = [
             { q: "সম্প্রতি B ক্যাটাগরি হতে A ক্যাটাগরিতে উন্নীত হয়েছে কোন জেলা?", a: "সাতক্ষীরা" },
-            { q: "বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?", a: "২৭টি" },
-            { q: "বর্তমানে দেশে B ক্যাটাগরির জেলা কয়টি?", a: "২৬টি" }
+            { q: "বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?", a: "২৭টি" }
         ];
 
         function updatePreview() {
             document.getElementById('pSubject').innerText = document.getElementById('subjectInput').value;
             document.getElementById('pTopic').innerText = document.getElementById('topicInput').value;
             document.getElementById('pDate').innerText = document.getElementById('dateInput').value;
-            renderList();
         }
 
         function addItem() {
@@ -271,6 +303,8 @@
                 document.getElementById('aInput').value = '';
                 document.getElementById('qInput').focus();
                 renderList();
+            } else {
+                alert("Please write a question!");
             }
         }
 
@@ -286,15 +320,20 @@
             listEl.innerHTML = '';
             managerEl.innerHTML = '';
 
+            if(items.length === 0) {
+                managerEl.innerHTML = '<div style="padding: 10px; color: #999; text-align: center; font-size: 12px;">No items added yet.</div>';
+            }
+
             items.forEach((item, index) => {
                 // Render in PDF Preview
                 const row = document.createElement('div');
                 row.className = 'note-item';
                 row.innerHTML = `
-                    <i class="fas fa-check note-icon"></i>
+                    <i class="fas fa-check-circle note-icon"></i>
                     <div class="note-content">
                         <span class="q-text">${item.q}</span>
-                        <br> <span class="a-text">${item.a}</span>
+                        <br> 
+                        <span class="a-text">${item.a}</span>
                     </div>
                 `;
                 listEl.appendChild(row);
@@ -303,7 +342,9 @@
                 const mgrRow = document.createElement('div');
                 mgrRow.className = 'manage-item';
                 mgrRow.innerHTML = `
-                    <span>${index + 1}. ${item.q.substring(0, 20)}...</span>
+                    <div style="width: 85%">
+                        <strong>${index + 1}.</strong> ${item.q.substring(0, 30)}...
+                    </div>
                     <i class="fas fa-trash del-btn" onclick="deleteItem(${index})"></i>
                 `;
                 managerEl.appendChild(mgrRow);
@@ -313,6 +354,14 @@
         // --- DOWNLOAD PDF ---
         function downloadPDF() {
             const element = document.getElementById('pdfContent');
+            const btn = document.querySelector('.btn-pdf');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
+
+            // Reset scale for print
+            const wrapper = document.querySelector('.preview-wrapper');
+            const page = document.querySelector('.a4-page');
+            
             const opt = {
                 margin: 0,
                 filename: 'Notes.pdf',
@@ -320,22 +369,30 @@
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            html2pdf().set(opt).from(element).save();
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerHTML = originalText;
+            });
         }
 
         // --- DOWNLOAD IMAGE ---
         function downloadImage() {
             const element = document.getElementById('pdfContent');
-            html2canvas(element, { scale: 3, useCORS: true }).then(canvas => {
+            const btn = document.querySelector('.btn-img');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+
+            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Notes_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+                btn.innerHTML = originalText;
             });
         }
 
         // Init
-        updatePreview();
+        renderList();
     </script>
 </body>
 </html>
