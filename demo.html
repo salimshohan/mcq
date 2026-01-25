@@ -1,21 +1,15 @@
 
-<script>document.addEventListener("DOMContentLoaded", () => {
-    
-    // Function to load script safely
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
     function loadScript(path) {
         const script = document.createElement('script');
-        script.src = path; // স্ল্যাশ সরানো হয়েছে
+        script.src = path;
         script.type = 'text/javascript';
-        script.defer = true; 
         document.body.appendChild(script);
     }
 
-    // 1. Load Header (পাথ ঠিক করা হয়েছে)
-    loadScript('javascript/header.js');
-
-    // 2. Load Footer (পাথ ঠিক করা হয়েছে)
-    loadScript('javascript/footer.js');
+    loadScript('./javascript/header.js');
+    loadScript('./javascript/footer.js');
 
 });</script>
-
-<div id="footer"></div><script src="/js/main.js"></script>
