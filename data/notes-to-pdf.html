@@ -81,7 +81,7 @@
         .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
 
         /* Items Manager */
-        .items-manager { margin-top: 20px; max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
         .manage-item { 
             display: flex; align-items: center; justify-content: space-between;
             padding: 10px; border-bottom: 1px solid #f3f4f6; font-size: 14px; background: #fff; gap: 5px;
@@ -100,7 +100,7 @@
         
         .scale-box { 
             display: flex; flex-direction: column; 
-            gap: 30px; 
+            gap: 40px; /* Space between pages */
             box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
         }
 
@@ -113,7 +113,7 @@
             color: black; 
         }
 
-        /* Watermark */
+        /* Watermark (Common for all pages) */
         .watermark {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) rotate(-45deg);
@@ -123,14 +123,16 @@
         }
 
         /* Header Styles */
-        .pdf-header { text-align: center; margin-bottom: 5px; flex-shrink: 0; padding: 10mm 15mm 0 15mm; z-index: 2; }
+        .pdf-header { 
+            text-align: center; margin-bottom: 5px; flex-shrink: 0; 
+            padding: 10mm 15mm 0 15mm; z-index: 2; 
+        }
         
         .brand-top { 
             font-size: 14px; font-weight: 800; text-transform: uppercase; 
             letter-spacing: 2px; color: #000; margin-bottom: 2px; 
         }
         
-        /* Compact First Page Header */
         .main-subject { 
             border: 2px solid #000; display: inline-block; padding: 4px 30px; 
             font-size: 20px; font-weight: 800; margin: 3px 0; color: #000; line-height: 1.2;
@@ -140,16 +142,16 @@
         
         .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
 
-        /* Minimal Header for P2+ */
-        .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
+        .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
 
-        /* Content Body (Increased Font & Readability) */
+        /* Content Body */
         .page-content {
             padding: 0 15mm;
             flex-grow: 1;
             display: flex; flex-direction: column;
             overflow: hidden; 
-            margin-bottom: 110px; /* Space for footer */
+            /* IMPORTANT: Bottom margin matches Footer Height so text doesn't overlap */
+            margin-bottom: 110px; 
             z-index: 2;
         }
 
@@ -159,20 +161,13 @@
         }
         
         .note-row { display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
-        
-        .note-icon { 
-            color: #16a34a; font-size: 18px; margin-top: 3px; flex-shrink: 0; 
-        }
+        .note-icon { color: #16a34a; font-size: 18px; margin-top: 3px; flex-shrink: 0; }
         
         /* Larger, Clearer Text */
-        .q-text { 
-            font-weight: 700; color: #000; font-size: 17px; 
-        }
-        .a-text { 
-            font-weight: 700; color: #16a34a; font-size: 17px; /* Green Answer */
-        }
+        .q-text { font-weight: 700; color: #000; font-size: 17px; }
+        .a-text { font-weight: 700; color: #16a34a; font-size: 17px; }
 
-        /* Footer (Fixed at Bottom) */
+        /* Footer (Fixed at Bottom for ALL PAGES) */
         .footer-fixed {
             position: absolute; bottom: 0; left: 0; width: 100%;
             height: 100px; 
@@ -268,10 +263,9 @@
             const topic = document.getElementById('topicInput').value;
             const date = document.getElementById('dateInput').value;
 
-            // List to render (Empty if no items)
             const listToRender = items.length > 0 ? items : [];
 
-            // Helper: Create Page
+            // Helper: Create Page with Footer & Watermark
             function createPage(pageNum) {
                 const page = document.createElement('div');
                 page.className = 'a4-page';
@@ -289,7 +283,7 @@
                             <div class="dotted-line"></div>
                         </div>`;
                 } 
-                // Page 2+ Header
+                // Page 2+ Header (Compact)
                 else {
                     headerHTML = `
                         <div class="pdf-header minimal-header">
@@ -297,6 +291,7 @@
                         </div>`;
                 }
 
+                // INJECT EVERYTHING INCLUDING FOOTER & WATERMARK
                 page.innerHTML = `
                     <div class="watermark">INTERACTIVE LEARNING</div>
                     ${headerHTML}
@@ -335,12 +330,22 @@
                 currentBody.appendChild(row);
 
                 // --- HEIGHT CALCULATION ---
-                // We leave enough space for footer and header.
-                // Page 1 has bigger header, so less body space.
-                const maxBodyHeight = pageNum === 1 ? 850 : 960; 
+                // Measure the .page-content height vs. safe limit
+                // Total A4 = 1123px (at default zoom/scale)
+                // Footer = 100px fixed
+                // Margin Bottom = 110px
+                // Available Height for Header + Content = ~1000px
+                // Header P1 is large (~200px), Header P2 is small (~50px)
+                
+                // Using clientHeight of content area
+                const contentArea = currentPage.querySelector('.page-content');
+                
+                // Safe limit before it hits footer area
+                // Page 1 has less space due to big header
+                const maxContentHeight = pageNum === 1 ? 830 : 950; 
 
-                if (currentBody.scrollHeight > maxBodyHeight) {
-                    currentBody.removeChild(row); // Remove overflowing item
+                if (contentArea.scrollHeight > maxContentHeight) {
+                    currentBody.removeChild(row); // Remove from current
                     
                     // Create New Page
                     pageNum++;
@@ -404,10 +409,9 @@
             const element = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
             
-            // Random Filename based on Subject
+            // Random Filename
             const rand = Math.random().toString(36).substring(2, 7);
-            const subject = document.getElementById('subjectInput').value.replace(/[^a-z0-9]/gi, '_') || 'Notes';
-            const filename = `${subject}_${rand}.pdf`;
+            const filename = `Notes_${rand}.pdf`;
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
@@ -417,7 +421,7 @@
             const oldGap = scaleBox.style.gap;
             
             scaleBox.style.transform = 'none';
-            scaleBox.style.gap = '0'; // Important for PDF
+            scaleBox.style.gap = '0'; 
 
             const opt = {
                 margin: 0,
@@ -428,7 +432,6 @@
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore
                 scaleBox.style.transform = oldTransform;
                 scaleBox.style.gap = oldGap;
                 if(window.innerWidth < 900) scaleBox.style.marginBottom = '-160mm';
@@ -462,12 +465,12 @@
             if(window.innerWidth < 900) scaleBox.style.marginBottom = '-160mm';
 
             zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `${subject}_Images_${rand}.zip`);
+                saveAs(content, `${subject}_${rand}.zip`);
                 btn.innerHTML = `<i class="fas fa-images"></i> Download Images`;
             });
         }
 
-        // Init
+        // Init with Blank Page
         renderPages();
     </script>
 </body>
