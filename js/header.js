@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Note: I placed the links INSIDE the mobile-menu div
     const headerHTML = `
       <header>
-          <a href="#" class="brand-logo">
+          <a href="/" class="brand-logo">
               <div class="logo-icon">IL</div>
               Interactive Learning
           </a>
@@ -155,10 +155,10 @@ document.addEventListener("DOMContentLoaded", function () {
       </header>
   
       <div class="mobile-menu" id="mobileMenu">
-          <a href="#">Home</a>
-          <a href="#">PDF Tool</a>
-          <a href="#">Quotes Maker</a>
-          <a href="#">Notice Maker</a>
+          <a href="/">Home</a>
+          <a href="/data/pdf.html">PDF Tool</a>
+          <a href="/data/quotes.html">Quotes Maker</a>
+          <a href="/data/notice.html">Notice Maker</a>
       </div>
     `;
   
