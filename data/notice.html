@@ -94,65 +94,134 @@
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- NEW NOTICE CARD DESIGN (Requested Style) --- */
-        #noticeCard {
-            width: 100%; max-width: 450px;
-            /* Default background, changes with theme */
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 16px; /* More rounded */
-            box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
-            overflow: hidden; position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.3s ease;
-        }
+      /* --- PREMIUM NOTICE CARD DESIGN --- */
+#noticeCard {
+    width: 100%; max-width: 450px;
+    /* Deep Matte Dark Background */
+    background: #0f172a; 
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'Anek Bangla', sans-serif;
+    transition: all 0.3s ease;
+}
 
-        /* The distinct top header bar */
-        .card-header-bar {
-            /* Default accent color, changes with theme */
-            background: var(--accent);
-            padding: 15px 25px;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .header-icon { font-size: 24px; color: rgba(255,255,255,0.9); }
-        .header-title { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.9); }
+/* Decorative Gradient Blur at Top */
+#noticeCard::before {
+    content: ''; position: absolute; top: -50px; left: -50px;
+    width: 200px; height: 200px;
+    background: var(--primary);
+    filter: blur(80px); opacity: 0.4; z-index: 0;
+    border-radius: 50%;
+}
+#noticeCard::after {
+    content: ''; position: absolute; bottom: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: var(--accent);
+    filter: blur(80px); opacity: 0.2; z-index: 0;
+    border-radius: 50%;
+}
 
-        /* Main content area */
-        .card-body-content { padding: 25px; position: relative; }
+/* Card Content Container */
+.card-inner {
+    position: relative; z-index: 2;
+    padding: 30px;
+    display: flex; flex-direction: column;
+    min-height: 400px;
+    background: rgba(15, 23, 42, 0.3); /* Tint */
+    backdrop-filter: blur(10px); /* Glass Effect */
+}
 
-        /* Meta strip (Category + Date) */
-        .meta-strip { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        
-        .notice-badge {
-            display: inline-block; padding: 6px 14px; border-radius: 8px;
-            background: rgba(255,255,255,0.15); 
-            /* Color set by JS */
-            color: var(--accent); border: 1px solid currentColor;
-            font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
-            backdrop-filter: blur(5px);
-        }
-        .date-info { font-size: 13px; font-weight: 600; opacity: 0.8; }
+/* --- HEADER SECTION --- */
+.card-header-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
+}
 
-        /* Main Text */
-        .notice-text {
-            font-size: 24px; line-height: 1.4; font-weight: 600;
-            margin-bottom: 40px; white-space: pre-wrap;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
+.header-brand {
+    display: flex; align-items: center; gap: 8px;
+}
+.header-icon-box {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 14px;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+.header-title {
+    font-size: 12px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.9);
+}
 
-        /* Footer area (Source + Watermark) */
-        .card-footer-bar {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-        }
-        
-        .source-box { display: none; /* Managed by JS */ }
-        .source-label { font-size: 10px; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; margin-bottom: 4px;}
-        .source-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-        .verified { color: #38bdf8; font-size: 16px; }
+.header-dots {
+    display: flex; gap: 4px;
+}
+.header-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+}
 
+/* --- BODY SECTION --- */
+.meta-tags {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+}
+
+.category-pill {
+    padding: 6px 16px; border-radius: 50px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--accent); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.date-pill {
+    padding: 6px 0;
+    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
+}
+
+.main-notice-text {
+    font-size: 24px; line-height: 1.5; color: #ffffff;
+    font-weight: 500; margin-bottom: auto;
+    white-space: pre-wrap;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* --- FOOTER SECTION --- */
+.card-footer-row {
+    margin-top: 40px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+}
+
+.source-profile {
+    display: none; /* JS will show this */
+    flex-direction: column; gap: 4px;
+}
+.source-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+    color: rgba(255,255,255,0.4); font-weight: 600;
+}
+.source-info {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 15px; font-weight: 700; color: white;
+}
+.verified-tick { color: #38bdf8; font-size: 14px; }
+
+.footer-brand {
+    text-align: right;
+}
+.brand-watermark {
+    font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.8);
+    letter-spacing: -0.5px;
+}
+.brand-sub {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 2px;
+    color: rgba(255,255,255,0.3); display: block; margin-top: 2px;
+}
         .watermark {
             font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5;
         }
@@ -218,38 +287,47 @@
                 <i class="fas fa-download"></i> Download PNG
             </button>
         </div>
-
-        <div class="preview-box">
-            <div id="noticeCard">
-                <div class="card-header-bar" id="cardHeaderBg">
-                    <i class="fas fa-bullhorn header-icon"></i>
+<div class="preview-wrapper">
+    <div id="noticeCard">
+        <div class="card-inner">
+            <div class="card-header-row">
+                <div class="header-brand">
+                    <div class="header-icon-box" id="headerIconBg">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
                     <span class="header-title">Announcement</span>
                 </div>
-                
-                <div class="card-body-content">
-                    <div class="meta-strip">
-                        <span id="pCat" class="notice-badge">Breaking News</span>
-                        <div id="pDate" class="date-info">24 Jan, 2026</div>
-                    </div>
-                    
-                    <div id="pBody" class="notice-text">Write your announcement content here.</div>
+                <div class="header-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
 
-                    <div class="card-footer-bar">
-                        <div class="source-box" id="sourceBox">
-                            <div class="source-label">Source</div>
-                            <div class="source-name">
-                                <span id="pSource">Source Name</span>
-                                <i class="fas fa-check-circle verified"></i>
-                            </div>
-                        </div>
-                        <div class="watermark">Interactive Learning</div>
+            <div class="meta-tags">
+                <span id="pCat" class="category-pill">Update</span>
+                <span id="pDate" class="date-pill">24 Jan, 2026</span>
+            </div>
+
+            <div id="pBody" class="main-notice-text">
+                Your announcement text will appear here with a premium look.
+            </div>
+
+            <div class="card-footer-row">
+                <div class="source-profile" id="sourceBox">
+                    <span class="source-label">Source</span>
+                    <div class="source-info">
+                        <span id="pSource">Official</span>
+                        <i class="fas fa-check-circle verified-tick"></i>
                     </div>
+                </div>
+                <div class="footer-brand">
+                    <div class="brand-watermark">Interactive Learning</div>
+                    <span class="brand-sub">Official Notice</span>
                 </div>
             </div>
         </div>
-
     </div>
-
+</div>
+       
     <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
@@ -340,51 +418,61 @@
             select.appendChild(opt);
         });
 
-        // --- PREVIEW LOGIC ---
         function updatePreview() {
-            const cat = document.getElementById('catInput').value;
-            const body = document.getElementById('bodyInput').value || "Write your announcement content here.";
-            const source = document.getElementById('sourceInput').value.trim();
-            
-            document.getElementById('pCat').innerText = cat;
-            document.getElementById('pBody').innerText = body;
+    // ... (Get values like before) ...
+    const cat = document.getElementById('catInput').value;
+    const body = document.getElementById('bodyInput').value || "Write notice details here...";
+    const source = document.getElementById('sourceInput').value.trim();
 
-            const sourceBox = document.getElementById('sourceBox');
-            if (source === "") {
-                sourceBox.style.display = "none";
-            } else {
-                sourceBox.style.display = "block";
-                document.getElementById('pSource').innerText = source;
-            }
+    // Set Text
+    document.getElementById('pCat').innerText = cat;
+    document.getElementById('pBody').innerText = body;
+    
+    // Source Hide/Show Logic
+    const sourceBox = document.getElementById('sourceBox');
+    if(source === "") {
+        sourceBox.style.display = 'none';
+    } else {
+        sourceBox.style.display = 'flex';
+        document.getElementById('pSource').innerText = source;
+    }
 
-            const now = new Date();
-            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    // Date
+    const now = new Date();
+    document.getElementById('pDate').innerText = "• " + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-            // Apply Theme
-            const themeIdx = document.getElementById('themeSelector').value;
-            const theme = themes[themeIdx];
-            const card = document.getElementById('noticeCard');
-            const badge = document.querySelector('.notice-badge');
-            const headerBar = document.getElementById('cardHeaderBg');
-            
-            card.style.background = theme.bg;
-            
-            // Apply accent color to badge and header background
-            badge.style.color = theme.accent;
-            badge.style.borderColor = theme.accent;
-            headerBar.style.background = theme.accent;
+    // Theme Update Logic inside Preview
+    const themeIdx = document.getElementById('themeSelector').value;
+    const theme = themes[themeIdx];
+    
+    const card = document.getElementById('noticeCard');
+    const iconBg = document.getElementById('headerIconBg');
+    const catPill = document.getElementById('pCat');
 
-            // Smart Text Color for Light Themes
-            const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
-            const textCol = isLight ? "#222" : "#fff";
-            const subCol = isLight ? "#444" : "rgba(255,255,255,0.9)";
-            
-            document.getElementById('pBody').style.color = textCol;
-            document.querySelector('.source-name').style.color = textCol;
-            document.querySelector('.source-label').style.color = subCol;
-            document.querySelector('.date-info').style.color = subCol;
-            document.querySelector('.watermark').style.color = isLight ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.4)";
-        }
+    // Apply Background
+    card.style.background = theme.bg;
+    
+    // Apply Accent Colors
+    document.documentElement.style.setProperty('--primary', theme.accent); // Updates glow
+    iconBg.style.background = theme.accent;
+    iconBg.style.boxShadow = `0 4px 15px ${theme.accent}66`; // Add glow to icon
+    catPill.style.color = theme.accent;
+    catPill.style.borderColor = theme.accent;
+
+    // Light Theme Text Handling
+    const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
+    const textCol = isLight ? "#1e293b" : "#ffffff";
+    const subCol = isLight ? "#64748b" : "rgba(255,255,255,0.6)";
+
+    document.getElementById('pBody').style.color = textCol;
+    document.querySelector('.brand-watermark').style.color = isLight ? "#334155" : "rgba(255,255,255,0.9)";
+    document.querySelector('.header-title').style.color = subCol;
+    document.getElementById('pDate').style.color = subCol;
+    
+    // Source text color
+    document.querySelector('.source-info').style.color = textCol;
+    document.querySelector('.source-label').style.color = subCol;
+}
 
         // --- DOWNLOAD ---
         function downloadImage() {
