@@ -2,13 +2,10 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Notice Maker | Interactive Learning</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -25,6 +22,7 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --accent: #fbbf24;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -32,7 +30,7 @@
         body { 
             font-family: 'Lexend', 'Anek Bangla', sans-serif;
             background-color: var(--bg-body);
-            /* Dotted Pattern */
+            /* Dotted Pattern from Home Page */
             background-image: radial-gradient(#d1d5db 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text-main);
@@ -40,58 +38,15 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- HEADER (DARK GLASSY) --- */
-        header {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(15px);
-            padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .brand-link { text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        
-        .brand-logo {
-            font-size: 18px; font-weight: 800;
-            background: linear-gradient(135deg, #60a5fa 0%, #c084fc 50%, #f472b6 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .hamburger {
-            cursor: pointer; width: 28px; height: 20px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            z-index: 1100;
-        }
-        .hamburger span { display: block; height: 2px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-        .nav-menu {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 260px;
-            background: #0f172a; display: flex; flex-direction: column; padding-top: 80px;
-            transition: 0.4s; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            border-left: 1px solid rgba(255,255,255,0.1);
-        }
-        .nav-menu.open { right: 0; }
-        .nav-menu a {
-            color: #f1f5f9; text-decoration: none; padding: 15px 30px;
-            font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;
-        }
-        .nav-menu a:hover { padding-left: 35px; color: #8b5cf6; background: rgba(255,255,255,0.03); }
-
         /* --- MAIN LAYOUT --- */
         .container {
-            margin-top: 90px;
+            margin-top: 80px;
             width: 95%; max-width: 1200px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
             gap: 20px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR BOX (WHITE PANEL) --- */
+        /* --- EDITOR BOX (White Panel like Home) --- */
         .editor-box {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg);
@@ -112,7 +67,7 @@
             color: #374151; margin-bottom: 8px; letter-spacing: 0.3px;
         }
 
-        /* --- MODERN INPUTS --- */
+        /* --- MODERN INPUTS (Same as Home) --- */
         .form-control {
             width: 100%; background: #ffffff;
             border: 1px solid #d1d5db; color: #111827;
@@ -126,7 +81,7 @@
         textarea.form-control { resize: vertical; min-height: 120px; }
         select.form-control { cursor: pointer; }
 
-        /* --- DOWNLOAD BUTTON --- */
+        /* --- DOWNLOAD BUTTON (Dark like Home) --- */
         .btn-download {
             width: 100%; padding: 14px; margin-top: 10px;
             border-radius: 10px; border: none;
@@ -143,15 +98,16 @@
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- NOTICE CARD DESIGN --- */
+        /* --- NOTICE CARD (Original Design) --- */
         #noticeCard {
             width: 100%; max-width: 450px;
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border-radius: 6px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             overflow: hidden; position: relative;
             border: 1px solid rgba(255,255,255,0.1);
             color: white;
+            transition: background 0.3s ease;
         }
 
         .card-top {
@@ -166,7 +122,7 @@
 
         .notice-badge {
             display: inline-block; padding: 6px 14px; border-radius: 50px;
-            background: rgba(255,255,255,0.15); color: #fbbf24;
+            background: rgba(255,255,255,0.15); color: var(--accent);
             font-size: 13px; font-weight: 700; margin-bottom: 5px;
             border: 1px solid rgba(255,255,255,0.2);
         }
@@ -182,7 +138,7 @@
         .source-box {
             margin-top: 30px; padding-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            display: none;
+            display: none; /* Logic handles visibility */
         }
         .source-label { font-size: 10px; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
         .source-name { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
@@ -210,26 +166,14 @@
 </head>
 <body>
 
-    <header>
-        <a href="../index.html" class="brand-link">
-            <span class="brand-logo">Interactive Learning</span>
-        </a>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <a href="../index.html">Home</a>
-            <a href="pdf.html">PDF Tool</a>
-            <a href="quotes.html">Quote Maker</a>
-            <a href="notice.html">Notice Maker</a>
-        </div>
-    </header>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
 
     <div class="container">
         
         <div class="editor-box">
             <div class="section-header">
-                <div class="section-title">Create Notice</div>
+                <div class="section-title">Notice Creator</div>
             </div>
             
             <div class="input-group">
@@ -301,11 +245,6 @@
     <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('open');
-            document.querySelector('.hamburger').classList.toggle('active');
-        }
-
         // --- 100 THEMES ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
@@ -402,6 +341,7 @@
             document.getElementById('pCat').innerText = cat;
             document.getElementById('pBody').innerText = body;
 
+            // Source Visibility Logic
             const sourceBox = document.getElementById('sourceBox');
             if (source === "") {
                 sourceBox.style.display = "none";
@@ -410,6 +350,7 @@
                 document.getElementById('pSource').innerText = source;
             }
 
+            // Date
             const now = new Date();
             document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
