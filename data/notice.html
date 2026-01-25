@@ -19,10 +19,8 @@
             --text-main: #111827;
             --text-muted: #6b7280;
             --border-light: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --accent: #fbbf24;
+            --accent: #fbbf24; /* Dynamic Accent */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -37,15 +35,61 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- MAIN LAYOUT --- */
+        /* --- HEADER (DARK VIBE) --- */
+        header {
+            width: 100%;
+            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            padding: 12px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .brand-link { text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        
+        .brand-logo {
+            font-size: 16px; font-weight: 700; color: white; /* Smaller Font */
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .logo-img { 
+            height: 32px; width: 32px; border-radius: 50%; 
+            object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .hamburger {
+            cursor: pointer; width: 26px; height: 18px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 1100;
+        }
+        .hamburger span { display: block; height: 2px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .nav-menu {
+            position: fixed; top: 0; right: -100%; height: 100vh; width: 250px;
+            background: #0f172a; display: flex; flex-direction: column; padding-top: 70px;
+            transition: 0.4s; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-menu.open { right: 0; }
+        .nav-menu a {
+            color: #cbd5e1; text-decoration: none; padding: 12px 25px;
+            font-size: 14px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;
+        }
+        .nav-menu a:hover { padding-left: 30px; color: #8b5cf6; background: rgba(255,255,255,0.03); }
+
+        /* --- CONTAINER --- */
         .container {
             margin-top: 80px;
             width: 95%; max-width: 1200px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
-            gap: 20px; padding-bottom: 40px; flex: 1;
+            gap: 25px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR BOX --- */
+        /* --- EDITOR BOX (White Panel) --- */
         .editor-box {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg);
@@ -56,24 +100,23 @@
 
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light);
+            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light);
         }
-        .section-title { font-size: 20px; font-weight: 700; color: #1f2937; letter-spacing: -0.5px; }
+        .section-title { font-size: 18px; font-weight: 700; color: #1f2937; letter-spacing: -0.5px; }
 
-        .input-group { margin-bottom: 20px; }
+        .input-group { margin-bottom: 18px; }
         .input-group label {
-            display: block; font-size: 13px; font-weight: 600;
-            color: #374151; margin-bottom: 8px; letter-spacing: 0.3px;
+            display: block; font-size: 12px; font-weight: 600;
+            color: #374151; margin-bottom: 6px; letter-spacing: 0.3px;
         }
 
         .form-control {
             width: 100%; background: #ffffff;
             border: 1px solid #d1d5db; color: #111827;
-            padding: 12px 16px; border-radius: 8px; font-size: 15px;
+            padding: 12px 16px; border-radius: 8px; font-size: 14px;
             transition: all 0.2s ease-in-out;
-            box-shadow: var(--shadow-sm); font-family: inherit;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: inherit;
         }
-        .form-control:hover { border-color: #9ca3af; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
         textarea.form-control { resize: vertical; min-height: 120px; }
         select.form-control { cursor: pointer; }
@@ -82,11 +125,11 @@
             width: 100%; padding: 14px; margin-top: 10px;
             border-radius: 10px; border: none;
             background: #111827; color: white;
-            font-weight: 600; cursor: pointer; font-size: 15px;
-            box-shadow: var(--shadow-md); transition: all 0.2s;
+            font-weight: 700; cursor: pointer; font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: all 0.2s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-download:hover { background: #000000; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn-download:hover { background: #000000; transform: translateY(-2px); }
 
         /* --- PREVIEW SECTION --- */
         .preview-box {
@@ -94,143 +137,87 @@
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-      /* --- PREMIUM NOTICE CARD DESIGN --- */
-#noticeCard {
-    width: 100%; max-width: 450px;
-    /* Deep Matte Dark Background */
-    background: #0f172a; 
-    border-radius: 20px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: 'Anek Bangla', sans-serif;
-    transition: all 0.3s ease;
-}
+        /* --- NOTICE CARD (The Requested Design) --- */
+        #noticeCard {
+            width: 100%; max-width: 450px;
+            /* Dark Gradient Background */
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-radius: 12px;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+            overflow: hidden; position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column;
+            color: white; font-family: 'Anek Bangla', sans-serif;
+            transition: all 0.3s ease;
+        }
 
-/* Decorative Gradient Blur at Top */
-#noticeCard::before {
-    content: ''; position: absolute; top: -50px; left: -50px;
-    width: 200px; height: 200px;
-    background: var(--primary);
-    filter: blur(80px); opacity: 0.4; z-index: 0;
-    border-radius: 50%;
-}
-#noticeCard::after {
-    content: ''; position: absolute; bottom: -50px; right: -50px;
-    width: 200px; height: 200px;
-    background: var(--accent);
-    filter: blur(80px); opacity: 0.2; z-index: 0;
-    border-radius: 50%;
-}
+        /* 1. Header Bar (Centered, Accent BG) */
+        .card-header-strip {
+            background: var(--accent); /* Dynamic Color */
+            padding: 15px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            position: relative; z-index: 5;
+        }
+        .header-icon { font-size: 22px; color: white; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
+        .header-text { 
+            font-size: 16px; font-weight: 800; color: white; 
+            text-transform: uppercase; letter-spacing: 2px; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
 
-/* Card Content Container */
-.card-inner {
-    position: relative; z-index: 2;
-    padding: 30px;
-    display: flex; flex-direction: column;
-    min-height: 400px;
-    background: rgba(15, 23, 42, 0.3); /* Tint */
-    backdrop-filter: blur(10px); /* Glass Effect */
-}
+        /* 2. Content Body */
+        .card-body-content { 
+            padding: 25px 30px; 
+            position: relative; z-index: 2; 
+            flex: 1; display: flex; flex-direction: column;
+            min-height: 350px;
+        }
 
-/* --- HEADER SECTION --- */
-.card-header-row {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 15px;
-}
+        /* Meta Info (Category pill) */
+        .meta-row { margin-bottom: 25px; }
+        .cat-pill {
+            display: inline-block; padding: 6px 14px; border-radius: 50px;
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--accent); font-size: 12px; font-weight: 700;
+            letter-spacing: 0.5px; backdrop-filter: blur(5px);
+        }
 
-.header-brand {
-    display: flex; align-items: center; gap: 8px;
-}
-.header-icon-box {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, var(--primary), #8b5cf6);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 14px;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-}
-.header-title {
-    font-size: 12px; font-weight: 800; letter-spacing: 2px;
-    text-transform: uppercase; color: rgba(255,255,255,0.9);
-}
+        /* Main Notice Text */
+        .notice-main-text {
+            font-size: 22px; line-height: 1.5; font-weight: 500;
+            color: rgba(255,255,255,0.95);
+            white-space: pre-wrap; margin-bottom: auto;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-.header-dots {
-    display: flex; gap: 4px;
-}
-.header-dots span {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-}
+        /* 3. Footer (Source Left, Date/Watermark Right) */
+        .card-footer-area {
+            margin-top: 40px; padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: flex-end;
+        }
 
-/* --- BODY SECTION --- */
-.meta-tags {
-    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
-}
+        /* Source (Left) */
+        .source-wrapper { display: flex; flex-direction: column; gap: 4px; }
+        .source-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); font-weight: 600; }
+        .source-val { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+        .verified-badge { color: #38bdf8; font-size: 14px; }
 
-.category-pill {
-    padding: 6px 16px; border-radius: 50px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--accent); font-size: 13px; font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.date-pill {
-    padding: 6px 0;
-    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
-}
-
-.main-notice-text {
-    font-size: 24px; line-height: 1.5; color: #ffffff;
-    font-weight: 500; margin-bottom: auto;
-    white-space: pre-wrap;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-/* --- FOOTER SECTION --- */
-.card-footer-row {
-    margin-top: 40px;
-    display: flex; justify-content: space-between; align-items: flex-end;
-}
-
-.source-profile {
-    display: none; /* JS will show this */
-    flex-direction: column; gap: 4px;
-}
-.source-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
-    color: rgba(255,255,255,0.4); font-weight: 600;
-}
-.source-info {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 15px; font-weight: 700; color: white;
-}
-.verified-tick { color: #38bdf8; font-size: 14px; }
-
-.footer-brand {
-    text-align: right;
-}
-.brand-watermark {
-    font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.8);
-    letter-spacing: -0.5px;
-}
-.brand-sub {
-    font-size: 9px; text-transform: uppercase; letter-spacing: 2px;
-    color: rgba(255,255,255,0.3); display: block; margin-top: 2px;
-}
-        .watermark {
-            font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5;
+        /* Meta Right (Date + Watermark) */
+        .meta-right { text-align: right; display: flex; flex-direction: column; gap: 4px; }
+        .date-val { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
+        .watermark-text {
+            font-size: 11px; font-weight: 800; text-transform: uppercase; 
+            letter-spacing: 1px; color: rgba(255,255,255,0.4); /* High Visibility */
         }
 
         /* Footer */
         footer {
             width: 100%; padding: 20px; text-align: center;
             background: #1f2937; border-top: 1px solid #374151;
-            margin-top: auto; font-size: 14px; color: white;
+            margin-top: auto; font-size: 13px; color: #9ca3af;
         }
 
         @media (max-width: 768px) {
@@ -241,8 +228,21 @@
 </head>
 <body>
 
-    <div id="header"></div>
-    <script src="../js/header.js"></script>
+    <header>
+        <a href="../index.html" class="brand-link">
+            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
+            <span class="brand-text">Interactive Learning</span>
+        </a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="../index.html">Home</a>
+            <a href="pdf.html">PDF Tool</a>
+            <a href="quotes.html">Quote Maker</a>
+            <a href="notice.html">Notice Maker</a>
+        </div>
+    </header>
 
     <div class="container">
         
@@ -287,51 +287,52 @@
                 <i class="fas fa-download"></i> Download PNG
             </button>
         </div>
-<div class="preview-wrapper">
-    <div id="noticeCard">
-        <div class="card-inner">
-            <div class="card-header-row">
-                <div class="header-brand">
-                    <div class="header-icon-box" id="headerIconBg">
-                        <i class="fas fa-bullhorn"></i>
+
+        <div class="preview-box">
+            <div id="noticeCard">
+                <div class="card-top-strip" id="cardHeader">
+                    <i class="fas fa-bullhorn header-icon"></i>
+                    <span class="header-text">Announcement</span>
+                </div>
+                
+                <div class="card-body-content">
+                    <div class="meta-row">
+                        <span id="pCat" class="cat-pill">Breaking News</span>
                     </div>
-                    <span class="header-title">Announcement</span>
-                </div>
-                <div class="header-dots">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-
-            <div class="meta-tags">
-                <span id="pCat" class="category-pill">Update</span>
-                <span id="pDate" class="date-pill">24 Jan, 2026</span>
-            </div>
-
-            <div id="pBody" class="main-notice-text">
-                Your announcement text will appear here with a premium look.
-            </div>
-
-            <div class="card-footer-row">
-                <div class="source-profile" id="sourceBox">
-                    <span class="source-label">Source</span>
-                    <div class="source-info">
-                        <span id="pSource">Official</span>
-                        <i class="fas fa-check-circle verified-tick"></i>
+                    
+                    <div id="pBody" class="notice-main-text">
+                        Write your announcement content here.
                     </div>
-                </div>
-                <div class="footer-brand">
-                    <div class="brand-watermark">Interactive Learning</div>
-                    <span class="brand-sub">Official Notice</span>
+
+                    <div class="card-footer-area">
+                        <div class="source-wrapper" id="sourceBox">
+                            <span class="source-title" id="srcLbl">Source</span>
+                            <div class="source-val">
+                                <span id="pSource">Source Name</span>
+                                <i class="fas fa-check-circle verified-badge"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="meta-right">
+                            <div id="pDate" class="date-val">24 Jan 2026</div>
+                            <div class="watermark-text">Interactive Learning</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
-       
+
     <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- 100 THEMES ---
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('open');
+            document.querySelector('.hamburger').classList.toggle('active');
+        }
+
+        // --- 100 THEMES (Curated) ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
@@ -418,61 +419,62 @@
             select.appendChild(opt);
         });
 
+        // --- PREVIEW LOGIC ---
         function updatePreview() {
-    // ... (Get values like before) ...
-    const cat = document.getElementById('catInput').value;
-    const body = document.getElementById('bodyInput').value || "Write notice details here...";
-    const source = document.getElementById('sourceInput').value.trim();
+            const cat = document.getElementById('catInput').value;
+            const body = document.getElementById('bodyInput').value || "Write notice details here...";
+            const source = document.getElementById('sourceInput').value.trim();
+            
+            document.getElementById('pCat').innerText = cat;
+            document.getElementById('pBody').innerText = body;
 
-    // Set Text
-    document.getElementById('pCat').innerText = cat;
-    document.getElementById('pBody').innerText = body;
-    
-    // Source Hide/Show Logic
-    const sourceBox = document.getElementById('sourceBox');
-    if(source === "") {
-        sourceBox.style.display = 'none';
-    } else {
-        sourceBox.style.display = 'flex';
-        document.getElementById('pSource').innerText = source;
-    }
+            // Source Hiding
+            const sourceBox = document.getElementById('sourceBox');
+            if(source === "") {
+                sourceBox.style.display = "none";
+            } else {
+                sourceBox.style.display = "flex";
+                document.getElementById('pSource').innerText = source;
+            }
 
-    // Date
-    const now = new Date();
-    document.getElementById('pDate').innerText = "• " + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            // Date
+            const now = new Date();
+            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-    // Theme Update Logic inside Preview
-    const themeIdx = document.getElementById('themeSelector').value;
-    const theme = themes[themeIdx];
-    
-    const card = document.getElementById('noticeCard');
-    const iconBg = document.getElementById('headerIconBg');
-    const catPill = document.getElementById('pCat');
+            // Apply Theme
+            const themeIdx = document.getElementById('themeSelector').value;
+            const theme = themes[themeIdx];
+            const card = document.getElementById('noticeCard');
+            const header = document.getElementById('cardHeader');
+            const catPill = document.getElementById('pCat');
+            
+            // Backgrounds
+            card.style.background = theme.bg;
+            header.style.background = theme.accent;
+            
+            // Text Color for Light Themes
+            const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
+            const textCol = isLight ? "#1e293b" : "#ffffff";
+            const mutedCol = isLight ? "#64748b" : "rgba(255,255,255,0.7)";
+            const borderCol = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
 
-    // Apply Background
-    card.style.background = theme.bg;
-    
-    // Apply Accent Colors
-    document.documentElement.style.setProperty('--primary', theme.accent); // Updates glow
-    iconBg.style.background = theme.accent;
-    iconBg.style.boxShadow = `0 4px 15px ${theme.accent}66`; // Add glow to icon
-    catPill.style.color = theme.accent;
-    catPill.style.borderColor = theme.accent;
+            document.getElementById('pBody').style.color = textCol;
+            document.querySelector('.source-name').style.color = textCol;
+            document.getElementById('srcLbl').style.color = mutedCol;
+            document.getElementById('pDate').style.color = mutedCol;
+            document.querySelector('.watermark-text').style.color = mutedCol;
+            document.querySelector('.card-footer-area').style.borderTopColor = borderCol;
 
-    // Light Theme Text Handling
-    const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
-    const textCol = isLight ? "#1e293b" : "#ffffff";
-    const subCol = isLight ? "#64748b" : "rgba(255,255,255,0.6)";
-
-    document.getElementById('pBody').style.color = textCol;
-    document.querySelector('.brand-watermark').style.color = isLight ? "#334155" : "rgba(255,255,255,0.9)";
-    document.querySelector('.header-title').style.color = subCol;
-    document.getElementById('pDate').style.color = subCol;
-    
-    // Source text color
-    document.querySelector('.source-info').style.color = textCol;
-    document.querySelector('.source-label').style.color = subCol;
-}
+            // Category Pill Style
+            catPill.style.color = theme.accent;
+            catPill.style.borderColor = theme.accent;
+            if(isLight) {
+                catPill.style.background = "rgba(0,0,0,0.05)";
+                header.style.color = "#ffffff"; /* Header text always white on accent */
+            } else {
+                catPill.style.background = "rgba(255,255,255,0.1)";
+            }
+        }
 
         // --- DOWNLOAD ---
         function downloadImage() {
