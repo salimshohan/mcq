@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    // --- 0. Load FontAwesome (Icon Library) ---
+    // আইকনগুলো যাতে কাজ করে সেজন্য আমরা অটোমেটিক CDN যুক্ত করছি
+    const faLink = document.createElement("link");
+    faLink.rel = "stylesheet";
+    faLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
+    document.head.appendChild(faLink);
   
     // --- 1. CSS Styles Injection ---
     const headerStyles = `
@@ -120,6 +127,14 @@ document.addEventListener("DOMContentLoaded", function () {
           transition: 0.2s ease;
           font-family: sans-serif;
       }
+
+      /* Icon Styles */
+      .mobile-menu a i {
+          width: 25px;
+          text-align: center;
+          color: #4c46c9;
+          font-size: 18px;
+      }
   
       .mobile-menu a:hover, .mobile-menu a.active {
           background: #eff0f0;
@@ -139,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.head.appendChild(styleSheet);
   
     // --- 2. HTML Structure Injection ---
-    // Note: I placed the links INSIDE the mobile-menu div
     const headerHTML = `
       <header>
           <a href="/" class="brand-logo">
@@ -155,10 +169,18 @@ document.addEventListener("DOMContentLoaded", function () {
       </header>
   
       <div class="mobile-menu" id="mobileMenu">
-          <a href="/">Home</a>
-          <a href="/data/pdf.html">PDF Tool</a>
-          <a href="/data/quotes.html">Quotes Maker</a>
-          <a href="/data/notice.html">Notice Maker</a>
+          <a href="/">
+              <i class="fa-solid fa-house"></i> Home
+          </a>
+          <a href="/data/pdf.html">
+              <i class="fa-solid fa-file-pdf"></i> PDF Tool
+          </a>
+          <a href="/data/quotes.html">
+              <i class="fa-solid fa-quote-left"></i> Quotes Maker
+          </a>
+          <a href="/data/notice.html">
+              <i class="fa-solid fa-bullhorn"></i> Notice Maker
+          </a>
       </div>
     `;
   
@@ -175,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileMenu.classList.toggle("active");
     });
 
-    // Close menu when clicking outside (Optional but recommended UX)
+    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         const isClickInside = hamburgerBtn.contains(event.target) || mobileMenu.contains(event.target);
         if (!isClickInside && mobileMenu.classList.contains('active')) {
