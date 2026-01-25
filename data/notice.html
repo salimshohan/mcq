@@ -258,14 +258,11 @@ opacity:.4;
 }
 
 /* ===== FOOTER (HOME SAME) ===== */
-footer{
-width:100%;
-padding:20px;
-text-align:center;
-background:rgba(15,23,42,.95);
-border-top:1px solid var(--border-color);
-font-size:13px;
-color:var(--text-muted);
+footer {
+    width: 100%; padding: 15px; text-align: center;
+    background: #1f2937;
+    border-top: 1px solid #dadada;
+    margin-top: auto; font-size: 14px; color: white;
 }
 
 /* ===== MOBILE ===== */
@@ -277,21 +274,9 @@ color:var(--text-muted);
 
 <body>
 
-<header>
-<div class="brand-logo">
-<img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" class="logo-img">
-Interactive Learning
-</div>
-<div class="hamburger" onclick="toggleMenu()">
-<span></span><span></span><span></span>
-</div>
-<div class="nav-menu" id="navMenu">
-<a href="../index.html">MCQ Generator</a>
-<a href="notice.html">Notice Maker</a>
-<a href="quotes.html">Quote Maker</a>
-<a href="pdf.html">PDF Tool</a>
-</div>
-</header>
+<div id="header></div>
+<script src="/js/header.js">
+</script>
 
 <div class="container">
 
@@ -361,7 +346,7 @@ Your notice preview will appear here.
 
 </div>
 
-<footer>&copy; <span id="year"></span> Interactive Learning</footer>
+<footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
 <script>
 document.getElementById("year").innerText=new Date().getFullYear();
