@@ -389,52 +389,65 @@
             }
         }
 
-        // --- DOWNLOAD PDF (Correct Clone & Random Name) ---
-        function downloadPDF() {
-            const container = document.getElementById('pdfPreviewContainer');
-            const btn = document.querySelector('.btn-pdf');
-            
-            // Random Name: notes_ + random
-            const rand = Math.random().toString(36).substring(2, 7);
-            const filename = `notes_${rand}.pdf`;
+      // --- DOWNLOAD PDF (Fixed Blank Page Issue) ---
+function downloadPDF() {
+    const container = document.getElementById('pdfPreviewContainer');
+    const btn = document.querySelector('.btn-pdf');
+    
+    // Random Name: notes_ + random
+    const rand = Math.random().toString(36).substring(2, 7);
+    const filename = `notes_${rand}.pdf`;
 
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // CLONE LOGIC to fix blank page issue
-            const clone = container.cloneNode(true);
-            
-            // Force styles on clone for PDF generation
-            clone.style.transform = 'none';
-            clone.style.gap = '0';
-            clone.style.margin = '0';
-            clone.style.width = '210mm';
-            
-            // Ensure no margins on pages in the clone
-            const clonePages = clone.querySelectorAll('.a4-page');
-            clonePages.forEach(p => p.style.marginBottom = '0');
+    // 1. CLONE Logic
+    const clone = container.cloneNode(true);
+    
+    // 2. Select pages inside clone
+    const clonePages = clone.querySelectorAll('.a4-page');
 
-            // Off-screen wrapper
-            const tempWrapper = document.createElement('div');
-            tempWrapper.style.position = 'absolute';
-            tempWrapper.style.left = '-9999px';
-            tempWrapper.style.top = '0';
-            tempWrapper.appendChild(clone);
-            document.body.appendChild(tempWrapper);
+    // 3. FORCE EXACT HEIGHT (This fixes the blank page)
+    // 296.95mm instead of 297mm ensures no sub-pixel overflow triggers a new page
+    const totalHeight = clonePages.length * 296.95; 
+    
+    // 4. Reset Styles for PDF
+    clone.style.transform = 'none';
+    clone.style.gap = '0'; 
+    clone.style.margin = '0';
+    clone.style.padding = '0';
+    clone.style.width = '210mm';
+    clone.style.height = totalHeight + 'mm'; // Strict Height
+    clone.style.overflow = 'hidden';
 
-            const opt = {
-                margin: 0,
-                filename: filename,
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+    // 5. Clean individual pages in clone
+    clonePages.forEach(p => {
+        p.style.marginBottom = '0';
+        p.style.boxShadow = 'none';
+        p.style.height = '297mm'; // Ensure page height is fixed
+    });
 
-            html2pdf().set(opt).from(clone).save().then(() => {
-                document.body.removeChild(tempWrapper); // Cleanup
-                btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
-            });
-        }
+    // 6. Off-screen wrapper
+    const tempWrapper = document.createElement('div');
+    tempWrapper.style.position = 'absolute';
+    tempWrapper.style.left = '-9999px';
+    tempWrapper.style.top = '0';
+    tempWrapper.appendChild(clone);
+    document.body.appendChild(tempWrapper);
 
+    const opt = {
+        margin: 0,
+        filename: filename,
+        image: { type: 'jpeg', quality: 1 },
+        // useCORS helps with images, scrollY:0 fixes scroll offset bugs
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(clone).save().then(() => {
+        document.body.removeChild(tempWrapper); // Cleanup
+        btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
+    });
+}
         // --- DOWNLOAD IMAGES (ZIP) ---
         async function downloadImagesZip() {
             const btn = document.querySelector('.btn-img');
