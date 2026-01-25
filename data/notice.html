@@ -19,8 +19,8 @@
             --text-main: #111827;
             --text-muted: #6b7280;
             --border-light: #e5e7eb;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --accent: #fbbf24; /* Dynamic Accent */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -35,10 +35,11 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- HEADER (DARK VIBE) --- */
+        /* --- NAVBAR (Home Style) --- */
         header {
             width: 100%;
-            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
             padding: 12px 5%;
             display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; z-index: 1000;
@@ -47,222 +48,169 @@
         }
 
         .brand-link { text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        
-        .brand-logo {
-            font-size: 16px; font-weight: 700; color: white; /* Smaller Font */
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        
-        .logo-img { 
-            height: 32px; width: 32px; border-radius: 50%; 
-            object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
-        }
+        .brand-logo { font-size: 18px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 1px; }
+        .logo-img { height: 35px; width: 35px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.5); }
 
-        .hamburger {
-            cursor: pointer; width: 26px; height: 18px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            z-index: 1100;
-        }
+        .hamburger { cursor: pointer; width: 28px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; }
         .hamburger span { display: block; height: 2px; width: 100%; background: white; border-radius: 2px; transition: 0.3s; }
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        .nav-menu {
-            position: fixed; top: 0; right: -100%; height: 100vh; width: 250px;
-            background: #0f172a; display: flex; flex-direction: column; padding-top: 70px;
-            transition: 0.4s; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            border-left: 1px solid rgba(255,255,255,0.1);
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%; width: 260px; height: 100vh;
+            background: #0f172a; display: flex; flex-direction: column; padding-top: 80px;
+            transition: 0.4s; box-shadow: -5px 0 20px rgba(0,0,0,0.5); z-index: 999;
         }
-        .nav-menu.open { right: 0; }
-        .nav-menu a {
-            color: #cbd5e1; text-decoration: none; padding: 12px 25px;
-            font-size: 14px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            color: var(--text-main); text-decoration: none; padding: 15px 30px;
+            font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); color: #ccc;
         }
-        .nav-menu a:hover { padding-left: 30px; color: #8b5cf6; background: rgba(255,255,255,0.03); }
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 80px;
-            width: 95%; max-width: 1200px;
+            margin-top: 90px; width: 95%; max-width: 1200px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
-            gap: 25px; padding-bottom: 40px; flex: 1;
+            gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR BOX (White Panel) --- */
+        /* --- EDITOR BOX (White) --- */
         .editor-box {
             flex: 1; min-width: 350px; max-width: 500px;
-            background: var(--panel-bg);
-            padding: 25px; border-radius: 16px;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-lg);
+            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            border: 1px solid var(--border-light); box-shadow: var(--shadow-lg);
         }
-
-        .section-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light);
-        }
-        .section-title { font-size: 18px; font-weight: 700; color: #1f2937; letter-spacing: -0.5px; }
-
-        .input-group { margin-bottom: 18px; }
-        .input-group label {
-            display: block; font-size: 12px; font-weight: 600;
-            color: #374151; margin-bottom: 6px; letter-spacing: 0.3px;
-        }
-
+        .section-title { font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 6px; }
         .form-control {
-            width: 100%; background: #ffffff;
-            border: 1px solid #d1d5db; color: #111827;
-            padding: 12px 16px; border-radius: 8px; font-size: 14px;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: inherit;
+            width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
+            padding: 12px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
         }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
-        textarea.form-control { resize: vertical; min-height: 120px; }
-        select.form-control { cursor: pointer; }
-
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
         .btn-download {
-            width: 100%; padding: 14px; margin-top: 10px;
-            border-radius: 10px; border: none;
-            background: #111827; color: white;
-            font-weight: 700; cursor: pointer; font-size: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 14px; margin-top: 15px; border-radius: 10px; border: none;
+            background: #111827; color: white; font-weight: 600; cursor: pointer;
+            box-shadow: var(--shadow-md); transition: 0.2s;
         }
-        .btn-download:hover { background: #000000; transform: translateY(-2px); }
+        .btn-download:hover { background: #000; transform: translateY(-2px); }
 
-        /* --- PREVIEW SECTION --- */
-        .preview-box {
+        /* --- PREVIEW WRAPPER --- */
+        .preview-wrapper {
             flex: 1.2; min-width: 350px;
             display: flex; justify-content: center; align-items: flex-start; padding-top: 10px;
         }
 
-        /* --- NOTICE CARD (The Requested Design) --- */
+        /* =========================================
+           NOTICE CARD DESIGN (MATCHING REFERENCE)
+           ========================================= */
         #noticeCard {
-            width: 100%; max-width: 450px;
-            /* Dark Gradient Background */
-            background: linear-gradient(145deg, #1e293b, #0f172a);
+            width: 100%; max-width: 480px;
+            /* Base Background (Will be overridden by theme) */
+            background: #2e0249; 
             border-radius: 12px;
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
-            overflow: hidden; position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            font-family: 'Anek Bangla', sans-serif;
+            color: white;
+            position: relative;
+        }
+
+        /* 1. Header Strip */
+        .nc-header {
+            /* Lighter accent color */
+            background: #570a57; 
+            padding: 12px 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-size: 20px; font-weight: 700; letter-spacing: 0.5px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .nc-header i { font-size: 24px; transform: rotate(-15deg); }
+
+        /* 2. Body */
+        .nc-body {
+            padding: 25px 30px 20px 30px;
+            min-height: 300px;
             display: flex; flex-direction: column;
-            color: white; font-family: 'Anek Bangla', sans-serif;
-            transition: all 0.3s ease;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.1) 100%);
         }
 
-        /* 1. Header Bar (Centered, Accent BG) */
-        .card-header-strip {
-            background: var(--accent); /* Dynamic Color */
-            padding: 15px;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            position: relative; z-index: 5;
-        }
-        .header-icon { font-size: 22px; color: white; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
-        .header-text { 
-            font-size: 16px; font-weight: 800; color: white; 
-            text-transform: uppercase; letter-spacing: 2px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        /* Category Pill */
+        .nc-cat {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 18px; border-radius: 50px;
+            font-size: 14px; font-weight: 600; color: #e9d5ff;
+            margin-bottom: 20px; width: fit-content;
         }
 
-        /* 2. Content Body */
-        .card-body-content { 
-            padding: 25px 30px; 
-            position: relative; z-index: 2; 
-            flex: 1; display: flex; flex-direction: column;
-            min-height: 350px;
+        /* Text */
+        .nc-text {
+            font-size: 24px; line-height: 1.5; font-weight: 500;
+            color: #ffffff; margin-bottom: auto;
+            white-space: pre-wrap;
         }
 
-        /* Meta Info (Category pill) */
-        .meta-row { margin-bottom: 25px; }
-        .cat-pill {
-            display: inline-block; padding: 6px 14px; border-radius: 50px;
-            background: rgba(255,255,255,0.1); 
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--accent); font-size: 12px; font-weight: 700;
-            letter-spacing: 0.5px; backdrop-filter: blur(5px);
+        /* Divider Line */
+        .nc-line {
+            height: 1px; width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            margin: 25px 0 15px 0;
         }
 
-        /* Main Notice Text */
-        .notice-main-text {
-            font-size: 22px; line-height: 1.5; font-weight: 500;
-            color: rgba(255,255,255,0.95);
-            white-space: pre-wrap; margin-bottom: auto;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* 3. Footer (Source Left, Date/Watermark Right) */
-        .card-footer-area {
-            margin-top: 40px; padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+        /* Footer */
+        .nc-footer {
             display: flex; justify-content: space-between; align-items: flex-end;
         }
 
-        /* Source (Left) */
-        .source-wrapper { display: flex; flex-direction: column; gap: 4px; }
-        .source-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); font-weight: 600; }
-        .source-val { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
-        .verified-badge { color: #38bdf8; font-size: 14px; }
+        /* Source */
+        .nc-source-wrap { display: none; flex-direction: column; gap: 2px; }
+        .nc-source-lbl { font-size: 11px; opacity: 0.6; text-transform: uppercase; }
+        .nc-source { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .nc-verified { color: #38bdf8; font-size: 14px; }
 
-        /* Meta Right (Date + Watermark) */
-        .meta-right { text-align: right; display: flex; flex-direction: column; gap: 4px; }
-        .date-val { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
-        .watermark-text {
-            font-size: 11px; font-weight: 800; text-transform: uppercase; 
-            letter-spacing: 1px; color: rgba(255,255,255,0.4); /* High Visibility */
-        }
+        /* Meta (Right) */
+        .nc-meta { text-align: right; display: flex; flex-direction: column; gap: 2px; }
+        .nc-date { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9); }
+        .nc-watermark { font-size: 12px; font-weight: 600; opacity: 0.4; }
 
         /* Footer */
         footer {
             width: 100%; padding: 20px; text-align: center;
             background: #1f2937; border-top: 1px solid #374151;
-            margin-top: auto; font-size: 13px; color: #9ca3af;
+            margin-top: auto; font-size: 13px; color: white;
         }
 
         @media (max-width: 768px) {
-            .container { flex-direction: column; padding: 20px; }
-            .editor-box, .preview-box { min-width: 100%; }
+            .container { flex-direction: column; padding: 15px; }
+            .editor-box, .preview-wrapper { min-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="../index.html" class="brand-link">
-            <img src="https://i.postimg.cc/jSTKgmrc/ib-logo.png" alt="Logo" class="logo-img">
-            <span class="brand-text">Interactive Learning</span>
-        </a>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <a href="../index.html">Home</a>
-            <a href="pdf.html">PDF Tool</a>
-            <a href="quotes.html">Quote Maker</a>
-            <a href="notice.html">Notice Maker</a>
-        </div>
-    </header>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
 
     <div class="container">
         
         <div class="editor-box">
-            <div class="section-header">
-                <div class="section-title">Notice Creator</div>
-            </div>
+            <div class="section-title">Notice Creator</div>
             
             <div class="input-group">
                 <label>Category</label>
                 <select id="catInput" class="form-control" onchange="updatePreview()">
                     <option>Breaking News</option>
                     <option>Urgent Notice</option>
+                    <option>Result Published</option>
                     <option>Exam Routine</option>
                     <option>Admit Card</option>
-                    <option>Result Published</option>
                     <option>Holiday Notice</option>
                     <option>Admission Update</option>
-                    <option>Scholarship Info</option>
-                    <option>Class Suspension</option>
                     <option>Important Alert</option>
                 </select>
             </div>
@@ -275,11 +223,11 @@
 
             <div class="input-group">
                 <label>Announcement Text</label>
-                <textarea id="bodyInput" class="form-control" placeholder="Write notice details here..." oninput="updatePreview()"></textarea>
+                <textarea id="bodyInput" class="form-control" placeholder="Write announcement here..." oninput="updatePreview()"></textarea>
             </div>
 
             <div class="input-group">
-                <label>Source Name (Optional)</label>
+                <label>Source Name</label>
                 <input id="sourceInput" class="form-control" placeholder="e.g. Daily Campus" oninput="updatePreview()">
             </div>
 
@@ -288,34 +236,32 @@
             </button>
         </div>
 
-        <div class="preview-box">
+        <div class="preview-wrapper">
             <div id="noticeCard">
-                <div class="card-top-strip" id="cardHeader">
-                    <i class="fas fa-bullhorn header-icon"></i>
-                    <span class="header-text">Announcement</span>
+                <div class="nc-header" id="ncHeader">
+                    <i class="fas fa-bullhorn"></i> Announcement
                 </div>
                 
-                <div class="card-body-content">
-                    <div class="meta-row">
-                        <span id="pCat" class="cat-pill">Breaking News</span>
-                    </div>
+                <div class="nc-body" id="ncBody">
+                    <div id="pCat" class="nc-cat">Breaking News</div>
                     
-                    <div id="pBody" class="notice-main-text">
-                        Write your announcement content here.
+                    <div id="pBody" class="nc-text">
+                        অভিনন্দন! আপনার উত্তরটি সঠিক হয়েছে। প্রতিযোগিতামূলক পরীক্ষার উপযোগী কন্টেন্ট পেতে পেইজটির সাথে থাকুন।
                     </div>
 
-                    <div class="card-footer-area">
-                        <div class="source-wrapper" id="sourceBox">
-                            <span class="source-title" id="srcLbl">Source</span>
-                            <div class="source-val">
-                                <span id="pSource">Source Name</span>
-                                <i class="fas fa-check-circle verified-badge"></i>
+                    <div class="nc-line"></div>
+
+                    <div class="nc-footer">
+                        <div class="nc-source-wrap" id="sourceBox">
+                            <span class="nc-source-lbl">Source</span>
+                            <div class="nc-source">
+                                <span id="pSource">Trust Me Bro</span>
+                                <i class="fas fa-check-circle nc-verified"></i>
                             </div>
                         </div>
-                        
-                        <div class="meta-right">
-                            <div id="pDate" class="date-val">24 Jan 2026</div>
-                            <div class="watermark-text">Interactive Learning</div>
+                        <div class="nc-meta">
+                            <div id="pDate" class="nc-date">24 Jan 2026</div>
+                            <div class="nc-watermark">Interactive Learning</div>
                         </div>
                     </div>
                 </div>
@@ -327,153 +273,70 @@
     <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('navMenu').classList.toggle('open');
-            document.querySelector('.hamburger').classList.toggle('active');
+        // --- 100 PREMIUM THEMES (Header Color + Body Gradient) ---
+        // Header needs to be lighter/distinct from body
+        const themes = [
+            { name: "Classic Purple", head: "#a855f7", body: "linear-gradient(135deg, #2e0249, #570a57)" },
+            { name: "Royal Blue", head: "#3b82f6", body: "linear-gradient(135deg, #1e1b4b, #172554)" },
+            { name: "Sunset Orange", head: "#f97316", body: "linear-gradient(135deg, #7c2d12, #c2410c)" },
+            { name: "Emerald Green", head: "#10b981", body: "linear-gradient(135deg, #064e3b, #065f46)" },
+            { name: "Deep Red", head: "#ef4444", body: "linear-gradient(135deg, #450a0a, #7f1d1d)" },
+            { name: "Cyber Teal", head: "#06b6d4", body: "linear-gradient(135deg, #164e63, #0e7490)" },
+            { name: "Midnight Black", head: "#4b5563", body: "linear-gradient(135deg, #000000, #111827)" },
+            { name: "Hot Pink", head: "#ec4899", body: "linear-gradient(135deg, #831843, #be185d)" },
+            { name: "Golden Hour", head: "#eab308", body: "linear-gradient(135deg, #713f12, #a16207)" },
+            { name: "Slate Grey", head: "#64748b", body: "linear-gradient(135deg, #0f172a, #334155)" },
+            // ... Generating variants ...
+        ];
+        
+        // Algorithmically generate 90 more variations
+        const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#84cc16', '#10b981', '#06b6d4', '#3b82f6'];
+        for(let i=0; i<90; i++) {
+            let c = colors[i % colors.length];
+            themes.push({
+                name: `Theme ${i+11}`,
+                head: c,
+                body: `linear-gradient(${135 + i}deg, #1a1a2e, ${c}40)` // Dark body with colored tint
+            });
         }
 
-        // --- 100 THEMES (Curated) ---
-        const themes = [
-            { name: "Royal Blue", bg: "linear-gradient(135deg, #1e1b4b, #312e81)", accent: "#fbbf24" },
-            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
-            { name: "Red Alert", bg: "linear-gradient(135deg, #450a0a, #7f1d1d)", accent: "#f87171" },
-            { name: "Emerald City", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
-            { name: "Midnight Purple", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ff0099" },
-            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
-            { name: "Cyberpunk", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#00fff2" },
-            { name: "Sunset Vibes", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
-            { name: "Spotify Green", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#1ed760" },
-            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
-            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
-            { name: "Rose Gold", bg: "linear-gradient(135deg, #B76E79, #E6BE8A)", accent: "#fff" },
-            { name: "Morning Sky", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#fff" },
-            { name: "Minty Fresh", bg: "linear-gradient(135deg, #4ade80, #86efac)", accent: "#064e3b" },
-            { name: "Pure Black", bg: "#000000", accent: "#ffffff" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#fff" },
-            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
-            { name: "Forest", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
-            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
-            { name: "YouTube Red", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#fff" },
-            { name: "Facebook Blue", bg: "linear-gradient(135deg, #1877f2, #0d47a1)", accent: "#fff" },
-            { name: "Twitter", bg: "linear-gradient(135deg, #15202b, #192734)", accent: "#1da1f2" },
-            { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#fff" },
-            { name: "Gold", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)", accent: "#000" },
-            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333" },
-            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
-            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#fff" },
-            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#fff" },
-            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
-            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#fff" },
-            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#fff" },
-            { name: "Lavender", bg: "linear-gradient(135deg, #667db6, #0082c8)", accent: "#fff" },
-            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#fff" },
-            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#fff" },
-            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#fff" },
-            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#fff" },
-            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#fff" },
-            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#fff" },
-            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
-            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#fff" },
-            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#fff" },
-            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#fff" },
-            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#fff" },
-            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#fff" },
-            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3)", accent: "#fff" },
-            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
-            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
-            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff" },
-            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
-            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
-            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
-            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786)", accent: "#333" },
-            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43)", accent: "#fff" },
-            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0)", accent: "#fff" },
-            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333" },
-            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff" },
-            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff" },
-            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff" },
-            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff" },
-            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff" },
-            { name: "Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
-            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
-            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
-            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
-            { name: "Mantle", bg: "linear-gradient(135deg, #24c6dc, #514a9d)", accent: "#fff" },
-            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424, #4A569D)", accent: "#fff" },
-            { name: "Mouse", bg: "linear-gradient(135deg, #200122, #6f0000)", accent: "#fff" },
-            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff" },
-            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333" },
-            { name: "Chocolate", bg: "linear-gradient(135deg, #56392d, #9e6f59)", accent: "#fff" },
-            { name: "Candy", bg: "linear-gradient(135deg, #D4145A, #FBB03B)", accent: "#fff" },
-            { name: "Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#fff" },
-            { name: "Mirage", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#fff" },
-            { name: "Steel", bg: "linear-gradient(135deg, #1F1C2C, #928DAB)", accent: "#fff" }
-        ];
-
-        const select = document.getElementById('themeSelector');
+        const tSelect = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
             let opt = document.createElement('option');
             opt.value = i;
-            opt.text = `${i+1}. ${t.name}`;
-            select.appendChild(opt);
+            opt.text = t.name;
+            tSelect.appendChild(opt);
         });
 
         // --- PREVIEW LOGIC ---
         function updatePreview() {
             const cat = document.getElementById('catInput').value;
-            const body = document.getElementById('bodyInput').value || "Write notice details here...";
+            const body = document.getElementById('bodyInput').value || "Your announcement text will appear here.";
             const source = document.getElementById('sourceInput').value.trim();
             
             document.getElementById('pCat').innerText = cat;
             document.getElementById('pBody').innerText = body;
 
-            // Source Hiding
+            // Source Logic
             const sourceBox = document.getElementById('sourceBox');
-            if(source === "") {
+            if (source === "") {
                 sourceBox.style.display = "none";
             } else {
                 sourceBox.style.display = "flex";
                 document.getElementById('pSource').innerText = source;
             }
 
-            // Date
-            const now = new Date();
-            document.getElementById('pDate').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('pDate').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
             // Apply Theme
-            const themeIdx = document.getElementById('themeSelector').value;
-            const theme = themes[themeIdx];
-            const card = document.getElementById('noticeCard');
-            const header = document.getElementById('cardHeader');
-            const catPill = document.getElementById('pCat');
+            const tIdx = document.getElementById('themeSelector').value;
+            const theme = themes[tIdx];
             
-            // Backgrounds
-            card.style.background = theme.bg;
-            header.style.background = theme.accent;
+            document.getElementById('noticeCard').style.background = theme.body;
+            document.getElementById('ncHeader').style.background = theme.head;
             
-            // Text Color for Light Themes
-            const isLight = ["Silver", "Gold", "Ice Cold", "Rose Gold", "Minty Fresh", "Clouds", "Piggy Pink", "Mega Tron"].includes(theme.name);
-            const textCol = isLight ? "#1e293b" : "#ffffff";
-            const mutedCol = isLight ? "#64748b" : "rgba(255,255,255,0.7)";
-            const borderCol = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
-
-            document.getElementById('pBody').style.color = textCol;
-            document.querySelector('.source-name').style.color = textCol;
-            document.getElementById('srcLbl').style.color = mutedCol;
-            document.getElementById('pDate').style.color = mutedCol;
-            document.querySelector('.watermark-text').style.color = mutedCol;
-            document.querySelector('.card-footer-area').style.borderTopColor = borderCol;
-
-            // Category Pill Style
-            catPill.style.color = theme.accent;
-            catPill.style.borderColor = theme.accent;
-            if(isLight) {
-                catPill.style.background = "rgba(0,0,0,0.05)";
-                header.style.color = "#ffffff"; /* Header text always white on accent */
-            } else {
-                catPill.style.background = "rgba(255,255,255,0.1)";
-            }
+            // Adjust Pill Color to match header (with transparency)
+            // Simulating by using the header color for border/text if needed, but keeping white text on dark bg is safer
         }
 
         // --- DOWNLOAD ---
@@ -491,6 +354,12 @@
             });
         }
 
+        // --- HEADER INJECTION ---
+        // Since we are in the same folder structure, we assume header is handled.
+        // For standalone file to work:
+        function toggleMenu() { /* Handled by header.js if present, else manual */ }
+
+        // Init
         updatePreview();
     </script>
 </body>
