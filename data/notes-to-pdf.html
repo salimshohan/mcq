@@ -51,29 +51,29 @@
 
         .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
         .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #4b5563; margin-bottom: 4px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 5px; }
         
         .form-control {
             width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
-            padding: 10px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
+            padding: 10px; border-radius: 8px; font-size: 15px; transition: 0.2s; font-family: inherit;
         }
         textarea.form-control { resize: vertical; min-height: 80px; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         .form-control.error { border-color: var(--error); animation: shake 0.3s; }
-        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} 100% {transform: translateX(0);} }
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
 
         .btn-add {
             width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
             background: #e0e7ff; color: var(--primary); font-weight: 700; cursor: pointer;
-            border: 1px dashed var(--primary); transition: 0.2s;
+            border: 1px dashed var(--primary); transition: 0.2s; font-size: 14px;
         }
         .btn-add:hover { background: #c7d2fe; }
 
-        .action-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
         .btn-dl {
-            flex: 1; padding: 12px; border-radius: 8px; border: none;
-            color: white; font-weight: 600; cursor: pointer; font-size: 13px;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
+            flex: 1; padding: 14px; border-radius: 8px; border: none;
+            color: white; font-weight: 600; cursor: pointer; font-size: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;
         }
         .btn-pdf { background: #ef4444; }
@@ -81,31 +81,37 @@
         .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
 
         /* Items Manager */
-        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        .items-manager { margin-top: 20px; max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
         .manage-item { 
             display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff; gap: 5px;
+            padding: 10px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff; gap: 5px;
         }
         .item-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        .ctrl-btn { padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; color: white; border: none; }
+        .ctrl-btn { padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; color: white; border: none; }
         .btn-up, .btn-down { background: #3b82f6; }
         .btn-del { background: #ef4444; }
 
         /* --- PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #52525b; padding: 30px; border-radius: 12px;
-            overflow: auto; max-height: 90vh; gap: 30px;
+            background: #52525b; padding: 40px; border-radius: 12px;
+            overflow: auto; max-height: 90vh; 
         }
-        .scale-box { display: flex; flex-direction: column; gap: 0px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* The container for all pages (with gaps in preview) */
+        .scale-box { 
+            display: flex; flex-direction: column; 
+            gap: 40px; /* SPACE BETWEEN PAGES */
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
+        }
 
         /* --- A4 PAGE DESIGN --- */
         .a4-page {
-            width: 210mm; height: 297mm; /* Standard A4 */
-            background: white; 
+            width: 210mm; height: 297mm; /* Fixed A4 */
+            background: white; padding: 0;
             position: relative; overflow: hidden;
             display: flex; flex-direction: column;
-            color: black;
+            color: black; 
         }
 
         /* Watermark */
@@ -117,39 +123,8 @@
             font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
         }
 
-        /* --- HEADER & FOOTER ZONES --- */
-        /* Fixed Footer Container */
-        .footer-fixed {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            height: 120px; /* Reserved space for footer */
-            display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 0 15mm 10mm 15mm;
-            background: white; z-index: 10;
-        }
-        
-        .promo-text {
-            text-align: center; color: #ea580c; 
-            font-size: 16px; font-weight: 800; margin-bottom: 5px;
-        }
-
-        .pdf-footer {
-            border-top: 2px dotted #000; padding-top: 5px;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 14px; font-weight: 700; color: #000;
-        }
-
-        /* Content Area */
-        .page-content {
-            padding: 10mm 15mm 0 15mm; /* Top Left Right padding */
-            flex: 1; 
-            display: flex; flex-direction: column;
-            /* Important: Ensure content doesn't go behind footer */
-            margin-bottom: 120px; 
-            overflow: hidden;
-        }
-
         /* Header Styles */
-        .pdf-header { text-align: center; margin-bottom: 15px; flex-shrink: 0; }
+        .pdf-header { text-align: center; margin-bottom: 10px; flex-shrink: 0; padding: 10mm 15mm 0 15mm; }
         
         .brand-top { 
             font-size: 14px; font-weight: 800; text-transform: uppercase; 
@@ -159,22 +134,47 @@
         /* First Page Full Header */
         .main-subject { 
             border: 2px solid #000; display: inline-block; padding: 4px 30px; 
-            font-size: 22px; font-weight: 800; margin: 3px 0; color: #000; line-height: 1.2;
+            font-size: 24px; font-weight: 800; margin: 3px 0; color: #000; line-height: 1.2;
         }
-        .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 2px; }
-        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
+        .sub-topic { font-size: 16px; font-weight: 700; color: #333; margin-top: 2px; }
+        .date-line { font-size: 13px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
+        
         .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
 
         /* Minimal Header for Page 2+ */
         .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
 
-        /* List Items */
-        .pdf-list { display: flex; flex-direction: column; gap: 8px; }
+        /* Body Content (Correct Padding) */
+        .pdf-body { 
+            flex: 1; position: relative; z-index: 2; 
+            display: flex; flex-direction: column; gap: 8px; 
+            overflow: hidden; padding: 10px 15mm; 
+        }
         
         .note-row { display: flex; align-items: flex-start; gap: 8px; font-size: 15px; line-height: 1.3; }
         .note-icon { color: #16a34a; font-size: 16px; margin-top: 2px; flex-shrink: 0; }
         .q-text { font-weight: 600; color: #000; }
-        .a-text { font-weight: 700; color: #16a34a; }
+        .a-text { font-weight: 700; color: #16a34a; /* Green Answer */ }
+
+        /* Footer Section (FIXED POSITION) */
+        .footer-wrapper {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            height: 100px; /* Reserved footer height */
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 0 15mm 10mm 15mm;
+            background: white; z-index: 10;
+        }
+        
+        .promo-text {
+            text-align: center; color: #ea580c; 
+            font-size: 18px; font-weight: 800; margin-bottom: 5px;
+        }
+
+        .pdf-footer {
+            border-top: 2px dotted #000; padding-top: 5px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 14px; font-weight: 700; color: #000;
+        }
 
         /* Mobile Scale */
         @media (max-width: 900px) {
@@ -195,12 +195,12 @@
         <div class="editor-box">
             <div class="section-title">Page Setup</div>
             <div class="input-group">
-                <label>বিষয় (Subject)</label>
-                <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="renderPages()">
+                <label>বিষয় (Subject - File Name)</label>
+                <input id="subjectInput" class="form-control" value="সাধারণ জ্ঞান (সাম্প্রতিক)" oninput="renderPages()">
             </div>
             <div class="input-group">
                 <label>টপিক (Topic)</label>
-                <input id="topicInput" class="form-control" value="International & National" oninput="renderPages()">
+                <input id="topicInput" class="form-control" value="বাংলাদেশ ও আন্তর্জাতিক" oninput="renderPages()">
             </div>
             <div class="input-group">
                 <label>তারিখ (Date)</label>
@@ -210,11 +210,11 @@
             <div class="section-title" style="margin-top: 20px;">Add Q&A</div>
             <div class="input-group">
                 <label>প্রশ্ন (Question)</label>
-                <textarea id="qInput" class="form-control" placeholder="প্রশ্ন লিখুন..." oninput="this.classList.remove('error')"></textarea>
+                <textarea id="qInput" class="form-control" placeholder="এখানে প্রশ্ন লিখুন..." oninput="this.classList.remove('error')"></textarea>
             </div>
             <div class="input-group">
                 <label>উত্তর (Answer)</label>
-                <textarea id="aInput" class="form-control" placeholder="উত্তর লিখুন..." oninput="this.classList.remove('error')"></textarea>
+                <textarea id="aInput" class="form-control" placeholder="এখানে উত্তর লিখুন..." oninput="this.classList.remove('error')"></textarea>
             </div>
             <button class="btn-add" onclick="addItem()"><i class="fas fa-plus"></i> Add to List</button>
 
@@ -223,8 +223,8 @@
             </div>
 
             <div class="action-btns">
-                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-                <button class="btn-dl btn-img" onclick="downloadImagesZip()"><i class="fas fa-images"></i> Images (ZIP)</button>
+                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn-dl btn-img" onclick="downloadImagesZip()"><i class="fas fa-images"></i> Download Images</button>
             </div>
         </div>
 
@@ -240,13 +240,10 @@
         const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
         document.getElementById('dateInput').value = "আপডেট: " + today;
 
-        let items = [
-            { q: "সম্প্রতি B ক্যাটাগরি হতে A ক্যাটাগরিতে উন্নীত হয়েছে কোন জেলা?", a: "সাতক্ষীরা" },
-            { q: "বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?", a: "২৭টি" },
-            { q: "বর্তমানে দেশে B ক্যাটাগরির জেলা কয়টি?", a: "২৬টি" }
-        ];
+        // EMPTY START (No default items)
+        let items = [];
 
-        // --- RENDER LOGIC (FIXED HEIGHT) ---
+        // --- CORE RENDER FUNCTION ---
         function renderPages() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = ''; 
@@ -255,13 +252,17 @@
             const topic = document.getElementById('topicInput').value;
             const date = document.getElementById('dateInput').value;
 
-            // Page Creator
+            // If no items, show 1 blank page
+            const listToRender = items.length > 0 ? items : [];
+
+            // Helper: Create Blank Page
             function createPage(pageNum) {
                 const page = document.createElement('div');
                 page.className = 'a4-page';
                 page.id = `page-${pageNum}`;
                 
                 let headerHTML = '';
+                // Page 1 Header (Full)
                 if(pageNum === 1) {
                     headerHTML = `
                         <div class="pdf-header">
@@ -271,7 +272,9 @@
                             <div class="date-line">${date}</div>
                             <div class="dotted-line"></div>
                         </div>`;
-                } else {
+                } 
+                // Page 2+ Header (Minimal)
+                else {
                     headerHTML = `
                         <div class="pdf-header minimal-header">
                             <div class="brand-top">INTERACTIVE LEARNING</div>
@@ -280,11 +283,9 @@
 
                 page.innerHTML = `
                     <div class="watermark">INTERACTIVE LEARNING</div>
-                    <div class="page-content">
-                        ${headerHTML}
-                        <div class="pdf-list"></div>
-                    </div>
-                    <div class="footer-fixed">
+                    ${headerHTML}
+                    <div class="pdf-body"></div>
+                    <div class="footer-wrapper">
                         <div class="promo-text">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
                         <div class="pdf-footer">
                             <span>Interactive Learning</span>
@@ -295,13 +296,14 @@
                 return page;
             }
 
+            // Start Logic
             let pageNum = 1;
             let currentPage = createPage(pageNum);
-            let currentList = currentPage.querySelector('.pdf-list');
-            let contentArea = currentPage.querySelector('.page-content');
+            let currentBody = currentPage.querySelector('.pdf-body');
             container.appendChild(currentPage);
 
-            items.forEach((item) => {
+            // Loop items
+            listToRender.forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'note-row';
                 row.innerHTML = `
@@ -312,29 +314,26 @@
                     </div>
                 `;
                 
-                currentList.appendChild(row);
+                currentBody.appendChild(row);
 
-                // --- HEIGHT CALCULATION FIX ---
-                // We measure if content overflows the allocated area (Total A4 - Footer - Padding)
-                // Approx safe height in px: 1122 - 120 (footer) - 40 (padding) = 962px.
-                
-                if (contentArea.scrollHeight > 960) {
-                    currentList.removeChild(row); // Remove overflowing item
+                // Check Overflow
+                // A4 Height = 1122px. Footer = 100px. Header P1 ~ 180px. P2 ~ 60px.
+                // Usable Body Height P1 = ~840px. P2 = ~960px.
+                const usableHeight = pageNum === 1 ? 840 : 960;
+
+                if (currentBody.scrollHeight > usableHeight) {
+                    currentBody.removeChild(row); // Remove item that caused overflow
                     
+                    // New Page
                     pageNum++;
                     currentPage = createPage(pageNum);
-                    currentList = currentPage.querySelector('.pdf-list');
-                    contentArea = currentPage.querySelector('.page-content');
+                    currentBody = currentPage.querySelector('.pdf-body');
                     container.appendChild(currentPage);
                     
-                    currentList.appendChild(row); // Add to new page
+                    // Add item to new page
+                    currentBody.appendChild(row);
                 }
             });
-
-            // Blank page cleanup: only remove if it's truly empty AND not the first page
-            if (currentList.children.length === 0 && pageNum > 1) {
-                container.removeChild(currentPage);
-            }
 
             renderManager();
         }
@@ -386,20 +385,14 @@
         function downloadPDF() {
             const element = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
-            
-            // Random Filename based on Subject
-            const rawName = document.getElementById('subjectInput').value;
-            const filename = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') + '.pdf' : 'Notes.pdf';
+            const subject = document.getElementById('subjectInput').value;
+            const filename = subject.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') + '.pdf';
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // Prep: Remove scale & gaps
-            const scaleBox = document.querySelector('.scale-box');
-            const oldTransform = scaleBox.style.transform;
-            const oldMargin = scaleBox.style.margin;
-            scaleBox.style.transform = 'none';
-            scaleBox.style.margin = '0';
-            scaleBox.style.gap = '0'; // Remove gap between pages for PDF
+            // Remove gap for PDF generation
+            const originalGap = element.style.gap;
+            element.style.gap = '0';
 
             const opt = {
                 margin: 0,
@@ -410,43 +403,31 @@
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                // Restore
-                scaleBox.style.transform = oldTransform;
-                scaleBox.style.gap = '30px'; // Restore preview gap
-                if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
-                btn.innerHTML = `<i class="fas fa-file-pdf"></i> PDF`;
+                btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
+                element.style.gap = originalGap; // Restore gap
             });
         }
 
-        // --- DOWNLOAD IMAGES ---
+        // --- DOWNLOAD IMAGES (ZIP) ---
         async function downloadImagesZip() {
             const btn = document.querySelector('.btn-img');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Zipping...`;
 
             const pages = document.querySelectorAll('.a4-page');
-            const scaleBox = document.querySelector('.scale-box');
-            
-            // Random Name
-            const rawName = document.getElementById('subjectInput').value;
-            const baseName = rawName ? rawName.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_') : 'Note';
-
-            // Prep
-            const oldTransform = scaleBox.style.transform;
-            scaleBox.style.transform = 'none';
-            scaleBox.style.margin = '0';
+            const zip = new JSZip();
+            const subject = document.getElementById('subjectInput').value;
+            const baseName = subject.replace(/[^a-z0-9\u0980-\u09FF]/gi, '_');
 
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
-                const link = document.createElement('a');
-                link.download = `${baseName}_Page-${i + 1}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+                const data = canvas.toDataURL('image/png').split(',')[1];
+                zip.file(`${baseName}_Page-${i + 1}.png`, data, { base64: true });
             }
 
-            // Restore
-            scaleBox.style.transform = oldTransform;
-            if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
-            btn.innerHTML = `<i class="fas fa-image"></i> Images`;
+            zip.generateAsync({ type: 'blob' }).then(function (content) {
+                saveAs(content, `${baseName}_Images.zip`);
+                btn.innerHTML = `<i class="fas fa-images"></i> Download Images`;
+            });
         }
 
         // Init
