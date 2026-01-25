@@ -123,14 +123,14 @@
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 55px; font-weight: 900; color: rgba(0,0,0,0.05);
             white-space: nowrap; pointer-events: none; z-index: 0;
-            font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
+            font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px; opacity: 0.5;
         }
 
         /* Header Styles */
         .pdf-header { text-align: center; margin-bottom: 5px; position: relative; z-index: 2; padding: 10mm 15mm 0 15mm; flex-shrink: 0; }
         
         .brand-top { 
-            font-size: 14px; font-weight: 800; text-transform: uppercase; 
+            font-size: 18px; font-weight: 800; text-transform: uppercase; 
             letter-spacing: 2px; color: #000; margin-bottom: 2px; 
         }
         
@@ -139,7 +139,7 @@
             font-size: 22px; font-weight: 800; margin: 3px 0; color: #000; line-height: 1.2;
         }
         .sub-topic { font-size: 16px; font-weight: 700; color: #333; margin-top: 2px; }
-        .date-line { font-size: 13px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
+        .date-line { font-size: 14px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
         .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
 
         .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
@@ -180,7 +180,7 @@
         .pdf-footer {
             border-top: 2px dotted #000; padding-top: 5px;
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 14px; font-weight: 700; color: #000;
+            font-size: 18px; font-weight: 900; color: #000;
         }
 
         /* Mobile Scale (Only for preview display) */
@@ -295,7 +295,7 @@
                     <div class="footer-fixed">
                         <div class="promo-text">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
                         <div class="pdf-footer">
-                            <span>Interactive Learning</span>
+                            <span>Interactive Learning • BCS,Job & Admission Preparation</span>
                             <span>Page ${pageNum}</span>
                         </div>
                     </div>
@@ -415,7 +415,7 @@
                 margin: 0,
                 filename: filename,
                 image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                html2canvas: { scale: 5, useCORS: true, scrollY: 0 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
@@ -445,7 +445,7 @@
             scaleBox.style.margin = '0';
 
             for (let i = 0; i < pages.length; i++) {
-                const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
+                const canvas = await html2canvas(pages[i], { scale: 5, useCORS: true });
                 const data = canvas.toDataURL('image/png').split(',')[1];
                 zip.file(`Note_Page-${i + 1}.png`, data, { base64: true });
             }
