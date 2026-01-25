@@ -8,10 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
@@ -51,109 +49,151 @@
             position: sticky; top: 90px; height: fit-content;
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #4b5563; margin-bottom: 4px; }
+        .section-title { 
+            font-size: 18px; font-weight: 700; color: var(--primary); 
+            margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; 
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #4b5563; margin-bottom: 5px; }
         
         .form-control {
             width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
-            padding: 10px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
+            padding: 12px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
         }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        .form-control.error { border-color: var(--error); animation: shake 0.3s; }
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+        
+        /* Updated Textarea Style */
+        textarea.form-control {
+            resize: vertical; min-height: 80px;
+        }
 
+        .form-control.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+            animation: shake 0.3s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); }
+        }
+
+        /* Buttons */
         .btn-add {
-            width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
+            width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: none;
             background: #e0e7ff; color: var(--primary); font-weight: 700; cursor: pointer;
             border: 1px dashed var(--primary); transition: 0.2s;
         }
         .btn-add:hover { background: #c7d2fe; }
 
-        .action-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
         .btn-dl {
-            flex: 1; padding: 12px; border-radius: 8px; border: none;
+            flex: 1; padding: 14px; border-radius: 8px; border: none;
             color: white; font-weight: 600; cursor: pointer; font-size: 13px;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;
         }
         .btn-pdf { background: #ef4444; }
         .btn-img { background: #111827; }
         .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Items Manager */
-        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        /* Items Manager (With Reorder) */
+        .items-manager { 
+            margin-top: 20px; max-height: 250px; overflow-y: auto; 
+            border: 1px solid #eee; border-radius: 8px; 
+        }
         .manage-item { 
             display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff; gap: 5px;
+            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; 
+            font-size: 13px; background: #fff; gap: 5px;
         }
         .item-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        .ctrl-btn { padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; color: white; border: none; }
-        .btn-up, .btn-down { background: #3b82f6; }
+        .item-controls { display: flex; gap: 5px; }
+        .ctrl-btn { 
+            padding: 4px 6px; border-radius: 4px; cursor: pointer; 
+            font-size: 10px; color: white; border: none;
+        }
+        .btn-up { background: #3b82f6; }
+        .btn-down { background: #3b82f6; }
         .btn-del { background: #ef4444; }
 
-        /* --- PREVIEW WRAPPER --- */
+        /* --- PREVIEW WRAPPER (Responsive Fit) --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #52525b; padding: 30px; border-radius: 12px;
-            overflow-y: auto; max-height: 90vh; gap: 20px;
+            background: #e5e7eb; padding: 20px; border-radius: 12px;
+            overflow: auto; max-height: 90vh; /* Changed to allow vertical scroll */
+        }
+        .scale-box { 
+            transform-origin: top center; transition: transform 0.3s ease; 
+            display: flex; flex-direction: column; gap: 20px;
         }
 
-        /* --- A4 PAGE DESIGN --- */
+        /* --- A4 PDF PAGE DESIGN --- */
         .a4-page {
-            width: 210mm; height: 297mm; /* Fixed A4 */
+            width: 210mm; 
+            height: 297mm; /* Standard A4 Height */
             background: white; padding: 15mm;
-            position: relative; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
             display: flex; flex-direction: column;
-            color: black; margin-bottom: 20px;
-            transform-origin: top center;
+            color: black;
+            overflow: hidden;
         }
 
         /* Watermark (Middle, 45deg) */
         .watermark {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 55px; font-weight: 900; color: rgba(0,0,0,0.05);
+            font-size: 50px; font-weight: 900; color: rgba(0,0,0,0.06);
             white-space: nowrap; pointer-events: none; z-index: 0;
-            font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
+            font-family: sans-serif; text-transform: uppercase;
         }
 
-        /* PDF Header (Reference Style) */
+        /* PDF Header */
         .pdf-header {
-            text-align: center; margin-bottom: 15px; position: relative; z-index: 2;
-        }
-        .brand-top { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #000; margin-bottom: 5px; }
-        .subject-box { 
-            border: 2px solid #000; display: inline-block; padding: 6px 35px; 
-            font-size: 22px; font-weight: 800; margin: 5px 0; color: #000; line-height: 1.2;
-        }
-        .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 5px; }
-        .date-line { font-size: 12px; text-align: right; margin-top: 5px; color: #444; font-weight: 600; }
-        .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
-
-        /* PDF Body */
-        .pdf-body { flex: 1; position: relative; z-index: 2; padding-top: 10px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .note-row { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 1.5; }
-        .note-icon { color: #16a34a; font-size: 18px; margin-top: 3px; flex-shrink: 0; }
-        .q-text { font-weight: 600; color: #000; }
-        .a-text { font-weight: 700; color: #16a34a; /* Green Answer */ }
-
-        /* PDF Footer */
-        .pdf-footer {
-            margin-top: auto; padding-top: 5px;
-            border-top: 2px dotted #aaa;
-            text-align: center; font-size: 11px; font-weight: 700; color: #000;
+            text-align: center; margin-bottom: 20px;
             position: relative; z-index: 2;
         }
+        .brand-top { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000; }
+        .main-subject { 
+            border: 2px solid #000; display: inline-block; padding: 5px 30px; 
+            font-size: 20px; font-weight: 800; margin: 8px 0; color: #000;
+        }
+        .sub-topic { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .dotted-line { 
+            border-bottom: 2px dotted #999; width: 100%; margin-top: 8px; 
+        }
+        .date-line { font-size: 12px; text-align: right; margin-top: 4px; color: #555; font-weight: 600; }
 
-        /* Mobile Scale */
+        /* PDF Content Body */
+        .pdf-body {
+            flex: 1; display: flex; flex-direction: column; gap: 14px;
+            position: relative; z-index: 2; padding-top: 15px;
+            overflow: hidden; /* Prevent spill over */
+        }
+        .note-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 16px; line-height: 1.5; break-inside: avoid;
+        }
+        .note-icon { color: #16a34a; font-size: 16px; margin-top: 4px; flex-shrink: 0; } /* Green Check */
+        .note-content { flex: 1; }
+        .q-text { font-weight: 600; color: #000; margin-right: 5px; }
+        .a-text { font-weight: 700; color: #dc2626; } /* Red Answer */
+
+        /* PDF Footer (Stick to Bottom) */
+        .pdf-footer {
+            margin-top: auto; padding-top: 8px;
+            border-top: 2px dotted #999;
+            text-align: center; font-size: 12px; font-weight: 700; color: #000;
+            position: relative; z-index: 2;
+            width: 100%;
+        }
+
+        /* Mobile Scale Logic */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box { width: 100%; position: relative; top: 0; }
-            .preview-wrapper { width: 100%; padding: 10px; max-height: 600px; }
-            .a4-page { transform: scale(0.44); margin-bottom: -160mm; }
+            .preview-wrapper { width: 100%; padding: 10px; }
+            .scale-box { transform: scale(0.44); transform-origin: top center; margin-bottom: -150%; }
         }
     </style>
 </head>
@@ -166,29 +206,37 @@
         
         <div class="editor-box">
             <div class="section-title">Page Setup</div>
+            
             <div class="input-group">
-                <label>Subject (Box Title)</label>
+                <label>Subject / Box Title</label>
                 <input id="subjectInput" class="form-control" value="GK Recent Affairs" oninput="renderPages()">
             </div>
+            
             <div class="input-group">
-                <label>Topic (Sub Title)</label>
+                <label>Topic / Sub Title</label>
                 <input id="topicInput" class="form-control" value="International & National" oninput="renderPages()">
             </div>
+
             <div class="input-group">
                 <label>Date</label>
                 <input type="text" id="dateInput" class="form-control" oninput="renderPages()">
             </div>
 
             <div class="section-title" style="margin-top: 20px;">Add Q&A</div>
+            
             <div class="input-group">
                 <label>Question</label>
-                <input id="qInput" class="form-control" placeholder="Question?" oninput="this.classList.remove('error')">
+                <textarea id="qInput" class="form-control" placeholder="Type question here..." oninput="clearError(this)"></textarea>
             </div>
+            
             <div class="input-group">
-                <label>Answer (Green)</label>
-                <input id="aInput" class="form-control" placeholder="Answer" oninput="this.classList.remove('error')">
+                <label>Answer (Auto Red & Hyphen)</label>
+                <textarea id="aInput" class="form-control" placeholder="Type answer here..." oninput="clearError(this)"></textarea>
             </div>
-            <button class="btn-add" onclick="addItem()"><i class="fas fa-plus"></i> Add to List</button>
+
+            <button class="btn-add" onclick="addItem()">
+                <i class="fas fa-plus"></i> Add to List
+            </button>
 
             <div class="items-manager" id="itemsManager">
                 <div style="padding:10px; color:#999; text-align:center; font-size:12px;">No items added.</div>
@@ -196,12 +244,14 @@
 
             <div class="action-btns">
                 <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-                <button class="btn-dl btn-img" onclick="downloadImagesZip()"><i class="fas fa-images"></i> Images (ZIP)</button>
+                <button class="btn-dl btn-img" onclick="downloadImages()"><i class="fas fa-image"></i> Images</button>
             </div>
         </div>
 
-        <div class="preview-wrapper" id="previewContainer">
-            </div>
+        <div class="preview-wrapper">
+            <div class="scale-box" id="previewContainer">
+                </div>
+        </div>
 
     </div>
 
@@ -215,25 +265,25 @@
             { q: "বর্তমানে দেশে A ক্যাটাগরির জেলা কয়টি?", a: "২৭টি" }
         ];
 
-        // --- CORE RENDER FUNCTION (PAGINATION) ---
+        // --- PAGINATION LOGIC (Like PDF.html) ---
         function renderPages() {
             const container = document.getElementById('previewContainer');
-            container.innerHTML = ''; // Clear current
+            container.innerHTML = ''; 
 
             const subject = document.getElementById('subjectInput').value;
             const topic = document.getElementById('topicInput').value;
             const date = document.getElementById('dateInput').value;
 
-            // Helper to create a blank page
             function createPage(pageNum) {
                 const page = document.createElement('div');
                 page.className = 'a4-page';
                 page.id = `page-${pageNum}`;
+                
                 page.innerHTML = `
-                    <div class="watermark">INTERACTIVE LEARNING</div>
+                    <div class="watermark">Interactive Learning</div>
                     <div class="pdf-header">
                         <div class="brand-top">INTERACTIVE LEARNING</div>
-                        <div class="subject-box">${subject}</div>
+                        <div class="main-subject">${subject}</div>
                         <div class="sub-topic">${topic}</div>
                         <div class="date-line">${date}</div>
                         <div class="dotted-line"></div>
@@ -246,43 +296,35 @@
                 return page;
             }
 
-            // Initial Page
-            let currentPageNum = 1;
-            let currentPage = createPage(currentPageNum);
+            let pageNum = 1;
+            let currentPage = createPage(pageNum);
             let currentBody = currentPage.querySelector('.pdf-body');
             container.appendChild(currentPage);
 
-            // Render List Items
             items.forEach((item) => {
-                // Create Item Element
                 const row = document.createElement('div');
                 row.className = 'note-row';
                 row.innerHTML = `
                     <i class="fas fa-check note-icon"></i>
                     <div class="note-content">
-                        <div class="q-text">${item.q}</div>
-                        <div class="a-text">- ${item.a}</div>
+                        <span class="q-text">${item.q}</span><br>
+                        <span class="a-text">- ${item.a}</span>
                     </div>
                 `;
                 
                 currentBody.appendChild(row);
 
-                // Check Overflow (Approx 950px usable height)
+                // Check Overflow (~920px usable height)
                 if (currentBody.scrollHeight > 920) {
-                    currentBody.removeChild(row); // Remove from full page
-                    
-                    // Create New Page
-                    currentPageNum++;
-                    currentPage = createPage(currentPageNum);
+                    currentBody.removeChild(row);
+                    pageNum++;
+                    currentPage = createPage(pageNum);
                     currentBody = currentPage.querySelector('.pdf-body');
                     container.appendChild(currentPage);
-                    
-                    // Add item to new page
                     currentBody.appendChild(row);
                 }
             });
 
-            // Update Manager List
             renderManager();
         }
 
@@ -298,7 +340,7 @@
                 div.className = 'manage-item';
                 div.innerHTML = `
                     <div class="item-text"><b>${i+1}.</b> ${item.q}</div>
-                    <div style="display:flex; gap:3px;">
+                    <div class="item-controls">
                         <button class="ctrl-btn btn-up" onclick="moveItem(${i}, -1)"><i class="fas fa-arrow-up"></i></button>
                         <button class="ctrl-btn btn-down" onclick="moveItem(${i}, 1)"><i class="fas fa-arrow-down"></i></button>
                         <button class="ctrl-btn btn-del" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
@@ -308,7 +350,8 @@
             });
         }
 
-        // --- ACTIONS ---
+        function clearError(input) { input.classList.remove('error'); }
+
         function addItem() {
             const qIn = document.getElementById('qInput');
             const aIn = document.getElementById('aInput');
@@ -321,10 +364,7 @@
             renderPages();
         }
 
-        function deleteItem(i) {
-            items.splice(i, 1);
-            renderPages();
-        }
+        function deleteItem(i) { items.splice(i, 1); renderPages(); }
 
         function moveItem(i, dir) {
             if (i + dir >= 0 && i + dir < items.length) {
@@ -333,56 +373,59 @@
             }
         }
 
-        // --- DOWNLOAD PDF (Multi-page Support) ---
+        // --- PDF DOWNLOAD ---
         function downloadPDF() {
+            const container = document.getElementById('previewContainer');
+            const scaleBox = document.querySelector('.scale-box');
             const btn = document.querySelector('.btn-pdf');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Making PDF...`;
-
-            // We need to capture the whole container, but maintain A4 size logic
-            // html2pdf can handle this better if we pass the container and configure pagebreaks
-            const element = document.getElementById('previewContainer');
             
-            // Temporary style to remove gap and bg for clean pdf
-            const originalStyle = element.getAttribute('style');
-            element.style.background = 'white';
-            element.style.gap = '0';
-            element.style.padding = '0';
-            element.style.alignItems = 'center';
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
+
+            // Reset scale for capture
+            const oldTransform = scaleBox.style.transform;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
 
             const opt = {
                 margin: 0,
-                filename: 'Notes.pdf',
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                filename: `Notes_${Math.random().toString(16).substr(2,6)}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
+            html2pdf().set(opt).from(container).save().then(() => {
+                scaleBox.style.transform = oldTransform;
+                if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
                 btn.innerHTML = `<i class="fas fa-file-pdf"></i> PDF`;
-                element.style = originalStyle; // Restore preview style
-                renderPages(); // Re-render to be safe
             });
         }
 
-        // --- DOWNLOAD IMAGES (ZIP) ---
-        async function downloadImagesZip() {
-            const btn = document.querySelector('.btn-img');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Zipping...`;
-
+        // --- IMAGE DOWNLOAD (Multiple) ---
+        async function downloadImages() {
             const pages = document.querySelectorAll('.a4-page');
-            const zip = new JSZip();
+            const btn = document.querySelector('.btn-img');
+            const scaleBox = document.querySelector('.scale-box');
+            
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+
+            const oldTransform = scaleBox.style.transform;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
+
+            const hex = Math.random().toString(16).substr(2,6);
 
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
-                const data = canvas.toDataURL('image/png').split(',')[1];
-                zip.file(`Page_${i + 1}.png`, data, { base64: true });
+                const link = document.createElement('a');
+                link.download = `Notes_Page-${i+1}_${hex}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
             }
 
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `Notes_Images_${Date.now()}.zip`);
-                btn.innerHTML = `<i class="fas fa-images"></i> Images (ZIP)`;
-            });
+            scaleBox.style.transform = oldTransform;
+            if(window.innerWidth < 900) scaleBox.style.marginBottom = '-150%';
+            btn.innerHTML = `<i class="fas fa-image"></i> Images`;
         }
 
         // Init
