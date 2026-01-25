@@ -100,7 +100,7 @@
         
         .scale-box { 
             display: flex; flex-direction: column; 
-            gap: 40px; 
+            gap: 30px; 
             box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
         }
 
@@ -111,15 +111,18 @@
             position: relative; overflow: hidden;
             display: flex; flex-direction: column;
             color: black; box-sizing: border-box;
-            margin-bottom: 20px; /* Gap for preview */
+            
+            /* Preview Separation */
+            margin-bottom: 30px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* FIX: Last page shouldn't have margin in preview to align perfectly in PDF clone */
+        /* FIX: Last child in preview shouldn't have margin, helping PDF clone alignment */
         .a4-page:last-child {
-            margin-bottom: 0 !important; box-shadow: none !important;
+            margin-bottom: 0 !important;
         }
 
-        /* Watermark (Opacity 0.15) */
+        /* Watermark (Updated Opacity) */
         .watermark {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) rotate(-45deg);
@@ -146,7 +149,6 @@
         }
         .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 2px; }
         .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
-        
         .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
 
         .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
@@ -304,14 +306,12 @@
                 return page;
             }
 
-            // Always start with 1 page
             let pageNum = 1;
             let currentPage = createPage(pageNum);
             let currentBody = currentPage.querySelector('.pdf-body');
             let currentFooter = currentPage.querySelector('.footer-fixed');
             container.appendChild(currentPage);
 
-            // Loop Items
             items.forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'note-row';
@@ -325,20 +325,17 @@
                 
                 currentBody.appendChild(row);
 
-                // --- ROBUST OVERFLOW CHECK ---
+                // Check overlap
                 const rowRect = row.getBoundingClientRect();
                 const footerRect = currentFooter.getBoundingClientRect();
 
-                // If Row Bottom hits Footer Top (buffer 20px)
                 if (rowRect.bottom > footerRect.top - 20) {
-                    currentBody.removeChild(row); 
-                    
+                    currentBody.removeChild(row);
                     pageNum++;
                     currentPage = createPage(pageNum);
                     currentBody = currentPage.querySelector('.pdf-body');
                     currentFooter = currentPage.querySelector('.footer-fixed');
                     container.appendChild(currentPage);
-                    
                     currentBody.appendChild(row);
                 }
             });
@@ -389,7 +386,7 @@
             }
         }
 
-        // --- DOWNLOAD PDF (Correct Clone & Random Name) ---
+        // --- DOWNLOAD PDF (Fix Blank Page) ---
         function downloadPDF() {
             const container = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
@@ -400,18 +397,21 @@
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // CLONE LOGIC to fix blank page issue
+            // CLONE Logic to ensure PDF is perfect
             const clone = container.cloneNode(true);
             
-            // Force styles on clone for PDF generation
+            // Force reset styles on clone for seamless PDF
             clone.style.transform = 'none';
-            clone.style.gap = '0';
+            clone.style.gap = '0'; // Removes gap between pages
             clone.style.margin = '0';
             clone.style.width = '210mm';
             
-            // Ensure no margins on pages in the clone
+            // Explicitly remove margins from cloned pages
             const clonePages = clone.querySelectorAll('.a4-page');
-            clonePages.forEach(p => p.style.marginBottom = '0');
+            clonePages.forEach(p => {
+                p.style.marginBottom = '0';
+                p.style.boxShadow = 'none';
+            });
 
             // Off-screen wrapper
             const tempWrapper = document.createElement('div');
