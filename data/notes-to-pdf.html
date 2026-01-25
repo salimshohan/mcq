@@ -60,7 +60,7 @@
         textarea.form-control { resize: vertical; min-height: 80px; }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         .form-control.error { border-color: var(--error); animation: shake 0.3s; }
-        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} 100% {transform: translateX(0);} }
 
         .btn-add {
             width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
@@ -94,23 +94,27 @@
         /* --- PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #52525b; padding: 30px; border-radius: 12px;
-            overflow: auto; max-height: 90vh; gap: 20px;
+            background: #52525b; padding: 40px; border-radius: 12px;
+            overflow: auto; max-height: 90vh; 
         }
+        
+        /* This box holds the pages. We will manipulate this during download */
         .scale-box { 
-            transform-origin: top center; transition: transform 0.3s ease; 
-            display: flex; flex-direction: column; gap: 30px; /* Gap between pages in preview */
+            display: flex; flex-direction: column; 
+            gap: 30px; /* Visually separate pages in preview */
+            transform-origin: top center;
+            transition: transform 0.3s;
         }
 
         /* --- A4 PAGE DESIGN --- */
         .a4-page {
             width: 210mm; 
-            height: 297mm; /* STRICTLY FIXED HEIGHT */
+            height: 297mm; /* Standard A4 */
             background: white; 
             position: relative; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column;
             color: black;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Shadow for preview only */
         }
 
         /* Watermark */
@@ -122,30 +126,31 @@
             font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
         }
 
-        /* Header */
+        /* Header Styles */
         .pdf-header { text-align: center; margin-bottom: 5px; position: relative; z-index: 2; padding: 10mm 15mm 0 15mm; flex-shrink: 0; }
         
         .brand-top { 
             font-size: 14px; font-weight: 800; text-transform: uppercase; 
             letter-spacing: 2px; color: #000; margin-bottom: 2px; 
         }
+        
         .main-subject { 
             border: 2px solid #000; display: inline-block; padding: 4px 30px; 
             font-size: 22px; font-weight: 800; margin: 3px 0; color: #000; line-height: 1.2;
         }
-        .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 2px; }
-        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
+        .sub-topic { font-size: 16px; font-weight: 700; color: #333; margin-top: 2px; }
+        .date-line { font-size: 13px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
         .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
 
-        /* Minimal Header for P2+ */
         .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
 
-        /* Content Body */
+        /* Content Area (Crucial for Footer not overlapping) */
         .page-content {
             padding: 0 15mm;
-            flex-grow: 1; /* Allow to grow but not overflow container */
+            flex-grow: 1;
             display: flex; flex-direction: column;
             overflow: hidden; 
+            margin-bottom: 110px; /* Push content up above footer */
         }
 
         .pdf-body {
@@ -158,29 +163,32 @@
         .q-text { font-weight: 600; color: #000; }
         .a-text { font-weight: 700; color: #16a34a; /* Green Answer */ }
 
-        /* Footer */
+        /* Footer (Fixed at Bottom) */
         .footer-fixed {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            height: 25mm; /* Reserved height */
+            height: 100px; 
             display: flex; flex-direction: column; justify-content: flex-end;
             padding: 0 15mm 10mm 15mm;
             background: white; z-index: 10;
         }
+        
         .promo-text {
             text-align: center; color: #ea580c; 
             font-size: 18px; font-weight: 800; margin-bottom: 5px;
         }
+
         .pdf-footer {
             border-top: 2px dotted #000; padding-top: 5px;
             display: flex; justify-content: space-between; align-items: center;
             font-size: 14px; font-weight: 700; color: #000;
         }
 
-        /* Mobile Scale */
+        /* Mobile Scale (Only for preview display) */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box { width: 100%; position: relative; top: 0; }
             .preview-wrapper { width: 100%; padding: 10px; }
+            /* We scale the box visually, but we will remove this transform during PDF gen */
             .scale-box { transform: scale(0.44); transform-origin: top center; margin-bottom: -160mm; }
         }
     </style>
@@ -191,6 +199,7 @@
     <script src="../js/header.js"></script>
 
     <div class="container">
+        
         <div class="editor-box">
             <div class="section-title">Page Setup</div>
             <div class="input-group">
@@ -231,6 +240,7 @@
             <div class="scale-box" id="pdfPreviewContainer">
                 </div>
         </div>
+
     </div>
 
     <script>
@@ -241,7 +251,7 @@
         // EMPTY START
         let items = [];
 
-        // --- RENDER FUNCTION (FIXED PAGINATION) ---
+        // --- RENDER LOGIC ---
         function renderPages() {
             const container = document.getElementById('pdfPreviewContainer');
             container.innerHTML = ''; 
@@ -250,16 +260,14 @@
             const topic = document.getElementById('topicInput').value;
             const date = document.getElementById('dateInput').value;
 
-            // If no items, show 1 blank page
-            const listToRender = items.length > 0 ? items : [];
-
-            // Helper: Create Page
+            // Page Creator
             function createPage(pageNum) {
                 const page = document.createElement('div');
                 page.className = 'a4-page';
                 page.id = `page-${pageNum}`;
                 
                 let headerHTML = '';
+                // Page 1 Header
                 if(pageNum === 1) {
                     headerHTML = `
                         <div class="pdf-header">
@@ -269,7 +277,9 @@
                             <div class="date-line">${date}</div>
                             <div class="dotted-line"></div>
                         </div>`;
-                } else {
+                } 
+                // Page 2+ Header
+                else {
                     headerHTML = `
                         <div class="pdf-header minimal-header">
                             <div class="brand-top">INTERACTIVE LEARNING</div>
@@ -293,53 +303,44 @@
                 return page;
             }
 
-            // Start with Page 1
+            // Always start with 1 page, even if empty
             let pageNum = 1;
             let currentPage = createPage(pageNum);
             let currentBody = currentPage.querySelector('.pdf-body');
             container.appendChild(currentPage);
 
-            // Loop Items
-            listToRender.forEach((item) => {
-                const row = document.createElement('div');
-                row.className = 'note-row';
-                row.innerHTML = `
-                    <i class="fas fa-check note-icon"></i>
-                    <div class="note-content">
-                        <div class="q-text">${item.q}</div>
-                        <div class="a-text">- ${item.a}</div>
-                    </div>
-                `;
-                
-                currentBody.appendChild(row);
-
-                // --- KEY FIX: Content Overflow Logic ---
-                // Page Total = 1123px (approx)
-                // Footer Height = ~100px (25mm)
-                // Header P1 = ~180px, P2 = ~60px
-                // Usable Body Height = Total - Header - Footer - Padding
-                
-                // We use getBoundingClientRect for accuracy
-                const pageRect = currentPage.getBoundingClientRect();
-                const bodyRect = currentBody.getBoundingClientRect();
-                const footerHeight = 100; // Fixed footer allowance
-                
-                // Allow buffer
-                const maxBodyHeight = pageNum === 1 ? 800 : 920; 
-
-                if (currentBody.scrollHeight > maxBodyHeight) {
-                    currentBody.removeChild(row); // Remove from current
+            if (items.length > 0) {
+                items.forEach((item) => {
+                    const row = document.createElement('div');
+                    row.className = 'note-row';
+                    row.innerHTML = `
+                        <i class="fas fa-check note-icon"></i>
+                        <div class="note-content">
+                            <div class="q-text">${item.q}</div>
+                            <div class="a-text">- ${item.a}</div>
+                        </div>
+                    `;
                     
-                    // Create New Page
-                    pageNum++;
-                    currentPage = createPage(pageNum);
-                    currentBody = currentPage.querySelector('.pdf-body');
-                    container.appendChild(currentPage);
-                    
-                    // Add to new
                     currentBody.appendChild(row);
-                }
-            });
+
+                    // Height Calculation
+                    const pageContent = currentPage.querySelector('.page-content');
+                    // 1123px (Total) - 100px (Footer) - 40px (Padding) ~ 980px available max
+                    // Header takes space too.
+                    const safeLimit = 950; 
+
+                    if (pageContent.scrollHeight > safeLimit) {
+                        currentBody.removeChild(row);
+                        
+                        pageNum++;
+                        currentPage = createPage(pageNum);
+                        currentBody = currentPage.querySelector('.pdf-body');
+                        container.appendChild(currentPage);
+                        
+                        currentBody.appendChild(row);
+                    }
+                });
+            }
 
             renderManager();
         }
@@ -387,20 +388,28 @@
             }
         }
 
-        // --- DOWNLOAD PDF (Correct Multipage) ---
+        // --- DOWNLOAD PDF (CRITICAL FIX) ---
         function downloadPDF() {
-            const element = document.getElementById('pdfPreviewContainer');
+            const container = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
+            const scaleBox = document.querySelector('.scale-box');
             
-            // Random Filename
-            const rand = Math.random().toString(36).substring(2, 8);
+            // Random Name
+            const rand = Math.random().toString(36).substring(2, 7);
             const filename = `Notes_${rand}.pdf`;
 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
 
-            // Prep: Remove gap for seamless PDF
-            const originalGap = element.style.gap;
-            element.style.gap = '0';
+            // 1. Temporarily disable Transform/Scale for clean Capture
+            const oldTransform = scaleBox.style.transform;
+            const oldMargin = scaleBox.style.margin;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
+            scaleBox.style.gap = '0'; // No gap in PDF
+
+            // 2. Remove shadows for clean print
+            const pages = document.querySelectorAll('.a4-page');
+            pages.forEach(p => p.style.boxShadow = 'none');
 
             const opt = {
                 margin: 0,
@@ -410,9 +419,13 @@
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
+            html2pdf().set(opt).from(container).save().then(() => {
+                // 3. Restore Styles
+                scaleBox.style.transform = oldTransform;
+                scaleBox.style.margin = oldMargin;
+                scaleBox.style.gap = '30px';
+                pages.forEach(p => p.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)');
                 btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
-                element.style.gap = originalGap; // Restore
             });
         }
 
@@ -423,13 +436,23 @@
 
             const pages = document.querySelectorAll('.a4-page');
             const zip = new JSZip();
-            const rand = Math.random().toString(36).substring(2, 8);
+            const rand = Math.random().toString(36).substring(2, 7);
+
+            // Prep for capture
+            const scaleBox = document.querySelector('.scale-box');
+            const oldTransform = scaleBox.style.transform;
+            scaleBox.style.transform = 'none';
+            scaleBox.style.margin = '0';
 
             for (let i = 0; i < pages.length; i++) {
                 const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
                 const data = canvas.toDataURL('image/png').split(',')[1];
-                zip.file(`Page_${i + 1}.png`, data, { base64: true });
+                zip.file(`Note_Page-${i + 1}.png`, data, { base64: true });
             }
+
+            // Restore
+            scaleBox.style.transform = oldTransform;
+            if(window.innerWidth < 900) scaleBox.style.marginBottom = '-160mm';
 
             zip.generateAsync({ type: 'blob' }).then(function (content) {
                 saveAs(content, `Notes_${rand}.zip`);
@@ -437,7 +460,7 @@
             });
         }
 
-        // Init with Blank Page
+        // Init
         renderPages();
     </script>
 </body>
