@@ -180,9 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <a href="/data/notice.html">
               <i class="fa-solid fa-bullhorn"></i> Notice Maker
           </a>
-<a href="/data/notes-to-pdf.html"><i class="fa-solid fa-file-lines"></i> Notes to PDF Tool</a>
+<a href="/data/notes-to-pdf.html"><i class="fa-solid fa-file-lines"></i> Notes to PDF Tool</a><a href="/data/vocab-builder.html"><i class="fa-solid fa-font"></i> Vocab Builder</a>
       </div>
-<a href="/data/vocab-builder.html"><i class="fa-solid fa-font"></i> Vocab Builder</a>
     `;
   
     // Inject HTML at the beginning of Body
