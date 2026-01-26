@@ -104,7 +104,7 @@
             padding: 0; 
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             
-            border-radius: 12px;
+            border-radius: 4px;
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
             text-align: center;
             overflow: hidden;
@@ -253,10 +253,10 @@
                     <label>Type</label>
                     <select id="posInput" class="form-control" onchange="updateCard()">
                         <option value="">Select</option>
-                        <option>Adj</option>
+                        <option>Adjective</option>
                         <option>Noun</option>
                         <option>Verb</option>
-                        <option>Adv</option>
+                        <option>Adverb</option>
                         <option>Idiom</option>
                     </select>
                 </div>
@@ -479,7 +479,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
             html2canvas(element, {
-                scale: 3, 
+                scale: 10, 
                 useCORS: true, 
                 backgroundColor: null, 
                 allowTaint: true
