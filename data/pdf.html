@@ -80,12 +80,9 @@
             background: #fff; border: 1px solid #e2e8f0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        /* Specific Card Colors in Editor */
         .question-card { border-left: 4px solid var(--primary); }
         .header-card { border-left: 4px solid #10b981; background: #f0fdf4; }
         .break-card { border: 1px dashed #ef4444; background: #fef2f2; color: #ef4444; text-align: center; font-weight: bold; }
-        .math-card { border-left: 4px solid #0ea5e9; background: #f0f9ff; }
-        .pinpoint-card { border-left: 4px solid #ec4899; background: #fdf2f8; }
         .passage-card { border-left: 4px solid #f59e0b; background: #fffbeb; }
 
         .q-header { 
@@ -192,10 +189,11 @@
             font-size: 13px; line-height: 1.2; 
             padding-right: 5px; position: relative; 
         }
-        /* Math specific font */
-        .math-font { font-family: 'Times New Roman', serif; font-size: 14px; }
         
-        .q-text { font-weight: 700; display: block; margin-bottom: 2px; }
+        .q-text { font-weight: 700; display: block; margin-bottom: 2px; cursor: pointer; transition: color 0.2s; }
+        /* Add hover to indicate clickable */
+        .q-text:hover { opacity: 0.8; }
+
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         .ans { font-weight: 700; margin-top: 2px; font-size: 12px; }
         .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
@@ -243,8 +241,6 @@
             <div class="btn-group">
                 <button class="btn-add" onclick="addItem('header')"><i class="fas fa-heading"></i> Subject</button>
                 <button class="btn-add" onclick="addItem('question')"><i class="fas fa-question-circle"></i> Question</button>
-                <button class="btn-add" style="background:#e0f2fe; color:#0284c7;" onclick="addItem('math')"><i class="fas fa-calculator"></i> Math</button>
-                <button class="btn-add" style="background:#fce7f3; color:#db2777;" onclick="addItem('pinpoint')"><i class="fas fa-bullseye"></i> Pin Point</button>
                 <button class="btn-add" style="background:#fef3c7; color:#d97706;" onclick="addItem('passage')"><i class="fas fa-align-left"></i> Passage</button>
                 <button class="btn-add btn-break" onclick="addItem('break')"><i class="fas fa-cut"></i> Page Break</button>
             </div>
@@ -283,13 +279,11 @@
             addItem('question'); 
         }
 
-        // Updated addItem to include Math and Pin Point
         function addItem(type) {
             const id = Date.now();
             if(type === 'header') items.push({ id, type, title: '' });
             else if(type === 'passage') items.push({ id, type, text: '' });
             else if(type === 'break') items.push({ id, type });
-            // Standard Question structure is used for Question, Math, and Pinpoint
             else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' });
             renderInputs(); updatePDF();
         }
@@ -314,19 +308,15 @@
 
             items.forEach((item, index) => {
                 const div = document.createElement('div');
-                // Dynamic class for border color
                 let typeClass = 'question-card';
-                if(item.type === 'math') typeClass = 'math-card';
-                if(item.type === 'pinpoint') typeClass = 'pinpoint-card';
                 if(item.type === 'header') typeClass = 'header-card';
                 if(item.type === 'passage') typeClass = 'passage-card';
                 if(item.type === 'break') typeClass = 'break-card';
 
                 div.className = `card-base ${typeClass}`;
                 
-                // Header with Type Label
                 let typeLabel = item.type.toUpperCase();
-                if(item.type === 'math' || item.type === 'pinpoint' || item.type === 'question') {
+                if(item.type === 'question') {
                     qNum++;
                     typeLabel += ` ${qNum}`;
                 }
@@ -348,7 +338,6 @@
                     html += `<div style="text-align:center; color:#ef4444; font-size:12px; font-weight:700;">--- PAGE BREAK ---</div>`;
                 }
                 else { 
-                    // Common inputs for Question, Math, Pinpoint
                     html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question Text" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px">
                         <input class="form-control" placeholder="A" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
@@ -362,13 +351,24 @@
                         <option value="খ" ${item.ans==='খ'?'selected':''}>খ</option>
                         <option value="গ" ${item.ans==='গ'?'selected':''}>গ</option>
                         <option value="ঘ" ${item.ans==='ঘ'?'selected':''}>ঘ</option>
-                        <option value="ব্যাখ্যা দেখুন" ${item.ans==='ব্যাখ্যা দেখুন'?'selected':''}>ব্যাখ্যা দেখুন</option>
                     </select>
                     <textarea class="form-control" placeholder="Explanation (Optional)" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>`;
                 }
                 div.innerHTML = html;
                 list.appendChild(div);
             });
+        }
+
+        // Color Cycling Logic
+        const qColors = ['inherit', '#ef4444', '#2563eb', '#16a34a', '#d97706']; // Black, Red, Blue, Green, Orange
+        function cycleColor(el) {
+            let currentColor = el.style.color || 'inherit';
+            // Convert rgb to hex if needed or just use index matching
+            // Simplest way: store index in dataset
+            let idx = parseInt(el.dataset.colorIdx || 0);
+            idx = (idx + 1) % qColors.length;
+            el.style.color = qColors[idx];
+            el.dataset.colorIdx = idx;
         }
 
         function updatePDF() {
@@ -434,14 +434,11 @@
                     qNum++;
                     el.className = 'mcq-item';
                     
-                    // Math Font check
-                    if(item.type === 'math') el.classList.add('math-font');
-
                     const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
                     const activeStyle = 'color: #008000; font-weight: 900;';
                     
                     el.innerHTML = `
-                        <span class="q-text">${toBn(qNum)}. ${item.q}</span>
+                        <span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span>
                         <div class="opts">
                             <span ${item.ans === 'ক' ? `style="${activeStyle}"` : ''}>ক. ${item.a}</span>
                             <span ${item.ans === 'খ' ? `style="${activeStyle}"` : ''}>খ. ${item.b}</span>
