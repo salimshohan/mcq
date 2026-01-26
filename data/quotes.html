@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quote Maker | Interactive Learning</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@300;400;600&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -22,7 +22,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            font-family: 'Poppins', 'Anek Bangla', sans-serif;
             background-color: var(--bg-body);
             background-image: radial-gradient(#d1d5db 1px, transparent 1px);
             background-size: 20px 20px;
@@ -38,10 +38,10 @@
             gap: 30px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR BOX (LEFT) --- */
+        /* --- EDITOR BOX --- */
         .editor-box {
             flex: 1; min-width: 350px; max-width: 450px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            background: var(--panel-bg); padding: 30px; border-radius: 16px;
             border: 1px solid var(--border-light); 
             box-shadow: var(--shadow-lg);
             height: fit-content;
@@ -49,98 +49,114 @@
 
         .section-title { 
             font-size: 18px; font-weight: 700; color: var(--primary); 
-            margin-bottom: 20px; border-bottom: 1px solid var(--border-light); 
-            padding-bottom: 10px;
+            margin-bottom: 25px; border-bottom: 2px solid #f3f4f6; 
+            padding-bottom: 10px; letter-spacing: 0.5px;
         }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { 
+            display: block; font-size: 12px; font-weight: 700; 
+            color: #4b5563; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;
+        }
         
         .form-control {
-            width: 100%; background: #ffffff; border: 1px solid #d1d5db; 
-            color: #111827; padding: 12px; border-radius: 8px; font-size: 14px; 
+            width: 100%; background: #f9fafb; border: 1px solid #d1d5db; 
+            color: #111827; padding: 14px; border-radius: 10px; font-size: 15px; 
             font-family: 'Anek Bangla', sans-serif; transition: 0.2s;
         }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        textarea.form-control { resize: vertical; min-height: 100px; }
+        .form-control:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.5; }
         select.form-control { cursor: pointer; }
 
         /* Button */
         .btn-download { 
-            width: 100%; padding: 14px; border-radius: 10px; border: none;
+            width: 100%; padding: 16px; border-radius: 12px; border: none;
             background: #111827; color: white; font-weight: 600; cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2); margin-top: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.2s; font-size: 15px; letter-spacing: 0.5px;
         }
-        .btn-download:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn-download:hover { transform: translateY(-2px); opacity: 0.9; box-shadow: 0 15px 25px -5px rgba(0,0,0,0.3); }
 
-        /* --- PREVIEW WRAPPER (RIGHT) --- */
+        /* --- PREVIEW WRAPPER --- */
         .preview-wrapper {
             flex: 1.5; min-width: 350px; 
             display: flex; justify-content: center; align-items: flex-start;
-            /* Light Background as requested */
-            background: #e2e8f0; 
-            padding: 40px; border-radius: 12px;
+            background: #e2e8f0; /* Neutral Grey to pop the colors */
+            padding: 50px; border-radius: 16px;
             border: 1px solid #cbd5e1;
         }
 
-        /* Improved Quote Card Design */
+        /* --- PREMIUM QUOTE CARD DESIGN --- */
         #quoteWrapper {
-            width: 100%; max-width: 500px;
-            min-height: 450px; /* Portrait Ratio */
+            width: 100%; max-width: 550px;
+            min-height: 550px; /* Classic Portrait */
             position: relative;
+            /* Default Theme */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 50px 40px; 
+            padding: 0; /* Padding handled by inner frame */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            /* Premium Shadow & Radius */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-            border-radius: 2px; /* Slight rounded or square looks professional */
-            border: 8px solid rgba(255, 255, 255, 0.15); /* Frame effect */
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.5);
             transition: background 0.3s ease;
+            overflow: hidden;
         }
 
-        .quote-content { position: relative; z-index: 2; text-align: center; width: 100%; }
+        /* The Frame Effect */
+        .quote-frame {
+            position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            padding: 40px; text-align: center;
+            z-index: 2;
+        }
 
-        .quote-icon { 
-            font-size: 36px; color: rgba(255,255,255,0.9); 
-            margin-bottom: 25px; display: block; 
+        /* Big Background Icon */
+        .bg-icon {
+            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+            font-size: 150px; color: rgba(255,255,255,0.05);
+            z-index: 1; pointer-events: none;
+        }
+
+        .quote-icon-small {
+            font-size: 24px; color: rgba(255,255,255,0.9); margin-bottom: 25px;
         }
 
         .quote-text {
-            font-family: 'Tiro Bangla', serif;
-            font-size: 28px; line-height: 1.6; font-weight: 500;
+            font-family: 'Tiro Bangla', 'Playfair Display', serif; /* Classic Serif */
+            font-size: 32px; line-height: 1.5; font-weight: 400; /* Regular weight looks more premium */
             color: #ffffff; 
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
             margin-bottom: 30px; white-space: pre-wrap;
+            position: relative; z-index: 2;
         }
 
         .divider {
-            width: 60px; height: 4px; background: #ffffff;
-            margin: 0 auto 20px auto; border-radius: 10px;
-            display: none; opacity: 0.8;
-        }
-
-        .quote-author {
-            font-size: 18px; font-weight: 700; color: #ffffff;
-            text-transform: uppercase; letter-spacing: 2px;
-            font-family: 'Poppins', sans-serif;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 80px; height: 1px; background: rgba(255,255,255,0.6);
+            margin: 0 auto 20px auto;
             display: none;
         }
 
-        .watermark {
-            position: absolute; bottom: 20px;
-            font-size: 12px; opacity: 0.6; font-weight: 600;
+        .quote-author {
+            font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9);
             text-transform: uppercase; letter-spacing: 3px;
-            color: white; z-index: 2;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: none; position: relative; z-index: 2;
+        }
+
+        .watermark {
+            position: absolute; bottom: 35px;
+            font-size: 10px; opacity: 0.5; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: white; z-index: 2; font-family: 'Poppins', sans-serif;
         }
 
         /* --- FOOTER (Original Dark) --- */
         footer {
             width: 100%; padding: 20px; text-align: center;
             background: #1f2937; border-top: 1px solid #374151;
-            margin-top: auto; font-size: 13px; color: white;
+            margin-top: auto; font-size: 13px; color: #9ca3af;
         }
 
         /* Mobile Scale */
@@ -148,8 +164,9 @@
             .container { flex-direction: column; }
             .editor-box, .preview-wrapper { width: 100%; }
             .preview-wrapper { padding: 20px; }
-            #quoteWrapper { padding: 30px 20px; min-height: 400px; }
-            .quote-text { font-size: 22px; }
+            #quoteWrapper { min-height: 450px; }
+            .quote-frame { padding: 25px; top: 15px; left: 15px; right: 15px; bottom: 15px; }
+            .quote-text { font-size: 24px; }
         }
     </style>
 </head>
@@ -161,10 +178,10 @@
     <div class="container">
         
         <div class="editor-box">
-            <div class="section-title">Design Your Quote</div>
+            <div class="section-title">Design Quote</div>
             
             <div class="input-group">
-                <label>Select Theme (80+ Styles)</label>
+                <label>Select Style (80+ Themes)</label>
                 <select id="themeSelector" class="form-control" onchange="applyTheme()">
                     </select>
             </div>
@@ -180,19 +197,24 @@
             </div>
 
             <button class="btn-download" onclick="downloadQuote()">
-                <i class="fas fa-download"></i> Download Image
+                <i class="fas fa-download"></i> Download HD Image
             </button>
         </div>
 
         <div class="preview-wrapper">
             <div id="quoteWrapper">
                 
-                <div class="quote-content">
-                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                <i class="fas fa-quote-right bg-icon"></i>
+
+                <div class="quote-frame">
+                    <i class="fas fa-quote-left quote-icon-small"></i>
+                    
                     <div class="quote-text" id="previewText">
                         "সাফল্য তখনই আসে যখন প্রস্তুতি এবং সুযোগের মিলন ঘটে।"
                     </div>
+                    
                     <div class="divider"></div>
+                    
                     <div class="quote-author" id="previewAuthor">
                         — সংগ্রহীত
                     </div>
@@ -207,7 +229,7 @@
     <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- 80+ PREMIUM GRADIENT THEMES ---
+        // --- 80+ PREMIUM THEMES ---
         const themes = [
             { name: "Purple Bliss", bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
             { name: "Midnight City", bg: "linear-gradient(135deg, #232526 0%, #414345 100%)" },
@@ -305,6 +327,20 @@
             const theme = themes[idx];
             const card = document.getElementById('quoteWrapper');
             card.style.background = theme.bg;
+            
+            // Smart Text Color Check (Simple version)
+            const frame = document.querySelector('.quote-frame');
+            const isLight = ["Perfect White", "Margo", "Relaxing", "Almost"].includes(theme.name);
+            
+            const textColor = isLight ? "#1e293b" : "#ffffff";
+            document.querySelector('.quote-text').style.color = textColor;
+            document.querySelector('.quote-author').style.color = textColor;
+            document.querySelector('.quote-icon-small').style.color = textColor;
+            document.querySelector('.watermark').style.color = textColor;
+            document.querySelector('.divider').style.background = textColor;
+            
+            frame.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.4)";
+            document.querySelector('.bg-icon').style.color = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)";
         }
 
         // Live Preview Logic
@@ -332,18 +368,19 @@
             const element = document.getElementById('quoteWrapper');
             const btn = document.querySelector('.btn-download');
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
             html2canvas(element, {
                 scale: 3, 
                 useCORS: true,
-                backgroundColor: null 
+                backgroundColor: null,
+                allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Quote_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.innerHTML = '<i class="fas fa-download"></i> Download Image';
+                btn.innerHTML = '<i class="fas fa-download"></i> Download HD Image';
             });
         }
 
