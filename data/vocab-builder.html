@@ -86,15 +86,18 @@
 
         /* --- PREMIUM COMPACT CARD --- */
         #vocabCard {
-            width: 100%; max-width: 420px; /* Reduced width */
+            width: 100%; max-width: 420px;
             
-            /* Compact padding */
-            padding: 25px; 
+            /* Border Thickness Adjustment (As requested: 4px) */
+            padding: 4px; 
             
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+            
+            /* Radius Adjustment */
+            border-radius: 6px; 
+            
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25);
             text-align: center;
             overflow: hidden;
         }
@@ -102,20 +105,19 @@
         /* Inner Paper Card */
         .inner-card {
             background: #ffffff;
-            width: 100%; 
-            border-radius: 6px;
-            padding: 25px 20px; /* Compact padding inside */
+            width: 100%; height: 100%;
+            border-radius: 4px; /* Slightly smaller than parent */
+            padding: 25px 20px; 
             display: flex; flex-direction: column; align-items: center;
             position: relative;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
         /* Word Section */
-        .word-header { margin-bottom: 8px; text-align: center; }
+        .word-header { margin-bottom: 5px; text-align: center; }
         
         .main-word {
-            font-family: 'Playfair Display', serif; /* Premium Serif */
-            font-size: 32px; /* Smaller font */
+            font-family: 'Playfair Display', serif; 
+            font-size: 32px; 
             font-weight: 700; color: #1e293b;
             line-height: 1.1; margin-bottom: 5px;
             text-transform: capitalize;
@@ -137,7 +139,7 @@
         }
         .meaning-text {
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: 18px; /* Compact size */
+            font-size: 18px; 
             color: #334155; font-weight: 600;
         }
 
@@ -174,7 +176,7 @@
         .watermark {
             font-family: 'Inter', sans-serif;
             font-size: 9px; font-weight: 600; color: #cbd5e1;
-            text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
+            text-transform: uppercase; letter-spacing: 1.5px; margin-top: 10px;
         }
 
         /* --- FOOTER --- */
@@ -221,6 +223,7 @@
                 <div style="flex:0.6;">
                     <label>Type</label>
                     <select id="posInput" class="form-control" onchange="updateCard()">
+                        <option value="">(None)</option>
                         <option>Adj</option>
                         <option>Noun</option>
                         <option>Verb</option>
@@ -233,17 +236,17 @@
             <div class="input-group" style="display:flex; gap:10px;">
                 <div style="flex:1;">
                     <label>Synonym</label>
-                    <input id="synInput" class="form-control" placeholder="Brief, Short" oninput="updateCard()">
+                    <input id="synInput" class="form-control" placeholder="Optional" oninput="updateCard()">
                 </div>
                 <div style="flex:1;">
                     <label>Antonym</label>
-                    <input id="antInput" class="form-control" placeholder="Eternal, Long" oninput="updateCard()">
+                    <input id="antInput" class="form-control" placeholder="Optional" oninput="updateCard()">
                 </div>
             </div>
 
             <div class="input-group">
                 <label>Example Sentence</label>
-                <textarea id="exInput" class="form-control" placeholder="Fashions are ephemeral, changing with every season." oninput="updateCard()"></textarea>
+                <textarea id="exInput" class="form-control" placeholder="Optional..." oninput="updateCard()"></textarea>
             </div>
 
             <button class="btn-download" onclick="downloadCard()">
@@ -255,21 +258,21 @@
             <div id="vocabCard">
                 <div class="inner-card">
                     
-                    <div class="word-header">
+                    <div class="word-header" id="wordHeader">
                         <div class="main-word" id="prevWord">Ephemeral</div>
                         <div class="pos-badge" id="prevPos">Adj</div>
                     </div>
 
-                    <div class="meaning-box">
+                    <div class="meaning-box" id="meanBox">
                         <div class="meaning-text" id="prevMean">ক্ষণস্থায়ী</div>
                     </div>
 
-                    <div class="relations-grid">
-                        <div class="relation-box">
+                    <div class="relations-grid" id="relGrid">
+                        <div class="relation-box" id="synBox">
                             <span class="relation-label">Synonyms</span>
                             <div class="relation-text text-green" id="prevSyn">Brief, Short</div>
                         </div>
-                        <div class="relation-box">
+                        <div class="relation-box" id="antBox">
                             <span class="relation-label">Antonyms</span>
                             <div class="relation-text text-red" id="prevAnt">Eternal, Long</div>
                         </div>
@@ -318,23 +321,62 @@
             document.getElementById('vocabCard').style.background = themes[idx].bg;
         }
 
-        // Live Update
+        // Live Update & Hide Logic
         function updateCard() {
-            const word = document.getElementById('wordInput').value || 'Ephemeral';
-            const mean = document.getElementById('meanInput').value || 'ক্ষণস্থায়ী';
-            const pos = document.getElementById('posInput').value || 'Adj';
-            const syn = document.getElementById('synInput').value || 'Brief, Short';
-            const ant = document.getElementById('antInput').value || 'Eternal';
-            const ex = document.getElementById('exInput').value || '"Fashions are ephemeral, changing with every season."';
+            const word = document.getElementById('wordInput').value;
+            const mean = document.getElementById('meanInput').value;
+            const pos = document.getElementById('posInput').value;
+            const syn = document.getElementById('synInput').value;
+            const ant = document.getElementById('antInput').value;
+            const ex = document.getElementById('exInput').value;
 
-            document.getElementById('prevWord').innerText = word;
-            document.getElementById('prevMean').innerText = mean;
-            document.getElementById('prevPos').innerText = pos;
+            // Word (Always visible essentially, but handled safely)
+            document.getElementById('prevWord').innerText = word || 'Word';
             
-            // Syn/Ant Logic
-            document.getElementById('prevSyn').innerText = syn;
-            document.getElementById('prevAnt').innerText = ant;
-            
+            // POS
+            const posBadge = document.getElementById('prevPos');
+            if(pos) {
+                posBadge.style.display = 'inline-block';
+                posBadge.innerText = pos;
+            } else {
+                posBadge.style.display = 'none';
+            }
+
+            // Meaning
+            const meanBox = document.getElementById('meanBox');
+            if(mean) {
+                meanBox.style.display = 'block';
+                document.getElementById('prevMean').innerText = mean;
+            } else {
+                meanBox.style.display = 'none';
+            }
+
+            // Synonyms
+            const synBox = document.getElementById('synBox');
+            if(syn) {
+                synBox.style.display = 'block';
+                document.getElementById('prevSyn').innerText = syn;
+            } else {
+                synBox.style.display = 'none';
+            }
+
+            // Antonyms
+            const antBox = document.getElementById('antBox');
+            if(ant) {
+                antBox.style.display = 'block';
+                document.getElementById('prevAnt').innerText = ant;
+            } else {
+                antBox.style.display = 'none';
+            }
+
+            // Grid Visibility (Hide parent if both children hidden)
+            const grid = document.getElementById('relGrid');
+            if(!syn && !ant) {
+                grid.style.display = 'none';
+            } else {
+                grid.style.display = 'flex';
+            }
+
             // Example
             const exSection = document.getElementById('exSection');
             if (ex.trim()) {
@@ -356,7 +398,7 @@
             html2canvas(element, {
                 scale: 3, // HD
                 useCORS: true,
-                backgroundColor: null, // Transparent Background
+                backgroundColor: null, // Transparent Background for round corners
                 allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
@@ -367,7 +409,14 @@
             });
         }
 
-        // Initialize
+        // Initialize with Defaults (Optional, or clear all)
+        // Setting default values to show user what it looks like
+        document.getElementById('wordInput').value = "Ephemeral";
+        document.getElementById('meanInput').value = "ক্ষণস্থায়ী";
+        document.getElementById('posInput').value = "Adj";
+        document.getElementById('synInput').value = "Brief, Short";
+        document.getElementById('antInput').value = "Eternal";
+        document.getElementById('exInput').value = "Fashions are ephemeral.";
         updateCard();
     </script>
 </body>
