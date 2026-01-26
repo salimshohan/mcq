@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <a href="/data/pdf.html">
               <i class="fa-solid fa-file-pdf"></i> PDF Tool
           </a>
+<a href="/data/vocab-builder.html"><i class="fa-solid fa-font"></i> Vocab Builder</a>
           <a href="/data/quotes.html">
               <i class="fa-solid fa-quote-left"></i> Quotes Maker
           </a>
@@ -181,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <i class="fa-solid fa-bullhorn"></i> Notice Maker
           </a>
 <a href="/data/notes-to-pdf.html"><i class="fa-solid fa-file-lines"></i> Notes to PDF Tool</a>
-<a href="/data/vocab-builder.html"><i class="fa-solid fa-font"></i> Vocab Builder</a>
+
       </div>
     `;
   
