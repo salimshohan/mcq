@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vocabulary Builder | Interactive Learning</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #f3f4f6;
+            --panel-bg: #ffffff;
+            --primary: #4f46e5;
+            --text-main: #111827;
+            --border-light: #e5e7eb;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+        body { 
+            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- CONTAINER --- */
+        .container {
+            margin-top: 80px; width: 95%; max-width: 1400px;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+            gap: 30px; padding-bottom: 40px; flex: 1;
+        }
+
+        /* --- EDITOR BOX --- */
+        .editor-box {
+            flex: 1; min-width: 350px; max-width: 450px;
+            background: var(--panel-bg); padding: 25px; border-radius: 16px;
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky; top: 90px; height: fit-content;
+        }
+
+        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
+        
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 5px; }
+        
+        .form-control {
+            width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
+            padding: 10px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
+        }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        .form-control.error { border-color: var(--error); animation: shake 0.3s; }
+        textarea.form-control { resize: vertical; min-height: 60px; }
+        
+        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} 100% {transform: translateX(0);} }
+
+        .btn-add {
+            width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
+            background: #e0e7ff; color: var(--primary); font-weight: 700; cursor: pointer;
+            border: 1px dashed var(--primary); transition: 0.2s;
+        }
+        .btn-add:hover { background: #c7d2fe; }
+
+        .action-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-dl {
+            flex: 1; padding: 12px; border-radius: 8px; border: none;
+            color: white; font-weight: 600; cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;
+        }
+        .btn-pdf { background: #ef4444; }
+        .btn-img { background: #111827; }
+        .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Items Manager */
+        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+        .manage-item { 
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff; gap: 5px;
+        }
+        .item-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+        .ctrl-btn { padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; color: white; border: none; }
+        .btn-del { background: #ef4444; }
+
+        /* --- PREVIEW WRAPPER --- */
+        .preview-wrapper {
+            flex: 1.5; display: flex; flex-direction: column; align-items: center;
+            background: #52525b; padding: 40px; border-radius: 12px;
+            overflow: auto; max-height: 90vh; 
+        }
+        
+        .scale-box { 
+            display: flex; flex-direction: column; 
+            gap: 30px; 
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
+        }
+
+        /* --- A4 PAGE DESIGN --- */
+        .a4-page {
+            width: 210mm; height: 297mm;
+            background: white; padding: 0;
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            color: black; box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px; font-weight: 900; 
+            color: #000; opacity: 0.08;
+            white-space: nowrap; pointer-events: none; z-index: 0;
+            font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
+        }
+
+        /* Header */
+        .pdf-header { 
+            text-align: center; margin-bottom: 5px; flex-shrink: 0; 
+            padding: 10mm 15mm 0 15mm; z-index: 2; 
+        }
+        .brand-top { 
+            font-size: 14px; font-weight: 800; text-transform: uppercase; 
+            letter-spacing: 2px; color: #000; margin-bottom: 2px; 
+        }
+        .main-subject { 
+            border: 2px solid #000; display: inline-block; padding: 4px 30px; 
+            font-size: 22px; font-weight: 800; margin: 3px 0; color: #000; 
+        }
+        .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 2px; }
+        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
+        .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
+        .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
+
+        /* --- VOCAB BODY --- */
+        .page-content {
+            padding: 0 15mm;
+            flex-grow: 1; display: flex; flex-direction: column;
+            overflow: hidden; margin-bottom: 110px; z-index: 2;
+        }
+
+        .pdf-body {
+            display: flex; flex-direction: column; gap: 15px; /* Spacing between words */
+            padding-top: 15px;
+        }
+
+        /* Vocab Item Card */
+        .vocab-card {
+            background: #f9fafb; border-left: 4px solid #4f46e5;
+            padding: 10px 15px; border-radius: 4px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        
+        .word-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .word-main { font-size: 18px; font-weight: 800; color: #1e1b4b; font-family: 'Lexend', sans-serif; }
+        .pos-tag { font-size: 11px; font-weight: 700; color: #ffffff; background: #4f46e5; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        
+        .meaning-text { font-size: 15px; font-weight: 600; color: #334155; }
+        
+        .meta-row { display: flex; gap: 15px; font-size: 12px; color: #475569; margin-top: 2px; flex-wrap: wrap;}
+        .meta-label { font-weight: 700; color: #64748b; }
+        
+        .example-box { 
+            font-style: italic; font-size: 13px; color: #0f172a; 
+            margin-top: 4px; border-top: 1px dashed #cbd5e1; padding-top: 4px;
+        }
+
+        /* Footer */
+        .footer-fixed {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; 
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 0 15mm 10mm 15mm; background: white; z-index: 10;
+        }
+        .promo-text { text-align: center; color: #ea580c; font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+        .pdf-footer {
+            border-top: 2px dotted #000; padding-top: 5px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 14px; font-weight: 700; color: #000;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .editor-box { width: 100%; }
+            .preview-wrapper { width: 100%; padding: 10px; }
+            .scale-box { transform: scale(0.44); transform-origin: top center; margin-bottom: -160mm; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
+
+    <div class="container">
+        
+        <div class="editor-box">
+            <div class="section-title">Page Setup</div>
+            <div class="input-group">
+                <label>Title (Subject)</label>
+                <input id="subjectInput" class="form-control" value="Vocabulary Builder" oninput="renderPages()">
+            </div>
+            <div class="input-group">
+                <label>Subtitle (Topic)</label>
+                <input id="topicInput" class="form-control" value="Daily Star Editorial" oninput="renderPages()">
+            </div>
+            <div class="input-group">
+                <label>Date</label>
+                <input type="text" id="dateInput" class="form-control" oninput="renderPages()">
+            </div>
+
+            <div class="section-title" style="margin-top: 20px;">Add New Word</div>
+            <div class="input-group">
+                <label>Word (শব্দ)</label>
+                <input id="wordInput" class="form-control" placeholder="e.g. Resilience">
+            </div>
+            <div class="input-group" style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label>Meaning (অর্থ)</label>
+                    <input id="meanInput" class="form-control" placeholder="সহনশীলতা">
+                </div>
+                <div style="flex:0.6;">
+                    <label>Parts of Speech</label>
+                    <select id="posInput" class="form-control">
+                        <option>Noun</option>
+                        <option>Verb</option>
+                        <option>Adj</option>
+                        <option>Adv</option>
+                        <option>Prep</option>
+                        <option>Phr</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Synonyms (সমার্থক)</label>
+                <input id="synInput" class="form-control" placeholder="Endurance, Grit">
+            </div>
+            <div class="input-group">
+                <label>Antonyms (বিপরীত)</label>
+                <input id="antInput" class="form-control" placeholder="Weakness, Fragility">
+            </div>
+            <div class="input-group">
+                <label>Example Sentence</label>
+                <textarea id="exInput" class="form-control" placeholder="Her resilience in the face of adversity is inspiring."></textarea>
+            </div>
+
+            <button class="btn-add" onclick="addItem()"><i class="fas fa-plus"></i> Add Word</button>
+
+            <div class="items-manager" id="itemsManager">
+                <div style="padding:10px; color:#999; text-align:center; font-size:12px;">No words added.</div>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn-dl btn-img" onclick="downloadImagesZip()"><i class="fas fa-images"></i> Download Images</button>
+            </div>
+        </div>
+
+        <div class="preview-wrapper">
+            <div class="scale-box" id="pdfPreviewContainer">
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        document.getElementById('dateInput').value = "Date: " + today;
+
+        let items = [];
+
+        function renderPages() {
+            const container = document.getElementById('pdfPreviewContainer');
+            container.innerHTML = ''; 
+
+            const subject = document.getElementById('subjectInput').value;
+            const topic = document.getElementById('topicInput').value;
+            const date = document.getElementById('dateInput').value;
+
+            // Page Creator
+            function createPage(pageNum) {
+                const page = document.createElement('div');
+                page.className = 'a4-page';
+                page.id = `page-${pageNum}`;
+                
+                let headerHTML = '';
+                if(pageNum === 1) {
+                    headerHTML = `
+                        <div class="pdf-header">
+                            <div class="brand-top">INTERACTIVE LEARNING</div>
+                            <div class="main-subject">${subject}</div>
+                            <div class="sub-topic">${topic}</div>
+                            <div class="date-line">${date}</div>
+                            <div class="dotted-line"></div>
+                        </div>`;
+                } else {
+                    headerHTML = `
+                        <div class="pdf-header minimal-header">
+                            <div class="brand-top">INTERACTIVE LEARNING</div>
+                        </div>`;
+                }
+
+                page.innerHTML = `
+                    <div class="watermark">INTERACTIVE LEARNING</div>
+                    ${headerHTML}
+                    <div class="page-content">
+                        <div class="pdf-body"></div>
+                    </div>
+                    <div class="footer-fixed">
+                        <div class="promo-text">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
+                        <div class="pdf-footer">
+                            <span>Interactive Learning</span>
+                            <span>Page ${pageNum}</span>
+                        </div>
+                    </div>
+                `;
+                return page;
+            }
+
+            let pageNum = 1;
+            let currentPage = createPage(pageNum);
+            let currentBody = currentPage.querySelector('.pdf-body');
+            let currentFooter = currentPage.querySelector('.footer-fixed');
+            container.appendChild(currentPage);
+
+            // Loop Items
+            items.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                
+                // Construct Card HTML
+                let metaHTML = '';
+                if(item.syn) metaHTML += `<span class="meta-label">Syn:</span> ${item.syn} &nbsp; `;
+                if(item.ant) metaHTML += `<span class="meta-label">Ant:</span> ${item.ant}`;
+                
+                let exHTML = item.ex ? `<div class="example-box">"${item.ex}"</div>` : '';
+
+                card.innerHTML = `
+                    <div class="word-row">
+                        <div class="word-main">${item.word}</div>
+                        <div class="pos-tag">${item.pos}</div>
+                    </div>
+                    <div class="meaning-text">${item.mean}</div>
+                    ${metaHTML ? `<div class="meta-row">${metaHTML}</div>` : ''}
+                    ${exHTML}
+                `;
+                
+                currentBody.appendChild(card);
+
+                // Overlap Check (Exact logic from notes generator)
+                const rowRect = card.getBoundingClientRect();
+                const footerRect = currentFooter.getBoundingClientRect();
+
+                if (rowRect.bottom > footerRect.top - 20) {
+                    currentBody.removeChild(card); 
+                    
+                    pageNum++;
+                    currentPage = createPage(pageNum);
+                    currentBody = currentPage.querySelector('.pdf-body');
+                    currentFooter = currentPage.querySelector('.footer-fixed');
+                    container.appendChild(currentPage);
+                    
+                    currentBody.appendChild(card);
+                }
+            });
+
+            renderManager();
+        }
+
+        function renderManager() {
+            const manager = document.getElementById('itemsManager');
+            manager.innerHTML = '';
+            if(items.length === 0) {
+                manager.innerHTML = '<div style="padding:10px; color:#999; text-align:center; font-size:12px;">No words added.</div>';
+                return;
+            }
+            items.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'manage-item';
+                div.innerHTML = `
+                    <div class="item-text"><b>${i+1}.</b> ${item.word} (${item.mean})</div>
+                    <button class="ctrl-btn btn-del" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
+                `;
+                manager.appendChild(div);
+            });
+        }
+
+        function addItem() {
+            const word = document.getElementById('wordInput');
+            const mean = document.getElementById('meanInput');
+            const pos = document.getElementById('posInput');
+            const syn = document.getElementById('synInput');
+            const ant = document.getElementById('antInput');
+            const ex = document.getElementById('exInput');
+            
+            if(!word.value.trim()) { word.classList.add('error'); return; }
+            if(!mean.value.trim()) { mean.classList.add('error'); return; }
+
+            items.push({ 
+                word: word.value.trim(), 
+                mean: mean.value.trim(),
+                pos: pos.value,
+                syn: syn.value.trim(),
+                ant: ant.value.trim(),
+                ex: ex.value.trim()
+            });
+
+            // Clear inputs
+            word.value = ''; mean.value = ''; syn.value = ''; ant.value = ''; ex.value = '';
+            word.focus();
+            renderPages();
+        }
+
+        function deleteItem(i) { items.splice(i, 1); renderPages(); }
+
+        // --- DOWNLOAD PDF (Correct Clone & Height Fix) ---
+        function downloadPDF() {
+            const container = document.getElementById('pdfPreviewContainer');
+            const btn = document.querySelector('.btn-pdf');
+            
+            const rand = Math.random().toString(36).substring(2, 7);
+            const filename = `Vocab_${rand}.pdf`;
+
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
+
+            const clone = container.cloneNode(true);
+            const clonePages = clone.querySelectorAll('.a4-page');
+            
+            // 3. FORCE EXACT HEIGHT (Blank page fix)
+            const totalHeight = clonePages.length * 296.95; 
+            
+            clone.style.transform = 'none';
+            clone.style.gap = '0'; 
+            clone.style.margin = '0';
+            clone.style.padding = '0';
+            clone.style.width = '210mm';
+            clone.style.height = totalHeight + 'mm'; 
+            clone.style.overflow = 'hidden';
+
+            clonePages.forEach(p => {
+                p.style.marginBottom = '0';
+                p.style.boxShadow = 'none';
+                p.style.height = '297mm'; 
+            });
+
+            const tempWrapper = document.createElement('div');
+            tempWrapper.style.position = 'absolute';
+            tempWrapper.style.left = '-9999px';
+            tempWrapper.style.top = '0';
+            tempWrapper.appendChild(clone);
+            document.body.appendChild(tempWrapper);
+
+            const opt = {
+                margin: 0,
+                filename: filename,
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(clone).save().then(() => {
+                document.body.removeChild(tempWrapper);
+                btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
+            });
+        }
+
+        // --- DOWNLOAD IMAGES ---
+        async function downloadImagesZip() {
+            const btn = document.querySelector('.btn-img');
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Zipping...`;
+
+            const pages = document.querySelectorAll('.a4-page');
+            const zip = new JSZip();
+            const rand = Math.random().toString(36).substring(2, 7);
+
+            const scaleBox = document.querySelector('.scale-box');
+            const oldTransform = scaleBox.style.transform;
+            scaleBox.style.transform = 'none';
+
+            for (let i = 0; i < pages.length; i++) {
+                const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
+                const data = canvas.toDataURL('image/png').split(',')[1];
+                zip.file(`Vocab_Page-${i + 1}.png`, data, { base64: true });
+            }
+
+            scaleBox.style.transform = oldTransform;
+
+            zip.generateAsync({ type: 'blob' }).then(function (content) {
+                saveAs(content, `Vocab_${rand}.zip`);
+                btn.innerHTML = `<i class="fas fa-images"></i> Download Images`;
+            });
+        }
+
+        renderPages();
+    </script>
+</body>
+</html>
