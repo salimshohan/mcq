@@ -157,7 +157,7 @@
         @media print { .pdf-page { margin-bottom: 0 !important; box-shadow: none !important; } }
         #pdfContent * { color: black !important; }
 
-        /* Watermark (Updated Opacity) */
+        /* Watermark */
         .watermark {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
@@ -166,17 +166,16 @@
             color: rgba(0, 0, 0, 0.22);
             text-shadow: 2px 0 0 rgba(0,0,0,0.22), -1px 0 0 rgba(0,0,0,0.22);
             white-space: nowrap; pointer-events: none; z-index: 0; 
-            opacity: 0.1; /* Increased opacity as requested */
+            opacity: 0.1;
         }
         .v-line {
             position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
-        /* PDF Headers (Updated Margins) */
-        /* First Page Header */
+        /* Headers */
         .pdf-header-main { 
             text-align: center; border-bottom: 2px dashed #000; 
-            padding-bottom: 8px; margin-bottom: 12px; /* Increased margin */
+            padding-bottom: 8px; margin-bottom: 12px;
             flex-shrink: 0; z-index: 2; position: relative; 
         }
         .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 3px; }
@@ -184,15 +183,12 @@
         .sub-title { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
         .meta-info { font-size: 12px; margin-top: 4px; }
         
-        /* Subsequent Page Header (Larger Font, Dashed Line, More Spacing) */
         .pdf-header-sub {
             text-align: center; 
-            font-size: 24px; /* Larger Font */
-            font-weight: 900; 
+            font-size: 24px; font-weight: 900; 
             text-transform: uppercase;
-            margin-bottom: 15px; /* Increased spacing */
-            padding-bottom: 8px; /* Increased padding */
-            border-bottom: 2px dashed #000; /* Horizontal line like footer */
+            margin-bottom: 15px; padding-bottom: 8px;
+            border-bottom: 2px dashed #000; 
             flex-shrink: 0; z-index: 2;
         }
 
@@ -203,7 +199,7 @@
             flex-shrink: 0; z-index: 2; margin-top: auto; 
         }
 
-        /* PDF BODY */
+        /* Body */
         .pdf-body {
             flex-grow: 1; column-count: 1; column-fill: auto; 
             position: relative; z-index: 2; overflow: hidden; height: 230mm; 
@@ -231,7 +227,6 @@
         .q-text:hover { opacity: 0.8; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         
-        /* Single Q&A Item (Modified Hyphen Style) */
         .qa-item {
             margin-bottom: 6px; break-inside: avoid;
             font-size: inherit; line-height: 1.3;
@@ -247,7 +242,7 @@
             margin-top: auto; font-size: 13px; color: #94a3b8;
         }
 
-        /* Mobile Scaling */
+        /* Mobile */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-section { width: 100%; }
@@ -483,10 +478,10 @@
                 }
                 else if(item.type === 'break') {
                     html += `<div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="color:#ef4444; font-weight:700;"><i class="fas fa-cut"></i> PAGE BREAK</span>
+                                <span style="color:#ef4444; font-weight:700;">--- PAGE BREAK ---</span>
                                 <select class="form-control" style="width:auto; padding:5px; font-size:12px;" onchange="updateData(${item.id}, 'layout', this.value)">
-                                    <option value="1" ${item.layout==='1'?'selected':''}>Next: Full Width</option>
-                                    <option value="2" ${item.layout==='2'?'selected':''}>Next: 2 Cols</option>
+                                    <option value="1" ${item.layout==='1'?'selected':''}>Next Page: Full Width</option>
+                                    <option value="2" ${item.layout==='2'?'selected':''}>Next Page: 2 Cols</option>
                                 </select>
                              </div>`;
                 }
@@ -607,6 +602,7 @@
                 else if(item.type === 'qa') {
                     qNum++;
                     el.className = 'qa-item';
+                    // Hyphen style
                     el.innerHTML = `<span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span><span class="qa-ans"> - ${item.ans}</span>`;
                 }
                 else {
@@ -726,26 +722,37 @@
             btn.innerHTML = '<i class="fas fa-file-image"></i> PNG';
         }
 
-        // --- DOWNLOAD DOCX (NEW) ---
+        // --- DOWNLOAD DOCX (Fixing Corrupted Issue using Library) ---
         function downloadDocx() {
             const btn = document.querySelector('.btn-docx');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
             
+            // Get content
             const content = document.getElementById('pdfPreviewContainer').innerHTML;
             
-            const header = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><title>Document</title></head><body>`;
-            const footer = "</body></html>";
+            // Basic CSS for Word
+            const styles = `
+                <style>
+                    body { font-family: 'Hind Siliguri', sans-serif; font-size: 12pt; }
+                    .pdf-page { margin-bottom: 20px; }
+                    .q-header { font-weight: bold; }
+                </style>
+            `;
             
-            const sourceHTML = header + content + footer;
+            const htmlString = `<!DOCTYPE html><html><head><meta charset="UTF-8">${styles}</head><body>${content}</body></html>`;
             
-            const blob = new Blob(['\ufeff', sourceHTML], {
-                type: 'application/msword'
-            });
-            
-            const hex = Math.random().toString(16).substring(2, 8);
-            saveAs(blob, `question_${hex}.doc`);
+            // Use html-docx-js to generate valid .docx
+            try {
+                if (typeof htmlDocx !== 'undefined') {
+                    const converted = htmlDocx.asBlob(htmlString);
+                    saveAs(converted, `question_${Date.now()}.docx`);
+                } else {
+                    alert("DOCX Library not loaded.");
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Error generating DOCX");
+            }
             
             btn.innerHTML = '<i class="fas fa-file-word"></i> Word';
         }
