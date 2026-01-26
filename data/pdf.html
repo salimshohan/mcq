@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interactive Learning | PDF Maker</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Noto+Serif+Bengali:wght@400;700&family=Galada&family=Inter:wght@400;500;600&family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=Noto+Serif+Bengali:wght@400;700&family=Inter:wght@400;500;600&family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/solaimanlipi" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -142,7 +142,6 @@
             position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.5);
             overflow: hidden; display: flex; flex-direction: column;
             margin-bottom: 20px; 
-            /* Font will be controlled by JS */
         }
         .pdf-page:last-child { margin-bottom: 0 !important; box-shadow: none !important; }
         @media print { .pdf-page { margin-bottom: 0 !important; box-shadow: none !important; } }
@@ -162,26 +161,30 @@
             position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
-        /* PDF Headers */
+        /* PDF Headers - REDUCED SPACING */
         /* First Page Header */
         .pdf-header-main { 
             text-align: center; border-bottom: 2px dashed #000; 
-            padding-bottom: 5px; margin-bottom: 3px; flex-shrink: 0; z-index: 2; position: relative; 
+            padding-bottom: 2px; margin-bottom: 2px; flex-shrink: 0; z-index: 2; position: relative; 
         }
-        .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 3px; }
-        .main-title { border: 2px dashed #000; display: inline-block; padding: 4px 25px; font-size: 22px; font-weight: 800; margin-bottom: 5px; }
-        .sub-title { font-size: 16px; font-weight: 800; margin-bottom: 3px; }
-        .meta-info { font-size: 12px; margin-top: 4px; }
+        .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
+        .main-title { border: 2px dashed #000; display: inline-block; padding: 2px 25px; font-size: 22px; font-weight: 800; margin-bottom: 3px; line-height: 1.2; }
+        .sub-title { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+        .meta-info { font-size: 12px; margin-top: 2px; }
         
-        /* Subsequent Page Header (Minimal) */
+        /* Subsequent Page Header (Minimal & Centered) */
         .pdf-header-sub {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            border-bottom: 1px solid #000; padding-bottom: 3px; margin-bottom: 10px;
-            font-size: 10px; font-weight: 700; z-index: 2; flex-shrink: 0;
+            text-align: center; font-size: 12px; font-weight: 800; text-transform: uppercase;
+            margin-bottom: 5px; padding-bottom: 2px;
+            flex-shrink: 0; z-index: 2;
         }
 
-        /* Footer */
-        .pdf-footer { text-align: center; border-top: 2px dashed #000; padding-top: 5px; font-size: 22px; font-weight: 900; flex-shrink: 0; z-index: 2; margin-top: auto; }
+        /* Footer - REDUCED SPACING */
+        .pdf-footer { 
+            text-align: center; border-top: 2px dashed #000; 
+            padding-top: 2px; font-size: 20px; font-weight: 900; 
+            flex-shrink: 0; z-index: 2; margin-top: auto; 
+        }
 
         /* PDF BODY */
         .pdf-body {
@@ -192,7 +195,7 @@
 
         .section-header { 
             text-align: center; font-weight: 800; font-size: 16px;
-            margin: 8px 0; border-bottom: 1px solid #333;
+            margin: 6px 0; border-bottom: 1px solid #333;
             background: white; padding: 2px; display: inline-block; width: 100%; break-inside: avoid; 
         }
         
@@ -212,12 +215,12 @@
         .q-text:hover { opacity: 0.8; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         
-        /* Single Q&A Item */
+        /* Single Q&A Item (Modified) */
         .qa-item {
             margin-bottom: 6px; break-inside: avoid;
             font-size: inherit; line-height: 1.3;
         }
-        .qa-ans { font-weight: 700; color: #1e1b4b; }
+        .qa-ans { font-weight: 700; color: #1e1b4b; margin-left: 5px; }
 
         .exp { font-size: 0.9em; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
@@ -244,32 +247,32 @@
 
     <div class="container">
         <div class="editor-section">
-            <div class="section-title">PDF Details</div>
+            <div class="section-title">PDF Details <button onclick="resetAll()" style="float:right; font-size:10px; padding:5px; background:#fee2e2; border:none; color:red; border-radius:4px; cursor:pointer;">Reset</button></div>
             
             <div class="input-group">
                 <label>Main Title</label>
-                <input id="headTitle" class="form-control" value="স্থানীয় সরকার বিভাগ" oninput="updatePDF()">
+                <input id="headTitle" class="form-control" value="স্থানীয় সরকার বিভাগ" oninput="saveLocal(); updatePDF()">
             </div>
             <div class="input-group">
                 <label>Sub Title</label>
-                <input id="subTitle" class="form-control" value="পদ: উপ সহকারী প্রকৌশলী" oninput="updatePDF()">
+                <input id="subTitle" class="form-control" value="পদ: উপ সহকারী প্রকৌশলী" oninput="saveLocal(); updatePDF()">
             </div>
             <div class="input-group">
                 <label>Date</label>
-                <input id="examDate" class="form-control" oninput="updatePDF()">
+                <input id="examDate" class="form-control" oninput="saveLocal(); updatePDF()">
             </div>
 
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <div class="input-group" style="flex:1; min-width:120px;">
                     <label>Start Layout</label>
-                    <select id="startLayout" class="form-control" onchange="updatePDF()">
+                    <select id="startLayout" class="form-control" onchange="saveLocal(); updatePDF()">
                         <option value="1">Full Width (1 Col)</option>
                         <option value="2">Left-Right (2 Cols)</option>
                     </select>
                 </div>
                 <div class="input-group" style="flex:1; min-width:120px;">
                     <label>Font Family</label>
-                    <select id="fontSelect" class="form-control" onchange="updatePDF()">
+                    <select id="fontSelect" class="form-control" onchange="saveLocal(); updatePDF()">
                         <option value="'Hind Siliguri', sans-serif">Hind Siliguri</option>
                         <option value="'SolaimanLipi', sans-serif">SolaimanLipi</option>
                         <option value="'Tiro Bangla', serif">Tiro Bangla</option>
@@ -281,7 +284,7 @@
             </div>
             <div class="input-group">
                 <label>Font Size (<span id="fsVal">13</span>px)</label>
-                <input type="range" id="fontSize" min="8" max="24" value="13" step="0.5" oninput="updatePDF()">
+                <input type="range" id="fontSize" min="8" max="24" value="13" step="0.5" oninput="saveLocal(); updatePDF()">
             </div>
 
             <div id="itemsList"></div>
@@ -318,36 +321,90 @@
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
             
             const d = new Date();
-            const dateStr = `তারিখ: ${toBn(d.getDate())} ${bnMonths[d.getMonth()]}, ${toBn(d.getFullYear())}`;
-            document.getElementById('examDate').value = dateStr;
+            return `তারিখ: ${toBn(d.getDate())} ${bnMonths[d.getMonth()]}, ${toBn(d.getFullYear())}`;
+        }
+
+        // --- LOCAL STORAGE LOGIC ---
+        function saveLocal() {
+            const data = {
+                items,
+                title: document.getElementById('headTitle').value,
+                sub: document.getElementById('subTitle').value,
+                date: document.getElementById('examDate').value,
+                layout: document.getElementById('startLayout').value,
+                font: document.getElementById('fontSelect').value,
+                size: document.getElementById('fontSize').value
+            };
+            localStorage.setItem('pdfMakerData', JSON.stringify(data));
+        }
+
+        function restoreLocal() {
+            const saved = localStorage.getItem('pdfMakerData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                items = data.items || [];
+                document.getElementById('headTitle').value = data.title || "স্থানীয় সরকার বিভাগ";
+                document.getElementById('subTitle').value = data.sub || "পদ: উপ সহকারী প্রকৌশলী";
+                document.getElementById('examDate').value = data.date || setBanglaDate();
+                document.getElementById('startLayout').value = data.layout || "1";
+                document.getElementById('fontSelect').value = data.font || "'Hind Siliguri', sans-serif";
+                document.getElementById('fontSize').value = data.size || "13";
+                renderInputs();
+                updatePDF();
+            } else {
+                document.getElementById('examDate').value = setBanglaDate();
+                addItem('question'); 
+            }
+        }
+
+        function resetAll() {
+            if(confirm("Clear all data?")) {
+                localStorage.removeItem('pdfMakerData');
+                location.reload();
+            }
         }
 
         function init() { 
-            setBanglaDate(); 
-            addItem('question'); 
+            restoreLocal();
         }
 
+        // --- ITEM LOGIC ---
         function addItem(type) {
             const id = Date.now();
             if(type === 'header') items.push({ id, type, title: '' });
             else if(type === 'passage') items.push({ id, type, text: '' });
             else if(type === 'break') items.push({ id, type, layout: '1' });
-            else if(type === 'qa') items.push({ id, type, q: '', ans: '' }); // Single line QA
-            else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' }); // MCQ
-            renderInputs(); updatePDF();
+            else if(type === 'qa') items.push({ id, type, q: '', ans: '' });
+            else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' });
+            
+            saveLocal();
+            renderInputs(); 
+            updatePDF();
         }
 
-        function removeItem(index) { items.splice(index, 1); renderInputs(); updatePDF(); }
+        function removeItem(index) { 
+            items.splice(index, 1); 
+            saveLocal();
+            renderInputs(); 
+            updatePDF(); 
+        }
         
         function moveItem(index, dir) {
             if(dir === 'up' && index > 0) [items[index], items[index-1]] = [items[index-1], items[index]];
             else if(dir === 'down' && index < items.length-1) [items[index], items[index+1]] = [items[index+1], items[index]];
-            renderInputs(); updatePDF();
+            
+            saveLocal();
+            renderInputs(); 
+            updatePDF();
         }
 
         function updateData(id, field, val) {
             const item = items.find(x => x.id === id);
-            if(item) { item[field] = val; updatePDF(); }
+            if(item) { 
+                item[field] = val; 
+                saveLocal();
+                updatePDF(); 
+            }
         }
 
         function renderInputs() {
@@ -393,11 +450,11 @@
                                 </select>
                              </div>`;
                 }
-                else if(item.type === 'qa') { // Single QA Input
+                else if(item.type === 'qa') { 
                     html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question Text" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                              <input class="form-control" placeholder="Answer Text" value="${item.ans}" oninput="updateData(${item.id}, 'ans', this.value)">`;
                 }
-                else { // MCQ Input
+                else { 
                     html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question Text" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px">
                         <input class="form-control" placeholder="A" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
@@ -445,10 +502,10 @@
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
             // Helper to create page
-            function createPage(isFirst, layoutType, pageNum) {
+            function createPage(isFirst, layoutType) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
-                page.style.fontFamily = fontName; // Apply custom font
+                page.style.fontFamily = fontName; 
                 
                 let headerHTML = '';
                 if(isFirst) {
@@ -460,13 +517,8 @@
                         <div class="meta-info">${date}</div>
                     </div>`;
                 } else {
-                    // Minimal header for subsequent pages
-                    headerHTML = `
-                    <div class="pdf-header-sub">
-                        <span>Interactive Learning</span>
-                        <span style="border-top:1px solid #000; width:80%"></span>
-                        <span>Page ${pageNum}</span>
-                    </div>`;
+                    // Minimized header for 2nd+ pages
+                    headerHTML = `<div class="pdf-header-sub">Interactive Learning</div>`;
                 }
 
                 page.innerHTML = `
@@ -478,7 +530,8 @@
                 `;
                 
                 if(!isFirst) {
-                    page.querySelector('.v-line').style.top = '10mm'; // Adjust line top for minimal header
+                    // Adjust v-line for small header
+                    page.querySelector('.v-line').style.top = '10mm'; 
                 }
 
                 container.appendChild(page);
@@ -486,9 +539,8 @@
             }
 
             // Init Page 1
-            let pageCount = 1;
             let currentLayout = startLayout;
-            let currentObj = createPage(true, currentLayout, pageCount);
+            let currentObj = createPage(true, currentLayout);
             let currentBody = currentObj.body;
             let currentPage = currentObj.page;
             let qNum = 0;
@@ -496,8 +548,7 @@
             items.forEach(item => {
                 if(item.type === 'break') {
                     if(item.layout) currentLayout = item.layout;
-                    pageCount++;
-                    currentObj = createPage(false, currentLayout, pageCount);
+                    currentObj = createPage(false, currentLayout);
                     currentBody = currentObj.body;
                     currentPage = currentObj.page;
                     return;
@@ -516,8 +567,7 @@
                 else if(item.type === 'qa') {
                     qNum++;
                     el.className = 'qa-item';
-                    el.innerHTML = `<span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span>
-                                    <span class="qa-ans">Ans: ${item.ans}</span>`;
+                    el.innerHTML = `<span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span><span class="qa-ans"> - Ans: ${item.ans}</span>`;
                 }
                 else {
                     qNum++;
@@ -549,8 +599,7 @@
                 // Page Overflow Check
                 if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
                     currentBody.removeChild(el); 
-                    pageCount++;
-                    currentObj = createPage(false, currentLayout, pageCount); 
+                    currentObj = createPage(false, currentLayout); 
                     currentBody = currentObj.body;
                     currentPage = currentObj.page;
                     currentBody.appendChild(el); 
@@ -572,11 +621,10 @@
             
             btn.innerHTML = 'Generating...';
 
-            // Clone to manipulate properties safely
             const clone = container.cloneNode(true);
             const clonePages = clone.querySelectorAll('.pdf-page');
             
-            // Fix: Calculate exact height based on page count to prevent overflow blank page
+            // Fix height strictly to avoid blank page
             const totalHeight = clonePages.length * 296.95; 
             
             clone.style.transform = 'none';
@@ -592,7 +640,6 @@
                 p.style.height = '297mm'; 
             });
 
-            // Off-screen rendering
             const tempWrapper = document.createElement('div');
             tempWrapper.style.position = 'absolute';
             tempWrapper.style.left = '-9999px';
@@ -618,7 +665,6 @@
         async function downloadPNG() {
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
-            
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.margin;
             scaleBox.style.transform = 'none';
