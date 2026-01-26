@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        /* --- THEME VARIABLES (MATCHING INDEX.HTML) --- */
+        /* --- THEME VARIABLES --- */
         :root {
             --bg-body: #f1f5f9;
             --panel-bg: #ffffff;
@@ -42,7 +42,7 @@
             gap: 40px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR SECTION (UI STYLING) --- */
+        /* --- EDITOR SECTION --- */
         .editor-section {
             flex: 1; min-width: 350px; max-width: 500px;
             background: var(--panel-bg); padding: 30px; border-radius: 12px;
@@ -62,7 +62,6 @@
             color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; 
         }
         
-        /* Modern Inputs */
         .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid #cbd5e1; 
             color: #334155; padding: 12px; font-size: 14px; border-radius: 8px;
@@ -75,15 +74,19 @@
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 80px; }
 
-        /* Card Items in Editor */
+        /* Card Items */
         .card-base { 
             padding: 15px; border-radius: 8px; margin-bottom: 15px; 
             background: #fff; border: 1px solid #e2e8f0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
+        /* Specific Card Colors in Editor */
         .question-card { border-left: 4px solid var(--primary); }
         .header-card { border-left: 4px solid #10b981; background: #f0fdf4; }
         .break-card { border: 1px dashed #ef4444; background: #fef2f2; color: #ef4444; text-align: center; font-weight: bold; }
+        .math-card { border-left: 4px solid #0ea5e9; background: #f0f9ff; }
+        .pinpoint-card { border-left: 4px solid #ec4899; background: #fdf2f8; }
+        .passage-card { border-left: 4px solid #f59e0b; background: #fffbeb; }
 
         .q-header { 
             display: flex; justify-content: space-between; font-size: 11px; 
@@ -98,15 +101,15 @@
         .fa-trash:hover { background: #fee2e2 !important; color: #dc2626 !important; }
 
         /* Buttons */
-        .btn-group { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
         
         .btn-add { 
-            flex: 1; padding: 12px; border: none; border-radius: 8px; 
-            background: #e0e7ff; color: var(--primary); font-weight: 600; font-size: 13px;
-            cursor: pointer; transition: 0.2s;
+            flex: 1; padding: 10px; border: none; border-radius: 8px; 
+            background: #e0e7ff; color: var(--primary); font-weight: 600; font-size: 12px;
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; white-space: nowrap;
         }
         .btn-add:hover { background: #c7d2fe; transform: translateY(-1px); }
-        .btn-break { background: #fee2e2; color: #ef4444; }
+        .btn-break { background: #fee2e2; color: #ef4444; flex-basis: 100%; }
         .btn-break:hover { background: #fecaca; }
 
         .download-group { display: flex; gap: 10px; width: 100%; }
@@ -121,7 +124,7 @@
         .btn-png { background: #059669; }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); opacity: 0.9; }
 
-        /* --- PREVIEW SECTION (KEEPING DARK BACKGROUND FOR CONTRAST) --- */
+        /* --- PREVIEW SECTION --- */
         .preview-wrapper {
             flex: 1.5; display: flex; flex-direction: column; align-items: center;
             background: #334155; padding: 30px; border-radius: 16px;
@@ -130,25 +133,16 @@
         }
         .scale-box { transform-origin: top center; transition: transform 0.3s ease; }
 
-        /* --- PDF PAGE DESIGN (UNCHANGED LOGIC) --- */
+        /* --- PDF PAGE DESIGN --- */
         .pdf-page {
-            width: 210mm;
-            height: 296mm; /* Fixed Height */
-            background: white;
-            color: black !important;
-            padding: 15mm;
-            position: relative;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            overflow: hidden;
-            display: flex; flex-direction: column;
-            margin-bottom: 20px;
-            font-family: 'Lexend', 'Anek Bangla', sans-serif; /* Keep PDF fonts */
+            width: 210mm; height: 296mm; background: white;
+            color: black !important; padding: 15mm;
+            position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            overflow: hidden; display: flex; flex-direction: column;
+            margin-bottom: 20px; font-family: 'Lexend', 'Anek Bangla', sans-serif;
         }
         .pdf-page:last-child { margin-bottom: 0 !important; box-shadow: none !important; }
-        
-        @media print {
-            .pdf-page { margin-bottom: 0 !important; box-shadow: none !important; }
-        }
+        @media print { .pdf-page { margin-bottom: 0 !important; box-shadow: none !important; } }
         #pdfContent * { color: black !important; }
 
         /* Watermark & Line */
@@ -158,7 +152,7 @@
             font-family: Arial Black, Impact, sans-serif;
             font-size: 65px; font-weight: 900; letter-spacing: 3px;
             color: rgba(0, 0, 0, 0.22);
-            text-shadow: 2px 0 0 rgba(0,0,0,0.22), -1px 0 0 rgba(0,0,0,0.22), 0 1px 0 rgba(0,0,0,0.22), 0 -1px 0 rgba(0,0,0,0.22);
+            text-shadow: 2px 0 0 rgba(0,0,0,0.22), -1px 0 0 rgba(0,0,0,0.22);
             white-space: nowrap; pointer-events: none; z-index: 0; opacity: 0.04;
         }
         .v-line {
@@ -192,17 +186,21 @@
             margin: 8px 0; border-bottom: 1px solid #333;
             background: white; padding: 2px; display: inline-block; width: 100%; break-inside: avoid; 
         }
+        
         .mcq-item { 
             margin-bottom: 6px; break-inside: avoid; 
             font-size: 13px; line-height: 1.2; 
             padding-right: 5px; position: relative; 
         }
+        /* Math specific font */
+        .math-font { font-family: 'Times New Roman', serif; font-size: 14px; }
+        
         .q-text { font-weight: 700; display: block; margin-bottom: 2px; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         .ans { font-weight: 700; margin-top: 2px; font-size: 12px; }
         .exp { font-size: 11px; font-style: italic; border-top: 1px dotted #ccc; margin-top: 2px; color: #333; }
 
-        /* --- SITE FOOTER (INDEX STYLE) --- */
+        /* --- SITE FOOTER --- */
         footer {
             width: 100%; padding: 25px; text-align: center;
             background: #0f172a; border-top: 1px solid #1e293b;
@@ -237,7 +235,7 @@
             </div>
             <div class="input-group">
                 <label>Date</label>
-                <input id="examDate" class="form-control" value="তারিখ: ২৩ জানুয়ারি, ২০২৬" oninput="updatePDF()">
+                <input id="examDate" class="form-control" oninput="updatePDF()">
             </div>
 
             <div id="itemsList"></div>
@@ -245,8 +243,10 @@
             <div class="btn-group">
                 <button class="btn-add" onclick="addItem('header')"><i class="fas fa-heading"></i> Subject</button>
                 <button class="btn-add" onclick="addItem('question')"><i class="fas fa-question-circle"></i> Question</button>
+                <button class="btn-add" style="background:#e0f2fe; color:#0284c7;" onclick="addItem('math')"><i class="fas fa-calculator"></i> Math</button>
+                <button class="btn-add" style="background:#fce7f3; color:#db2777;" onclick="addItem('pinpoint')"><i class="fas fa-bullseye"></i> Pin Point</button>
                 <button class="btn-add" style="background:#fef3c7; color:#d97706;" onclick="addItem('passage')"><i class="fas fa-align-left"></i> Passage</button>
-                <button class="btn-add btn-break" onclick="addItem('break')"><i class="fas fa-cut"></i> Break</button>
+                <button class="btn-add btn-break" onclick="addItem('break')"><i class="fas fa-cut"></i> Page Break</button>
             </div>
             
             <div class="download-group">
@@ -267,13 +267,29 @@
    <script>
         let items = [];
 
-        function init() { addItem('question'); }
+        // Set Date in Bangla on Load
+        function setBanglaDate() {
+            const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+            const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+            const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
+            
+            const d = new Date();
+            const dateStr = `তারিখ: ${toBn(d.getDate())} ${bnMonths[d.getMonth()]}, ${toBn(d.getFullYear())}`;
+            document.getElementById('examDate').value = dateStr;
+        }
 
+        function init() { 
+            setBanglaDate(); 
+            addItem('question'); 
+        }
+
+        // Updated addItem to include Math and Pin Point
         function addItem(type) {
             const id = Date.now();
             if(type === 'header') items.push({ id, type, title: '' });
             else if(type === 'passage') items.push({ id, type, text: '' });
             else if(type === 'break') items.push({ id, type });
+            // Standard Question structure is used for Question, Math, and Pinpoint
             else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' });
             renderInputs(); updatePDF();
         }
@@ -298,9 +314,24 @@
 
             items.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = `card-base ${item.type}-card`;
+                // Dynamic class for border color
+                let typeClass = 'question-card';
+                if(item.type === 'math') typeClass = 'math-card';
+                if(item.type === 'pinpoint') typeClass = 'pinpoint-card';
+                if(item.type === 'header') typeClass = 'header-card';
+                if(item.type === 'passage') typeClass = 'passage-card';
+                if(item.type === 'break') typeClass = 'break-card';
+
+                div.className = `card-base ${typeClass}`;
                 
-                let html = `<div class="q-header"><span>${item.type.toUpperCase()} ${item.type==='question'?++qNum:''}</span>
+                // Header with Type Label
+                let typeLabel = item.type.toUpperCase();
+                if(item.type === 'math' || item.type === 'pinpoint' || item.type === 'question') {
+                    qNum++;
+                    typeLabel += ` ${qNum}`;
+                }
+
+                let html = `<div class="q-header"><span>${typeLabel}</span>
                     <div class="control-icons">
                         <i class="fas fa-arrow-up" onclick="moveItem(${index}, 'up')"></i>
                         <i class="fas fa-arrow-down" onclick="moveItem(${index}, 'down')"></i>
@@ -313,8 +344,12 @@
                 else if(item.type === 'passage') { 
                     html += `<textarea class="form-control" style="min-height:100px;" placeholder="Paste passage here..." oninput="updateData(${item.id}, 'text', this.value)">${item.text}</textarea>`;
                 }
-                else if(item.type === 'question') {
-                    html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
+                else if(item.type === 'break') {
+                    html += `<div style="text-align:center; color:#ef4444; font-size:12px; font-weight:700;">--- PAGE BREAK ---</div>`;
+                }
+                else { 
+                    // Common inputs for Question, Math, Pinpoint
+                    html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question Text" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px">
                         <input class="form-control" placeholder="A" value="${item.a}" oninput="updateData(${item.id}, 'a', this.value)">
                         <input class="form-control" placeholder="B" value="${item.b}" oninput="updateData(${item.id}, 'b', this.value)">
@@ -330,8 +365,6 @@
                         <option value="ব্যাখ্যা দেখুন" ${item.ans==='ব্যাখ্যা দেখুন'?'selected':''}>ব্যাখ্যা দেখুন</option>
                     </select>
                     <textarea class="form-control" placeholder="Explanation (Optional)" oninput="updateData(${item.id}, 'exp', this.value)">${item.exp}</textarea>`;
-                } else {
-                    html += `<div style="text-align:center; color:#ef4444; font-size:12px; font-weight:700;">--- PAGE BREAK ---</div>`;
                 }
                 div.innerHTML = html;
                 list.appendChild(div);
@@ -400,6 +433,10 @@
                 else {
                     qNum++;
                     el.className = 'mcq-item';
+                    
+                    // Math Font check
+                    if(item.type === 'math') el.classList.add('math-font');
+
                     const exp = item.exp ? `<div class="exp"><b>ব্যাখ্যা:</b> ${item.exp}</div>` : '';
                     const activeStyle = 'color: #008000; font-weight: 900;';
                     
@@ -440,10 +477,8 @@
         function downloadPDF() {
             const element = document.getElementById('pdfPreviewContainer');
             const scaleBox = document.querySelector('.scale-box');
-            
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.margin;
-            
             scaleBox.style.transform = 'none';
             scaleBox.style.margin = '0';
             
@@ -456,8 +491,7 @@
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save()
-            .then(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
                 scaleBox.style.transform = oldTransform;
                 scaleBox.style.margin = oldMargin;
             });
@@ -466,7 +500,6 @@
         async function downloadPNG() {
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
-            
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.margin;
             scaleBox.style.transform = 'none';
