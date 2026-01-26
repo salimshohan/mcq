@@ -84,22 +84,27 @@
             padding: 10px;
         }
 
-        /* --- QUOTE CARD (The Main Design) --- */
+        /* --- QUOTE CARD (UPDATED SIZE & SPACING) --- */
         #quoteWrapper {
             width: 100%; max-width: 500px;
-            /* 4:5 Aspect Ratio (Standard Portrait) */
-            aspect-ratio: 4/5; 
+            
+            /* UPDATED: Fixed Ratio Removed, Adaptive Height */
+            min-height: 350px; 
+            
             position: relative;
-            background: linear-gradient(135deg, #111827 0%, #1e293b 100%); /* Default */
+            background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px 20px;
+            
+            /* UPDATED: Reduced Padding */
+            padding: 40px 30px;
+            
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
             text-align: center;
-            border-radius: 4px; /* Minimal radius for clean look */
+            border-radius: 4px;
         }
 
-        /* Background Texture (Optional subtle noise) */
+        /* Background Texture */
         #quoteWrapper::before {
             content: ''; position: absolute; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
@@ -109,36 +114,41 @@
         .content-layer { position: relative; z-index: 2; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
         .quote-icon {
-            font-size: 35px; margin-bottom: 10px; opacity: 0.8;
+            /* UPDATED: Smaller Icon & Less Margin */
+            font-size: 30px; margin-bottom: 15px; 
+            opacity: 0.8;
             color: rgba(255,255,255,0.9);
         }
 
         .quote-text {
-            font-family: 'Hind Siliguri', sans-serif; /* Best for Bangla */
-            font-size: 20px; 
-            line-height: 1.6; 
+            font-family: 'Hind Siliguri', sans-serif;
+            
+            /* UPDATED: Smaller Font Size & Margin */
+            font-size: 22px; 
+            line-height: 1.5; 
+            margin-bottom: 20px;
+            
             font-weight: 600;
             color: #ffffff;
-            margin-bottom: 10px;
             white-space: pre-wrap;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .author-box {
-            display: none; /* Hidden by default */
+            display: none;
             border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 12px; margin-top: auto; /* Pushes to bottom if flex spacing allows, else naturally flows */
+            padding-top: 10px; margin-top: 5px;
             width: fit-content;
         }
 
         .quote-author {
             font-family: 'Poppins', sans-serif;
-            font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9);
+            font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
             text-transform: uppercase; letter-spacing: 2px;
         }
 
         .brand-watermark {
-            position: absolute; bottom: 25px;
+            position: absolute; bottom: 15px;
             font-family: 'Poppins', sans-serif;
             font-size: 10px; font-weight: 500; 
             color: rgba(255,255,255,0.4); 
@@ -157,8 +167,8 @@
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box, .preview-wrapper { width: 100%; }
-            #quoteWrapper { max-width: 100%; padding: 40px 20px; }
-            .quote-text { font-size: 22px; }
+            #quoteWrapper { max-width: 100%; padding: 30px 20px; min-height: 300px; }
+            .quote-text { font-size: 20px; }
         }
     </style>
 </head>
@@ -244,7 +254,7 @@
             { name: "Olive", bg: "#365314" },
             // Adding more subtle gradients
             { name: "Titanium", bg: "linear-gradient(to right, #243B55, #141E30)" },
-            { name: "Venice", bg: "linear-gradient(to right, #085078, #85D8CE)" }, // Keep text check logic if light
+            { name: "Venice", bg: "linear-gradient(to right, #085078, #85D8CE)" }, 
             { name: "Kashmir", bg: "linear-gradient(to right, #614385, #516395)" },
             { name: "Electric Violet", bg: "linear-gradient(to right, #4776E6, #8E54E9)" },
             { name: "Flare", bg: "linear-gradient(to right, #f12711, #f5af19)" },
@@ -259,8 +269,8 @@
             { name: "Rock", bg: "linear-gradient(to right, #243B55, #141E30)" },
             { name: "Sun", bg: "linear-gradient(to right, #e65c00, #F9D423)" },
             { name: "Sea", bg: "linear-gradient(to right, #2b5876, #4e4376)" },
-            { name: "Slight", bg: "linear-gradient(to right, #1c92d2, #f2fcfe)" }, // Light
-            { name: "Margo", bg: "linear-gradient(to right, #ffefba, #ffffff)" }, // Light
+            { name: "Slight", bg: "linear-gradient(to right, #1c92d2, #f2fcfe)" }, 
+            { name: "Margo", bg: "linear-gradient(to right, #ffefba, #ffffff)" }, 
             { name: "Orange", bg: "linear-gradient(to right, #d38312, #a83279)" },
             { name: "Rose Water", bg: "linear-gradient(to right, #159957, #155799)" },
             { name: "Lemon", bg: "linear-gradient(to right, #6A9113, #141517)" },
