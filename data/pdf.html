@@ -74,6 +74,11 @@
         select.form-control { cursor: pointer; }
         textarea.form-control { resize: vertical; min-height: 80px; }
 
+        /* Font Size Slider */
+        input[type="range"] {
+            width: 100%; cursor: pointer;
+        }
+
         /* Card Items */
         .card-base { 
             padding: 15px; border-radius: 8px; margin-bottom: 15px; 
@@ -82,7 +87,7 @@
         }
         .question-card { border-left: 4px solid var(--primary); }
         .header-card { border-left: 4px solid #10b981; background: #f0fdf4; }
-        .break-card { border: 1px dashed #ef4444; background: #fef2f2; color: #ef4444; text-align: center; font-weight: bold; }
+        .break-card { border: 1px dashed #ef4444; background: #fef2f2; color: #ef4444; font-weight: bold; }
         .passage-card { border-left: 4px solid #f59e0b; background: #fffbeb; }
 
         .q-header { 
@@ -156,12 +161,6 @@
             position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
-        .passage-box {
-            font-size: 13px; font-weight: 700; line-height: 1.4;
-            text-align: justify; margin-bottom: 10px; white-space: pre-wrap;
-            break-inside: avoid; display: block;
-        }
-
         /* PDF Header & Footer */
         .pdf-header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 5px; margin-bottom: 3px; flex-shrink: 0; z-index: 2; position: relative; }
         .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; margin-bottom: 3px; }
@@ -171,12 +170,16 @@
         
         .pdf-footer { text-align: center; border-top: 2px dashed #000; padding-top: 5px; font-size: 22px; font-weight: 900; flex-shrink: 0; z-index: 2; margin-top: auto; }
 
-        /* PDF BODY */
+        /* PDF BODY - DYNAMIC COLUMNS */
         .pdf-body {
-            flex-grow: 1; column-count: 2; column-gap: 10mm;
+            flex-grow: 1; 
+            /* Default 1 Column */
+            column-count: 1; 
             column-fill: auto; position: relative; z-index: 2;
             overflow: hidden; height: 230mm; 
         }
+        /* 2 Columns Class */
+        .cols-2 { column-count: 2; column-gap: 10mm; }
 
         .section-header { 
             text-align: center; font-weight: 800; font-size: 16px;
@@ -184,14 +187,20 @@
             background: white; padding: 2px; display: inline-block; width: 100%; break-inside: avoid; 
         }
         
+        .passage-box {
+            font-size: inherit; font-weight: 700; line-height: 1.4;
+            text-align: justify; margin-bottom: 10px; white-space: pre-wrap;
+            break-inside: avoid; display: block;
+        }
+
         .mcq-item { 
             margin-bottom: 6px; break-inside: avoid; 
-            font-size: 13px; line-height: 1.2; 
+            font-size: inherit; /* Inherit from body font size control */
+            line-height: 1.2; 
             padding-right: 5px; position: relative; 
         }
         
         .q-text { font-weight: 700; display: block; margin-bottom: 2px; cursor: pointer; transition: color 0.2s; }
-        /* Add hover to indicate clickable */
         .q-text:hover { opacity: 0.8; }
 
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
@@ -234,6 +243,20 @@
             <div class="input-group">
                 <label>Date</label>
                 <input id="examDate" class="form-control" oninput="updatePDF()">
+            </div>
+
+            <div style="display:flex; gap:15px;">
+                <div class="input-group" style="flex:1">
+                    <label>Start Layout</label>
+                    <select id="startLayout" class="form-control" onchange="updatePDF()">
+                        <option value="1">Full Width (1 Col)</option>
+                        <option value="2">Left-Right (2 Cols)</option>
+                    </select>
+                </div>
+                <div class="input-group" style="flex:1">
+                    <label>Body Font Size (<span id="fsVal">13</span>px)</label>
+                    <input type="range" id="fontSize" min="10" max="18" value="13" step="0.5" oninput="updatePDF()">
+                </div>
             </div>
 
             <div id="itemsList"></div>
@@ -283,7 +306,7 @@
             const id = Date.now();
             if(type === 'header') items.push({ id, type, title: '' });
             else if(type === 'passage') items.push({ id, type, text: '' });
-            else if(type === 'break') items.push({ id, type });
+            else if(type === 'break') items.push({ id, type, layout: '1' }); // Default next page 1 col
             else items.push({ id, type, q: '', a: '', b: '', c: '', d: '', ans: '', exp: '' });
             renderInputs(); updatePDF();
         }
@@ -335,7 +358,13 @@
                     html += `<textarea class="form-control" style="min-height:100px;" placeholder="Paste passage here..." oninput="updateData(${item.id}, 'text', this.value)">${item.text}</textarea>`;
                 }
                 else if(item.type === 'break') {
-                    html += `<div style="text-align:center; color:#ef4444; font-size:12px; font-weight:700;">--- PAGE BREAK ---</div>`;
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#ef4444; font-weight:700;">--- PAGE BREAK ---</span>
+                                <select class="form-control" style="width:auto; padding:5px; font-size:12px;" onchange="updateData(${item.id}, 'layout', this.value)">
+                                    <option value="1" ${item.layout==='1'?'selected':''}>Next Page: Full Width</option>
+                                    <option value="2" ${item.layout==='2'?'selected':''}>Next Page: 2 Cols</option>
+                                </select>
+                             </div>`;
                 }
                 else { 
                     html += `<input class="form-control" style="margin-bottom:8px" placeholder="Question Text" value="${item.q}" oninput="updateData(${item.id}, 'q', this.value)">
@@ -359,12 +388,9 @@
             });
         }
 
-        // Color Cycling Logic
-        const qColors = ['inherit', '#ef4444', '#2563eb', '#16a34a', '#d97706']; // Black, Red, Blue, Green, Orange
+        // Color Cycling
+        const qColors = ['inherit', '#ef4444', '#2563eb', '#16a34a', '#d97706']; 
         function cycleColor(el) {
-            let currentColor = el.style.color || 'inherit';
-            // Convert rgb to hex if needed or just use index matching
-            // Simplest way: store index in dataset
             let idx = parseInt(el.dataset.colorIdx || 0);
             idx = (idx + 1) % qColors.length;
             el.style.color = qColors[idx];
@@ -378,10 +404,16 @@
             const title = document.getElementById('headTitle').value;
             const sub = document.getElementById('subTitle').value;
             const date = document.getElementById('examDate').value;
+            const startLayout = document.getElementById('startLayout').value;
+            const fontSize = document.getElementById('fontSize').value;
+            
+            document.getElementById('fsVal').innerText = fontSize;
+
             const bnNums = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
             const toBn = n => n.toString().split('').map(x => bnNums[x]||x).join('');
 
-            function createPage(isFirst) {
+            // Helper to create page
+            function createPage(isFirst, layoutType) {
                 const page = document.createElement('div');
                 page.className = 'pdf-page';
                 
@@ -394,7 +426,7 @@
                         <div class="sub-title">${sub}</div>
                         <div class="meta-info">${date}</div>
                     </div>
-                    <div class="pdf-body"></div>
+                    <div class="pdf-body ${layoutType === '2' ? 'cols-2' : ''}" style="font-size:${fontSize}px"></div>
                     <div class="pdf-footer">Interactive Learning • BCS, Job & Admission Preparation</div>
                 `;
                 
@@ -407,14 +439,19 @@
                 return { body: page.querySelector('.pdf-body'), page: page };
             }
 
-            let currentObj = createPage(true);
+            // Init Page 1
+            let currentLayout = startLayout;
+            let currentObj = createPage(true, currentLayout);
             let currentBody = currentObj.body;
             let currentPage = currentObj.page;
             let qNum = 0;
 
             items.forEach(item => {
                 if(item.type === 'break') {
-                    currentObj = createPage(false);
+                    // Update layout preference for next page
+                    if(item.layout) currentLayout = item.layout;
+                    
+                    currentObj = createPage(false, currentLayout);
                     currentBody = currentObj.body;
                     currentPage = currentObj.page;
                     return;
@@ -451,21 +488,27 @@
 
                 currentBody.appendChild(el);
 
-                if (el.offsetLeft > currentBody.offsetWidth / 2) {
-                    const line = currentPage.querySelector('.v-line');
-                    if (line) line.style.display = 'block';
+                // Show/Hide V-Line only if using 2 columns
+                if(currentLayout === '2') {
+                    if (el.offsetLeft > currentBody.offsetWidth / 2) {
+                        const line = currentPage.querySelector('.v-line');
+                        if (line) line.style.display = 'block';
+                    }
                 }
 
+                // Page Overflow Logic
                 if(currentBody.scrollHeight > currentBody.clientHeight + 2) {
                     currentBody.removeChild(el); 
-                    currentObj = createPage(false); 
+                    currentObj = createPage(false, currentLayout); 
                     currentBody = currentObj.body;
                     currentPage = currentObj.page;
                     currentBody.appendChild(el); 
                     
-                    if (el.offsetLeft > currentBody.offsetWidth / 2) {
-                        const line = currentPage.querySelector('.v-line');
-                        if (line) line.style.display = 'block';
+                    if(currentLayout === '2') {
+                        if (el.offsetLeft > currentBody.offsetWidth / 2) {
+                            const line = currentPage.querySelector('.v-line');
+                            if (line) line.style.display = 'block';
+                        }
                     }
                 }
             });
