@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quote Maker | Interactive Learning</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Tiro+Bangla:ital@0;1&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
-            --bg-body: #f1f5f9;
+            --bg-body: #f8fafc;
             --panel-bg: #ffffff;
-            --primary: #6366f1;
-            --border-light: #e2e8f0;
-            --shadow-card: 0 20px 40px -10px rgba(0,0,0,0.15);
+            --primary: #2563eb;
+            --text-dark: #1e293b;
+            --border-color: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
         body { 
-            font-family: 'Montserrat', 'Anek Bangla', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-body);
-            color: #1e293b;
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
         }
@@ -35,128 +37,127 @@
             gap: 40px; padding-bottom: 40px; flex: 1;
         }
 
-        /* --- EDITOR BOX --- */
+        /* --- EDITOR PANEL (Left) --- */
         .editor-box {
-            flex: 1; min-width: 320px; max-width: 420px;
-            background: var(--panel-bg); padding: 30px; border-radius: 20px;
-            border: 1px solid var(--border-light); 
-            box-shadow: var(--shadow-card);
+            flex: 1; min-width: 340px; max-width: 450px;
+            background: var(--panel-bg); padding: 30px; border-radius: 16px;
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             height: fit-content;
         }
 
         .section-title { 
-            font-size: 16px; font-weight: 800; color: #334155; 
-            margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 2px solid #f1f5f9; padding-bottom: 15px;
+            font-size: 18px; font-weight: 700; color: #0f172a; 
+            margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9; letter-spacing: 0.5px;
         }
 
         .input-group { margin-bottom: 20px; }
         .input-group label { 
-            display: block; font-size: 11px; font-weight: 700; 
-            color: #64748b; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+            display: block; font-size: 12px; font-weight: 600; 
+            color: #64748b; margin-bottom: 8px; text-transform: uppercase; 
         }
         
         .form-control {
             width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; 
-            color: #334155; padding: 14px; border-radius: 12px; font-size: 14px; 
-            font-family: 'Anek Bangla', sans-serif; transition: 0.2s;
+            color: #334155; padding: 12px 15px; border-radius: 8px; font-size: 14px; 
+            font-family: 'Hind Siliguri', sans-serif; transition: 0.2s;
         }
-        .form-control:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1); }
-        textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.6; }
-        select.form-control { cursor: pointer; font-weight: 600; }
+        .form-control:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.5; font-size: 16px; }
+        select.form-control { cursor: pointer; font-weight: 500; }
 
-        /* Modern Button */
         .btn-download { 
-            width: 100%; padding: 16px; border-radius: 12px; border: none;
-            background: #0f172a; color: white; font-weight: 700; cursor: pointer;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3); margin-top: 15px;
+            width: 100%; padding: 15px; border-radius: 8px; border: none;
+            background: #0f172a; color: white; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 10px;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.3s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(15, 23, 42, 0.4); }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
-        /* --- PREVIEW WRAPPER --- */
+        /* --- PREVIEW AREA (Right) --- */
         .preview-wrapper {
             flex: 1.5; min-width: 350px; 
             display: flex; justify-content: center; align-items: flex-start;
-            padding: 20px; 
+            padding: 10px;
         }
 
-        /* --- PREMIUM CARD DESIGN --- */
+        /* --- QUOTE CARD (The Main Design) --- */
         #quoteWrapper {
             width: 100%; max-width: 500px;
-            /* 4:5 Ratio (Instagram Portrait) is best for quotes */
+            /* 4:5 Aspect Ratio (Standard Portrait) */
             aspect-ratio: 4/5; 
             position: relative;
-            background: linear-gradient(135deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+            background: linear-gradient(135deg, #111827 0%, #1e293b 100%); /* Default */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 0; /* Sharp edges look more editorial/premium sometimes, or minimal radius */
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            padding: 60px 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
-            transition: background 0.3s ease;
+            text-align: center;
+            border-radius: 4px; /* Minimal radius for clean look */
         }
 
-        /* Glassmorphism Inner Card */
-        .glass-card {
-            width: 85%; height: 85%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 40px; text-align: center;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        /* Background Texture (Optional subtle noise) */
+        #quoteWrapper::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 1;
         }
 
-        /* Quote Icon */
-        .q-icon {
-            font-size: 40px; color: rgba(255,255,255,0.9);
-            margin-bottom: 25px;
+        .content-layer { position: relative; z-index: 2; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+        .quote-icon {
+            font-size: 40px; margin-bottom: 30px; opacity: 0.8;
+            color: rgba(255,255,255,0.9);
         }
 
-        /* Typography */
         .quote-text {
-            font-family: 'Anek Bangla', 'Playfair Display', serif;
-            font-size: 28px; line-height: 1.5; font-weight: 600;
-            color: #ffffff; 
-            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            margin-bottom: 30px; white-space: pre-wrap;
+            font-family: 'Hind Siliguri', sans-serif; /* Best for Bangla */
+            font-size: 28px; 
+            line-height: 1.6; 
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .divider-line {
-            width: 40px; height: 3px; background: white;
-            margin-bottom: 20px; border-radius: 2px;
-            display: none;
+        .author-box {
+            display: none; /* Hidden by default */
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 15px; margin-top: auto; /* Pushes to bottom if flex spacing allows, else naturally flows */
+            width: fit-content;
         }
 
         .quote-author {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px; font-weight: 700; color: #ffffff;
-            text-transform: uppercase; letter-spacing: 3px;
-            opacity: 0.9; display: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9);
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* Watermark */
         .brand-watermark {
-            position: absolute; bottom: 15px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 10px; font-weight: 700; letter-spacing: 2px;
-            color: rgba(255,255,255,0.6); text-transform: uppercase;
+            position: absolute; bottom: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 10px; font-weight: 500; 
+            color: rgba(255,255,255,0.4); 
+            text-transform: uppercase; letter-spacing: 2px;
+            z-index: 2;
         }
 
-        /* --- FOOTER (Dark) --- */
+        /* --- FOOTER --- */
         footer {
             width: 100%; padding: 25px; text-align: center;
-            background: #0f172a; border-top: 1px solid #1e293b;
-            margin-top: auto; font-size: 13px; color: #94a3b8;
+            background: #0f172a; color: #94a3b8; font-size: 13px;
+            margin-top: auto; border-top: 1px solid #1e293b;
         }
 
-        /* Responsive */
+        /* Mobile Responsive */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
             .editor-box, .preview-wrapper { width: 100%; }
-            #quoteWrapper { max-width: 100%; aspect-ratio: 1/1; } /* Square on mobile */
+            #quoteWrapper { max-width: 100%; padding: 40px 20px; }
             .quote-text { font-size: 22px; }
         }
     </style>
@@ -169,46 +170,46 @@
     <div class="container">
         
         <div class="editor-box">
-            <div class="section-title">Design Your Quote</div>
+            <div class="section-title">Design Quote</div>
             
             <div class="input-group">
-                <label>Select Theme (100+ Premium Styles)</label>
+                <label>Select Style (Updated Themes)</label>
                 <select id="themeSelector" class="form-control" onchange="applyTheme()">
                     </select>
             </div>
 
             <div class="input-group">
-                <label>Quote Content</label>
-                <textarea id="quoteInput" class="form-control" placeholder="Write your quote here..." oninput="updatePreview()"></textarea>
+                <label>Quote / উক্তি</label>
+                <textarea id="quoteInput" class="form-control" placeholder="এখানে উক্তি লিখুন..." oninput="updatePreview()"></textarea>
             </div>
             
             <div class="input-group">
-                <label>Author Name</label>
-                <input id="authorInput" class="form-control" placeholder="e.g. Humayun Ahmed" oninput="updatePreview()">
+                <label>Author / বক্তা (Optional)</label>
+                <input id="authorInput" class="form-control" placeholder="নাম লিখুন..." oninput="updatePreview()">
             </div>
 
             <button class="btn-download" onclick="downloadQuote()">
-                <i class="fas fa-arrow-down"></i> Download HD Image
+                <i class="fas fa-file-image"></i> Save as Image
             </button>
         </div>
 
         <div class="preview-wrapper">
             <div id="quoteWrapper">
-                <div class="glass-card">
-                    <i class="fas fa-quote-right q-icon"></i>
+                <div class="content-layer">
+                    <i class="fas fa-quote-left quote-icon"></i>
                     
                     <div class="quote-text" id="previewText">
                         "সাফল্য তখনই আসে যখন প্রস্তুতি এবং সুযোগের মিলন ঘটে।"
                     </div>
                     
-                    <div class="divider-line"></div>
-                    
-                    <div class="quote-author" id="previewAuthor">
-                        — সংগ্রহীত
+                    <div class="author-box" id="authorBox">
+                        <div class="quote-author" id="previewAuthor">
+                            — সংগ্রহীত
+                        </div>
                     </div>
-
-                    <div class="brand-watermark">Interactive Learning</div>
                 </div>
+
+                <div class="brand-watermark">Interactive Learning</div>
             </div>
         </div>
 
@@ -217,73 +218,61 @@
     <footer>&copy; 2026 Interactive Learning. All Rights Reserved.</footer>
 
     <script>
-        // --- 100+ PREMIUM GRADIENTS ---
+        // --- 100+ UPDATED PREMIUM THEMES (Clean & Professional) ---
         const themes = [
-            // Vibrant & Trendy
-            { name: "Neon Life", bg: "linear-gradient(135deg, #B621FE 0%, #1FD1F9 100%)" },
-            { name: "Sunset City", bg: "linear-gradient(135deg, #F5576C 0%, #F093FB 100%)" },
-            { name: "Royal Purple", bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-            { name: "Ocean Blue", bg: "linear-gradient(135deg, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%)" },
-            { name: "Deep Space", bg: "linear-gradient(135deg, #000000 0%, #434343 100%)" },
-            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)" },
-            { name: "Sweet Morning", bg: "linear-gradient(135deg, #FF5F6D 0%, #FFC371 100%)" },
-            { name: "Kyoto", bg: "linear-gradient(135deg, #c21500 0%, #ffc500 100%)" },
-            { name: "Pinky", bg: "linear-gradient(135deg, #EC008C 0%, #FC6767 100%)" },
-            { name: "Tranquil", bg: "linear-gradient(135deg, #EECDA3 0%, #EF629F 100%)" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #232526 0%, #414345 100%)" },
-            { name: "Orange Fun", bg: "linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%)" },
-            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9D50BB 0%, #6E48AA 100%)" },
-            { name: "Cosmic Fusion", bg: "linear-gradient(135deg, #ff00cc 0%, #333399 100%)" },
-            { name: "Relay", bg: "linear-gradient(135deg, #3A1C71 0%, #D76D77 50%, #FFAF7B 100%)" },
-            { name: "Metapolis", bg: "linear-gradient(135deg, #659999 0%, #f4791f 100%)" },
-            { name: "Kyoo Pal", bg: "linear-gradient(135deg, #dd3e54 0%, #6be585 100%)" },
-            { name: "Kye Meh", bg: "linear-gradient(135deg, #8360c3 0%, #2ebf91 100%)" },
-            { name: "Midnight", bg: "linear-gradient(135deg, #232526 0%, #414345 100%)" },
-            { name: "Lawrencium", bg: "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)" },
-            { name: "Ohhappiness", bg: "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)" },
-            { name: "Dania", bg: "linear-gradient(135deg, #BE93C5 0%, #7BC6CC 100%)" },
-            { name: "Jodhpur", bg: "linear-gradient(135deg, #9CECFB 0%, #65C7F7 50%, #0052D4 100%)" },
-            { name: "Megatron", bg: "linear-gradient(135deg, #C6FFDD 0%, #FBD786 50%, #f7797d 100%)" },
-            { name: "Moon Purple", bg: "linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%)" },
-            { name: "Argon", bg: "linear-gradient(135deg, #03001e 0%, #7303c0 50%, #ec38bc 100%)" },
-            { name: "Kashmir", bg: "linear-gradient(135deg, #614385 0%, #516395 100%)" },
-            { name: "Steel Gray", bg: "linear-gradient(135deg, #1F1C2C 0%, #928DAB 100%)" },
-            { name: "Mirage", bg: "linear-gradient(135deg, #16222A 0%, #3A6073 100%)" },
-            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF 0%, #348AC7 100%)" },
-            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6 0%, #FFFFFF 100%)" }, // Use dark text for this?
-            { name: "Peach", bg: "linear-gradient(135deg, #ED4264 0%, #FFEDBC 100%)" },
-            { name: "Mantle", bg: "linear-gradient(135deg, #24C6DC 0%, #514A9D 100%)" },
-            { name: "Dracula", bg: "linear-gradient(135deg, #DC2424 0%, #4A569D 100%)" },
-            { name: "Moss", bg: "linear-gradient(135deg, #134E5E 0%, #71B280 100%)" },
-            { name: "Slight Ocean", bg: "linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)" },
-            { name: "Dark Skies", bg: "linear-gradient(135deg, #4b6cb7 0%, #182848 100%)" },
-            { name: "Forest", bg: "linear-gradient(135deg, #5A3F37 0%, #2C7744 100%)" },
-            { name: "Royal", bg: "linear-gradient(135deg, #141E30 0%, #243B55 100%)" },
-            { name: "Miami", bg: "linear-gradient(135deg, #4DA0B0 0%, #D39D38 100%)" },
-            { name: "Mauve", bg: "linear-gradient(135deg, #42275a 0%, #734b6d 100%)" },
-            { name: "Frost", bg: "linear-gradient(135deg, #000428 0%, #004e92 100%)" },
-            { name: "Rose Water", bg: "linear-gradient(135deg, #E55D87 0%, #5FC3E4 100%)" },
-            { name: "Horizon", bg: "linear-gradient(135deg, #003973 0%, #E5E5BE 100%)" },
-            { name: "Lemon Twist", bg: "linear-gradient(135deg, #3CA55C 0%, #B5AC49 100%)" },
-            { name: "Emerald Water", bg: "linear-gradient(135deg, #348F50 0%, #56B4D3 100%)" },
-            { name: "Intuitive", bg: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" },
-            { name: "Firewatch", bg: "linear-gradient(135deg, #cb2d3e 0%, #ef473a 100%)" },
-            { name: "Opal", bg: "linear-gradient(135deg, #3494E6 0%, #EC6EAD 100%)" },
-            { name: "Sea Blizz", bg: "linear-gradient(135deg, #1CD8D2 0%, #93EDC7 100%)" },
-            { name: "Aubergine", bg: "linear-gradient(135deg, #AA076B 0%, #61045F 100%)" },
-            { name: "Very Blue", bg: "linear-gradient(135deg, #0575E6 0%, #021B79 100%)" },
-            { name: "Sun on Horizon", bg: "linear-gradient(135deg, #fceabb 0%, #f8b500 100%)" },
-            { name: "Dusk", bg: "linear-gradient(135deg, #ffd89b 0%, #19547b 100%)" },
-            { name: "Grapefruit", bg: "linear-gradient(135deg, #e96443 0%, #904e95 100%)" },
-            { name: "Politics", bg: "linear-gradient(135deg, #2196f3 0%, #f44336 100%)" },
-            { name: "Sweet Desert", bg: "linear-gradient(135deg, #859398 0%, #283048 100%)" },
-            { name: "ServQuick", bg: "linear-gradient(135deg, #485563 0%, #29323c 100%)" },
-            { name: "Solid Teal", bg: "#0d9488" },
-            { name: "Solid Navy", bg: "#1e1b4b" },
-            { name: "Solid Black", bg: "#020617" },
-            { name: "Solid Purple", bg: "#581c87" },
-            { name: "Solid Red", bg: "#991b1b" }
+            { name: "Deep Navy", bg: "#0f172a" }, // Professional Dark
+            { name: "Charcoal", bg: "#18181b" },
+            { name: "Pure Black", bg: "#000000" },
+            { name: "Royal Purple", bg: "linear-gradient(135deg, #4c1d95 0%, #3b0764 100%)" },
+            { name: "Crimson Red", bg: "linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%)" },
+            { name: "Ocean Depth", bg: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)" },
+            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b 0%, #065f46 100%)" },
+            { name: "Midnight Gradient", bg: "linear-gradient(135deg, #232526 0%, #414345 100%)" },
+            { name: "Insta Purple", bg: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)" },
+            { name: "Blue Violet", bg: "linear-gradient(135deg, #4338ca 0%, #312e81 100%)" },
+            { name: "Sunset Orange", bg: "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)" },
+            { name: "Teal Dark", bg: "linear-gradient(135deg, #115e59 0%, #0f766e 100%)" },
+            { name: "Slate Grey", bg: "linear-gradient(135deg, #334155 0%, #1e293b 100%)" },
+            { name: "Gold Luxury", bg: "linear-gradient(135deg, #854d0e 0%, #713f12 100%)" },
+            { name: "Cyber Punk", bg: "linear-gradient(135deg, #3b0764 0%, #be185d 100%)" },
+            { name: "Northern Lights", bg: "linear-gradient(135deg, #312e81 0%, #064e3b 100%)" },
+            { name: "Berry", bg: "linear-gradient(135deg, #831843 0%, #500724 100%)" },
+            { name: "Indigo", bg: "linear-gradient(135deg, #3730a3 0%, #312e81 100%)" },
+            { name: "Dark Magenta", bg: "#4a044e" },
+            { name: "Dark Blue", bg: "#172554" },
+            { name: "Warm Brown", bg: "#451a03" },
+            { name: "Olive", bg: "#365314" },
+            // Adding more subtle gradients
+            { name: "Titanium", bg: "linear-gradient(to right, #243B55, #141E30)" },
+            { name: "Venice", bg: "linear-gradient(to right, #085078, #85D8CE)" }, // Keep text check logic if light
+            { name: "Kashmir", bg: "linear-gradient(to right, #614385, #516395)" },
+            { name: "Electric Violet", bg: "linear-gradient(to right, #4776E6, #8E54E9)" },
+            { name: "Flare", bg: "linear-gradient(to right, #f12711, #f5af19)" },
+            { name: "Metapolis", bg: "linear-gradient(to right, #659999, #f4791f)" },
+            { name: "Kyoo Pal", bg: "linear-gradient(to right, #dd3e54, #6be585)" },
+            { name: "Kye Meh", bg: "linear-gradient(to right, #8360c3, #2ebf91)" },
+            { name: "Pink Flavour", bg: "linear-gradient(to right, #800080, #ffc0cb)" },
+            { name: "Ultra Violet", bg: "linear-gradient(to right, #654ea3, #eaafc8)" },
+            { name: "Amethyst", bg: "linear-gradient(to right, #9D50BB, #6E48AA)" },
+            { name: "Cosmic", bg: "linear-gradient(to right, #ff00cc, #333399)" },
+            { name: "Taran Tado", bg: "linear-gradient(to right, #23074d, #cc5333)" },
+            { name: "Rock", bg: "linear-gradient(to right, #243B55, #141E30)" },
+            { name: "Sun", bg: "linear-gradient(to right, #e65c00, #F9D423)" },
+            { name: "Sea", bg: "linear-gradient(to right, #2b5876, #4e4376)" },
+            { name: "Slight", bg: "linear-gradient(to right, #1c92d2, #f2fcfe)" }, // Light
+            { name: "Margo", bg: "linear-gradient(to right, #ffefba, #ffffff)" }, // Light
+            { name: "Orange", bg: "linear-gradient(to right, #d38312, #a83279)" },
+            { name: "Rose Water", bg: "linear-gradient(to right, #159957, #155799)" },
+            { name: "Lemon", bg: "linear-gradient(to right, #6A9113, #141517)" },
+            { name: "Facebook", bg: "linear-gradient(to right, #3b5998, #8b9dc3)" },
+            { name: "Twitter", bg: "linear-gradient(to right, #1DA1F2, #14171A)" },
+            { name: "Youtube", bg: "linear-gradient(to right, #e52d27, #b31217)" },
+            { name: "Netflix", bg: "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)" },
+            { name: "Spotify", bg: "linear-gradient(to right, #1DB954, #191414)" },
+            { name: "Amazon", bg: "linear-gradient(to right, #FF9900, #000000)" },
+            { name: "Google", bg: "linear-gradient(to right, #4285F4, #34A853, #FBBC05, #EA4335)" },
+            { name: "Apple", bg: "linear-gradient(to right, #000000, #434343)" },
+            { name: "Microsoft", bg: "linear-gradient(to right, #F25022, #7FBA00, #00A4EF, #FFB900)" }
         ];
 
         // Populate Dropdown
@@ -295,35 +284,47 @@
             selector.appendChild(opt);
         });
 
-        // Function: Apply Theme
+        // Apply Theme with Smart Contrast
         function applyTheme() {
             const idx = selector.value;
             const theme = themes[idx];
             const card = document.getElementById('quoteWrapper');
             card.style.background = theme.bg;
+
+            // Check for light themes to switch text color
+            const lightThemes = ["Slight", "Margo", "Venice"]; 
+            const isLight = lightThemes.some(lt => theme.name.includes(lt));
+            
+            const textColor = isLight ? "#1e293b" : "#ffffff";
+            const subColor = isLight ? "rgba(30, 41, 59, 0.8)" : "rgba(255, 255, 255, 0.9)";
+            const watermarkColor = isLight ? "rgba(30, 41, 59, 0.4)" : "rgba(255, 255, 255, 0.4)";
+
+            document.querySelector('.quote-text').style.color = textColor;
+            document.querySelector('.quote-icon').style.color = subColor;
+            document.querySelector('.quote-author').style.color = subColor;
+            document.querySelector('.brand-watermark').style.color = watermarkColor;
+            document.querySelector('.author-box').style.borderTopColor = isLight ? "rgba(30, 41, 59, 0.2)" : "rgba(255, 255, 255, 0.3)";
         }
 
-        // Function: Update Text
+        // Live Preview
         function updatePreview() {
             const quote = document.getElementById('quoteInput').value;
             const author = document.getElementById('authorInput').value.trim();
 
             document.getElementById('previewText').innerText = quote ? `"${quote}"` : '"এখানে উক্তি লিখুন..."';
             
+            const authorBox = document.getElementById('authorBox');
             const authorEl = document.getElementById('previewAuthor');
-            const dividerEl = document.querySelector('.divider-line');
 
             if (author) {
                 authorEl.innerText = `— ${author}`;
-                authorEl.style.display = 'block';
-                dividerEl.style.display = 'block';
+                authorBox.style.display = 'block';
             } else {
-                authorEl.style.display = 'none';
-                dividerEl.style.display = 'none';
+                authorBox.style.display = 'none';
             }
         }
 
-        // Function: Download
+        // Download Logic
         function downloadQuote() {
             const element = document.getElementById('quoteWrapper');
             const btn = document.querySelector('.btn-download');
@@ -331,7 +332,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
             html2canvas(element, {
-                scale: 3, // HD Quality
+                scale: 3, // Super HD
                 useCORS: true,
                 backgroundColor: null,
                 allowTaint: true
@@ -340,11 +341,11 @@
                 link.download = `Quote_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                btn.innerHTML = '<i class="fas fa-arrow-down"></i> Download HD Image';
+                btn.innerHTML = '<i class="fas fa-file-image"></i> Save as Image';
             });
         }
 
-        // Init
+        // Initialize
         updatePreview();
         applyTheme();
     </script>
