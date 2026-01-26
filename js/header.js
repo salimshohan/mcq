@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </a>
 <a href="/data/notes-to-pdf.html"><i class="fa-solid fa-file-lines"></i> Notes to PDF Tool</a>
       </div>
+<a href="/data/vocab-builder.html"><i class="fa-solid fa-font"></i> Vocab Builder</a>
     `;
   
     // Inject HTML at the beginning of Body
