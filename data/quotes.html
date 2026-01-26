@@ -10,14 +10,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* --- THEME VARIABLES (MATCHING NOTES-TO-PDF) --- */
         :root {
             --bg-body: #f3f4f6;
             --panel-bg: #ffffff;
             --primary: #4f46e5;
-            --primary-hover: #4338ca;
             --text-main: #111827;
-            --text-muted: #6b7280;
             --border-light: #e5e7eb;
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
@@ -66,26 +63,15 @@
         }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         textarea.form-control { resize: vertical; min-height: 100px; }
+        select.form-control { cursor: pointer; }
 
-        /* Buttons */
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        
-        .btn {
-            flex: 1; padding: 12px; border-radius: 8px; border: none;
-            font-size: 14px; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s; 
-        }
-
-        .btn-theme { 
-            background: #e0e7ff; color: var(--primary); 
-            border: 1px dashed var(--primary);
-        }
-        .btn-theme:hover { background: #c7d2fe; }
-
+        /* Button */
         .btn-download { 
-            background: #111827; color: white; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%; padding: 14px; border-radius: 10px; border: none;
+            background: #111827; color: white; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.2s;
         }
         .btn-download:hover { transform: translateY(-2px); opacity: 0.9; }
 
@@ -93,60 +79,68 @@
         .preview-wrapper {
             flex: 1.5; min-width: 350px; 
             display: flex; justify-content: center; align-items: flex-start;
-            background: #52525b; /* Dark bg to make quote pop */
+            /* Light Background as requested */
+            background: #e2e8f0; 
             padding: 40px; border-radius: 12px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            border: 1px solid #cbd5e1;
         }
 
-        /* Quote Card */
+        /* Improved Quote Card Design */
         #quoteWrapper {
             width: 100%; max-width: 500px;
-            min-height: 400px; /* Standard Square/Portraitish */
+            min-height: 450px; /* Portrait Ratio */
             position: relative;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 30px; 
+            padding: 50px 40px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transition: background 0.5s ease;
+            /* Premium Shadow & Radius */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            border-radius: 2px; /* Slight rounded or square looks professional */
+            border: 8px solid rgba(255, 255, 255, 0.15); /* Frame effect */
+            transition: background 0.3s ease;
         }
 
         .quote-content { position: relative; z-index: 2; text-align: center; width: 100%; }
 
-        .quote-icon { font-size: 30px; color: rgba(255,255,255,0.8); margin-bottom: 20px; display: block; }
+        .quote-icon { 
+            font-size: 36px; color: rgba(255,255,255,0.9); 
+            margin-bottom: 25px; display: block; 
+        }
 
         .quote-text {
             font-family: 'Tiro Bangla', serif;
-            font-size: 26px; line-height: 1.6; font-weight: 500;
-            color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 25px; white-space: pre-wrap;
+            font-size: 28px; line-height: 1.6; font-weight: 500;
+            color: #ffffff; 
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 30px; white-space: pre-wrap;
         }
 
         .divider {
-            width: 50px; height: 3px; background: rgba(255,255,255,0.7);
-            margin: 0 auto 20px auto; border-radius: 2px;
-            display: none;
+            width: 60px; height: 4px; background: #ffffff;
+            margin: 0 auto 20px auto; border-radius: 10px;
+            display: none; opacity: 0.8;
         }
 
         .quote-author {
-            font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.95);
-            text-transform: uppercase; letter-spacing: 1px;
+            font-size: 18px; font-weight: 700; color: #ffffff;
+            text-transform: uppercase; letter-spacing: 2px;
             font-family: 'Poppins', sans-serif;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             display: none;
         }
 
         .watermark {
-            position: absolute; bottom: 15px;
-            font-size: 11px; opacity: 0.6; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px;
+            position: absolute; bottom: 20px;
+            font-size: 12px; opacity: 0.6; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 3px;
             color: white; z-index: 2;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (Original Dark) --- */
         footer {
             width: 100%; padding: 20px; text-align: center;
-            /* Transparent/Clean footer to match light theme */
-            background: transparent; border-top: 1px solid #e5e7eb;
-            margin-top: auto; font-size: 13px; color: #6b7280;
+            background: #1f2937; border-top: 1px solid #374151;
+            margin-top: auto; font-size: 13px; color: white;
         }
 
         /* Mobile Scale */
@@ -154,6 +148,8 @@
             .container { flex-direction: column; }
             .editor-box, .preview-wrapper { width: 100%; }
             .preview-wrapper { padding: 20px; }
+            #quoteWrapper { padding: 30px 20px; min-height: 400px; }
+            .quote-text { font-size: 22px; }
         }
     </style>
 </head>
@@ -165,10 +161,14 @@
     <div class="container">
         
         <div class="editor-box">
-            <div class="section-title">
-                Customize Quote
-            </div>
+            <div class="section-title">Design Your Quote</div>
             
+            <div class="input-group">
+                <label>Select Theme (80+ Styles)</label>
+                <select id="themeSelector" class="form-control" onchange="applyTheme()">
+                    </select>
+            </div>
+
             <div class="input-group">
                 <label>Quote / উক্তি</label>
                 <textarea id="quoteInput" class="form-control" placeholder="এখানে উক্তি লিখুন..." oninput="updatePreview()"></textarea>
@@ -179,14 +179,9 @@
                 <input id="authorInput" class="form-control" placeholder="নাম লিখুন..." oninput="updatePreview()">
             </div>
 
-            <div class="btn-group">
-                <button class="btn btn-theme" onclick="changeTheme()">
-                    <i class="fas fa-palette"></i> Change Theme
-                </button>
-                <button class="btn btn-download" onclick="downloadQuote()">
-                    <i class="fas fa-download"></i> Download Image
-                </button>
-            </div>
+            <button class="btn-download" onclick="downloadQuote()">
+                <i class="fas fa-download"></i> Download Image
+            </button>
         </div>
 
         <div class="preview-wrapper">
@@ -209,12 +204,110 @@
 
     </div>
 
-    <footer>
-        &copy; 2026 Interactive Learning.<br>All Rights Reserved.
-    </footer>
+    <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // Live Update
+        // --- 80+ PREMIUM GRADIENT THEMES ---
+        const themes = [
+            { name: "Purple Bliss", bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+            { name: "Midnight City", bg: "linear-gradient(135deg, #232526 0%, #414345 100%)" },
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)" },
+            { name: "Lush Green", bg: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" },
+            { name: "Sunset Vibes", bg: "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)" },
+            { name: "Insta Brand", bg: "linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)" },
+            { name: "Dark Ocean", bg: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+            { name: "Electric Violet", bg: "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)" },
+            { name: "Pink Flavor", bg: "linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)" },
+            { name: "Cool Sky", bg: "linear-gradient(135deg, #2980B9 0%, #6DD5FA 100%)" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD 0%, #FBD786 50%, #f7797d 100%)" },
+            { name: "Dark Teal", bg: "linear-gradient(135deg, #360033 0%, #0b8793 100%)" },
+            { name: "Red Mist", bg: "linear-gradient(135deg, #000000 0%, #e74c3c 100%)" },
+            { name: "Golden Hour", bg: "linear-gradient(135deg, #fceabb 0%, #f8b500 100%)" },
+            { name: "Deep Space", bg: "linear-gradient(135deg, #000000 0%, #434343 100%)" },
+            { name: "Aqua Marine", bg: "linear-gradient(135deg, #1A2980 0%, #26D0CE 100%)" },
+            { name: "Bloody Mary", bg: "linear-gradient(135deg, #FF512F 0%, #DD2476 100%)" },
+            { name: "Soft Violet", bg: "linear-gradient(135deg, #4568DC 0%, #B06AB3 100%)" },
+            { name: "Emerald", bg: "linear-gradient(135deg, #348F50 0%, #56B4D3 100%)" },
+            { name: "Kyoo Pal", bg: "linear-gradient(135deg, #dd3e54 0%, #6be585 100%)" },
+            { name: "Kye Meh", bg: "linear-gradient(135deg, #8360c3 0%, #2ebf91 100%)" },
+            { name: "By Design", bg: "linear-gradient(135deg, #009fff 0%, #ec2f4b 100%)" },
+            { name: "Ultra Voilet", bg: "linear-gradient(135deg, #654ea3 0%, #eaafc8 100%)" },
+            { name: "Burning Orange", bg: "linear-gradient(135deg, #ff416c 0%, #ff4b1f 100%)" },
+            { name: "Wiretap", bg: "linear-gradient(135deg, #8A2387 0%, #E94057 50%, #F27121 100%)" },
+            { name: "Summer Dog", bg: "linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%)" },
+            { name: "Rastafari", bg: "linear-gradient(135deg, #1E9600 0%, #FFF200 50%, #FF0000 100%)" },
+            { name: "Sin City", bg: "linear-gradient(135deg, #ED213A 0%, #93291E 100%)" },
+            { name: "Citrus Peel", bg: "linear-gradient(135deg, #fdc830 0%, #f37335 100%)" },
+            { name: "Blue Raspberry", bg: "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)" },
+            { name: "Margo", bg: "linear-gradient(135deg, #ffefba 0%, #ffffff 100%)" }, // Light
+            { name: "Magic", bg: "linear-gradient(135deg, #59C173 0%, #a17fe0 50%, #5D26C1 100%)" },
+            { name: "Evening Sunshine", bg: "linear-gradient(135deg, #b92b27 0%, #1565C0 100%)" },
+            { name: "Jodhpur", bg: "linear-gradient(135deg, #9CECFB 0%, #65C7F7 50%, #0052D4 100%)" },
+            { name: "Yoda", bg: "linear-gradient(135deg, #FF0099 0%, #493240 100%)" },
+            { name: "Memariani", bg: "linear-gradient(135deg, #aa4b6b 0%, #6b6b83 50%, #3b8d99 100%)" },
+            { name: "Amin", bg: "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)" },
+            { name: "Harvey", bg: "linear-gradient(135deg, #1f4037 0%, #99f2c8 100%)" },
+            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6 0%, #b91d73 100%)" },
+            { name: "Azimuth", bg: "linear-gradient(135deg, #2980b9 0%, #2c3e50 100%)" },
+            { name: "Metro", bg: "linear-gradient(135deg, #c2e59c 0%, #64b3f4 100%)" },
+            { name: "Vanusa", bg: "linear-gradient(135deg, #DA4453 0%, #89216B 100%)" },
+            { name: "Dusk", bg: "linear-gradient(135deg, #2C3E50 0%, #FD746C 100%)" },
+            { name: "Solid Purple", bg: "#7e22ce" },
+            { name: "Solid Black", bg: "#111827" },
+            { name: "Solid Blue", bg: "#2563eb" },
+            { name: "Solid Red", bg: "#dc2626" },
+            { name: "Solid Teal", bg: "#0d9488" },
+            { name: "Navy Blue", bg: "#1e3a8a" },
+            { name: "Deep Forest", bg: "#064e3b" },
+            { name: "Maroon", bg: "#7f1d1d" },
+            { name: "Charcoal", bg: "#374151" },
+            { name: "Chocolate", bg: "#451a03" },
+            { name: "Slate", bg: "#475569" },
+            { name: "Indigo", bg: "#4338ca" },
+            { name: "Violet", bg: "#7c3aed" },
+            { name: "Fuchsia", bg: "#a21caf" },
+            { name: "Rose", bg: "#be123c" },
+            { name: "Orange", bg: "#c2410c" },
+            { name: "Amber", bg: "#b45309" },
+            { name: "Yellow", bg: "#a16207" },
+            { name: "Lime", bg: "#4d7c0f" },
+            { name: "Green", bg: "#15803d" },
+            { name: "Emerald", bg: "#047857" },
+            { name: "Teal", bg: "#0f766e" },
+            { name: "Cyan", bg: "#0e7490" },
+            { name: "Sky", bg: "#0369a1" },
+            { name: "Blue", bg: "#1d4ed8" },
+            { name: "Rose Gold", bg: "linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%)" },
+            { name: "Perfect White", bg: "linear-gradient(135deg, #E3FDF5 0%, #FFE6FA 100%)" }, // Light Text needed? Code handles white mostly.
+            { name: "Almost", bg: "linear-gradient(135deg, #ddd6f3 0%, #faaca8 100%)" },
+            { name: "Noon", bg: "linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)" },
+            { name: "Kimoby", bg: "linear-gradient(135deg, #396afc 0%, #2948ff 100%)" },
+            { name: "Slight", bg: "linear-gradient(135deg, #eb3349 0%, #f45c43 100%)" },
+            { name: "Bighead", bg: "linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)" },
+            { name: "Taran", bg: "linear-gradient(135deg, #23074d 0%, #cc5333 100%)" },
+            { name: "Relaxing", bg: "linear-gradient(135deg, #fffbd5 0%, #b20a2c 100%)" },
+            { name: "Broad", bg: "linear-gradient(135deg, #800080 0%, #ffc0cb 100%)" },
+            { name: "Baby Blue", bg: "linear-gradient(135deg, #000000 0%, #00f260 100%)" }
+        ];
+
+        // Populate Dropdown
+        const selector = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `${i+1}. ${t.name}`;
+            selector.appendChild(opt);
+        });
+
+        // Apply Theme
+        function applyTheme() {
+            const idx = selector.value;
+            const theme = themes[idx];
+            const card = document.getElementById('quoteWrapper');
+            card.style.background = theme.bg;
+        }
+
+        // Live Preview Logic
         function updatePreview() {
             const quote = document.getElementById('quoteInput').value;
             const author = document.getElementById('authorInput').value.trim();
@@ -234,32 +327,7 @@
             }
         }
 
-        // Premium Themes
-        const themes = [
-            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", // Purple
-            "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)", // Blue
-            "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)", // Green
-            "linear-gradient(135deg, #FC466B 0%, #3F5EFB 100%)", // Pink/Blue
-            "linear-gradient(135deg, #FDBB2D 0%, #22C1C3 100%)", // Gold/Teal
-            "linear-gradient(135deg, #360033 0%, #0b8793 100%)", // Dark Teal
-            "linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)", // Insta
-            "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)", // Dark Ocean
-            "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)", // Fresh
-            "linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)", // Electric
-            "linear-gradient(135deg, #b92b27 0%, #1565C0 100%)", // Red/Blue
-            "linear-gradient(135deg, #1A2980 0%, #26D0CE 100%)", // Aqua
-            "linear-gradient(135deg, #FF512F 0%, #DD2476 100%)", // Bloody
-            "linear-gradient(135deg, #4568DC 0%, #B06AB3 100%)", // Soft
-            "linear-gradient(135deg, #232526 0%, #414345 100%)"  // Black/Gray
-        ];
-
-        function changeTheme() {
-            const card = document.getElementById('quoteWrapper');
-            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-            card.style.background = randomTheme;
-        }
-
-        // Download Image
+        // Download
         function downloadQuote() {
             const element = document.getElementById('quoteWrapper');
             const btn = document.querySelector('.btn-download');
@@ -269,7 +337,7 @@
             html2canvas(element, {
                 scale: 3, 
                 useCORS: true,
-                backgroundColor: null
+                backgroundColor: null 
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Quote_${Date.now()}.png`;
@@ -281,7 +349,7 @@
 
         // Init
         updatePreview();
-        changeTheme();
+        applyTheme();
     </script>
 </body>
 </html>
