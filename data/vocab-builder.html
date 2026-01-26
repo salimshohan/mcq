@@ -77,7 +77,7 @@
         .btn-reset { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
         .btn-reset:hover { background: #fecaca; }
         
-        .btn-undo { background: #dcfce7; color: #16a34a; border: 1px solid #86efac; display: none; } /* Hidden by default */
+        .btn-undo { background: #dcfce7; color: #16a34a; border: 1px solid #86efac; display: none; }
         .btn-undo:hover { background: #bbf7d0; }
 
         .btn-download { 
@@ -98,15 +98,10 @@
 
         /* --- PREMIUM COMPACT CARD --- */
         #vocabCard {
-            width: 100%; max-width: 400px; /* Reduced width */
-            
-            /* No Border/Frame, just Padding */
+            width: 100%; max-width: 400px;
             padding: 0; 
-            
-            /* Full Color Card */
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 8px;
-            
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
             text-align: center;
             overflow: hidden;
@@ -115,7 +110,7 @@
         }
 
         .card-content {
-            padding: 30px 25px; /* Internal content padding */
+            padding: 30px 25px;
             display: flex; flex-direction: column; align-items: center;
             width: 100%;
         }
@@ -130,11 +125,11 @@
         }
 
         /* Word Section */
-        .word-header { margin-top: 5px; margin-bottom: 5px; display: none; } /* Hidden by default */
+        .word-header { margin-top: 5px; margin-bottom: 5px; display: none; }
         
         .main-word {
             font-family: 'Playfair Display', serif; 
-            font-size: 30px; /* Reduced Font */
+            font-size: 30px; 
             font-weight: 700; color: #ffffff;
             line-height: 1.1; margin-bottom: 5px;
             text-transform: capitalize;
@@ -156,18 +151,18 @@
             border-top: 1px solid rgba(255,255,255,0.15);
             border-bottom: 1px solid rgba(255,255,255,0.15);
             padding: 8px 0;
-            display: none; /* Hidden by default */
+            display: none;
         }
         .meaning-text {
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: 17px; /* Reduced */
+            font-size: 17px; 
             color: #ffffff; font-weight: 500;
         }
 
         /* Syn/Ant Grid */
         .relations-grid {
             display: flex; width: 100%; justify-content: center; gap: 20px;
-            margin-bottom: 15px; display: none; /* Hidden by default */
+            margin-bottom: 15px; display: none;
         }
         .relation-box { text-align: center; }
         
@@ -180,6 +175,8 @@
             font-family: 'Inter', sans-serif;
             font-size: 11px; font-weight: 500; color: #ffffff;
         }
+        .text-green { color: #86efac; } 
+        .text-red { color: #fca5a5; }
 
         /* Example Section */
         .example-section {
@@ -188,7 +185,7 @@
             padding: 8px 12px; width: 100%; text-align: left;
             border-radius: 0 4px 4px 0; margin-bottom: 10px;
             backdrop-filter: blur(4px);
-            display: none; /* Hidden by default */
+            display: none;
         }
         .example-text {
             font-family: 'Playfair Display', serif; font-style: italic;
@@ -341,7 +338,6 @@
             { name: "Chocolate", bg: "linear-gradient(135deg, #451a03 0%, #291206 100%)" }
         ];
 
-        // Init Themes
         const selector = document.getElementById('themeSelector');
         themes.forEach((t, i) => {
             let opt = document.createElement('option');
@@ -355,11 +351,10 @@
             document.getElementById('vocabCard').style.background = themes[idx].bg;
         }
 
-        // --- RESET & UNDO SYSTEM ---
+        // --- RESET & UNDO ---
         let lastState = null;
 
         function resetText() {
-            // Save state before clearing
             lastState = {
                 word: document.getElementById('wordInput').value,
                 mean: document.getElementById('meanInput').value,
@@ -369,7 +364,6 @@
                 ex: document.getElementById('exInput').value
             };
 
-            // Clear inputs
             document.getElementById('wordInput').value = '';
             document.getElementById('meanInput').value = '';
             document.getElementById('posInput').value = '';
@@ -377,10 +371,7 @@
             document.getElementById('antInput').value = '';
             document.getElementById('exInput').value = '';
 
-            // Show Undo Button
             document.getElementById('undoBtn').style.display = 'inline-flex';
-            
-            // Update Card (To hide everything)
             updateCard();
         }
 
@@ -394,11 +385,11 @@
                 document.getElementById('exInput').value = lastState.ex;
 
                 updateCard();
-                document.getElementById('undoBtn').style.display = 'none'; // Hide Undo after use
+                document.getElementById('undoBtn').style.display = 'none';
             }
         }
 
-        // Live Update & Hide Logic
+        // --- UPDATE LOGIC ---
         function updateCard() {
             const word = document.getElementById('wordInput').value;
             const mean = document.getElementById('meanInput').value;
@@ -407,20 +398,13 @@
             const ant = document.getElementById('antInput').value;
             const ex = document.getElementById('exInput').value;
 
-            // Word Header
+            // Word
             const wordHeader = document.getElementById('wordHeader');
-            const prevWord = document.getElementById('prevWord');
-            const prevPos = document.getElementById('prevPos');
-
             if(word || pos) {
                 wordHeader.style.display = 'block';
-                prevWord.innerText = word;
-                if(pos) {
-                    prevPos.style.display = 'inline-block';
-                    prevPos.innerText = pos;
-                } else {
-                    prevPos.style.display = 'none';
-                }
+                document.getElementById('prevWord').innerText = word;
+                document.getElementById('prevPos').style.display = pos ? 'inline-block' : 'none';
+                document.getElementById('prevPos').innerText = pos;
             } else {
                 wordHeader.style.display = 'none';
             }
@@ -464,14 +448,12 @@
             const exSection = document.getElementById('exSection');
             if (ex) {
                 exSection.style.display = 'block';
-                const exText = ex;
-                document.getElementById('prevEx').innerText = exText.startsWith('"') ? exText : `"${exText}"`;
+                document.getElementById('prevEx').innerText = ex.startsWith('"') ? ex : `"${ex}"`;
             } else {
                 exSection.style.display = 'none';
             }
         }
 
-        // Download
         function downloadCard() {
             const element = document.getElementById('vocabCard');
             const btn = document.querySelector('.btn-download');
@@ -480,10 +462,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
             html2canvas(element, {
-                scale: 3, // HD
-                useCORS: true,
-                backgroundColor: null, 
-                allowTaint: true
+                scale: 3, useCORS: true, backgroundColor: null, allowTaint: true
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `${word}_Card.png`;
@@ -493,7 +472,10 @@
             });
         }
 
-        // Initialize (Empty Start)
+        // Initialize with Defaults
+        document.getElementById('wordInput').value = "Serendipity";
+        document.getElementById('meanInput').value = "আকস্মিক সুভাগ্য";
+        document.getElementById('posInput').value = "Noun";
         updateCard();
     </script>
 </body>
