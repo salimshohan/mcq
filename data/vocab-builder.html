@@ -3,508 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vocabulary Builder | Interactive Learning</title>
+    <title>Vocabulary Card | Interactive Learning</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <style>
         :root {
-            --bg-body: #f3f4f6;
+            --bg-body: #f1f5f9;
             --panel-bg: #ffffff;
             --primary: #4f46e5;
-            --text-main: #111827;
-            --border-light: #e5e7eb;
-            --error: #ef4444;
+            --text-dark: #1e293b;
+            --border-color: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
         body { 
-            font-family: 'Lexend', 'Anek Bangla', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-body);
-            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: var(--text-main);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
         }
 
         /* --- CONTAINER --- */
         .container {
-            margin-top: 80px; width: 95%; max-width: 1400px;
+            margin-top: 80px; width: 95%; max-width: 1200px;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
-            gap: 30px; padding-bottom: 40px; flex: 1;
+            gap: 40px; padding-bottom: 40px; flex: 1;
         }
 
         /* --- EDITOR BOX --- */
         .editor-box {
-            flex: 1; min-width: 350px; max-width: 450px;
-            background: var(--panel-bg); padding: 25px; border-radius: 16px;
-            border: 1px solid var(--border-light); 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            position: sticky; top: 90px; height: fit-content;
+            flex: 1; min-width: 340px; max-width: 450px;
+            background: var(--panel-bg); padding: 30px; border-radius: 16px;
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: fit-content;
         }
 
-        .section-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
-        
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 5px; }
+        .section-title { 
+            font-size: 18px; font-weight: 700; color: #0f172a; 
+            margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { 
+            display: block; font-size: 12px; font-weight: 600; 
+            color: #64748b; margin-bottom: 6px; text-transform: uppercase; 
+        }
         
         .form-control {
-            width: 100%; background: #ffffff; border: 1px solid #d1d5db; color: #111827;
-            padding: 10px; border-radius: 8px; font-size: 14px; transition: 0.2s; font-family: inherit;
+            width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; 
+            color: #334155; padding: 12px 15px; border-radius: 8px; font-size: 14px; 
+            font-family: 'Hind Siliguri', sans-serif; transition: 0.2s;
         }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        .form-control.error { border-color: var(--error); animation: shake 0.3s; }
-        textarea.form-control { resize: vertical; min-height: 60px; }
+        .form-control:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         
-        @keyframes shake { 0% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} 100% {transform: translateX(0);} }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        select.form-control { cursor: pointer; font-weight: 500; }
 
-        .btn-add {
-            width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: none;
-            background: #e0e7ff; color: var(--primary); font-weight: 700; cursor: pointer;
-            border: 1px dashed var(--primary); transition: 0.2s;
+        .btn-download { 
+            width: 100%; padding: 15px; border-radius: 8px; border: none;
+            background: #0f172a; color: white; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-top: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-add:hover { background: #c7d2fe; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
-        .action-btns { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-dl {
-            flex: 1; padding: 12px; border-radius: 8px; border: none;
-            color: white; font-weight: 600; cursor: pointer; font-size: 13px;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;
-        }
-        .btn-pdf { background: #ef4444; }
-        .btn-img { background: #111827; }
-        .btn-dl:hover { transform: translateY(-2px); opacity: 0.9; }
-
-        /* Items Manager */
-        .items-manager { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
-        .manage-item { 
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 10px; border-bottom: 1px solid #f3f4f6; font-size: 13px; background: #fff; gap: 5px;
-        }
-        .item-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        .ctrl-btn { padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; color: white; border: none; }
-        .btn-del { background: #ef4444; }
-
-        /* --- PREVIEW WRAPPER --- */
+        /* --- PREVIEW AREA --- */
         .preview-wrapper {
-            flex: 1.5; display: flex; flex-direction: column; align-items: center;
-            background: #52525b; padding: 40px; border-radius: 12px;
-            overflow: auto; max-height: 90vh; 
+            flex: 1.5; min-width: 350px; 
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 10px;
         }
+
+        /* --- VOCAB CARD DESIGN --- */
+        #vocabCard {
+            width: 100%; max-width: 500px;
+            min-height: 500px;
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Inner White Card */
+        .inner-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%; height: 100%;
+            border-radius: 8px;
+            padding: 30px 25px;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Top Section: Word & POS */
+        .word-header { margin-bottom: 5px; }
         
-        .scale-box { 
-            display: flex; flex-direction: column; 
-            gap: 30px; 
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
+        .main-word {
+            font-family: 'Merriweather', serif;
+            font-size: 36px; font-weight: 700; color: #1e293b;
+            line-height: 1.2; text-transform: capitalize;
         }
 
-        /* --- A4 PAGE DESIGN --- */
-        .a4-page {
-            width: 210mm; height: 297mm;
-            background: white; padding: 0;
-            position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
-            color: black; box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .pos-badge {
+            display: inline-block; background: #e0e7ff; color: #4338ca;
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 20px; letter-spacing: 1px;
+            margin-top: 8px;
         }
 
-        /* Watermark */
+        /* Meaning */
+        .meaning-box {
+            margin: 15px 0 25px 0; width: 100%;
+            border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+        }
+        .meaning-text {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 22px; color: #334155; font-weight: 600;
+        }
+
+        /* Syn/Ant Grid */
+        .relations-grid {
+            display: flex; width: 100%; justify-content: space-between; gap: 15px;
+            margin-bottom: 25px;
+        }
+        .relation-box { flex: 1; text-align: left; background: #f8fafc; padding: 10px; border-radius: 6px; }
+        .relation-label { 
+            font-size: 10px; font-weight: 800; color: #94a3b8; 
+            text-transform: uppercase; display: block; margin-bottom: 3px;
+        }
+        .relation-text {
+            font-size: 13px; font-weight: 600; color: #475569; line-height: 1.4;
+        }
+        .text-green { color: #059669; } /* Synonym Color */
+        .text-red { color: #dc2626; }   /* Antonym Color */
+
+        /* Example */
+        .example-section {
+            background: #fffbeb; border-left: 3px solid #f59e0b;
+            padding: 12px 15px; width: 100%; text-align: left;
+            border-radius: 0 4px 4px 0;
+        }
+        .example-text {
+            font-family: 'Merriweather', serif; font-style: italic;
+            font-size: 13px; color: #78350f; line-height: 1.5;
+        }
+
+        /* Footer Watermark */
+        .card-footer {
+            margin-top: auto; padding-top: 20px; width: 100%;
+            display: flex; justify-content: center;
+        }
         .watermark {
-            position: absolute; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 60px; font-weight: 900; 
-            color: #000; opacity: 0.08;
-            white-space: nowrap; pointer-events: none; z-index: 0;
-            font-family: sans-serif; text-transform: uppercase; letter-spacing: 5px;
+            font-size: 10px; font-weight: 700; color: #cbd5e1;
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* Header */
-        .pdf-header { 
-            text-align: center; margin-bottom: 5px; flex-shrink: 0; 
-            padding: 10mm 15mm 0 15mm; z-index: 2; 
-        }
-        .brand-top { 
-            font-size: 14px; font-weight: 800; text-transform: uppercase; 
-            letter-spacing: 2px; color: #000; margin-bottom: 2px; 
-        }
-        .main-subject { 
-            border: 2px solid #000; display: inline-block; padding: 4px 30px; 
-            font-size: 22px; font-weight: 800; margin: 3px 0; color: #000; 
-        }
-        .sub-topic { font-size: 15px; font-weight: 700; color: #333; margin-top: 2px; }
-        .date-line { font-size: 12px; text-align: right; margin-top: 2px; color: #444; font-weight: 600; }
-        .dotted-line { border-bottom: 2px dotted #aaa; width: 100%; margin-top: 5px; }
-        .minimal-header { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
-
-        /* --- VOCAB BODY --- */
-        .page-content {
-            padding: 0 15mm;
-            flex-grow: 1; display: flex; flex-direction: column;
-            overflow: hidden; margin-bottom: 110px; z-index: 2;
+        /* --- FOOTER --- */
+        footer {
+            width: 100%; padding: 25px; text-align: center;
+            background: #0f172a; border-top: 1px solid #1e293b;
+            margin-top: auto; font-size: 13px; color: #94a3b8;
         }
 
-        .pdf-body {
-            display: flex; flex-direction: column; gap: 15px; /* Spacing between words */
-            padding-top: 15px;
-        }
-
-        /* Vocab Item Card */
-        .vocab-card {
-            background: #f9fafb; border-left: 4px solid #4f46e5;
-            padding: 10px 15px; border-radius: 4px;
-            display: flex; flex-direction: column; gap: 4px;
-        }
-        
-        .word-row { display: flex; justify-content: space-between; align-items: baseline; }
-        .word-main { font-size: 18px; font-weight: 800; color: #1e1b4b; font-family: 'Lexend', sans-serif; }
-        .pos-tag { font-size: 11px; font-weight: 700; color: #ffffff; background: #4f46e5; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
-        
-        .meaning-text { font-size: 15px; font-weight: 600; color: #334155; }
-        
-        .meta-row { display: flex; gap: 15px; font-size: 12px; color: #475569; margin-top: 2px; flex-wrap: wrap;}
-        .meta-label { font-weight: 700; color: #64748b; }
-        
-        .example-box { 
-            font-style: italic; font-size: 13px; color: #0f172a; 
-            margin-top: 4px; border-top: 1px dashed #cbd5e1; padding-top: 4px;
-        }
-
-        /* Footer */
-        .footer-fixed {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; 
-            display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 0 15mm 10mm 15mm; background: white; z-index: 10;
-        }
-        .promo-text { text-align: center; color: #ea580c; font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-        .pdf-footer {
-            border-top: 2px dotted #000; padding-top: 5px;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 14px; font-weight: 700; color: #000;
-        }
-
-        /* Mobile */
+        /* Mobile Responsive */
         @media (max-width: 900px) {
             .container { flex-direction: column; }
-            .editor-box { width: 100%; }
-            .preview-wrapper { width: 100%; padding: 10px; }
-            .scale-box { transform: scale(0.44); transform-origin: top center; margin-bottom: -160mm; }
+            .editor-box, .preview-wrapper { width: 100%; }
+            #vocabCard { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <div id="header"></div>
-    <script src="../js/header.js"></script>
-
+    <script type="text/javascript" src="/js/header.js"></script>
+    
     <div class="container">
         
         <div class="editor-box">
-            <div class="section-title">Page Setup</div>
+            <div class="section-title">Card Builder</div>
+            
             <div class="input-group">
-                <label>Title (Subject)</label>
-                <input id="subjectInput" class="form-control" value="Vocabulary Builder" oninput="renderPages()">
-            </div>
-            <div class="input-group">
-                <label>Subtitle (Topic)</label>
-                <input id="topicInput" class="form-control" value="Daily Star Editorial" oninput="renderPages()">
-            </div>
-            <div class="input-group">
-                <label>Date</label>
-                <input type="text" id="dateInput" class="form-control" oninput="renderPages()">
+                <label>Card Theme</label>
+                <select id="themeSelector" class="form-control" onchange="changeTheme()">
+                    </select>
             </div>
 
-            <div class="section-title" style="margin-top: 20px;">Add New Word</div>
             <div class="input-group">
                 <label>Word (শব্দ)</label>
-                <input id="wordInput" class="form-control" placeholder="e.g. Resilience">
+                <input id="wordInput" class="form-control" placeholder="e.g. Benevolent" oninput="updateCard()">
             </div>
+
             <div class="input-group" style="display:flex; gap:10px;">
                 <div style="flex:1;">
                     <label>Meaning (অর্থ)</label>
-                    <input id="meanInput" class="form-control" placeholder="সহনশীলতা">
+                    <input id="meanInput" class="form-control" placeholder="দয়ালু" oninput="updateCard()">
                 </div>
                 <div style="flex:0.6;">
-                    <label>Parts of Speech</label>
-                    <select id="posInput" class="form-control">
+                    <label>Type</label>
+                    <select id="posInput" class="form-control" onchange="updateCard()">
                         <option>Noun</option>
                         <option>Verb</option>
-                        <option>Adj</option>
-                        <option>Adv</option>
-                        <option>Prep</option>
-                        <option>Phr</option>
+                        <option>Adjective</option>
+                        <option>Adverb</option>
+                        <option>Idiom</option>
                     </select>
                 </div>
             </div>
-            <div class="input-group">
-                <label>Synonyms (সমার্থক)</label>
-                <input id="synInput" class="form-control" placeholder="Endurance, Grit">
+
+            <div class="input-group" style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label>Synonym</label>
+                    <input id="synInput" class="form-control" placeholder="Kind, Generous" oninput="updateCard()">
+                </div>
+                <div style="flex:1;">
+                    <label>Antonym</label>
+                    <input id="antInput" class="form-control" placeholder="Cruel, Selfish" oninput="updateCard()">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Antonyms (বিপরীত)</label>
-                <input id="antInput" class="form-control" placeholder="Weakness, Fragility">
-            </div>
+
             <div class="input-group">
                 <label>Example Sentence</label>
-                <textarea id="exInput" class="form-control" placeholder="Her resilience in the face of adversity is inspiring."></textarea>
+                <textarea id="exInput" class="form-control" placeholder="He was a benevolent leader..." oninput="updateCard()"></textarea>
             </div>
 
-            <button class="btn-add" onclick="addItem()"><i class="fas fa-plus"></i> Add Word</button>
-
-            <div class="items-manager" id="itemsManager">
-                <div style="padding:10px; color:#999; text-align:center; font-size:12px;">No words added.</div>
-            </div>
-
-            <div class="action-btns">
-                <button class="btn-dl btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                <button class="btn-dl btn-img" onclick="downloadImagesZip()"><i class="fas fa-images"></i> Download Images</button>
-            </div>
+            <button class="btn-download" onclick="downloadCard()">
+                <i class="fas fa-image"></i> Download Card
+            </button>
         </div>
 
         <div class="preview-wrapper">
-            <div class="scale-box" id="pdfPreviewContainer">
+            <div id="vocabCard">
+                <div class="inner-card">
+                    
+                    <div class="word-header">
+                        <div class="main-word" id="prevWord">Benevolent</div>
+                        <div class="pos-badge" id="prevPos">Adjective</div>
+                    </div>
+
+                    <div class="meaning-box">
+                        <div class="meaning-text" id="prevMean">দয়ালু</div>
+                    </div>
+
+                    <div class="relations-grid">
+                        <div class="relation-box">
+                            <span class="relation-label text-green">Synonyms</span>
+                            <div class="relation-text" id="prevSyn">Kind, Generous</div>
+                        </div>
+                        <div class="relation-box">
+                            <span class="relation-label text-red">Antonyms</span>
+                            <div class="relation-text" id="prevAnt">Cruel, Selfish</div>
+                        </div>
+                    </div>
+
+                    <div class="example-section" id="exSection">
+                        <div class="example-text" id="prevEx">"He was a benevolent leader who cared for his people."</div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="watermark">Interactive Learning</div>
+                    </div>
+
                 </div>
+            </div>
         </div>
 
     </div>
 
+    <footer>&copy; 2026 Interactive Learning. All Rights Reserved.</footer>
+
     <script>
-        const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        document.getElementById('dateInput').value = "Date: " + today;
+        // --- THEMES ---
+        const themes = [
+            { name: "Midnight Blue", bg: "linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%)" },
+            { name: "Royal Purple", bg: "linear-gradient(135deg, #581c87 0%, #3b0764 100%)" },
+            { name: "Lush Green", bg: "linear-gradient(135deg, #047857 0%, #064e3b 100%)" },
+            { name: "Crimson Red", bg: "linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%)" },
+            { name: "Sunset Orange", bg: "linear-gradient(135deg, #ea580c 0%, #9a3412 100%)" },
+            { name: "Teal Ocean", bg: "linear-gradient(135deg, #0f766e 0%, #115e59 100%)" },
+            { name: "Charcoal Grey", bg: "linear-gradient(135deg, #374151 0%, #111827 100%)" },
+            { name: "Insta Gradient", bg: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)" },
+            { name: "Deep Space", bg: "linear-gradient(135deg, #000000 0%, #434343 100%)" },
+            { name: "Chocolate", bg: "linear-gradient(135deg, #451a03 0%, #291206 100%)" }
+        ];
 
-        let items = [];
+        // Init Themes
+        const selector = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = t.name;
+            selector.appendChild(opt);
+        });
 
-        function renderPages() {
-            const container = document.getElementById('pdfPreviewContainer');
-            container.innerHTML = ''; 
+        function changeTheme() {
+            const idx = selector.value;
+            document.getElementById('vocabCard').style.background = themes[idx].bg;
+        }
 
-            const subject = document.getElementById('subjectInput').value;
-            const topic = document.getElementById('topicInput').value;
-            const date = document.getElementById('dateInput').value;
+        // Live Update
+        function updateCard() {
+            const word = document.getElementById('wordInput').value || 'Benevolent';
+            const mean = document.getElementById('meanInput').value || 'দয়ালু';
+            const pos = document.getElementById('posInput').value || 'Adjective';
+            const syn = document.getElementById('synInput').value || 'Kind, Generous';
+            const ant = document.getElementById('antInput').value || 'Cruel, Selfish';
+            const ex = document.getElementById('exInput').value || '"He was a benevolent leader who cared for his people."';
 
-            // Page Creator
-            function createPage(pageNum) {
-                const page = document.createElement('div');
-                page.className = 'a4-page';
-                page.id = `page-${pageNum}`;
-                
-                let headerHTML = '';
-                if(pageNum === 1) {
-                    headerHTML = `
-                        <div class="pdf-header">
-                            <div class="brand-top">INTERACTIVE LEARNING</div>
-                            <div class="main-subject">${subject}</div>
-                            <div class="sub-topic">${topic}</div>
-                            <div class="date-line">${date}</div>
-                            <div class="dotted-line"></div>
-                        </div>`;
-                } else {
-                    headerHTML = `
-                        <div class="pdf-header minimal-header">
-                            <div class="brand-top">INTERACTIVE LEARNING</div>
-                        </div>`;
-                }
-
-                page.innerHTML = `
-                    <div class="watermark">INTERACTIVE LEARNING</div>
-                    ${headerHTML}
-                    <div class="page-content">
-                        <div class="pdf-body"></div>
-                    </div>
-                    <div class="footer-fixed">
-                        <div class="promo-text">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
-                        <div class="pdf-footer">
-                            <span>Interactive Learning</span>
-                            <span>Page ${pageNum}</span>
-                        </div>
-                    </div>
-                `;
-                return page;
+            document.getElementById('prevWord').innerText = word;
+            document.getElementById('prevMean').innerText = mean;
+            document.getElementById('prevPos').innerText = pos;
+            
+            // Handle Syn/Ant visibility
+            const synEl = document.getElementById('prevSyn');
+            const antEl = document.getElementById('prevAnt');
+            
+            synEl.innerText = syn;
+            antEl.innerText = ant;
+            
+            // Example
+            const exSection = document.getElementById('exSection');
+            if (ex.trim()) {
+                exSection.style.display = 'block';
+                document.getElementById('prevEx').innerText = ex.startsWith('"') ? ex : `"${ex}"`;
+            } else {
+                exSection.style.display = 'none';
             }
-
-            let pageNum = 1;
-            let currentPage = createPage(pageNum);
-            let currentBody = currentPage.querySelector('.pdf-body');
-            let currentFooter = currentPage.querySelector('.footer-fixed');
-            container.appendChild(currentPage);
-
-            // Loop Items
-            items.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'vocab-card';
-                
-                // Construct Card HTML
-                let metaHTML = '';
-                if(item.syn) metaHTML += `<span class="meta-label">Syn:</span> ${item.syn} &nbsp; `;
-                if(item.ant) metaHTML += `<span class="meta-label">Ant:</span> ${item.ant}`;
-                
-                let exHTML = item.ex ? `<div class="example-box">"${item.ex}"</div>` : '';
-
-                card.innerHTML = `
-                    <div class="word-row">
-                        <div class="word-main">${item.word}</div>
-                        <div class="pos-tag">${item.pos}</div>
-                    </div>
-                    <div class="meaning-text">${item.mean}</div>
-                    ${metaHTML ? `<div class="meta-row">${metaHTML}</div>` : ''}
-                    ${exHTML}
-                `;
-                
-                currentBody.appendChild(card);
-
-                // Overlap Check (Exact logic from notes generator)
-                const rowRect = card.getBoundingClientRect();
-                const footerRect = currentFooter.getBoundingClientRect();
-
-                if (rowRect.bottom > footerRect.top - 20) {
-                    currentBody.removeChild(card); 
-                    
-                    pageNum++;
-                    currentPage = createPage(pageNum);
-                    currentBody = currentPage.querySelector('.pdf-body');
-                    currentFooter = currentPage.querySelector('.footer-fixed');
-                    container.appendChild(currentPage);
-                    
-                    currentBody.appendChild(card);
-                }
-            });
-
-            renderManager();
         }
 
-        function renderManager() {
-            const manager = document.getElementById('itemsManager');
-            manager.innerHTML = '';
-            if(items.length === 0) {
-                manager.innerHTML = '<div style="padding:10px; color:#999; text-align:center; font-size:12px;">No words added.</div>';
-                return;
-            }
-            items.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = 'manage-item';
-                div.innerHTML = `
-                    <div class="item-text"><b>${i+1}.</b> ${item.word} (${item.mean})</div>
-                    <button class="ctrl-btn btn-del" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
-                `;
-                manager.appendChild(div);
-            });
-        }
-
-        function addItem() {
-            const word = document.getElementById('wordInput');
-            const mean = document.getElementById('meanInput');
-            const pos = document.getElementById('posInput');
-            const syn = document.getElementById('synInput');
-            const ant = document.getElementById('antInput');
-            const ex = document.getElementById('exInput');
+        // Download
+        function downloadCard() {
+            const element = document.getElementById('vocabCard');
+            const btn = document.querySelector('.btn-download');
+            const word = document.getElementById('wordInput').value || 'Vocab';
             
-            if(!word.value.trim()) { word.classList.add('error'); return; }
-            if(!mean.value.trim()) { mean.classList.add('error'); return; }
-
-            items.push({ 
-                word: word.value.trim(), 
-                mean: mean.value.trim(),
-                pos: pos.value,
-                syn: syn.value.trim(),
-                ant: ant.value.trim(),
-                ex: ex.value.trim()
-            });
-
-            // Clear inputs
-            word.value = ''; mean.value = ''; syn.value = ''; ant.value = ''; ex.value = '';
-            word.focus();
-            renderPages();
-        }
-
-        function deleteItem(i) { items.splice(i, 1); renderPages(); }
-
-        // --- DOWNLOAD PDF (Correct Clone & Height Fix) ---
-        function downloadPDF() {
-            const container = document.getElementById('pdfPreviewContainer');
-            const btn = document.querySelector('.btn-pdf');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
-            const rand = Math.random().toString(36).substring(2, 7);
-            const filename = `Vocab_${rand}.pdf`;
-
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating...`;
-
-            const clone = container.cloneNode(true);
-            const clonePages = clone.querySelectorAll('.a4-page');
-            
-            // 3. FORCE EXACT HEIGHT (Blank page fix)
-            const totalHeight = clonePages.length * 296.95; 
-            
-            clone.style.transform = 'none';
-            clone.style.gap = '0'; 
-            clone.style.margin = '0';
-            clone.style.padding = '0';
-            clone.style.width = '210mm';
-            clone.style.height = totalHeight + 'mm'; 
-            clone.style.overflow = 'hidden';
-
-            clonePages.forEach(p => {
-                p.style.marginBottom = '0';
-                p.style.boxShadow = 'none';
-                p.style.height = '297mm'; 
-            });
-
-            const tempWrapper = document.createElement('div');
-            tempWrapper.style.position = 'absolute';
-            tempWrapper.style.left = '-9999px';
-            tempWrapper.style.top = '0';
-            tempWrapper.appendChild(clone);
-            document.body.appendChild(tempWrapper);
-
-            const opt = {
-                margin: 0,
-                filename: filename,
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(clone).save().then(() => {
-                document.body.removeChild(tempWrapper);
-                btn.innerHTML = `<i class="fas fa-file-pdf"></i> Download PDF`;
+            html2canvas(element, {
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: null 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${word}_Card.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btn.innerHTML = '<i class="fas fa-image"></i> Download Card';
             });
         }
 
-        // --- DOWNLOAD IMAGES ---
-        async function downloadImagesZip() {
-            const btn = document.querySelector('.btn-img');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Zipping...`;
-
-            const pages = document.querySelectorAll('.a4-page');
-            const zip = new JSZip();
-            const rand = Math.random().toString(36).substring(2, 7);
-
-            const scaleBox = document.querySelector('.scale-box');
-            const oldTransform = scaleBox.style.transform;
-            scaleBox.style.transform = 'none';
-
-            for (let i = 0; i < pages.length; i++) {
-                const canvas = await html2canvas(pages[i], { scale: 2, useCORS: true });
-                const data = canvas.toDataURL('image/png').split(',')[1];
-                zip.file(`Vocab_Page-${i + 1}.png`, data, { base64: true });
-            }
-
-            scaleBox.style.transform = oldTransform;
-
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `Vocab_${rand}.zip`);
-                btn.innerHTML = `<i class="fas fa-images"></i> Download Images`;
-            });
-        }
-
-        renderPages();
+        // Initialize
+        updateCard();
     </script>
 </body>
 </html>
