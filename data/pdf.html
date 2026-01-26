@@ -12,9 +12,10 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style>
-        /* --- THEME VARIABLES --- */
         :root {
             --bg-body: #f1f5f9;
             --panel-bg: #ffffff;
@@ -54,8 +55,16 @@
         .section-title { 
             font-size: 18px; font-weight: 700; color: #334155; 
             margin-bottom: 25px; border-bottom: 2px solid #f8fafc; 
-            padding-bottom: 10px;
+            padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
         }
+
+        /* Save Status Indicator */
+        .save-status {
+            font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .status-saving { color: #f59e0b; opacity: 1; }
+        .status-saved { color: #10b981; opacity: 1; }
 
         .input-group { margin-bottom: 20px; }
         .input-group label { 
@@ -121,9 +130,11 @@
             color: white; font-weight: 600; cursor: pointer; 
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); font-size: 13px;
             text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
         }
         .btn-pdf { background: #0f172a; }
         .btn-png { background: #059669; }
+        .btn-docx { background: #2563eb; } /* Word Button Color */
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); opacity: 0.9; }
 
         /* --- PREVIEW SECTION --- */
@@ -161,7 +172,7 @@
             position: absolute; left: 50%; top: 55mm; bottom: 30mm; width: 1px; background: #000; z-index: 1; display: none;
         }
 
-        /* PDF Headers - REDUCED SPACING */
+        /* PDF Headers */
         /* First Page Header */
         .pdf-header-main { 
             text-align: center; border-bottom: 2px dashed #000; 
@@ -172,14 +183,19 @@
         .sub-title { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
         .meta-info { font-size: 12px; margin-top: 2px; }
         
-        /* Subsequent Page Header (Minimal & Centered) */
+        /* Subsequent Page Header (Updated Style) */
         .pdf-header-sub {
-            text-align: center; font-size: 12px; font-weight: 800; text-transform: uppercase;
-            margin-bottom: 5px; padding-bottom: 2px;
+            text-align: center; 
+            font-size: 20px; /* Bigger Font Size */
+            font-weight: 900; 
+            text-transform: uppercase;
+            margin-bottom: 5px; 
+            padding-bottom: 5px;
+            border-bottom: 2px dashed #000; /* Horizontal Line like footer */
             flex-shrink: 0; z-index: 2;
         }
 
-        /* Footer - REDUCED SPACING */
+        /* Footer */
         .pdf-footer { 
             text-align: center; border-top: 2px dashed #000; 
             padding-top: 2px; font-size: 20px; font-weight: 900; 
@@ -205,7 +221,6 @@
             break-inside: avoid; display: block;
         }
 
-        /* MCQ Item */
         .mcq-item { 
             margin-bottom: 6px; break-inside: avoid; 
             font-size: inherit; line-height: 1.3; 
@@ -215,7 +230,7 @@
         .q-text:hover { opacity: 0.8; }
         .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
         
-        /* Single Q&A Item (Modified) */
+        /* Single Q&A Item (Hyphen Style) */
         .qa-item {
             margin-bottom: 6px; break-inside: avoid;
             font-size: inherit; line-height: 1.3;
@@ -247,7 +262,11 @@
 
     <div class="container">
         <div class="editor-section">
-            <div class="section-title">PDF Details <button onclick="resetAll()" style="float:right; font-size:10px; padding:5px; background:#fee2e2; border:none; color:red; border-radius:4px; cursor:pointer;">Reset</button></div>
+            <div class="section-title">
+                <span>PDF Details</span>
+                <span id="saveStatus" class="save-status"></span>
+                <button onclick="resetAll()" style="font-size:10px; padding:5px; background:#fee2e2; border:none; color:red; border-radius:4px; cursor:pointer;">Reset</button>
+            </div>
             
             <div class="input-group">
                 <label>Main Title</label>
@@ -298,8 +317,9 @@
             </div>
             
             <div class="download-group">
-                <button class="btn-download btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                <button class="btn-download btn-png" onclick="downloadPNG()"><i class="fas fa-file-image"></i> Download PNG</button>
+                <button class="btn-download btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="btn-download btn-png" onclick="downloadPNG()"><i class="fas fa-file-image"></i> PNG</button>
+                <button class="btn-download btn-docx" onclick="downloadDocx()"><i class="fas fa-file-word"></i> Word</button>
             </div>
         </div>
 
@@ -314,6 +334,7 @@
 
    <script>
         let items = [];
+        let saveTimeout;
 
         function setBanglaDate() {
             const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
@@ -324,18 +345,36 @@
             return `তারিখ: ${toBn(d.getDate())} ${bnMonths[d.getMonth()]}, ${toBn(d.getFullYear())}`;
         }
 
-        // --- LOCAL STORAGE LOGIC ---
+        // --- AUTO SAVE STATUS & LOGIC ---
+        function showSaving() {
+            const status = document.getElementById('saveStatus');
+            status.className = 'save-status status-saving';
+            status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        }
+
+        function showSaved() {
+            const status = document.getElementById('saveStatus');
+            status.className = 'save-status status-saved';
+            status.innerHTML = '<i class="fas fa-check"></i> Saved';
+            setTimeout(() => { status.style.opacity = '0'; }, 2000);
+        }
+
         function saveLocal() {
-            const data = {
-                items,
-                title: document.getElementById('headTitle').value,
-                sub: document.getElementById('subTitle').value,
-                date: document.getElementById('examDate').value,
-                layout: document.getElementById('startLayout').value,
-                font: document.getElementById('fontSelect').value,
-                size: document.getElementById('fontSize').value
-            };
-            localStorage.setItem('pdfMakerData', JSON.stringify(data));
+            showSaving();
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                const data = {
+                    items,
+                    title: document.getElementById('headTitle').value,
+                    sub: document.getElementById('subTitle').value,
+                    date: document.getElementById('examDate').value,
+                    layout: document.getElementById('startLayout').value,
+                    font: document.getElementById('fontSelect').value,
+                    size: document.getElementById('fontSize').value
+                };
+                localStorage.setItem('pdfMakerData', JSON.stringify(data));
+                showSaved();
+            }, 800); // Debounce save
         }
 
         function restoreLocal() {
@@ -517,7 +556,7 @@
                         <div class="meta-info">${date}</div>
                     </div>`;
                 } else {
-                    // Minimized header for 2nd+ pages
+                    // Large Bold Header for subsequent pages with dashed line
                     headerHTML = `<div class="pdf-header-sub">Interactive Learning</div>`;
                 }
 
@@ -530,7 +569,6 @@
                 `;
                 
                 if(!isFirst) {
-                    // Adjust v-line for small header
                     page.querySelector('.v-line').style.top = '10mm'; 
                 }
 
@@ -567,7 +605,7 @@
                 else if(item.type === 'qa') {
                     qNum++;
                     el.className = 'qa-item';
-                    el.innerHTML = `<span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span><span class="qa-ans"> - Ans: ${item.ans}</span>`;
+                    el.innerHTML = `<span class="q-text" onclick="cycleColor(this)">${toBn(qNum)}. ${item.q}</span><span class="qa-ans"> - ${item.ans}</span>`;
                 }
                 else {
                     qNum++;
@@ -614,17 +652,14 @@
             });
         }
 
-        // --- DOWNLOAD PDF (Fix Blank Page) ---
+        // --- DOWNLOAD PDF ---
         function downloadPDF() {
             const container = document.getElementById('pdfPreviewContainer');
             const btn = document.querySelector('.btn-pdf');
-            
-            btn.innerHTML = 'Generating...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
             const clone = container.cloneNode(true);
             const clonePages = clone.querySelectorAll('.pdf-page');
-            
-            // Fix height strictly to avoid blank page
             const totalHeight = clonePages.length * 296.95; 
             
             clone.style.transform = 'none';
@@ -658,13 +693,17 @@
 
             html2pdf().set(opt).from(clone).save().then(() => {
                 document.body.removeChild(tempWrapper);
-                btn.innerHTML = 'Download PDF';
+                btn.innerHTML = '<i class="fas fa-file-pdf"></i> PDF';
             });
         }
         
+        // --- DOWNLOAD PNG ---
         async function downloadPNG() {
+            const btn = document.querySelector('.btn-png');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
             const pages = document.querySelectorAll('.pdf-page');
             const scaleBox = document.querySelector('.scale-box');
+            
             const oldTransform = scaleBox.style.transform;
             const oldMargin = scaleBox.style.margin;
             scaleBox.style.transform = 'none';
@@ -682,6 +721,33 @@
 
             scaleBox.style.transform = oldTransform;
             scaleBox.style.margin = oldMargin;
+            btn.innerHTML = '<i class="fas fa-file-image"></i> PNG';
+        }
+
+        // --- DOWNLOAD DOCX ---
+        function downloadDocx() {
+            const btn = document.querySelector('.btn-docx');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
+            
+            // Construct a basic HTML string for Word
+            // Note: Complex grid/columns often fail in simple conversion, but we try best effort
+            const content = document.getElementById('pdfPreviewContainer').innerHTML;
+            
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>Document</title></head><body>`;
+            const footer = "</body></html>";
+            
+            const sourceHTML = header + content + footer;
+            
+            const blob = new Blob(['\ufeff', sourceHTML], {
+                type: 'application/msword'
+            });
+            
+            const hex = Math.random().toString(16).substring(2, 8);
+            saveAs(blob, `question_${hex}.doc`);
+            
+            btn.innerHTML = '<i class="fas fa-file-word"></i> Word';
         }
 
         init();
