@@ -1,1 +1,561 @@
-hi
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Generator | Interactive Learning</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+  :root {
+    --bg-body: #f3f4f6;       
+    --panel-bg: #ffffff;      
+    --primary: #4f46e5;       
+    --primary-soft: rgba(79, 70, 229, 0.1);
+    --text-main: #111827;     
+    --text-muted: #6b7280;    
+    --border-light: #e5e7eb;  
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+body { 
+    font-family: 'Lexend', 'Anek Bangla', sans-serif;
+    background-color: var(--bg-body);
+    background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* --- CONTAINER --- */
+.container {
+    margin-top: 80px;
+    width: 97%; max-width: 1200px;
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+    gap: 12px; padding-bottom: 20px; flex: 1;
+}
+
+/* --- EDITOR BOX --- */
+.editor-box {
+    flex: 1; min-width: 360px; max-width: 500px;
+    background: var(--panel-bg);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.section-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px; 
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-light);
+}
+.section-title { 
+    font-size: 20px; font-weight: 700; 
+    color: #1f2937;
+    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 10px;
+}
+.section-title i { color: var(--primary); }
+
+/* Action Buttons */
+.action-buttons { display: flex; gap: 10px; }
+.btn-icon {
+    background: white; 
+    border: 1px solid var(--border-light);
+    color: var(--text-muted); width: 38px; height: 38px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s ease; 
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+.btn-icon:hover { 
+    border-color: var(--primary); color: var(--primary); 
+    transform: translateY(-2px); box-shadow: var(--shadow-md);
+}
+
+/* --- INPUT FIELDS --- */
+.input-group { margin-bottom: 20px; }
+
+.input-group label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: #374151; margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+.input-group label i { margin-right: 6px; color: var(--primary); width: 15px; text-align: center; }
+
+.form-control {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #d1d5db; 
+    color: #111827;
+    padding: 12px 16px;
+    border-radius: 8px; 
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-control:hover { border-color: #9ca3af; }
+.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+.form-control::placeholder { color: #9ca3af; font-size: 14px; }
+
+select.form-control { cursor: pointer; }
+
+.row-inputs { display: flex; gap: 15px; }
+.row-inputs > div { flex: 1; }
+
+/* Download Buttons */
+.download-group { display: flex; gap: 10px; margin-top: 25px; }
+
+.btn-download {
+    flex: 1; padding: 14px;
+    border-radius: 10px; border: none;
+    color: white; font-weight: 600; cursor: pointer;
+    font-size: 14px; 
+    box-shadow: var(--shadow-md);
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-user { background: #111827; }
+.btn-user:hover { background: #000000; transform: translateY(-2px); }
+
+.btn-admin { background: #059669; }
+.btn-admin:hover { background: #047857; transform: translateY(-2px); }
+
+/* --- PREVIEW BOX --- */
+.preview-box {
+    flex: 1.2; min-width: 350px;
+    display: flex; justify-content: center; align-items: flex-start;
+    padding-top: 10px;
+}
+
+/* --- MCQ CARD --- */
+#mcqWrapper {
+    width: 100%; max-width: 480px;
+    border-radius: 6px;
+    padding: 20px; 
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: none;
+    position: relative;
+    transition: background 0.3s ease;
+    color: white; 
+}
+
+.question-box { display: flex; gap: 8px; margin-bottom: 20px; margin-top: 5px;}
+.q-prefix { font-size: 18px; font-weight: 900; line-height: 1.2; flex-shrink: 0; }
+.q-text { font-size: 17px; font-weight: 700; line-height: 1.4; }
+
+.options-list { display: flex; flex-direction: column; gap: 8px; }
+
+.opt-item {
+    display: flex; align-items: center;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px; 
+    padding: 8px 12px; 
+    transition: 0.2s;
+}
+
+/* Admin Mode Correct Answer Style (Applied via JS) */
+.opt-item.correct-ans {
+    background: #10b981 !important; 
+    border-color: #059669 !important;
+    color: white !important;
+    font-weight: 700;
+}
+.opt-item.correct-ans .opt-circle {
+    background: white; color: #059669; border-color: white;
+}
+.opt-item.correct-ans .opt-text { color: white !important; }
+
+
+.opt-circle {
+    width: 24px; height: 24px; flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 12px; font-weight: 700; margin-right: 12px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.opt-text { font-size: 14px; font-weight: 500; }
+
+.card-footer { margin-top: 15px; text-align: center; }
+.card-line { width: 45px; height: 3px; margin: 0 auto 10px; border-radius: 2px; }
+.card-brand { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; opacity: 0.7; text-transform: uppercase; }
+
+/* Footer */
+footer {
+    width: 100%; padding: 15px; text-align: center;
+    background: #1f2937;
+    border-top: 1px solid #dadada;
+    margin-top: auto; font-size: 14px; color: white;
+}
+
+@media (max-width: 768px) {
+    .container { flex-direction: column; padding: 20px; gap: 20px; }
+    .editor-box, .preview-box { min-width: 100%; }
+}
+    </style>
+</head>
+<body>
+<div id="header"></div>
+<script type="text/javascript" src="/js/header.js"></script>
+    <div class="container">
+        <div class="editor-box">
+            <div class="section-header">
+                <div class="section-title"><i class="fas fa-layer-group"></i> MCQ Creator</div>
+                <div class="action-buttons">
+                    <button class="btn-icon btn-undo" id="undoBtn" onclick="undoReset()" title="Undo">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button class="btn-icon btn-reset" onclick="resetAll()" title="Reset All">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row-inputs">
+                <div class="input-group">
+                    <label><i class="fas fa-heading"></i> Prefix</label>
+                    <select id="qStyle" class="form-control" onchange="updateLive()">
+                        <option value="Q.">Q.</option>
+                        <option value="?">?</option>
+                        <option value="প্রশ্ন:">প্রশ্ন:</option>
+                        <option value="">None</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-list-ol"></i> Option Style</label>
+                    <select id="optStyle" class="form-control" onchange="updateLive()">
+                        <option value="abcd">a, b, c, d</option>
+                        <option value="ABCD">A, B, C, D</option>
+                        <option value="roman">i, ii, iii, iv</option>
+                        <option value="number">1, 2, 3, 4</option>
+                        <option value="bangla">১, ২, ৩, ৪</option>
+                        <option value="bangla2">ক, খ, গ, ঘ</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-palette"></i> Theme (80+ Options)</label>
+                <select id="themeSelector" class="form-control" onchange="updateLive()">
+                    </select>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-question-circle"></i> Question</label>
+                <input id="qInput" class="form-control" placeholder="Type your question..." oninput="updateLive()">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-list"></i> Options</label>
+                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:10px;" oninput="updateLive()">
+                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:10px;" oninput="updateLive()">
+                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:10px;" oninput="updateLive()">
+                <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-check-circle"></i> Correct Answer (Admin)</label>
+                <select id="correctOpt" class="form-control">
+                    <option value="">Select Correct Option</option>
+                    <option value="1">Option 1 (a/A/১/ক)</option>
+                    <option value="2">Option 2 (b/B/২/খ)</option>
+                    <option value="3">Option 3 (c/C/৩/গ)</option>
+                    <option value="4">Option 4 (d/D/৪/ঘ)</option>
+                </select>
+            </div>
+
+            <div class="download-group">
+                <button class="btn-download btn-user" onclick="downloadImage('user')">
+                    <i class="fas fa-user"></i> User PNG
+                </button>
+                <button class="btn-download btn-admin" onclick="downloadImage('admin')">
+                    <i class="fas fa-user-shield"></i> Admin PNG
+                </button>
+            </div>
+        </div>
+
+        <div class="preview-box">
+            <div id="mcqWrapper">
+                <div class="question-box">
+                    <span id="pPrefix" class="q-prefix">Q.</span>
+                    <span id="pQ" class="q-text">Question Preview...</span>
+                </div>
+                <div class="options-list">
+                    <div class="opt-item" id="item1"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option A</div></div>
+                    <div class="opt-item" id="item2"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option B</div></div>
+                    <div class="opt-item" id="item3"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option C</div></div>
+                    <div class="opt-item" id="item4"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option D</div></div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-line"></div>
+                    <div class="card-brand">Interactive Learning</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
+
+    <script>
+        // --- EXTENDED THEMES ---
+        const themes = [
+            // Dark & Deep
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
+            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
+            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
+            { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd" },
+            { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff" },
+            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff" },
+            { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ffffff" },
+            { name: "Deep Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd" },
+            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#ffffff" },
+            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#ffffff" },
+            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#ffffff" },
+            { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#ffffff" },
+            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7" },
+            { name: "Midnight", bg: "linear-gradient(135deg, #232526, #414345)", accent: "#ffffff" },
+            { name: "Metal", bg: "linear-gradient(135deg, #2c3e50, #000000)", accent: "#bdc3c7" },
+            { name: "Shadow", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff" },
+            { name: "Carbon", bg: "linear-gradient(135deg, #093028, #237a57)", accent: "#ffffff" },
+            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff" },
+            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
+            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff" },
+            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff" },
+            
+            // Nature & Green
+            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
+            { name: "Forest", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
+            { name: "Spotify", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff" },
+            { name: "Mint", bg: "linear-gradient(135deg, #11998e, #38ef7d)", accent: "#ffffff" },
+            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#ffffff" },
+            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#ffffff" },
+            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#ffffff" },
+            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
+            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#ffffff" },
+            { name: "Aurora", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#ffffff" },
+            
+            // Warm & Hot
+            { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
+            { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
+            { name: "Youtube", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff" },
+            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#ffffff" },
+            { name: "Blood Moon", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000" },
+            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#ffffff" },
+            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#f1c40f" },
+            { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#ffffff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#ffffff" },
+            { name: "Rose", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#ffffff" },
+            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#ffffff" },
+            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff" },
+            { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
+            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#ffffff" },
+            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#ffffff" },
+            
+            // Light & Clean
+            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
+            { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05" },
+            { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff" },
+            { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff" },
+            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff" },
+            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333" },
+            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000" },
+            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff" },
+            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff" },
+            
+            // New Added
+            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
+            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
+            { name: "Dark Ocean", bg: "linear-gradient(135deg, #373B44, #4286f4)", accent: "#fff" },
+            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff" },
+            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333" },
+            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786, #f7797d)", accent: "#333" },
+            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#fff" },
+            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0, #ec38bc, #fdeff9)", accent: "#fff" },
+            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333" },
+            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff" },
+            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff" },
+            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff" },
+            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff" },
+            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff" },
+            { name: "A Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
+            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
+            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
+            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" }
+        ];
+
+        const tSelect = document.getElementById('themeSelector');
+        themes.forEach((t, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `${i+1}. ${t.name}`;
+            tSelect.appendChild(opt);
+        });
+
+        const optionTypes = {
+            abcd: ['a', 'b', 'c', 'd'],
+            ABCD: ['A', 'B', 'C', 'D'],
+            roman: ['i', 'ii', 'iii', 'iv'],
+            number: ['1', '2', '3', '4'],
+            bangla: ['১', '২', '৩', '৪'],
+            bangla2: ['ক','খ','গ','ঘ']
+        };
+
+        function updateLive() {
+            const q = document.getElementById('qInput').value || "এখানে প্রশ্ন দেখা যাবে...";
+            document.getElementById('pQ').innerText = q;
+            document.getElementById('pA').innerText = document.getElementById('optA').value || "Option A";
+            document.getElementById('pB').innerText = document.getElementById('optB').value || "Option B";
+            document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
+            document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
+
+            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
+            const optStyle = document.getElementById('optStyle').value;
+            const labels = optionTypes[optStyle];
+            document.getElementById('oc1').innerText = labels[0];
+            document.getElementById('oc2').innerText = labels[1];
+            document.getElementById('oc3').innerText = labels[2];
+            document.getElementById('oc4').innerText = labels[3];
+
+            const tIdx = document.getElementById('themeSelector').value;
+            const theme = themes[tIdx];
+            const wrapper = document.getElementById('mcqWrapper');
+            
+            wrapper.style.background = theme.bg;
+            document.querySelector('.q-prefix').style.color = theme.accent;
+            document.querySelector('.card-line').style.background = theme.accent;
+
+            const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold", "Teal Love", "Piggy Pink", "Mega Tron", "Argon", "A Lost Memory"].includes(theme.name);
+            const textColor = isLight ? "#222" : "#fff";
+            const subColor = isLight ? "#444" : "#e2e8f0";
+            const borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
+            const itemBg = isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.08)";
+
+            document.querySelector('.q-text').style.color = textColor;
+            document.querySelectorAll('.opt-text').forEach(el => el.style.color = subColor);
+            
+            document.querySelectorAll('.opt-circle').forEach(el => {
+                el.style.color = textColor;
+                el.style.background = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.15)";
+                el.style.borderColor = isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
+            });
+            
+            document.querySelectorAll('.opt-item').forEach(el => {
+                // Keep background dynamic based on theme, unless marked correct by admin download process
+                if(!el.classList.contains('correct-ans')) {
+                    el.style.borderColor = borderColor;
+                    el.style.background = itemBg;
+                }
+            });
+            document.querySelector('.card-brand').style.color = isLight ? "#555" : "rgba(255,255,255,0.6)";
+        }
+
+        let lastState = null;
+
+        function resetAll() {
+            lastState = {
+                q: document.getElementById('qInput').value,
+                a: document.getElementById('optA').value,
+                b: document.getElementById('optB').value,
+                c: document.getElementById('optC').value,
+                d: document.getElementById('optD').value,
+                qStyle: document.getElementById('qStyle').value,
+                optStyle: document.getElementById('optStyle').value,
+                theme: document.getElementById('themeSelector').value,
+                correct: document.getElementById('correctOpt').value
+            };
+            
+            document.getElementById('qInput').value = '';
+            document.getElementById('optA').value = '';
+            document.getElementById('optB').value = '';
+            document.getElementById('optC').value = '';
+            document.getElementById('optD').value = '';
+            document.getElementById('correctOpt').value = '';
+            
+            document.getElementById('undoBtn').style.display = 'flex';
+            updateLive();
+        }
+
+        function undoReset() {
+            if(!lastState) return;
+            document.getElementById('qInput').value = lastState.q;
+            document.getElementById('optA').value = lastState.a;
+            document.getElementById('optB').value = lastState.b;
+            document.getElementById('optC').value = lastState.c;
+            document.getElementById('optD').value = lastState.d;
+            document.getElementById('qStyle').value = lastState.qStyle;
+            document.getElementById('optStyle').value = lastState.optStyle;
+            document.getElementById('themeSelector').value = lastState.theme;
+            document.getElementById('correctOpt').value = lastState.correct;
+            
+            document.getElementById('undoBtn').style.display = 'none';
+            updateLive();
+        }
+
+        // --- DOWNLOAD LOGIC (USER vs ADMIN) ---
+        function downloadImage(mode) {
+            const wrapper = document.getElementById('mcqWrapper');
+            
+            // 1. If Admin Mode, apply highlight
+            if(mode === 'admin') {
+                const correctVal = document.getElementById('correctOpt').value;
+                if(correctVal) {
+                    const item = document.getElementById('item' + correctVal);
+                    if(item) item.classList.add('correct-ans');
+                } else {
+                    alert("Please select a Correct Answer first!");
+                    return;
+                }
+            }
+
+            // 2. Generate Image
+            html2canvas(wrapper, {
+                scale: 5, 
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const timestamp = Date.now();
+                link.download = `mcq_${mode}_${timestamp}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // 3. Remove highlight immediately
+                if(mode === 'admin') {
+                    const correctVal = document.getElementById('correctOpt').value;
+                    if(correctVal) {
+                        const item = document.getElementById('item' + correctVal);
+                        if(item) item.classList.remove('correct-ans');
+                        updateLive(); // Restore default theme colors
+                    }
+                }
+            });
+        }
+
+        updateLive();
+        document.getElementById('mcqWrapper').style.display = 'flex';
+
+    </script>
+</body>
+</html>
