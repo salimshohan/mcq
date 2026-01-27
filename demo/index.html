@@ -112,7 +112,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* Increased Height for Question Box */
 textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 
 .form-control:hover { border-color: #9ca3af; }
@@ -261,7 +260,7 @@ footer {
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-palette"></i> Theme (80+ Options)</label>
+                <label><i class="fas fa-palette"></i> Theme (200 Options)</label>
                 <select id="themeSelector" class="form-control" onchange="updateLive()">
                     </select>
             </div>
@@ -323,7 +322,7 @@ footer {
   <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- THEMES ---
+        // --- 200 THEMES (HARDCODED) ---
         const themes = [
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
@@ -401,7 +400,130 @@ footer {
             { name: "A Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff" },
             { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff" },
             { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff" },
-            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" }
+            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff" },
+            { name: "Sunny", bg: "linear-gradient(135deg, #FFE259, #FFA751)", accent: "#333" },
+            { name: "Amin", bg: "linear-gradient(135deg, #8E2DE2, #4A00E0)", accent: "#fff" },
+            { name: "Harvey", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#333" },
+            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff" },
+            { name: "Azurite", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#fff" },
+            { name: "Yoda", bg: "linear-gradient(135deg, #FF0099, #493240)", accent: "#fff" },
+            { name: "Dark Sky", bg: "linear-gradient(135deg, #4B79A1, #283E51)", accent: "#fff" },
+            { name: "Purplin", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff" },
+            { name: "Pewter", bg: "linear-gradient(135deg, #CAC531, #F3F9A7)", accent: "#333" },
+            { name: "Slight Ocean", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff" },
+            { name: "Crimson Tide", bg: "linear-gradient(135deg, #642B73, #C6426E)", accent: "#fff" },
+            { name: "Man of Steel", bg: "linear-gradient(135deg, #780206, #061161)", accent: "#fff" },
+            { name: "Amour", bg: "linear-gradient(135deg, #f77062, #fe5196)", accent: "#fff" },
+            { name: "Politics", bg: "linear-gradient(135deg, #2196f3, #f44336)", accent: "#fff" },
+            { name: "Transfile", bg: "linear-gradient(135deg, #16BFFD, #CB3066)", accent: "#fff" },
+            { name: "Tranquil", bg: "linear-gradient(135deg, #EECDA3, #EF629F)", accent: "#fff" },
+            { name: "Sylvia", bg: "linear-gradient(135deg, #ff4b1f, #ff9068)", accent: "#fff" },
+            { name: "Sweet Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#333" },
+            { name: "Scooter", bg: "linear-gradient(135deg, #36D1DC, #5B86E5)", accent: "#fff" },
+            { name: "Meridian", bg: "linear-gradient(135deg, #283c86, #45a247)", accent: "#fff" },
+            { name: "Relay", bg: "linear-gradient(135deg, #3A1C71, #D76D77, #FFAF7B)", accent: "#fff" },
+            { name: "Alive", bg: "linear-gradient(135deg, #CB356B, #BD3F32)", accent: "#fff" },
+            { name: "Kimoby", bg: "linear-gradient(135deg, #396afc, #2948ff)", accent: "#fff" },
+            { name: "Bourbon", bg: "linear-gradient(135deg, #EC6F66, #F3A183)", accent: "#fff" },
+            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff" },
+            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333" },
+            { name: "Traffic", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff" },
+            { name: "Mantle", bg: "linear-gradient(135deg, #24C6DC, #514A9D)", accent: "#fff" },
+            { name: "Drive", bg: "linear-gradient(135deg, #514A9D, #24C6DC)", accent: "#fff" },
+            { name: "Emerald Water", bg: "linear-gradient(135deg, #348F50, #56B4D3)", accent: "#fff" },
+            { name: "Lemon Twist", bg: "linear-gradient(135deg, #3CA55C, #B5AC49)", accent: "#fff" },
+            { name: "Monte Carlo", bg: "linear-gradient(135deg, #CC95C0, #DBD4B4, #7AA1D2)", accent: "#fff" },
+            { name: "Horizon", bg: "linear-gradient(135deg, #003973, #E5E5BE)", accent: "#fff" },
+            { name: "Rose Water", bg: "linear-gradient(135deg, #E55D87, #5FC3E4)", accent: "#fff" },
+            { name: "Frozen", bg: "linear-gradient(135deg, #403B4A, #E7E9BB)", accent: "#fff" },
+            { name: "Mango Pulp", bg: "linear-gradient(135deg, #F09819, #EDDE5D)", accent: "#333" },
+            { name: "Bloody Mary", bg: "linear-gradient(135deg, #FF512F, #DD2476)", accent: "#fff" },
+            { name: "Aubergine", bg: "linear-gradient(135deg, #AA076B, #61045F)", accent: "#fff" },
+            { name: "Aqua Marine", bg: "linear-gradient(135deg, #1A2980, #26D0CE)", accent: "#fff" },
+            { name: "Sunrise", bg: "linear-gradient(135deg, #FF512F, #F09819)", accent: "#fff" },
+            { name: "Purple Paradise", bg: "linear-gradient(135deg, #1D2B64, #F8CDDA)", accent: "#fff" },
+            { name: "Sea Weed", bg: "linear-gradient(135deg, #4CB8C4, #3CD3AD)", accent: "#fff" },
+            { name: "Pinky", bg: "linear-gradient(135deg, #DD5E89, #F7BB97)", accent: "#fff" },
+            { name: "Cherry Blossom", bg: "linear-gradient(135deg, #FBD3E9, #BB377D)", accent: "#333" },
+            { name: "Dirty Fog", bg: "linear-gradient(135deg, #B993D6, #8CA6DB)", accent: "#fff" },
+            { name: "Fly High", bg: "linear-gradient(135deg, #485563, #29323c)", accent: "#fff" },
+            { name: "Fresh Milk", bg: "linear-gradient(135deg, #00F260, #0575E6)", accent: "#fff" },
+            { name: "Snow White", bg: "linear-gradient(135deg, #BA8B02, #181818)", accent: "#fff" },
+            { name: "Nighthawk", bg: "linear-gradient(135deg, #2980b9, #2c3e50)", accent: "#fff" },
+            { name: "Love Kiss", bg: "linear-gradient(135deg, #FF4E50, #F9D423)", accent: "#fff" },
+            { name: "Clean Mirror", bg: "linear-gradient(135deg, #93A5CF, #E4EfE9)", accent: "#333" },
+            { name: "Premium Dark", bg: "linear-gradient(135deg, #434343, #000000)", accent: "#fff" },
+            { name: "Cold Evening", bg: "linear-gradient(135deg, #0C1445, #282A36)", accent: "#fff" },
+            { name: "Cochiti", bg: "linear-gradient(135deg, #93291E, #ED213A)", accent: "#fff" },
+            { name: "Summer", bg: "linear-gradient(135deg, #22c1c3, #fdbb2d)", accent: "#fff" },
+            { name: "King Yna", bg: "linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)", accent: "#fff" },
+            { name: "Velvet Sun", bg: "linear-gradient(135deg, #e1eec3, #f05053)", accent: "#333" },
+            { name: "Zinc", bg: "linear-gradient(135deg, #ADA996, #F2F2F2, #DBDBDB, #EAEAEA)", accent: "#333" },
+            { name: "Hydrogen", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#fff" },
+            { name: "Blue Coral", bg: "linear-gradient(135deg, #36D1DC, #5B86E5)", accent: "#fff" },
+            { name: "Easy Med", bg: "linear-gradient(135deg, #DCE35B, #45B649)", accent: "#333" },
+            { name: "Cocoaa", bg: "linear-gradient(135deg, #c0c0aa, #1cefff)", accent: "#333" },
+            { name: "Jodhpur", bg: "linear-gradient(135deg, #9CECFB, #65C7F7, #0052D4)", accent: "#fff" },
+            { name: "Hopscotch", bg: "linear-gradient(135deg, #20002c, #cbb4d4)", accent: "#fff" },
+            { name: "Harmonic", bg: "linear-gradient(135deg, #17EAD9, #6078EA)", accent: "#fff" },
+            { name: "Rosie", bg: "linear-gradient(135deg, #F0C27B, #4B1248)", accent: "#fff" },
+            { name: "Victoria", bg: "linear-gradient(135deg, #314755, #26a0da)", accent: "#fff" },
+            { name: "Cinema", bg: "linear-gradient(135deg, #7b4397, #dc2430)", accent: "#fff" },
+            { name: "Stairway", bg: "linear-gradient(135deg, #43cea2, #185a9d)", accent: "#fff" },
+            { name: "Flickr", bg: "linear-gradient(135deg, #ff0084, #33001b)", accent: "#fff" },
+            { name: "Minerals", bg: "linear-gradient(135deg, #283048, #859398)", accent: "#fff" },
+            { name: "Mhz", bg: "linear-gradient(135deg, #D3CCE3, #E9E4F0)", accent: "#333" },
+            { name: "Pizelex", bg: "linear-gradient(135deg, #114357, #F29492)", accent: "#fff" },
+            { name: "Clerk", bg: "linear-gradient(135deg, #C9FFBF, #FFAFBD)", accent: "#333" },
+            { name: "Matrix", bg: "linear-gradient(135deg, #000000, #0f9b0f)", accent: "#fff" },
+            { name: "Hacker", bg: "linear-gradient(135deg, #0F2027, #203A43, #2C5364)", accent: "#fff" },
+            { name: "Cyberpunk", bg: "linear-gradient(135deg, #fce38a, #f38181)", accent: "#333" },
+            { name: "Night Life", bg: "linear-gradient(135deg, #434343, #000000)", accent: "#fff" },
+            { name: "Scuba", bg: "linear-gradient(135deg, #2980B9, #6DD5FA, #FFFFFF)", accent: "#333" },
+            { name: "Banana", bg: "linear-gradient(135deg, #F2994A, #F2C94C)", accent: "#333" },
+            { name: "Pure Red", bg: "linear-gradient(135deg, #FF416C, #FF4B2B)", accent: "#fff" },
+            { name: "Royal", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#fff" },
+            { name: "Frost", bg: "linear-gradient(135deg, #000428, #004e92)", accent: "#fff" },
+            { name: "Lush Green", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#fff" },
+            { name: "Slightly Dark", bg: "linear-gradient(135deg, #3a3a3a, #1a1a1a)", accent: "#fff" },
+            { name: "Witching Hour", bg: "linear-gradient(135deg, #c31432, #240b36)", accent: "#fff" },
+            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff" },
+            { name: "Metapolis", bg: "linear-gradient(135deg, #659999, #f4791f)", accent: "#fff" },
+            { name: "Kyoo Pal", bg: "linear-gradient(135deg, #dd3e54, #6be585)", accent: "#fff" },
+            { name: "Kye Meh", bg: "linear-gradient(135deg, #8360c3, #2ebf91)", accent: "#fff" },
+            { name: "Pink Flavour", bg: "linear-gradient(135deg, #800080, #ffc0cb)", accent: "#fff" },
+            { name: "Ultra Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff" },
+            { name: "Amethyst", bg: "linear-gradient(135deg, #9D50BB, #6E48AA)", accent: "#fff" },
+            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff" },
+            { name: "Taran Tado", bg: "linear-gradient(135deg, #23074d, #cc5333)", accent: "#fff" },
+            { name: "Rock", bg: "linear-gradient(135deg, #243B55, #141E30)", accent: "#fff" },
+            { name: "Sun", bg: "linear-gradient(135deg, #e65c00, #F9D423)", accent: "#fff" },
+            { name: "Sea", bg: "linear-gradient(135deg, #2b5876, #4e4376)", accent: "#fff" },
+            { name: "Slight", bg: "linear-gradient(135deg, #1c92d2, #f2fcfe)", accent: "#333" },
+            { name: "Margo", bg: "linear-gradient(135deg, #ffefba, #ffffff)", accent: "#333" },
+            { name: "Orange", bg: "linear-gradient(135deg, #d38312, #a83279)", accent: "#fff" },
+            { name: "Rose Water", bg: "linear-gradient(135deg, #159957, #155799)", accent: "#fff" },
+            { name: "Lemon", bg: "linear-gradient(135deg, #6A9113, #141517)", accent: "#fff" },
+            { name: "Facebook", bg: "linear-gradient(135deg, #3b5998, #8b9dc3)", accent: "#fff" },
+            { name: "Twitter", bg: "linear-gradient(135deg, #1DA1F2, #14171A)", accent: "#fff" },
+            { name: "Youtube", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#fff" },
+            { name: "Netflix", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#fff" },
+            { name: "Spotify", bg: "linear-gradient(135deg, #1DB954, #191414)", accent: "#fff" },
+            { name: "Amazon", bg: "linear-gradient(135deg, #FF9900, #000000)", accent: "#fff" },
+            { name: "Google", bg: "linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)", accent: "#fff" },
+            { name: "Apple", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#fff" },
+            { name: "Microsoft", bg: "linear-gradient(135deg, #F25022, #7FBA00, #00A4EF, #FFB900)", accent: "#fff" },
+            { name: "Titanium", bg: "linear-gradient(135deg, #283048, #859398)", accent: "#fff" },
+            { name: "Opal", bg: "linear-gradient(135deg, #3D7EAA, #FFE47A)", accent: "#fff" },
+            { name: "Sea Blizz", bg: "linear-gradient(135deg, #1CD8D2, #93EDC7)", accent: "#333" },
+            { name: "Slight Ocean", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff" },
+            { name: "Dimigo", bg: "linear-gradient(135deg, #ec008c, #fc6767)", accent: "#fff" },
+            { name: "Purple White", bg: "linear-gradient(135deg, #CC2B5E, #753A88)", accent: "#fff" },
+            { name: "Fifty Shades", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff" },
+            { name: "Back to Earth", bg: "linear-gradient(135deg, #00C9FF, #92FE9D)", accent: "#333" },
+            { name: "Deep Space", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#fff" },
+            { name: "Metallic", bg: "linear-gradient(135deg, #D5D5D5, #F2F2F2)", accent: "#333" },
+            { name: "Soft Grass", bg: "linear-gradient(135deg, #c1dfc4, #deecdd)", accent: "#333" }
         ];
 
         const tSelect = document.getElementById('themeSelector');
@@ -542,7 +664,7 @@ footer {
             document.querySelector('.q-prefix').style.color = theme.accent;
             document.querySelector('.card-line').style.background = theme.accent;
 
-            const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold", "Teal Love", "Piggy Pink", "Mega Tron", "Argon", "A Lost Memory"].includes(theme.name);
+            const isLight = ["Silver", "Gold Rush", "Morning", "Ice Cold", "Teal Love", "Piggy Pink", "Mega Tron", "Argon", "A Lost Memory", "Clouds", "White"].includes(theme.name);
             const textColor = isLight ? "#222" : "#fff";
             const subColor = isLight ? "#444" : "#e2e8f0";
             const borderColor = isLight ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)";
@@ -579,13 +701,12 @@ footer {
             // 1. Create a CLONE to ensure fixed size and prevent mobile layout issues
             const clone = originalWrapper.cloneNode(true);
             
-            // 2. Set Fixed Width for High Quality on Mobile
-            clone.style.width = "800px";
-            clone.style.maxWidth = "none";
+            // 2. Undo fixed width, rely on natural scale
+            clone.style.width = "auto";
+            clone.style.minWidth = "400px"; // Ensure minimum quality width
             clone.style.position = "absolute";
             clone.style.top = "-9999px";
             clone.style.left = "0";
-            // Ensure clone keeps theme background cleanly (fix white border)
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
@@ -614,10 +735,9 @@ footer {
 
             // 4. Capture
             html2canvas(clone, {
-                scale: 2, // Retina quality
+                scale: 3, // Retina quality
                 useCORS: true,
-                backgroundColor: null, // Transparent background fix
-                width: 800
+                backgroundColor: null, 
             }).then(canvas => {
                 // 5. Handle Output (Share or Download)
                 canvas.toBlob(blob => {
