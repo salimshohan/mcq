@@ -71,8 +71,11 @@ body {
 }
 .section-title i { color: var(--primary); }
 
+/* Save Status */
+.save-status { font-size: 11px; color: #10b981; font-weight: 600; opacity: 0; transition: opacity 0.5s; display: flex; align-items: center; gap: 4px; }
+
 /* Action Buttons */
-.action-buttons { display: flex; gap: 10px; }
+.action-buttons { display: flex; gap: 10px; align-items: center; }
 .btn-icon {
     background: white; 
     border: 1px solid var(--border-light);
@@ -108,6 +111,9 @@ body {
     transition: all 0.2s ease-in-out;
     box-shadow: var(--shadow-sm);
 }
+
+/* Increased Height for Question Box */
+textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 
 .form-control:hover { border-color: #9ca3af; }
 .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
@@ -158,7 +164,7 @@ select.form-control { cursor: pointer; }
 
 .question-box { display: flex; gap: 8px; margin-bottom: 20px; margin-top: 5px;}
 .q-prefix { font-size: 18px; font-weight: 900; line-height: 1.2; flex-shrink: 0; }
-.q-text { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.q-text { font-size: 17px; font-weight: 700; line-height: 1.4; white-space: pre-wrap; }
 
 .options-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -219,8 +225,10 @@ footer {
         <div class="editor-box">
             <div class="section-header">
                 <div class="section-title"><i class="fas fa-layer-group"></i> MCQ Creator</div>
+                
                 <div class="action-buttons">
-                    <button class="btn-icon btn-undo" id="undoBtn" onclick="undoReset()" title="Undo">
+                    <span id="saveStatus" class="save-status"><i class="fas fa-check"></i> Saved</span>
+                    <button class="btn-icon btn-undo" id="undoBtn" onclick="undo()" title="Undo">
                         <i class="fas fa-undo"></i>
                     </button>
                     <button class="btn-icon btn-reset" onclick="resetAll()" title="Reset All">
@@ -260,7 +268,7 @@ footer {
 
             <div class="input-group">
                 <label><i class="fas fa-question-circle"></i> Question</label>
-                <input id="qInput" class="form-control" placeholder="Type your question..." oninput="updateLive()">
+                <textarea id="qInput" class="form-control" placeholder="Type your question..." oninput="updateLive()"></textarea>
             </div>
 
             <div class="input-group">
@@ -273,21 +281,21 @@ footer {
 
             <div class="input-group">
                 <label><i class="fas fa-check-circle"></i> Correct Answer (Admin)</label>
-                <select id="correctOpt" class="form-control">
+                <select id="correctOpt" class="form-control" onchange="updateLive()">
                     <option value="">Select Correct Option</option>
-                    <option value="1">Option 1 (a/A/১/ক)</option>
-                    <option value="2">Option 2 (b/B/২/খ)</option>
-                    <option value="3">Option 3 (c/C/৩/গ)</option>
-                    <option value="4">Option 4 (d/D/৪/ঘ)</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4">Option 4</option>
                 </select>
             </div>
 
             <div class="download-group">
-                <button class="btn-download btn-user" onclick="downloadImage('user')">
-                    <i class="fas fa-user"></i> User PNG
+                <button class="btn-download btn-user" onclick="processDownload('user')">
+                    <i class="fas fa-download"></i> User PNG
                 </button>
-                <button class="btn-download btn-admin" onclick="downloadImage('admin')">
-                    <i class="fas fa-user-shield"></i> Admin PNG
+                <button class="btn-download btn-admin" onclick="processDownload('admin')">
+                    <i class="fas fa-share-alt"></i> Share/Admin
                 </button>
             </div>
         </div>
@@ -315,9 +323,8 @@ footer {
   <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- EXTENDED THEMES ---
+        // --- THEMES ---
         const themes = [
-            // Dark & Deep
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9" },
             { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8" },
@@ -340,8 +347,6 @@ footer {
             { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f" },
             { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff" },
             { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff" },
-            
-            // Nature & Green
             { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7" },
             { name: "Forest", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399" },
             { name: "Spotify", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff" },
@@ -352,8 +357,6 @@ footer {
             { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c" },
             { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#ffffff" },
             { name: "Aurora", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#ffffff" },
-            
-            // Warm & Hot
             { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5" },
             { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d" },
             { name: "Youtube", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff" },
@@ -369,8 +372,6 @@ footer {
             { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff" },
             { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#ffffff" },
             { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#ffffff" },
-            
-            // Light & Clean
             { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff" },
             { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05" },
             { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff" },
@@ -381,8 +382,6 @@ footer {
             { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff" },
             { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff" },
             { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff" },
-            
-            // New Added
             { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000" },
             { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff" },
             { name: "Dark Ocean", bg: "linear-gradient(135deg, #373B44, #4286f4)", accent: "#fff" },
@@ -422,7 +421,103 @@ footer {
             bangla2: ['ক','খ','গ','ঘ']
         };
 
-        function updateLive() {
+        // --- HISTORY & STATE MANAGEMENT ---
+        const MAX_HISTORY = 20;
+        let historyStack = [];
+        let historyIndex = -1;
+        let isRestoring = false;
+
+        function init() {
+            // Restore from Local Storage on Load
+            const saved = localStorage.getItem('mcqCurrent');
+            if(saved) {
+                applyState(JSON.parse(saved));
+            } else {
+                updateLive(true); // Initial save
+            }
+        }
+
+        function applyState(state) {
+            isRestoring = true;
+            document.getElementById('qInput').value = state.q || '';
+            document.getElementById('optA').value = state.a || '';
+            document.getElementById('optB').value = state.b || '';
+            document.getElementById('optC').value = state.c || '';
+            document.getElementById('optD').value = state.d || '';
+            document.getElementById('qStyle').value = state.qStyle || 'Q.';
+            document.getElementById('optStyle').value = state.optStyle || 'abcd';
+            document.getElementById('themeSelector').value = state.theme || 0;
+            document.getElementById('correctOpt').value = state.correct || '';
+            isRestoring = false;
+            updateLive(false); // Update preview without saving again
+        }
+
+        function saveState() {
+            if(isRestoring) return;
+
+            const currentState = {
+                q: document.getElementById('qInput').value,
+                a: document.getElementById('optA').value,
+                b: document.getElementById('optB').value,
+                c: document.getElementById('optC').value,
+                d: document.getElementById('optD').value,
+                qStyle: document.getElementById('qStyle').value,
+                optStyle: document.getElementById('optStyle').value,
+                theme: document.getElementById('themeSelector').value,
+                correct: document.getElementById('correctOpt').value
+            };
+
+            // Save to LocalStorage
+            localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
+            showSaveStatus();
+
+            // Push to History
+            // Remove future history if we are in middle
+            if (historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            historyStack.push(currentState);
+            if (historyStack.length > MAX_HISTORY) {
+                historyStack.shift();
+            } else {
+                historyIndex++;
+            }
+        }
+
+        let saveTimeout;
+        function showSaveStatus() {
+            const status = document.getElementById('saveStatus');
+            status.style.opacity = '1';
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                status.style.opacity = '0';
+            }, 2000);
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                applyState(historyStack[historyIndex]);
+            }
+        }
+
+        function resetAll() {
+            if(confirm("Are you sure you want to reset everything?")) {
+                document.getElementById('qInput').value = '';
+                document.getElementById('optA').value = '';
+                document.getElementById('optB').value = '';
+                document.getElementById('optC').value = '';
+                document.getElementById('optD').value = '';
+                document.getElementById('correctOpt').value = '';
+                saveState(); // Save empty state
+                updateLive();
+            }
+        }
+
+        // --- UPDATE PREVIEW ---
+        let debounceTimer;
+        function updateLive(save = true) {
+            // Preview Logic
             const q = document.getElementById('qInput').value || "এখানে প্রশ্ন দেখা যাবে...";
             document.getElementById('pQ').innerText = q;
             document.getElementById('pA').innerText = document.getElementById('optA').value || "Option A";
@@ -438,6 +533,7 @@ footer {
             document.getElementById('oc3').innerText = labels[2];
             document.getElementById('oc4').innerText = labels[3];
 
+            // Theme Logic
             const tIdx = document.getElementById('themeSelector').value;
             const theme = themes[tIdx];
             const wrapper = document.getElementById('mcqWrapper');
@@ -462,100 +558,92 @@ footer {
             });
             
             document.querySelectorAll('.opt-item').forEach(el => {
-                // Keep background dynamic based on theme, unless marked correct by admin download process
                 if(!el.classList.contains('correct-ans')) {
                     el.style.borderColor = borderColor;
                     el.style.background = itemBg;
                 }
             });
             document.querySelector('.card-brand').style.color = isLight ? "#555" : "rgba(255,255,255,0.6)";
+
+            // Auto Save Debounce
+            if(save) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(saveState, 500);
+            }
         }
 
-        let lastState = null;
-
-        function resetAll() {
-            lastState = {
-                q: document.getElementById('qInput').value,
-                a: document.getElementById('optA').value,
-                b: document.getElementById('optB').value,
-                c: document.getElementById('optC').value,
-                d: document.getElementById('optD').value,
-                qStyle: document.getElementById('qStyle').value,
-                optStyle: document.getElementById('optStyle').value,
-                theme: document.getElementById('themeSelector').value,
-                correct: document.getElementById('correctOpt').value
-            };
+        // --- DOWNLOAD PROCESS ---
+        function processDownload(mode) {
+            const originalWrapper = document.getElementById('mcqWrapper');
             
-            document.getElementById('qInput').value = '';
-            document.getElementById('optA').value = '';
-            document.getElementById('optB').value = '';
-            document.getElementById('optC').value = '';
-            document.getElementById('optD').value = '';
-            document.getElementById('correctOpt').value = '';
+            // 1. Create a CLONE to ensure fixed size and prevent mobile layout issues
+            const clone = originalWrapper.cloneNode(true);
             
-            document.getElementById('undoBtn').style.display = 'flex';
-            updateLive();
-        }
-
-        function undoReset() {
-            if(!lastState) return;
-            document.getElementById('qInput').value = lastState.q;
-            document.getElementById('optA').value = lastState.a;
-            document.getElementById('optB').value = lastState.b;
-            document.getElementById('optC').value = lastState.c;
-            document.getElementById('optD').value = lastState.d;
-            document.getElementById('qStyle').value = lastState.qStyle;
-            document.getElementById('optStyle').value = lastState.optStyle;
-            document.getElementById('themeSelector').value = lastState.theme;
-            document.getElementById('correctOpt').value = lastState.correct;
+            // 2. Set Fixed Width for High Quality on Mobile
+            clone.style.width = "800px";
+            clone.style.maxWidth = "none";
+            clone.style.position = "absolute";
+            clone.style.top = "-9999px";
+            clone.style.left = "0";
+            // Ensure clone keeps theme background cleanly (fix white border)
+            clone.style.margin = "0";
+            clone.style.boxSizing = "border-box";
             
-            document.getElementById('undoBtn').style.display = 'none';
-            updateLive();
-        }
-
-        // --- DOWNLOAD LOGIC (USER vs ADMIN) ---
-        function downloadImage(mode) {
-            const wrapper = document.getElementById('mcqWrapper');
-            
-            // 1. If Admin Mode, apply highlight
+            // 3. Admin Highlight on Clone
             if(mode === 'admin') {
                 const correctVal = document.getElementById('correctOpt').value;
-                if(correctVal) {
-                    const item = document.getElementById('item' + correctVal);
-                    if(item) item.classList.add('correct-ans');
-                } else {
+                if(!correctVal) {
                     alert("Please select a Correct Answer first!");
                     return;
                 }
+                const targetId = 'item' + correctVal;
+                // Find element in clone
+                const targetEl = clone.querySelector('#' + targetId);
+                if(targetEl) {
+                    targetEl.style.background = "#10b981";
+                    targetEl.style.borderColor = "#059669";
+                    targetEl.style.color = "white";
+                    targetEl.style.fontWeight = "700";
+                    targetEl.querySelector('.opt-circle').style.background = "white";
+                    targetEl.querySelector('.opt-circle').style.color = "#059669";
+                    targetEl.querySelector('.opt-text').style.color = "white";
+                }
             }
 
-            // 2. Generate Image
-            html2canvas(wrapper, {
-                scale: 5, 
-                backgroundColor: null,
-                useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                const timestamp = Date.now();
-                link.download = `mcq_${mode}_${timestamp}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+            document.body.appendChild(clone);
 
-                // 3. Remove highlight immediately
-                if(mode === 'admin') {
-                    const correctVal = document.getElementById('correctOpt').value;
-                    if(correctVal) {
-                        const item = document.getElementById('item' + correctVal);
-                        if(item) item.classList.remove('correct-ans');
-                        updateLive(); // Restore default theme colors
+            // 4. Capture
+            html2canvas(clone, {
+                scale: 2, // Retina quality
+                useCORS: true,
+                backgroundColor: null, // Transparent background fix
+                width: 800
+            }).then(canvas => {
+                // 5. Handle Output (Share or Download)
+                canvas.toBlob(blob => {
+                    const file = new File([blob], `mcq_${mode}_${Date.now()}.png`, { type: 'image/png' });
+
+                    // Share Logic for Mobile Admin Mode
+                    if (mode === 'admin' && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'MCQ Answer',
+                            text: 'Here is the correct answer.'
+                        }).catch(console.error);
+                    } else {
+                        // Fallback Download
+                        const link = document.createElement('a');
+                        link.download = `mcq_${mode}_${Date.now()}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
                     }
-                }
+                    
+                    document.body.removeChild(clone);
+                });
             });
         }
 
-        updateLive();
-        document.getElementById('mcqWrapper').style.display = 'flex';
-
+        init();
     </script>
 </body>
 </html>
