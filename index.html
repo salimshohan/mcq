@@ -271,8 +271,7 @@ footer {
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
                         <option value="fa-question">Icon: Question</option>
-                        <option value="fa-star">Icon: Star</option>
-                        <option value="fa-lightbulb">Icon: Bulb</option>
+                        <option value="fa-star" selected>Icon: Star</option> <option value="fa-lightbulb">Icon: Bulb</option>
                         <option value="fa-pen-nib">Icon: Pen</option>
                     </select>
                 </div>
@@ -280,8 +279,7 @@ footer {
                     <label><i class="fas fa-list-ol"></i> Option Style</label>
                     <select id="optStyle" class="form-control" onchange="updateLive()">
                         <option value="abcd">a, b, c, d</option>
-                        <option value="ABCD">A, B, C, D</option>
-                        <option value="roman">i, ii, iii, iv</option>
+                        <option value="ABCD" selected>A, B, C, D</option> <option value="roman">i, ii, iii, iv</option>
                         <option value="number">1, 2, 3, 4</option>
                         <option value="bangla">১, ২, ৩, ৪</option>
                         <option value="bangla2">ক, খ, গ, ঘ</option>
@@ -479,12 +477,8 @@ footer {
         let isRestoring = false;
 
         function init() {
-            const saved = localStorage.getItem('mcqCurrent');
-            if(saved) {
-                applyState(JSON.parse(saved));
-            } else {
-                updateLive(true); 
-            }
+            // Local Storage Logic Removed
+            updateLive(true); 
         }
 
         function applyState(state) {
@@ -499,13 +493,11 @@ footer {
             document.getElementById('themeSelector').value = state.theme || 0;
             isRestoring = false;
             updateLive(false); 
-            showRestoredStatus();
         }
 
         function saveState() {
             if(isRestoring) return;
 
-            // Show saving status immediately
             showSavingStatus();
 
             const currentState = {
@@ -519,7 +511,7 @@ footer {
                 theme: document.getElementById('themeSelector').value
             };
 
-            localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
+            // Local Storage Set Item Removed
             showSavedStatus();
 
             if (historyIndex < historyStack.length - 1) {
@@ -544,14 +536,6 @@ footer {
             const status = document.getElementById('saveStatus');
             status.className = 'save-status status-saved';
             status.innerHTML = '<i class="fas fa-check"></i> Saved';
-            status.style.opacity = '1';
-            setTimeout(() => { status.style.opacity = '0'; }, 2000);
-        }
-
-        function showRestoredStatus() {
-            const status = document.getElementById('saveStatus');
-            status.className = 'save-status status-restored';
-            status.innerHTML = '<i class="fas fa-history"></i> Restored';
             status.style.opacity = '1';
             setTimeout(() => { status.style.opacity = '0'; }, 2000);
         }
@@ -611,7 +595,8 @@ footer {
             wrapper.style.background = theme.bg;
             document.querySelector('.q-prefix-box').style.color = theme.text;
             document.querySelector('.q-prefix-box').style.background = theme.text === '#fff' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
-            document.querySelector('.card-line').style.background = theme.accent;
+            // card-line removed to prevent error as it doesn't exist in HTML
+            // document.querySelector('.card-line').style.background = theme.accent;
 
             const isLightText = theme.text === '#fff' || theme.text === '#ffffff';
             const subColor = isLightText ? "#e2e8f0" : "#444";
@@ -636,7 +621,6 @@ footer {
             document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
 
             if(save) {
-                // Show Saving Status Immediately on input
                 showSavingStatus();
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(saveState, 800);
@@ -656,22 +640,18 @@ footer {
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
-            // Re-apply styles explicitly for the clone
-            // Font sizes are fixed here as requested to match preview ratio
             clone.querySelector('.q-text').style.fontSize = "30px";
             clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = "26px");
             clone.querySelectorAll('.opt-circle').forEach(el => {
                 el.style.width = "40px"; el.style.height = "40px"; el.style.fontSize = "20px";
             });
             
-            // Handle Icon Prefix in Clone
             const prefixVal = document.getElementById('qStyle').value;
             const clonePrefix = clone.querySelector('#pPrefix');
             if(prefixVal.startsWith('fa-')) {
                 clonePrefix.innerHTML = `<i class="fas ${prefixVal}" style="font-family:'Font Awesome 6 Free';"></i>`;
             }
 
-            // Adjust Styles for Clone (High Res)
             clone.style.padding = "40px 30px";
             clone.style.borderRadius = "24px";
             clone.querySelector('.question-box').style.marginBottom = "25px";
@@ -691,14 +671,14 @@ footer {
             });
             
             clone.querySelector('.card-footer').style.marginTop = "25px";
-            clone.querySelector('.card-line').style.width = "80px";
-            clone.querySelector('.card-line').style.height = "5px";
+            // card-line removed from clone logic as well
+            // clone.querySelector('.card-line').style.width = "800px";
+            // clone.querySelector('.card-line').style.height = "5px";
             clone.querySelector('.card-brand').style.fontSize = "18px";
             clone.querySelector('.card-promo').style.fontSize = "20px";
 
             document.body.appendChild(clone);
 
-            // Scale 2 for High Quality but Safe Memory Usage
             html2canvas(clone, {
                 scale: 2, 
                 useCORS: true,
