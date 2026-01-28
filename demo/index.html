@@ -41,7 +41,7 @@ body {
 
 /* --- CONTAINER --- */
 .container {
-    margin-top: 80px;
+    margin-top: 40px;
     width: 97%; max-width: 1200px;
     display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
     gap: 12px; padding-bottom: 20px; flex: 1;
@@ -59,418 +59,233 @@ body {
 
 .section-header {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 25px; 
-    padding-bottom: 15px;
+    margin-bottom: 20px; 
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border-light);
 }
 .section-title { 
-    font-size: 20px; font-weight: 700; 
+    font-size: 18px; font-weight: 700; 
     color: #1f2937;
-    letter-spacing: -0.5px;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
 }
 .section-title i { color: var(--primary); }
 
 /* Save Status */
-.save-status { font-size: 11px; color: #10b981; font-weight: 600; opacity: 0; transition: opacity 0.5s; display: flex; align-items: center; gap: 4px; }
+.save-status { 
+    font-size: 11px; font-weight: 600; 
+    opacity: 0; transition: opacity 0.5s; 
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 8px; border-radius: 4px;
+}
+.status-saving { color: #f59e0b; background: #fffbeb; border: 1px solid #fcd34d; }
+.status-saved { color: #10b981; background: #ecfdf5; border: 1px solid #6ee7b7; }
+.status-restored { color: #3b82f6; background: #eff6ff; border: 1px solid #93c5fd; }
 
-/* Action Buttons */
-.action-buttons { display: flex; gap: 10px; align-items: center; }
+.action-buttons { display: flex; gap: 8px; align-items: center; }
 .btn-icon {
     background: white; 
     border: 1px solid var(--border-light);
-    color: var(--text-muted); width: 38px; height: 38px; border-radius: 10px;
+    color: var(--text-muted); width: 34px; height: 34px; border-radius: 8px;
     cursor: pointer; transition: all 0.2s ease; 
     display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow-sm);
 }
-.btn-icon:hover { 
-    border-color: var(--primary); color: var(--primary); 
-    transform: translateY(-2px); box-shadow: var(--shadow-md);
-}
+.btn-icon:hover { border-color: var(--primary); color: var(--primary); }
 
 /* --- INPUT FIELDS --- */
-.input-group { margin-bottom: 20px; }
-
+.input-group { margin-bottom: 15px; }
 .input-group label {
-    display: block; font-size: 13px; font-weight: 600;
-    color: #374151; margin-bottom: 8px;
-    letter-spacing: 0.3px;
-    display: flex; justify-content: space-between;
+    display: block; font-size: 12.5px; font-weight: 600;
+    color: #374151; margin-bottom: 6px;
 }
-.input-group label i { margin-right: 6px; color: var(--primary); width: 15px; text-align: center; }
 
 .form-control {
     width: 100%;
     background: #ffffff;
     border: 1px solid #d1d5db; 
-    color: #111827;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border-radius: 8px; 
-    font-size: 15px;
+    font-size: 14px;
     font-family: inherit;
     transition: all 0.2s ease-in-out;
-    box-shadow: var(--shadow-sm);
 }
+.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
 
-textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
+textarea.form-control { resize: vertical; min-height: 70px; }
 
-.form-control:hover { border-color: #9ca3af; }
-.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
-.form-control::placeholder { color: #9ca3af; font-size: 14px; }
-
-select.form-control { cursor: pointer; }
-
-.row-inputs { display: flex; gap: 15px; }
+.row-inputs { display: flex; gap: 10px; }
 .row-inputs > div { flex: 1; }
 
-/* Download Buttons */
-.download-group { display: flex; gap: 10px; margin-top: 25px; }
-
 .btn-download {
-    width: 100%; padding: 14px;
-    border-radius: 10px; border: none;
+    width: 100%; padding: 12px;
+    border-radius: 8px; border: none;
     color: white; font-weight: 600; cursor: pointer;
     font-size: 14px; 
-    box-shadow: var(--shadow-md);
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
     background: #111827;
-}
-.btn-download:hover { background: #000000; transform: translateY(-2px); }
-
-/* --- PREVIEW BOX --- */
-.preview-box {
-    flex: 1.2; min-width: 350px;
-    display: flex; justify-content: center; align-items: flex-start;
-    padding-top: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 
 /* --- PREMIUM CARD DESIGN (COMPACT) --- */
+.preview-box { flex: 1.2; min-width: 350px; display: flex; justify-content: center; }
+
 #mcqWrapper {
     width: 100%; max-width: 480px;
     border-radius: 12px;
-    padding: 15px; 
+    padding: 20px; 
     display: flex; flex-direction: column;
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
-    border: none;
-    position: relative;
-    transition: background 0.3s ease;
     color: white; 
+    position: relative;
     overflow: hidden;
 }
 
-.card-content-layer { position: relative; z-index: 2; }
-
-.question-box { 
-    display: flex; gap: 10px; 
-    margin-bottom: 12px; 
-}
-
+.question-box { display: flex; gap: 10px; margin-bottom: 12px; }
 .q-prefix-box {
-    width: 34px; height: 34px; flex-shrink: 0;
+    width: 32px; height: 32px; flex-shrink: 0;
     background: rgba(255,255,255,0.2);
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 15px; font-weight: 900;
-    backdrop-filter: blur(5px);
+    font-size: 14px; font-weight: 800;
     border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+.q-text { font-size: 16px; font-weight: 700; line-height: 1.4; white-space: pre-wrap; }
 
-.q-text { font-size: 17px; font-weight: 700; line-height: 1.35; white-space: pre-wrap; }
-
-.options-list { display: flex; flex-direction: column; gap: 7px; }
-
+.options-list { display: flex; flex-direction: column; gap: 6px; }
 .opt-item {
     display: flex; align-items: center;
     background: rgba(255, 255, 255, 0.08); 
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px; 
-    padding: 7px 10px; 
-    transition: 0.2s;
-    position: relative;
-    overflow: hidden;
+    padding: 8px 12px; 
 }
-
-.opt-item::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: rgba(255,255,255,0.3); opacity: 0.5;
-}
-
 .opt-circle {
     width: 22px; height: 22px; flex-shrink: 0;
-    border-radius: 6px;
+    border-radius: 5px;
     background: rgba(255, 255, 255, 0.15);
     display: flex; justify-content: center; align-items: center;
     font-size: 11px; font-weight: 700; margin-right: 10px;
     border: 1px solid rgba(255,255,255,0.2);
 }
-.opt-text { font-size: 15px; font-weight: 500; line-height: 1.3; }
+.opt-text { font-size: 14px; font-weight: 500; }
 
 .card-footer { 
-    margin-top: 8px; text-align: center; 
+    margin-top: 12px; text-align: center; 
     border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 8px;
+    padding-top: 10px;
 }
+.card-brand { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; }
+.card-promo { font-size: 10px !important; opacity: 0.8; font-weight: 500; }
 
-.card-brand { 
-    font-size: 9px; font-weight: 800; 
-    letter-spacing: 2px; text-transform: uppercase; 
-    margin-bottom: 2px; display: inline-block;
-    background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;
-}
-.card-promo { font-size: 11px !important; opacity: 0.85; font-weight: 500; margin-top: 2px; line-height: 1.2; }
+footer { width: 100%; padding: 15px; text-align: center; background: #1f2937; margin-top: auto; font-size: 13px; color: white; }
 
-/* Footer */
-footer {
-    width: 100%; padding: 15px; text-align: center;
-    background: #1f2937;
-    border-top: 1px solid #dadada;
-    margin-top: auto; font-size: 14px; color: white;
-}
-
-@media (max-width: 768px) {
-    .container { flex-direction: column; padding: 20px; gap: 20px; }
-    .editor-box, .preview-box { min-width: 100%; }
-}
+@media (max-width: 768px) { .container { flex-direction: column; } .editor-box, .preview-box { min-width: 100%; } }
     </style>
 </head>
 <body>
-<div id="header"></div>
-<script type="text/javascript" src="/js/header.js"></script>
     <div class="container">
         <div class="editor-box">
             <div class="section-header">
                 <div class="section-title"><i class="fas fa-layer-group"></i> MCQ Creator</div>
-                
                 <div class="action-buttons">
-                    <span id="saveStatus" class="save-status"><i class="fas fa-check"></i> Saved</span>
-                    <button class="btn-icon btn-undo" id="undoBtn" onclick="undo()" title="Undo">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                    <button class="btn-icon btn-reset" onclick="resetAll()" title="Reset All">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <span id="saveStatus" class="save-status"></span>
+                    <button class="btn-icon" onclick="undo()" title="Undo"><i class="fas fa-undo"></i></button>
+                    <button class="btn-icon" onclick="resetAll()" title="Reset All"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
 
             <div class="row-inputs">
                 <div class="input-group">
-                    <label><i class="fas fa-heading"></i> Prefix</label>
+                    <label>Prefix</label>
                     <select id="qStyle" class="form-control" onchange="updateLive()">
                         <option value="Q.">Q.</option>
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
                         <option value="fa-question">Icon: Question</option>
-                        <option value="fa-star">Icon: Star</option>
-                        <option value="fa-lightbulb">Icon: Bulb</option>
-                        <option value="fa-pen-nib">Icon: Pen</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label><i class="fas fa-list-ol"></i> Option Style</label>
+                    <label>Option Style</label>
                     <select id="optStyle" class="form-control" onchange="updateLive()">
                         <option value="abcd">a, b, c, d</option>
                         <option value="ABCD">A, B, C, D</option>
-                        <option value="roman">i, ii, iii, iv</option>
-                        <option value="number">1, 2, 3, 4</option>
-                        <option value="bangla">১, ২, ৩, ৪</option>
                         <option value="bangla2">ক, খ, গ, ঘ</option>
-                        <option value="arrow">Icon: Arrow</option>
-                        <option value="check">Icon: Check</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-palette"></i> Theme (100 Premium)</label>
-                <select id="themeSelector" class="form-control" onchange="updateLive()">
-                    </select>
+                <label>Theme</label>
+                <select id="themeSelector" class="form-control" onchange="updateLive()"></select>
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-question-circle"></i> Question</label>
-                <textarea id="qInput" class="form-control" placeholder="Type your question..." oninput="updateLive()"></textarea>
+                <label>Question</label>
+                <textarea id="qInput" class="form-control" placeholder="Type question..." oninput="updateLive()"></textarea>
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-list"></i> Options</label>
-                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:10px;" oninput="updateLive()">
-                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:10px;" oninput="updateLive()">
-                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:10px;" oninput="updateLive()">
+                <label>Options</label>
+                <input id="optA" class="form-control" placeholder="Option 1" style="margin-bottom:8px;" oninput="updateLive()">
+                <input id="optB" class="form-control" placeholder="Option 2" style="margin-bottom:8px;" oninput="updateLive()">
+                <input id="optC" class="form-control" placeholder="Option 3" style="margin-bottom:8px;" oninput="updateLive()">
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
             </div>
 
-            <div class="download-group">
-                <button class="btn-download" onclick="downloadImage()">
-                    <i class="fas fa-download"></i> Download PNG
-                </button>
-            </div>
+            <button class="btn-download" onclick="downloadImage()"><i class="fas fa-download"></i> Download PNG</button>
         </div>
 
         <div class="preview-box">
             <div id="mcqWrapper">
                 <div class="card-content-layer">
                     <div class="question-box">
-                        <div class="q-prefix-box">
-                            <span id="pPrefix">Q.</span>
-                        </div>
+                        <div class="q-prefix-box"><span id="pPrefix">Q.</span></div>
                         <span id="pQ" class="q-text">Question Preview...</span>
                     </div>
                     <div class="options-list">
-                        <div class="opt-item" id="item1"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option A</div></div>
-                        <div class="opt-item" id="item2"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option B</div></div>
-                        <div class="opt-item" id="item3"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option C</div></div>
-                        <div class="opt-item" id="item4"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option D</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option A</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option B</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option C</div></div>
+                        <div class="opt-item"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option D</div></div>
                     </div>
                     <div class="card-footer">
                         <div class="card-brand">Interactive Learning</div>
-                        <div class="card-promo">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
+                        <div class="card-promo">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই যুক্ত হোন।</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-  <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
-
     <script>
-        // --- 100 PREMIUM THEMES ---
         const themes = [
-            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
-            { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24", text: "#fff" },
-            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9", text: "#fff" },
-            { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd", text: "#fff" },
-            { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff", text: "#fff" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff", text: "#fff" },
-            { name: "Twitch", bg: "linear-gradient(135deg, #6441a5, #2a0845)", accent: "#ffffff", text: "#fff" },
-            { name: "Galaxy", bg: "linear-gradient(135deg, #240b36, #c31432)", accent: "#ffffff", text: "#fff" },
-            { name: "Deep Violet", bg: "linear-gradient(135deg, #4c1d95, #7c3aed)", accent: "#c4b5fd", text: "#fff" },
-            { name: "Plum", bg: "linear-gradient(135deg, #dd2476, #ff512f)", accent: "#ffffff", text: "#fff" },
-            { name: "Neon Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#ffffff", text: "#fff" },
-            { name: "Majestic", bg: "linear-gradient(135deg, #5614B0, #DBD65C)", accent: "#ffffff", text: "#fff" },
-            { name: "Discord", bg: "linear-gradient(135deg, #5865F2, #404EED)", accent: "#ffffff", text: "#fff" },
-            { name: "Charcoal", bg: "linear-gradient(135deg, #18181b, #27272a)", accent: "#e4e4e7", text: "#fff" },
-            { name: "Midnight", bg: "linear-gradient(135deg, #232526, #414345)", accent: "#ffffff", text: "#fff" },
-            { name: "Metal", bg: "linear-gradient(135deg, #2c3e50, #000000)", accent: "#bdc3c7", text: "#fff" },
-            { name: "Shadow", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#ffffff", text: "#fff" },
-            { name: "Carbon", bg: "linear-gradient(135deg, #093028, #237a57)", accent: "#ffffff", text: "#fff" },
-            { name: "Vampire", bg: "linear-gradient(135deg, #16222A, #3A6073)", accent: "#ffffff", text: "#fff" },
-            { name: "Dark Knight", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#f1c40f", text: "#fff" },
-            { name: "Sleek", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#ffffff", text: "#fff" },
-            { name: "Onyx", bg: "linear-gradient(135deg, #3E5151, #DECBA4)", accent: "#ffffff", text: "#fff" },
-            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", accent: "#6ee7b7", text: "#fff" },
-            { name: "Forest", bg: "linear-gradient(135deg, #022c22, #065f46)", accent: "#34d399", text: "#fff" },
-            { name: "Spotify", bg: "linear-gradient(135deg, #191414, #1DB954)", accent: "#ffffff", text: "#fff" },
-            { name: "Mint", bg: "linear-gradient(135deg, #11998e, #38ef7d)", accent: "#ffffff", text: "#fff" },
-            { name: "Lush", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#ffffff", text: "#fff" },
-            { name: "Dark Moss", bg: "linear-gradient(135deg, #134E5E, #71B280)", accent: "#ffffff", text: "#fff" },
-            { name: "Jungle", bg: "linear-gradient(135deg, #1a2980, #26d0ce)", accent: "#ffffff", text: "#fff" },
-            { name: "Olive", bg: "linear-gradient(135deg, #3f4e4f, #2c3639)", accent: "#a27b5c", text: "#fff" },
-            { name: "Nature", bg: "linear-gradient(135deg, #2ebf91, #8360c3)", accent: "#ffffff", text: "#fff" },
-            { name: "Aurora", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#ffffff", text: "#fff" },
-            { name: "Crimson", bg: "linear-gradient(135deg, #7f1d1d, #991b1b)", accent: "#fca5a5", text: "#fff" },
-            { name: "Sunset", bg: "linear-gradient(135deg, #c2410c, #ea580c)", accent: "#fcd34d", text: "#fff" },
-            { name: "Youtube", bg: "linear-gradient(135deg, #FF0000, #282828)", accent: "#ffffff", text: "#fff" },
-            { name: "Fire", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#ffffff", text: "#fff" },
-            { name: "Blood Moon", bg: "linear-gradient(135deg, #870000, #190a05)", accent: "#ff0000", text: "#fff" },
-            { name: "Cherry", bg: "linear-gradient(135deg, #eb3349, #f45c43)", accent: "#ffffff", text: "#fff" },
-            { name: "Pumpkin", bg: "linear-gradient(135deg, #d35400, #e67e22)", accent: "#f1c40f", text: "#fff" },
-            { name: "Red Mist", bg: "linear-gradient(135deg, #000000, #e74c3c)", accent: "#ffffff", text: "#fff" },
-            { name: "Netflix", bg: "linear-gradient(135deg, #000000, #E50914)", accent: "#ffffff", text: "#fff" },
-            { name: "Rose", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#ffffff", text: "#fff" },
-            { name: "Passion", bg: "linear-gradient(135deg, #e53935, #e35d5b)", accent: "#ffffff", text: "#fff" },
-            { name: "Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#ffffff", text: "#fff" },
-            { name: "Instagram", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#ffffff", text: "#fff" },
-            { name: "Haiku", bg: "linear-gradient(135deg, #fd746c, #ff9068)", accent: "#ffffff", text: "#fff" },
-            { name: "Superman", bg: "linear-gradient(135deg, #0099F7, #F11712)", accent: "#ffffff", text: "#fff" },
-            { name: "Ice Cold", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)", accent: "#ffffff", text: "#fff" },
-            { name: "Blue Berry", bg: "linear-gradient(135deg, #1e3c72, #2a5298)", accent: "#ffcb05", text: "#fff" },
-            { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff", text: "#fff" },
-            { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff", text: "#fff" },
-            { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff", text: "#fff" },
-            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333", text: "#222" },
-            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000", text: "#222" },
-            { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff", text: "#fff" },
-            { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff", text: "#fff" },
-            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff", text: "#fff" },
-            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000", text: "#222" },
-            { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff", text: "#fff" },
-            { name: "Dark Ocean", bg: "linear-gradient(135deg, #373B44, #4286f4)", accent: "#fff", text: "#fff" },
-            { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff", text: "#fff" },
-            { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff", text: "#fff" },
-            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333", text: "#222" },
-            { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff", text: "#fff" },
-            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786, #f7797d)", accent: "#333", text: "#222" },
-            { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#fff", text: "#fff" },
-            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0, #ec38bc, #fdeff9)", accent: "#fff", text: "#222" },
-            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333", text: "#222" },
-            { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff", text: "#fff" },
-            { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff", text: "#fff" },
-            { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff", text: "#fff" },
-            { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff", text: "#fff" },
-            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff", text: "#222" },
-            { name: "A Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff", text: "#fff" },
-            { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff", text: "#fff" },
-            { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff", text: "#fff" },
-            { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff", text: "#fff" },
-            { name: "Sunny", bg: "linear-gradient(135deg, #FFE259, #FFA751)", accent: "#333", text: "#222" },
-            { name: "Amin", bg: "linear-gradient(135deg, #8E2DE2, #4A00E0)", accent: "#fff", text: "#fff" },
-            { name: "Harvey", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#333", text: "#222" },
-            { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff", text: "#fff" },
-            { name: "Azurite", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#fff", text: "#fff" },
-            { name: "Yoda", bg: "linear-gradient(135deg, #FF0099, #493240)", accent: "#fff", text: "#fff" },
-            { name: "Dark Sky", bg: "linear-gradient(135deg, #4B79A1, #283E51)", accent: "#fff", text: "#fff" },
-            { name: "Purplin", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff", text: "#fff" },
-            { name: "Pewter", bg: "linear-gradient(135deg, #CAC531, #F3F9A7)", accent: "#333", text: "#222" },
-            { name: "Slight Ocean", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff", text: "#fff" },
-            { name: "Crimson Tide", bg: "linear-gradient(135deg, #642B73, #C6426E)", accent: "#fff", text: "#fff" },
-            { name: "Man of Steel", bg: "linear-gradient(135deg, #780206, #061161)", accent: "#fff", text: "#fff" },
-            { name: "Amour", bg: "linear-gradient(135deg, #f77062, #fe5196)", accent: "#fff", text: "#fff" },
-            { name: "Politics", bg: "linear-gradient(135deg, #2196f3, #f44336)", accent: "#fff", text: "#fff" },
-            { name: "Transfile", bg: "linear-gradient(135deg, #16BFFD, #CB3066)", accent: "#fff", text: "#fff" },
-            { name: "Tranquil", bg: "linear-gradient(135deg, #EECDA3, #EF629F)", accent: "#fff", text: "#222" },
-            { name: "Sylvia", bg: "linear-gradient(135deg, #ff4b1f, #ff9068)", accent: "#fff", text: "#fff" },
-            { name: "Scooter", bg: "linear-gradient(135deg, #36D1DC, #5B86E5)", accent: "#fff", text: "#fff" },
-            { name: "Meridian", bg: "linear-gradient(135deg, #283c86, #45a247)", accent: "#fff", text: "#fff" },
-            { name: "Relay", bg: "linear-gradient(135deg, #3A1C71, #D76D77, #FFAF7B)", accent: "#fff", text: "#fff" },
-            { name: "Alive", bg: "linear-gradient(135deg, #CB356B, #BD3F32)", accent: "#fff", text: "#fff" },
-            { name: "Kimoby", bg: "linear-gradient(135deg, #396afc, #2948ff)", accent: "#fff", text: "#fff" },
-            { name: "Bourbon", bg: "linear-gradient(135deg, #EC6F66, #F3A183)", accent: "#fff", text: "#fff" },
-            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff", text: "#fff" },
-            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333", text: "#222" },
-            { name: "Traffic", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff", text: "#fff" },
-            { name: "Mantle", bg: "linear-gradient(135deg, #24C6DC, #514A9D)", accent: "#fff", text: "#fff" },
-            { name: "Drive", bg: "linear-gradient(135deg, #514A9D, #24C6DC)", accent: "#fff", text: "#fff" }
+            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", text: "#fff" },
+            { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", text: "#fff" },
+            { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", text: "#fff" },
+            { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", text: "#fff" },
+            { name: "Emerald", bg: "linear-gradient(135deg, #064e3b, #10b981)", text: "#fff" }
         ];
-
-        const tSelect = document.getElementById('themeSelector');
-        themes.forEach((t, i) => {
-            let opt = document.createElement('option');
-            opt.value = i;
-            opt.text = `${i+1}. ${t.name}`;
-            tSelect.appendChild(opt);
-        });
 
         const optionTypes = {
             abcd: ['a', 'b', 'c', 'd'],
             ABCD: ['A', 'B', 'C', 'D'],
-            roman: ['i', 'ii', 'iii', 'iv'],
-            number: ['1', '2', '3', '4'],
-            bangla: ['১', '২', '৩', '৪'],
-            bangla2: ['ক','খ','গ','ঘ'],
-            arrow: ['<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>'],
-            check: ['<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>']
+            bangla2: ['ক','খ','গ','ঘ']
         };
 
-        // --- HISTORY & STATE MANAGEMENT ---
-        const MAX_HISTORY = 20;
         let historyStack = [];
         let historyIndex = -1;
         let isRestoring = false;
+        let debounceTimer;
 
+        // --- INIT ---
         function init() {
+            // Fill Theme Selector
+            const tSelect = document.getElementById('themeSelector');
+            themes.forEach((t, i) => {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.text = t.name;
+                tSelect.appendChild(opt);
+            });
+
+            // Restore from LocalStorage
             const saved = localStorage.getItem('mcqCurrent');
             if(saved) {
                 applyState(JSON.parse(saved));
@@ -491,12 +306,12 @@ footer {
             document.getElementById('themeSelector').value = state.theme || 0;
             isRestoring = false;
             updateLive(false); 
+            showStatus('restored');
         }
 
         function saveState() {
             if(isRestoring) return;
-
-            const currentState = {
+            const state = {
                 q: document.getElementById('qInput').value,
                 a: document.getElementById('optA').value,
                 b: document.getElementById('optB').value,
@@ -506,145 +321,71 @@ footer {
                 optStyle: document.getElementById('optStyle').value,
                 theme: document.getElementById('themeSelector').value
             };
+            localStorage.setItem('mcqCurrent', JSON.stringify(state));
+            showStatus('saved');
 
-            localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
-            showSaveStatus();
-
-            if (historyIndex < historyStack.length - 1) {
-                historyStack = historyStack.slice(0, historyIndex + 1);
-            }
-            historyStack.push(currentState);
-            if (historyStack.length > MAX_HISTORY) {
-                historyStack.shift();
-            } else {
-                historyIndex++;
-            }
+            // History Management
+            if (historyIndex < historyStack.length - 1) historyStack = historyStack.slice(0, historyIndex + 1);
+            historyStack.push(state);
+            if (historyStack.length > 20) historyStack.shift();
+            else historyIndex++;
         }
 
-        let saveTimeout;
-        function showSaveStatus() {
-            const status = document.getElementById('saveStatus');
-            status.style.opacity = '1';
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-                status.style.opacity = '0';
-            }, 2000);
-        }
-
-        function undo() {
-            if (historyIndex > 0) {
-                historyIndex--;
-                applyState(historyStack[historyIndex]);
-            }
-        }
-
-        function resetAll() {
-            if(confirm("Are you sure you want to reset everything?")) {
-                document.getElementById('qInput').value = '';
-                document.getElementById('optA').value = '';
-                document.getElementById('optB').value = '';
-                document.getElementById('optC').value = '';
-                document.getElementById('optD').value = '';
-                saveState(); 
-                updateLive();
-            }
-        }
-
-        // --- UPDATE PREVIEW ---
-        let debounceTimer;
-        function updateLive(save = true) {
-            // Preview Logic
-            const q = document.getElementById('qInput').value || "এখানে প্রশ্ন দেখা যাবে...";
-            document.getElementById('pQ').innerText = q;
+        function updateLive(shouldSave = true) {
+            // Update Text
+            document.getElementById('pQ').innerText = document.getElementById('qInput').value || "এখানে প্রশ্ন দেখা যাবে...";
             document.getElementById('pA').innerText = document.getElementById('optA').value || "Option A";
             document.getElementById('pB').innerText = document.getElementById('optB').value || "Option B";
             document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
             document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
 
-            // Prefix Logic
-            const prefixVal = document.getElementById('qStyle').value;
-            const prefixEl = document.getElementById('pPrefix');
-            if(prefixVal.startsWith('fa-')) {
-                prefixEl.innerHTML = `<i class="fas ${prefixVal}"></i>`;
-            } else {
-                prefixEl.innerText = prefixVal;
-            }
+            // Update Prefix
+            const pVal = document.getElementById('qStyle').value;
+            const pEl = document.getElementById('pPrefix');
+            pEl.innerHTML = pVal.startsWith('fa-') ? `<i class="fas ${pVal}"></i>` : pVal;
 
-            // Option Style Logic
-            const optStyle = document.getElementById('optStyle').value;
-            const labels = optionTypes[optStyle];
-            document.getElementById('oc1').innerHTML = labels[0];
-            document.getElementById('oc2').innerHTML = labels[1];
-            document.getElementById('oc3').innerHTML = labels[2];
-            document.getElementById('oc4').innerHTML = labels[3];
+            // Update Option Labels
+            const labels = optionTypes[document.getElementById('optStyle').value];
+            [1,2,3,4].forEach((n, i) => document.getElementById('oc'+n).innerText = labels[i]);
 
-            // Theme Logic
-            const tIdx = document.getElementById('themeSelector').value;
-            const theme = themes[tIdx];
-            const wrapper = document.getElementById('mcqWrapper');
-            
-            wrapper.style.background = theme.bg;
-            document.querySelector('.q-prefix-box').style.color = theme.text;
-            document.querySelector('.q-prefix-box').style.background = theme.text === '#fff' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
-            document.querySelector('.card-line').style.background = theme.accent;
+            // Update Theme
+            const theme = themes[document.getElementById('themeSelector').value];
+            const wrap = document.getElementById('mcqWrapper');
+            wrap.style.background = theme.bg;
+            wrap.style.color = theme.text;
 
-            const isLightText = theme.text === '#fff' || theme.text === '#ffffff';
-            const subColor = isLightText ? "#e2e8f0" : "#444";
-            const borderColor = isLightText ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
-            const itemBg = isLightText ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)";
-            const circleBg = isLightText ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
-
-            document.querySelector('.q-text').style.color = theme.text;
-            document.querySelectorAll('.opt-text').forEach(el => el.style.color = subColor);
-            
-            document.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.color = theme.text;
-                el.style.background = circleBg;
-                el.style.borderColor = isLightText ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)";
-            });
-            
-            document.querySelectorAll('.opt-item').forEach(el => {
-                el.style.borderColor = borderColor;
-                el.style.background = itemBg;
-            });
-            document.querySelector('.card-brand').style.color = isLightText ? "rgba(255,255,255,0.6)" : "#555";
-            document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
-
-            if(save) {
+            if(shouldSave) {
+                showStatus('saving');
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(saveState, 500);
+                debounceTimer = setTimeout(saveState, 800);
             }
         }
 
-        // --- DOWNLOAD PROCESS ---
-        function downloadImage() {
-            const originalWrapper = document.getElementById('mcqWrapper');
-            
-            // 1. Clone to ensure consistent WYSIWYG but High Res
-            const clone = originalWrapper.cloneNode(true);
-            
-            // 2. Set width to match original to preserve layout exactly
-            clone.style.width = originalWrapper.offsetWidth + "px";
-            clone.style.maxWidth = "none";
-            clone.style.position = "absolute";
-            clone.style.top = "-9999px";
-            clone.style.left = "0";
-            clone.style.margin = "0";
-            clone.style.boxSizing = "border-box";
-            
-            document.body.appendChild(clone);
+        function showStatus(type) {
+            const s = document.getElementById('saveStatus');
+            s.style.opacity = '1';
+            if(type === 'saving') { s.className = 'save-status status-saving'; s.innerHTML = 'Saving...'; }
+            if(type === 'saved') { s.className = 'save-status status-saved'; s.innerHTML = 'Saved'; setTimeout(()=>s.style.opacity='0', 1500); }
+            if(type === 'restored') { s.className = 'save-status status-restored'; s.innerHTML = 'Restored'; setTimeout(()=>s.style.opacity='0', 1500); }
+        }
 
-            // 3. Render with Scale
-            html2canvas(clone, {
-                scale: 4, 
-                useCORS: true,
-                backgroundColor: null
-            }).then(canvas => {
+        function undo() { if (historyIndex > 0) { historyIndex--; applyState(historyStack[historyIndex]); } }
+        
+        function resetAll() {
+            if(confirm("সব মুছে ফেলতে চান?")) {
+                document.getElementById('qInput').value = '';
+                ['optA','optB','optC','optD'].forEach(id => document.getElementById(id).value = '');
+                saveState(); updateLive();
+            }
+        }
+
+        function downloadImage() {
+            const wrap = document.getElementById('mcqWrapper');
+            html2canvas(wrap, { scale: 3, backgroundColor: null }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `mcq_${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
+                link.href = canvas.toDataURL();
                 link.click();
-                document.body.removeChild(clone);
             });
         }
 
