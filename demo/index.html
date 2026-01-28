@@ -113,7 +113,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* Increased Height for Question Box */
 textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 
 .form-control:hover { border-color: #9ca3af; }
@@ -151,12 +150,12 @@ input[type="range"] { width: 100%; cursor: pointer; }
     padding-top: 10px;
 }
 
-/* --- PREMIUM CARD DESIGN (COMPACT) --- */
+/* --- PREMIUM CARD DESIGN (COMPACT 2.0) --- */
 #mcqWrapper {
     width: 100%; max-width: 480px;
     border-radius: 12px;
     /* REDUCED PADDING */
-    padding: 20px 20px; 
+    padding: 15px; 
     display: flex; flex-direction: column;
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
     border: none;
@@ -166,35 +165,33 @@ input[type="range"] { width: 100%; cursor: pointer; }
     overflow: hidden;
 }
 
-/* Glassy Overlay for Content */
-.card-content-layer {
-    position: relative; z-index: 2;
-}
+/* Glassy Overlay */
+.card-content-layer { position: relative; z-index: 2; }
 
 .question-box { 
     display: flex; gap: 10px; 
     /* REDUCED MARGIN */
-    margin-bottom: 15px; 
+    margin-bottom: 12px; 
 }
 
 .q-prefix-box {
-    width: 36px; height: 36px; flex-shrink: 0;
+    width: 34px; height: 34px; flex-shrink: 0;
     background: rgba(255,255,255,0.2);
     border-radius: 8px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 16px; font-weight: 900;
+    font-size: 15px; font-weight: 900;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .q-text { 
-    font-weight: 700; line-height: 1.4; white-space: pre-wrap; 
+    font-weight: 700; line-height: 1.35; white-space: pre-wrap; 
     /* Font size set by JS */
 }
 
 /* REDUCED GAP */
-.options-list { display: flex; flex-direction: column; gap: 8px; }
+.options-list { display: flex; flex-direction: column; gap: 7px; }
 
 .opt-item {
     display: flex; align-items: center;
@@ -202,17 +199,15 @@ input[type="range"] { width: 100%; cursor: pointer; }
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px; 
     /* REDUCED PADDING */
-    padding: 8px 12px; 
+    padding: 7px 10px; 
     transition: 0.2s;
     position: relative;
     overflow: hidden;
 }
 
-/* Subtle gradient on hover/active look */
 .opt-item::before {
     content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: rgba(255,255,255,0.3);
-    opacity: 0.5;
+    background: rgba(255,255,255,0.3); opacity: 0.5;
 }
 
 /* Admin Mode Correct Answer Style */
@@ -230,11 +225,11 @@ input[type="range"] { width: 100%; cursor: pointer; }
 
 
 .opt-circle {
-    width: 24px; height: 24px; flex-shrink: 0;
+    width: 22px; height: 22px; flex-shrink: 0;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.15);
     display: flex; justify-content: center; align-items: center;
-    font-size: 12px; font-weight: 700; margin-right: 12px;
+    font-size: 11px; font-weight: 700; margin-right: 10px;
     border: 1px solid rgba(255,255,255,0.2);
 }
 .opt-text { 
@@ -242,20 +237,20 @@ input[type="range"] { width: 100%; cursor: pointer; }
     /* Font size set by JS */
 }
 
+/* COMPACT FOOTER */
 .card-footer { 
-    /* REDUCED MARGIN */
-    margin-top: 15px; text-align: center; 
+    margin-top: 8px; text-align: center; 
     border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 10px;
+    padding-top: 8px;
 }
 
 .card-brand { 
-    font-size: 10px; font-weight: 800; 
+    font-size: 9px; font-weight: 800; 
     letter-spacing: 2px; text-transform: uppercase; 
-    margin-bottom: 4px; display: inline-block;
-    background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px;
+    margin-bottom: 2px; display: inline-block;
+    background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;
 }
-.card-promo { font-size: 11px !important; opacity: 0.85; font-weight: 500; }
+.card-promo { font-size: 11px !important; opacity: 0.85; font-weight: 500; margin-top: 2px; line-height: 1.2; }
 
 /* Footer */
 footer {
@@ -324,7 +319,7 @@ footer {
                     <span><i class="fas fa-text-height"></i> Font Size</span>
                     <span id="fontSizeDisplay" style="color:var(--primary); font-weight:700;">17px</span>
                 </label>
-                <input type="range" id="fontSize" min="8" max="20" value="17" step="1" oninput="updateLive()">
+                <input type="range" id="fontSize" min="10" max="30" value="17" step="1" oninput="updateLive()">
             </div>
 
             <div class="input-group">
@@ -353,10 +348,10 @@ footer {
 
             <div class="download-group">
                 <button class="btn-download btn-user" onclick="processDownload('user')">
-                    <i class="fas fa-share-alt"></i> Share/User PNG
+                    <i class="fas fa-download"></i> User PNG
                 </button>
                 <button class="btn-download btn-admin" onclick="processDownload('admin')">
-                    <i class="fas fa-share-alt"></i> Share/Admin PNG
+                    <i class="fas fa-share-alt"></i> Share/Admin
                 </button>
             </div>
         </div>
@@ -657,18 +652,14 @@ footer {
                     el.style.background = itemBg;
                 }
             });
-            
-            const brandColor = isLightText ? "rgba(255,255,255,0.8)" : "#333";
-            const promoColor = isLightText ? "rgba(255,255,255,0.7)" : "#555";
-            document.querySelector('.card-brand').style.color = brandColor;
-            document.querySelector('.card-brand').style.background = isLightText ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
-            document.querySelector('.card-promo').style.color = promoColor;
+            document.querySelector('.card-brand').style.color = isLightText ? "rgba(255,255,255,0.6)" : "#555";
+            document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
 
             // Font Size Logic (Fixed)
             const fs = parseInt(document.getElementById('fontSize').value);
             document.getElementById('fontSizeDisplay').innerText = fs + 'px';
             document.querySelector('.q-text').style.fontSize = fs + 'px';
-            const optSize = Math.max(10, fs - 2); // Ensure options don't get too tiny
+            const optSize = Math.max(10, fs - 2); 
             document.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = optSize + 'px');
 
             if(save) {
@@ -682,7 +673,7 @@ footer {
             const originalWrapper = document.getElementById('mcqWrapper');
             const clone = originalWrapper.cloneNode(true);
             
-            // Fixed width for mobile view consistency
+            // Fixed width for consistent output quality (800px width simulation)
             clone.style.width = "800px";
             clone.style.maxWidth = "none";
             clone.style.position = "absolute";
@@ -691,40 +682,46 @@ footer {
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
-            // Re-apply styles explicitly for the clone to ensure accuracy
-            const tIdx = document.getElementById('themeSelector').value;
-            const theme = themes[tIdx];
+            // Re-apply styles explicitly for the clone
             const fs = parseInt(document.getElementById('fontSize').value);
             const optSize = Math.max(10, fs - 2);
 
-            // Scale fonts for the fixed 800px width (Assuming orig is ~400px, scale ~2x)
-            // But html2canvas scale handles resolution. To match "mobile view layout", we set a fixed width.
-            // Text wrapping will match 800px width.
+            // Scale factor for 800px width (approx 1.8x from preview)
+            const scaleFactor = 1.8;
             
-            clone.querySelector('.q-text').style.fontSize = (fs * 1.8) + 'px'; // Adjusted for larger width
-            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (optSize * 1.8) + 'px');
-            clone.querySelectorAll('.card-promo').forEach(el => el.style.fontSize = '20px'); // Scaled promo
-            clone.querySelectorAll('.card-brand').forEach(el => el.style.fontSize = '18px'); 
-
-            // Padding adjustments for clone
-            clone.style.padding = "40px";
-            clone.querySelector('.question-box').style.marginBottom = "30px";
-            clone.querySelector('.options-list').style.gap = "15px";
-            clone.querySelectorAll('.opt-item').forEach(el => {
-                el.style.padding = "15px 20px";
-                el.style.borderRadius = "16px";
-            });
+            clone.querySelector('.q-text').style.fontSize = (fs * scaleFactor) + 'px';
+            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (optSize * scaleFactor) + 'px');
+            
+            // Scale card elements for hi-res look
+            clone.style.padding = "40px 30px";
+            clone.style.borderRadius = "24px";
+            
+            clone.querySelector('.question-box').style.marginBottom = "25px";
             clone.querySelector('.q-prefix-box').style.width = "60px";
             clone.querySelector('.q-prefix-box').style.height = "60px";
             clone.querySelector('.q-prefix-box').style.fontSize = "30px";
+            clone.querySelector('.q-prefix-box').style.borderRadius = "14px";
             
+            clone.querySelector('.options-list').style.gap = "15px";
+            clone.querySelectorAll('.opt-item').forEach(el => {
+                el.style.padding = "15px 25px";
+                el.style.borderRadius = "16px";
+            });
             clone.querySelectorAll('.opt-circle').forEach(el => {
                 el.style.width = "40px";
                 el.style.height = "40px";
-                el.style.fontSize = "22px";
-                el.style.marginRight = "20px";
+                el.style.fontSize = "20px";
+                el.style.marginRight = "25px";
+                el.style.borderRadius = "10px";
             });
+            
+            clone.querySelector('.card-footer').style.marginTop = "25px";
+            clone.querySelector('.card-line').style.width = "80px";
+            clone.querySelector('.card-line').style.height = "5px";
+            clone.querySelector('.card-brand').style.fontSize = "18px";
+            clone.querySelector('.card-promo').style.fontSize = "20px";
 
+            // Admin Highlight Logic
             if(mode === 'admin') {
                 const correctVal = document.getElementById('correctOpt').value;
                 if(!correctVal) {
@@ -746,26 +743,27 @@ footer {
 
             document.body.appendChild(clone);
 
-            // User Mode Scale High
-            let renderScale = 3; 
-            if(mode === 'user') renderScale = 12; // High Res User PNG
+            // User Mode Scale High (12), Admin Mode Low (3)
+            let renderScale = mode === 'user' ? 12 : 3;
 
             html2canvas(clone, {
                 scale: renderScale, 
                 useCORS: true,
-                backgroundColor: null, 
+                backgroundColor: null,
                 width: 800
             }).then(canvas => {
                 canvas.toBlob(blob => {
                     const file = new File([blob], `mcq_${mode}_${Date.now()}.png`, { type: 'image/png' });
 
-                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    // Only share for Admin mode on supported devices
+                    if (mode === 'admin' && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                         navigator.share({
                             files: [file],
-                            title: 'MCQ Card',
-                            text: 'Check out this MCQ!'
+                            title: 'MCQ Answer',
+                            text: 'Here is the correct answer.'
                         }).catch(console.error);
                     } else {
+                        // Direct Download for User Mode or fallback
                         const link = document.createElement('a');
                         link.download = `mcq_${mode}_${Date.now()}.png`;
                         link.href = canvas.toDataURL('image/png');
