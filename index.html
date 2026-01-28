@@ -96,6 +96,7 @@ body {
     display: block; font-size: 13px; font-weight: 600;
     color: #374151; margin-bottom: 8px;
     letter-spacing: 0.3px;
+    display: flex; justify-content: space-between;
 }
 .input-group label i { margin-right: 6px; color: var(--primary); width: 15px; text-align: center; }
 
@@ -112,7 +113,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* Increased Height for Question Box */
 textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 
 .form-control:hover { border-color: #9ca3af; }
@@ -120,7 +120,6 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 .form-control::placeholder { color: #9ca3af; font-size: 14px; }
 
 select.form-control { cursor: pointer; }
-input[type="range"] { width: 100%; cursor: pointer; }
 
 .row-inputs { display: flex; gap: 15px; }
 .row-inputs > div { flex: 1; }
@@ -129,19 +128,16 @@ input[type="range"] { width: 100%; cursor: pointer; }
 .download-group { display: flex; gap: 10px; margin-top: 25px; }
 
 .btn-download {
-    flex: 1; padding: 14px;
+    width: 100%; padding: 14px;
     border-radius: 10px; border: none;
     color: white; font-weight: 600; cursor: pointer;
     font-size: 14px; 
     box-shadow: var(--shadow-md);
     transition: all 0.2s;
     display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #111827;
 }
-.btn-user { background: #111827; }
-.btn-user:hover { background: #000000; transform: translateY(-2px); }
-
-.btn-admin { background: #059669; }
-.btn-admin:hover { background: #047857; transform: translateY(-2px); }
+.btn-download:hover { background: #000000; transform: translateY(-2px); }
 
 /* --- PREVIEW BOX --- */
 .preview-box {
@@ -150,61 +146,81 @@ input[type="range"] { width: 100%; cursor: pointer; }
     padding-top: 10px;
 }
 
-/* --- MCQ CARD --- */
+/* --- PREMIUM CARD DESIGN (COMPACT) --- */
 #mcqWrapper {
     width: 100%; max-width: 480px;
-    border-radius: 6px;
-    padding: 20px; 
+    border-radius: 12px;
+    padding: 15px; 
     display: flex; flex-direction: column;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
     border: none;
     position: relative;
     transition: background 0.3s ease;
     color: white; 
+    overflow: hidden;
 }
 
-.question-box { display: flex; gap: 8px; margin-bottom: 20px; margin-top: 5px;}
-.q-prefix { font-size: 18px; font-weight: 900; line-height: 1.2; flex-shrink: 0; }
-.q-text { font-size: 17px; font-weight: 700; line-height: 1.4; white-space: pre-wrap; }
+.card-content-layer { position: relative; z-index: 2; }
 
-.options-list { display: flex; flex-direction: column; gap: 8px; }
+.question-box { 
+    display: flex; gap: 10px; 
+    margin-bottom: 12px; 
+}
+
+.q-prefix-box {
+    width: 34px; height: 34px; flex-shrink: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 15px; font-weight: 900;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.q-text { font-size: 17px; font-weight: 700; line-height: 1.35; white-space: pre-wrap; }
+
+.options-list { display: flex; flex-direction: column; gap: 7px; }
 
 .opt-item {
     display: flex; align-items: center;
-    background: rgba(255, 255, 255, 0.1); 
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px; 
-    padding: 8px 12px; 
+    padding: 7px 10px; 
     transition: 0.2s;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Admin Mode Correct Answer Style (Applied via JS) */
-.opt-item.correct-ans {
-    background: #10b981 !important; 
-    border-color: #059669 !important;
-    color: white !important;
-    font-weight: 700;
+.opt-item::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: rgba(255,255,255,0.3); opacity: 0.5;
 }
-.opt-item.correct-ans .opt-circle {
-    background: white; color: #059669; border-color: white;
-}
-.opt-item.correct-ans .opt-text { color: white !important; }
-
 
 .opt-circle {
-    width: 24px; height: 24px; flex-shrink: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    width: 22px; height: 22px; flex-shrink: 0;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.15);
     display: flex; justify-content: center; align-items: center;
-    font-size: 12px; font-weight: 700; margin-right: 12px;
-    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 11px; font-weight: 700; margin-right: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
 }
-.opt-text { font-size: 14px; font-weight: 500; }
+.opt-text { font-size: 15px; font-weight: 500; line-height: 1.3; }
 
-.card-footer { margin-top: 15px; text-align: center; }
-.card-line { width: 45px; height: 3px; margin: 0 auto 10px; border-radius: 2px; }
-.card-brand { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; opacity: 0.7; text-transform: uppercase; }
-.card-promo { font-size: 9px; margin-top: 6px; opacity: 0.8; font-weight: 500; }
+.card-footer { 
+    margin-top: 8px; text-align: center; 
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 8px;
+}
+
+.card-brand { 
+    font-size: 9px; font-weight: 800; 
+    letter-spacing: 2px; text-transform: uppercase; 
+    margin-bottom: 2px; display: inline-block;
+    background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;
+}
+.card-promo { font-size: 11px !important; opacity: 0.85; font-weight: 500; margin-top: 2px; line-height: 1.2; }
 
 /* Footer */
 footer {
@@ -246,7 +262,10 @@ footer {
                         <option value="Q.">Q.</option>
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
-                        <option value="">None</option>
+                        <option value="fa-question">Icon: Question</option>
+                        <option value="fa-star">Icon: Star</option>
+                        <option value="fa-lightbulb">Icon: Bulb</option>
+                        <option value="fa-pen-nib">Icon: Pen</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -258,19 +277,16 @@ footer {
                         <option value="number">1, 2, 3, 4</option>
                         <option value="bangla">১, ২, ৩, ৪</option>
                         <option value="bangla2">ক, খ, গ, ঘ</option>
+                        <option value="arrow">Icon: Arrow</option>
+                        <option value="check">Icon: Check</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-palette"></i> Theme (200 Options)</label>
+                <label><i class="fas fa-palette"></i> Theme (100 Premium)</label>
                 <select id="themeSelector" class="form-control" onchange="updateLive()">
                     </select>
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-text-height"></i> Font Size</label>
-                <input type="range" id="fontSize" min="14" max="24" value="17" step="1" oninput="updateLive()">
             </div>
 
             <div class="input-group">
@@ -286,43 +302,32 @@ footer {
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
             </div>
 
-            <div class="input-group">
-                <label><i class="fas fa-check-circle"></i> Correct Answer (Admin)</label>
-                <select id="correctOpt" class="form-control" onchange="updateLive()">
-                    <option value="">Select Correct Option</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                    <option value="4">Option 4</option>
-                </select>
-            </div>
-
             <div class="download-group">
-                <button class="btn-download btn-user" onclick="processDownload('user')">
-                    <i class="fas fa-download"></i> User PNG
-                </button>
-                <button class="btn-download btn-admin" onclick="processDownload('admin')">
-                    <i class="fas fa-share-alt"></i> Share/Admin
+                <button class="btn-download" onclick="downloadImage()">
+                    <i class="fas fa-download"></i> Download PNG
                 </button>
             </div>
         </div>
 
         <div class="preview-box">
             <div id="mcqWrapper">
-                <div class="question-box">
-                    <span id="pPrefix" class="q-prefix">Q.</span>
-                    <span id="pQ" class="q-text">Question Preview...</span>
-                </div>
-                <div class="options-list">
-                    <div class="opt-item" id="item1"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option A</div></div>
-                    <div class="opt-item" id="item2"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option B</div></div>
-                    <div class="opt-item" id="item3"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option C</div></div>
-                    <div class="opt-item" id="item4"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option D</div></div>
-                </div>
-                <div class="card-footer">
-                    <div class="card-line"></div>
-                    <div class="card-brand">Interactive Learning</div>
-                    <div class="card-promo">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
+                <div class="card-content-layer">
+                    <div class="question-box">
+                        <div class="q-prefix-box">
+                            <span id="pPrefix">Q.</span>
+                        </div>
+                        <span id="pQ" class="q-text">Question Preview...</span>
+                    </div>
+                    <div class="options-list">
+                        <div class="opt-item" id="item1"><div class="opt-circle" id="oc1">a</div><div id="pA" class="opt-text">Option A</div></div>
+                        <div class="opt-item" id="item2"><div class="opt-circle" id="oc2">b</div><div id="pB" class="opt-text">Option B</div></div>
+                        <div class="opt-item" id="item3"><div class="opt-circle" id="oc3">c</div><div id="pC" class="opt-text">Option C</div></div>
+                        <div class="opt-item" id="item4"><div class="opt-circle" id="oc4">d</div><div id="pD" class="opt-text">Option D</div></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-brand">Interactive Learning</div>
+                        <div class="card-promo">সেরা প্রস্তুতিতে এক ধাপ এগিয়ে থাকতে আজই আমাদের ফ্রি এক্সাম ব্যাচে যুক্ত হোন।</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -331,13 +336,11 @@ footer {
   <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- 200 THEMES (FIXED CONTRAST - ALL TEXT COLORS DEFINED) ---
-        // Format: { name, bg, accent, text: "#fff" or "#222" }
+        // --- 100 PREMIUM THEMES ---
         const themes = [
-            // Dark Themes (Text White)
+            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24", text: "#fff" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9", text: "#fff" },
-            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
             { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd", text: "#fff" },
             { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff", text: "#fff" },
             { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff", text: "#fff" },
@@ -387,29 +390,40 @@ footer {
             { name: "Sky High", bg: "linear-gradient(135deg, #004e92, #000428)", accent: "#00d2ff", text: "#fff" },
             { name: "LinkedIn", bg: "linear-gradient(135deg, #0077b5, #004182)", accent: "#ffffff", text: "#fff" },
             { name: "Seafoam", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#ffffff", text: "#fff" },
+            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333", text: "#222" },
+            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000", text: "#222" },
             { name: "Timber", bg: "linear-gradient(135deg, #fc00ff, #00dbde)", accent: "#ffffff", text: "#fff" },
             { name: "Radar", bg: "linear-gradient(135deg, #A770EF, #CF8BF3, #FDB99B)", accent: "#ffffff", text: "#fff" },
             { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#ffffff", text: "#fff" },
+            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000", text: "#222" },
             { name: "Purple Bliss", bg: "linear-gradient(135deg, #360033, #0b8793)", accent: "#fff", text: "#fff" },
             { name: "Dark Ocean", bg: "linear-gradient(135deg, #373B44, #4286f4)", accent: "#fff", text: "#fff" },
             { name: "Evening", bg: "linear-gradient(135deg, #b92b27, #1565C0)", accent: "#fff", text: "#fff" },
             { name: "Grade Grey", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff", text: "#fff" },
+            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333", text: "#222" },
             { name: "Cool Blues", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff", text: "#fff" },
+            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786, #f7797d)", accent: "#333", text: "#222" },
             { name: "Moonlit", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)", accent: "#fff", text: "#fff" },
+            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0, #ec38bc, #fdeff9)", accent: "#fff", text: "#222" },
+            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333", text: "#222" },
             { name: "Pinot Noir", bg: "linear-gradient(135deg, #4b6cb7, #182848)", accent: "#fff", text: "#fff" },
             { name: "Day Tripper", bg: "linear-gradient(135deg, #f857a6, #ff5858)", accent: "#fff", text: "#fff" },
             { name: "Namn", bg: "linear-gradient(135deg, #a73737, #7a2828)", accent: "#fff", text: "#fff" },
             { name: "Blurry Beach", bg: "linear-gradient(135deg, #d53369, #cbad6d)", accent: "#fff", text: "#fff" },
+            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff", text: "#222" },
             { name: "A Lost Memory", bg: "linear-gradient(135deg, #DE6262, #FFB88C)", accent: "#fff", text: "#fff" },
             { name: "Petrichor", bg: "linear-gradient(135deg, #666600, #999966)", accent: "#fff", text: "#fff" },
             { name: "Miaka", bg: "linear-gradient(135deg, #FC354C, #0ABFBC)", accent: "#fff", text: "#fff" },
             { name: "Reef", bg: "linear-gradient(135deg, #00d2ff, #3a7bd5)", accent: "#fff", text: "#fff" },
+            { name: "Sunny", bg: "linear-gradient(135deg, #FFE259, #FFA751)", accent: "#333", text: "#222" },
             { name: "Amin", bg: "linear-gradient(135deg, #8E2DE2, #4A00E0)", accent: "#fff", text: "#fff" },
+            { name: "Harvey", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#333", text: "#222" },
             { name: "Neuromancer", bg: "linear-gradient(135deg, #f953c6, #b91d73)", accent: "#fff", text: "#fff" },
             { name: "Azurite", bg: "linear-gradient(135deg, #00c6ff, #0072ff)", accent: "#fff", text: "#fff" },
             { name: "Yoda", bg: "linear-gradient(135deg, #FF0099, #493240)", accent: "#fff", text: "#fff" },
             { name: "Dark Sky", bg: "linear-gradient(135deg, #4B79A1, #283E51)", accent: "#fff", text: "#fff" },
             { name: "Purplin", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff", text: "#fff" },
+            { name: "Pewter", bg: "linear-gradient(135deg, #CAC531, #F3F9A7)", accent: "#333", text: "#222" },
             { name: "Slight Ocean", bg: "linear-gradient(135deg, #a8c0ff, #3f2b96)", accent: "#fff", text: "#fff" },
             { name: "Crimson Tide", bg: "linear-gradient(135deg, #642B73, #C6426E)", accent: "#fff", text: "#fff" },
             { name: "Man of Steel", bg: "linear-gradient(135deg, #780206, #061161)", accent: "#fff", text: "#fff" },
@@ -425,137 +439,10 @@ footer {
             { name: "Kimoby", bg: "linear-gradient(135deg, #396afc, #2948ff)", accent: "#fff", text: "#fff" },
             { name: "Bourbon", bg: "linear-gradient(135deg, #EC6F66, #F3A183)", accent: "#fff", text: "#fff" },
             { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff", text: "#fff" },
+            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333", text: "#222" },
             { name: "Traffic", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff", text: "#fff" },
             { name: "Mantle", bg: "linear-gradient(135deg, #24C6DC, #514A9D)", accent: "#fff", text: "#fff" },
-            { name: "Drive", bg: "linear-gradient(135deg, #514A9D, #24C6DC)", accent: "#fff", text: "#fff" },
-            { name: "Emerald Water", bg: "linear-gradient(135deg, #348F50, #56B4D3)", accent: "#fff", text: "#fff" },
-            { name: "Lemon Twist", bg: "linear-gradient(135deg, #3CA55C, #B5AC49)", accent: "#fff", text: "#fff" },
-            { name: "Monte Carlo", bg: "linear-gradient(135deg, #CC95C0, #DBD4B4, #7AA1D2)", accent: "#fff", text: "#fff" },
-            { name: "Horizon", bg: "linear-gradient(135deg, #003973, #E5E5BE)", accent: "#fff", text: "#fff" },
-            { name: "Rose Water", bg: "linear-gradient(135deg, #E55D87, #5FC3E4)", accent: "#fff", text: "#fff" },
-            { name: "Frozen", bg: "linear-gradient(135deg, #403B4A, #E7E9BB)", accent: "#fff", text: "#fff" },
-            { name: "Bloody Mary", bg: "linear-gradient(135deg, #FF512F, #DD2476)", accent: "#fff", text: "#fff" },
-            { name: "Aubergine", bg: "linear-gradient(135deg, #AA076B, #61045F)", accent: "#fff", text: "#fff" },
-            { name: "Aqua Marine", bg: "linear-gradient(135deg, #1A2980, #26D0CE)", accent: "#fff", text: "#fff" },
-            { name: "Sunrise", bg: "linear-gradient(135deg, #FF512F, #F09819)", accent: "#fff", text: "#fff" },
-            { name: "Purple Paradise", bg: "linear-gradient(135deg, #1D2B64, #F8CDDA)", accent: "#fff", text: "#fff" },
-            { name: "Sea Weed", bg: "linear-gradient(135deg, #4CB8C4, #3CD3AD)", accent: "#fff", text: "#fff" },
-            { name: "Pinky", bg: "linear-gradient(135deg, #DD5E89, #F7BB97)", accent: "#fff", text: "#fff" },
-            { name: "Dirty Fog", bg: "linear-gradient(135deg, #B993D6, #8CA6DB)", accent: "#fff", text: "#fff" },
-            { name: "Fly High", bg: "linear-gradient(135deg, #485563, #29323c)", accent: "#fff", text: "#fff" },
-            { name: "Fresh Milk", bg: "linear-gradient(135deg, #00F260, #0575E6)", accent: "#fff", text: "#fff" },
-            { name: "Snow White", bg: "linear-gradient(135deg, #BA8B02, #181818)", accent: "#fff", text: "#fff" },
-            { name: "Nighthawk", bg: "linear-gradient(135deg, #2980b9, #2c3e50)", accent: "#fff", text: "#fff" },
-            { name: "Love Kiss", bg: "linear-gradient(135deg, #FF4E50, #F9D423)", accent: "#fff", text: "#fff" },
-            { name: "Premium Dark", bg: "linear-gradient(135deg, #434343, #000000)", accent: "#fff", text: "#fff" },
-            { name: "Cold Evening", bg: "linear-gradient(135deg, #0C1445, #282A36)", accent: "#fff", text: "#fff" },
-            { name: "Cochiti", bg: "linear-gradient(135deg, #93291E, #ED213A)", accent: "#fff", text: "#fff" },
-            { name: "Summer", bg: "linear-gradient(135deg, #22c1c3, #fdbb2d)", accent: "#fff", text: "#fff" },
-            { name: "King Yna", bg: "linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)", accent: "#fff", text: "#fff" },
-            { name: "Hydrogen", bg: "linear-gradient(135deg, #667db6, #0082c8, #0082c8, #667db6)", accent: "#fff", text: "#fff" },
-            { name: "Blue Coral", bg: "linear-gradient(135deg, #36D1DC, #5B86E5)", accent: "#fff", text: "#fff" },
-            { name: "Jodhpur", bg: "linear-gradient(135deg, #9CECFB, #65C7F7, #0052D4)", accent: "#fff", text: "#fff" },
-            { name: "Hopscotch", bg: "linear-gradient(135deg, #20002c, #cbb4d4)", accent: "#fff", text: "#fff" },
-            { name: "Harmonic", bg: "linear-gradient(135deg, #17EAD9, #6078EA)", accent: "#fff", text: "#fff" },
-            { name: "Rosie", bg: "linear-gradient(135deg, #F0C27B, #4B1248)", accent: "#fff", text: "#fff" },
-            { name: "Victoria", bg: "linear-gradient(135deg, #314755, #26a0da)", accent: "#fff", text: "#fff" },
-            { name: "Cinema", bg: "linear-gradient(135deg, #7b4397, #dc2430)", accent: "#fff", text: "#fff" },
-            { name: "Stairway", bg: "linear-gradient(135deg, #43cea2, #185a9d)", accent: "#fff", text: "#fff" },
-            { name: "Flickr", bg: "linear-gradient(135deg, #ff0084, #33001b)", accent: "#fff", text: "#fff" },
-            { name: "Minerals", bg: "linear-gradient(135deg, #283048, #859398)", accent: "#fff", text: "#fff" },
-            { name: "Pizelex", bg: "linear-gradient(135deg, #114357, #F29492)", accent: "#fff", text: "#fff" },
-            { name: "Matrix", bg: "linear-gradient(135deg, #000000, #0f9b0f)", accent: "#fff", text: "#fff" },
-            { name: "Hacker", bg: "linear-gradient(135deg, #0F2027, #203A43, #2C5364)", accent: "#fff", text: "#fff" },
-            { name: "Night Life", bg: "linear-gradient(135deg, #434343, #000000)", accent: "#fff", text: "#fff" },
-            { name: "Pure Red", bg: "linear-gradient(135deg, #FF416C, #FF4B2B)", accent: "#fff", text: "#fff" },
-            { name: "Royal", bg: "linear-gradient(135deg, #141E30, #243B55)", accent: "#fff", text: "#fff" },
-            { name: "Frost", bg: "linear-gradient(135deg, #000428, #004e92)", accent: "#fff", text: "#fff" },
-            { name: "Lush Green", bg: "linear-gradient(135deg, #56ab2f, #a8e063)", accent: "#fff", text: "#fff" },
-            { name: "Slightly Dark", bg: "linear-gradient(135deg, #3a3a3a, #1a1a1a)", accent: "#fff", text: "#fff" },
-            { name: "Witching Hour", bg: "linear-gradient(135deg, #c31432, #240b36)", accent: "#fff", text: "#fff" },
-            { name: "Flare", bg: "linear-gradient(135deg, #f12711, #f5af19)", accent: "#fff", text: "#fff" },
-            { name: "Metapolis", bg: "linear-gradient(135deg, #659999, #f4791f)", accent: "#fff", text: "#fff" },
-            { name: "Kyoo Pal", bg: "linear-gradient(135deg, #dd3e54, #6be585)", accent: "#fff", text: "#fff" },
-            { name: "Kye Meh", bg: "linear-gradient(135deg, #8360c3, #2ebf91)", accent: "#fff", text: "#fff" },
-            { name: "Pink Flavour", bg: "linear-gradient(135deg, #800080, #ffc0cb)", accent: "#fff", text: "#fff" },
-            { name: "Ultra Violet", bg: "linear-gradient(135deg, #654ea3, #eaafc8)", accent: "#fff", text: "#fff" },
-            { name: "Amethyst", bg: "linear-gradient(135deg, #9D50BB, #6E48AA)", accent: "#fff", text: "#fff" },
-            { name: "Cosmic", bg: "linear-gradient(135deg, #ff00cc, #333399)", accent: "#fff", text: "#fff" },
-            { name: "Taran Tado", bg: "linear-gradient(135deg, #23074d, #cc5333)", accent: "#fff", text: "#fff" },
-            { name: "Rock", bg: "linear-gradient(135deg, #243B55, #141E30)", accent: "#fff", text: "#fff" },
-            { name: "Sun", bg: "linear-gradient(135deg, #e65c00, #F9D423)", accent: "#fff", text: "#fff" },
-            { name: "Sea", bg: "linear-gradient(135deg, #2b5876, #4e4376)", accent: "#fff", text: "#fff" },
-            { name: "Orange", bg: "linear-gradient(135deg, #d38312, #a83279)", accent: "#fff", text: "#fff" },
-            { name: "Rose Water", bg: "linear-gradient(135deg, #159957, #155799)", accent: "#fff", text: "#fff" },
-            { name: "Lemon", bg: "linear-gradient(135deg, #6A9113, #141517)", accent: "#fff", text: "#fff" },
-            { name: "Facebook", bg: "linear-gradient(135deg, #3b5998, #8b9dc3)", accent: "#fff", text: "#fff" },
-            { name: "Twitter", bg: "linear-gradient(135deg, #1DA1F2, #14171A)", accent: "#fff", text: "#fff" },
-            { name: "Youtube", bg: "linear-gradient(135deg, #e52d27, #b31217)", accent: "#fff", text: "#fff" },
-            { name: "Netflix", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", accent: "#fff", text: "#fff" },
-            { name: "Spotify", bg: "linear-gradient(135deg, #1DB954, #191414)", accent: "#fff", text: "#fff" },
-            { name: "Amazon", bg: "linear-gradient(135deg, #FF9900, #000000)", accent: "#fff", text: "#fff" },
-            { name: "Google", bg: "linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335)", accent: "#fff", text: "#fff" },
-            { name: "Apple", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#fff", text: "#fff" },
-            { name: "Microsoft", bg: "linear-gradient(135deg, #F25022, #7FBA00, #00A4EF, #FFB900)", accent: "#fff", text: "#fff" },
-            { name: "Titanium", bg: "linear-gradient(135deg, #283048, #859398)", accent: "#fff", text: "#fff" },
-            { name: "Opal", bg: "linear-gradient(135deg, #3D7EAA, #FFE47A)", accent: "#fff", text: "#fff" },
-            { name: "Dimigo", bg: "linear-gradient(135deg, #ec008c, #fc6767)", accent: "#fff", text: "#fff" },
-            { name: "Purple White", bg: "linear-gradient(135deg, #CC2B5E, #753A88)", accent: "#fff", text: "#fff" },
-            { name: "Fifty Shades", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)", accent: "#fff", text: "#fff" },
-            { name: "Deep Space", bg: "linear-gradient(135deg, #000000, #434343)", accent: "#fff", text: "#fff" },
-
-            // Light/Pale Themes (Text Black)
-            { name: "Silver", bg: "linear-gradient(135deg, #C9D6FF, #E2E2E2)", accent: "#333333", text: "#222" },
-            { name: "Gold Rush", bg: "linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c)", accent: "#000000", text: "#222" },
-            { name: "Teal Love", bg: "linear-gradient(135deg, #AAFFA9, #11FFBD)", accent: "#000", text: "#222" },
-            { name: "Piggy Pink", bg: "linear-gradient(135deg, #ee9ca7, #ffdde1)", accent: "#333", text: "#222" },
-            { name: "Mega Tron", bg: "linear-gradient(135deg, #C6FFDD, #FBD786, #f7797d)", accent: "#333", text: "#222" },
-            { name: "Argon", bg: "linear-gradient(135deg, #03001e, #7303c0, #ec38bc, #fdeff9)", accent: "#fff", text: "#222" },
-            { name: "Black Rosé", bg: "linear-gradient(135deg, #f4c4f3, #fc67fa)", accent: "#333", text: "#222" },
-            { name: "Vasily", bg: "linear-gradient(135deg, #e9d362, #333333)", accent: "#fff", text: "#222" },
-            { name: "Sunny", bg: "linear-gradient(135deg, #FFE259, #FFA751)", accent: "#333", text: "#222" },
-            { name: "Harvey", bg: "linear-gradient(135deg, #1f4037, #99f2c8)", accent: "#333", text: "#222" },
-            { name: "Pewter", bg: "linear-gradient(135deg, #CAC531, #F3F9A7)", accent: "#333", text: "#222" },
-            { name: "Sweet Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#333", text: "#222" },
-            { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333", text: "#222" },
-            { name: "Mango Pulp", bg: "linear-gradient(135deg, #F09819, #EDDE5D)", accent: "#333", text: "#222" },
-            { name: "Cherry Blossom", bg: "linear-gradient(135deg, #FBD3E9, #BB377D)", accent: "#333", text: "#222" },
-            { name: "Clean Mirror", bg: "linear-gradient(135deg, #93A5CF, #E4EfE9)", accent: "#333", text: "#222" },
-            { name: "Velvet Sun", bg: "linear-gradient(135deg, #e1eec3, #f05053)", accent: "#333", text: "#222" },
-            { name: "Zinc", bg: "linear-gradient(135deg, #ADA996, #F2F2F2, #DBDBDB, #EAEAEA)", accent: "#333", text: "#222" },
-            { name: "Easy Med", bg: "linear-gradient(135deg, #DCE35B, #45B649)", accent: "#333", text: "#222" },
-            { name: "Cocoaa", bg: "linear-gradient(135deg, #c0c0aa, #1cefff)", accent: "#333", text: "#222" },
-            { name: "Mhz", bg: "linear-gradient(135deg, #D3CCE3, #E9E4F0)", accent: "#333", text: "#222" },
-            { name: "Clerk", bg: "linear-gradient(135deg, #C9FFBF, #FFAFBD)", accent: "#333", text: "#222" },
-            { name: "Cyberpunk", bg: "linear-gradient(135deg, #fce38a, #f38181)", accent: "#333", text: "#222" },
-            { name: "Scuba", bg: "linear-gradient(135deg, #2980B9, #6DD5FA, #FFFFFF)", accent: "#333", text: "#222" },
-            { name: "Banana", bg: "linear-gradient(135deg, #F2994A, #F2C94C)", accent: "#333", text: "#222" },
-            { name: "Slight", bg: "linear-gradient(135deg, #1c92d2, #f2fcfe)", accent: "#333", text: "#222" },
-            { name: "Margo", bg: "linear-gradient(135deg, #ffefba, #ffffff)", accent: "#333", text: "#222" },
-            { name: "Sea Blizz", bg: "linear-gradient(135deg, #1CD8D2, #93EDC7)", accent: "#333", text: "#222" },
-            { name: "Back to Earth", bg: "linear-gradient(135deg, #00C9FF, #92FE9D)", accent: "#333", text: "#222" },
-            { name: "Metallic", bg: "linear-gradient(135deg, #D5D5D5, #F2F2F2)", accent: "#333", text: "#222" },
-            { name: "Soft Grass", bg: "linear-gradient(135deg, #c1dfc4, #deecdd)", accent: "#333", text: "#222" },
-            { name: "White", bg: "#ffffff", accent: "#333", text: "#222" },
-            { name: "Paper", bg: "#f3f4f6", accent: "#333", text: "#222" },
-            { name: "Cream", bg: "#fdfbf7", accent: "#333", text: "#222" },
-            { name: "Ivory", bg: "#fffff0", accent: "#333", text: "#222" },
-            { name: "Beige", bg: "#f5f5dc", accent: "#333", text: "#222" },
-            { name: "Minty", bg: "#e0f2f1", accent: "#333", text: "#222" },
-            { name: "Alice Blue", bg: "#f0f8ff", accent: "#333", text: "#222" },
-            { name: "Lavender", bg: "#e6e6fa", accent: "#333", text: "#222" },
-            { name: "Misty Rose", bg: "#ffe4e1", accent: "#333", text: "#222" },
-            { name: "Peach", bg: "#ffdab9", accent: "#333", text: "#222" },
-            { name: "Light Cyan", bg: "#e0ffff", accent: "#333", text: "#222" },
-            { name: "Cornsilk", bg: "#fff8dc", accent: "#333", text: "#222" },
-            { name: "Old Lace", bg: "#fdf5e6", accent: "#333", text: "#222" },
-            { name: "Linen", bg: "#faf0e6", accent: "#333", text: "#222" },
-            { name: "Seashell", bg: "#fff5ee", accent: "#333", text: "#222" },
-            { name: "Honey Dew", bg: "#f0fff0", accent: "#333", text: "#222" },
-            { name: "Floral White", bg: "#fffaf0", accent: "#333", text: "#222" },
-            { name: "Ghost White", bg: "#f8f8ff", accent: "#333", text: "#222" },
-            { name: "Snow", bg: "#fffafa", accent: "#333", text: "#222" },
-            { name: "Azure", bg: "#f0ffff", accent: "#333", text: "#222" }
+            { name: "Drive", bg: "linear-gradient(135deg, #514A9D, #24C6DC)", accent: "#fff", text: "#fff" }
         ];
 
         const tSelect = document.getElementById('themeSelector');
@@ -572,7 +459,9 @@ footer {
             roman: ['i', 'ii', 'iii', 'iv'],
             number: ['1', '2', '3', '4'],
             bangla: ['১', '২', '৩', '৪'],
-            bangla2: ['ক','খ','গ','ঘ']
+            bangla2: ['ক','খ','গ','ঘ'],
+            arrow: ['<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>'],
+            check: ['<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>']
         };
 
         // --- HISTORY & STATE MANAGEMENT ---
@@ -600,8 +489,6 @@ footer {
             document.getElementById('qStyle').value = state.qStyle || 'Q.';
             document.getElementById('optStyle').value = state.optStyle || 'abcd';
             document.getElementById('themeSelector').value = state.theme || 0;
-            document.getElementById('correctOpt').value = state.correct || '';
-            document.getElementById('fontSize').value = state.fontSize || 17;
             isRestoring = false;
             updateLive(false); 
         }
@@ -617,9 +504,7 @@ footer {
                 d: document.getElementById('optD').value,
                 qStyle: document.getElementById('qStyle').value,
                 optStyle: document.getElementById('optStyle').value,
-                theme: document.getElementById('themeSelector').value,
-                correct: document.getElementById('correctOpt').value,
-                fontSize: document.getElementById('fontSize').value
+                theme: document.getElementById('themeSelector').value
             };
 
             localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
@@ -660,8 +545,6 @@ footer {
                 document.getElementById('optB').value = '';
                 document.getElementById('optC').value = '';
                 document.getElementById('optD').value = '';
-                document.getElementById('correctOpt').value = '';
-                document.getElementById('fontSize').value = 17;
                 saveState(); 
                 updateLive();
             }
@@ -678,13 +561,22 @@ footer {
             document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
             document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
 
-            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
+            // Prefix Logic
+            const prefixVal = document.getElementById('qStyle').value;
+            const prefixEl = document.getElementById('pPrefix');
+            if(prefixVal.startsWith('fa-')) {
+                prefixEl.innerHTML = `<i class="fas ${prefixVal}"></i>`;
+            } else {
+                prefixEl.innerText = prefixVal;
+            }
+
+            // Option Style Logic
             const optStyle = document.getElementById('optStyle').value;
             const labels = optionTypes[optStyle];
-            document.getElementById('oc1').innerText = labels[0];
-            document.getElementById('oc2').innerText = labels[1];
-            document.getElementById('oc3').innerText = labels[2];
-            document.getElementById('oc4').innerText = labels[3];
+            document.getElementById('oc1').innerHTML = labels[0];
+            document.getElementById('oc2').innerHTML = labels[1];
+            document.getElementById('oc3').innerHTML = labels[2];
+            document.getElementById('oc4').innerHTML = labels[3];
 
             // Theme Logic
             const tIdx = document.getElementById('themeSelector').value;
@@ -692,41 +584,31 @@ footer {
             const wrapper = document.getElementById('mcqWrapper');
             
             wrapper.style.background = theme.bg;
-            document.querySelector('.q-prefix').style.color = theme.accent;
+            document.querySelector('.q-prefix-box').style.color = theme.text;
+            document.querySelector('.q-prefix-box').style.background = theme.text === '#fff' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
             document.querySelector('.card-line').style.background = theme.accent;
 
-            // Apply Text Color Directly from Theme Object
-            const textColor = theme.text;
-            // Derive sub-colors based on main text color
-            const isLightText = textColor === '#fff' || textColor === '#ffffff';
+            const isLightText = theme.text === '#fff' || theme.text === '#ffffff';
             const subColor = isLightText ? "#e2e8f0" : "#444";
-            const borderColor = isLightText ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+            const borderColor = isLightText ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
             const itemBg = isLightText ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)";
             const circleBg = isLightText ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
 
-            document.querySelector('.q-text').style.color = textColor;
+            document.querySelector('.q-text').style.color = theme.text;
             document.querySelectorAll('.opt-text').forEach(el => el.style.color = subColor);
             
             document.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.color = textColor;
+                el.style.color = theme.text;
                 el.style.background = circleBg;
                 el.style.borderColor = isLightText ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)";
             });
             
             document.querySelectorAll('.opt-item').forEach(el => {
-                if(!el.classList.contains('correct-ans')) {
-                    el.style.borderColor = borderColor;
-                    el.style.background = itemBg;
-                }
+                el.style.borderColor = borderColor;
+                el.style.background = itemBg;
             });
             document.querySelector('.card-brand').style.color = isLightText ? "rgba(255,255,255,0.6)" : "#555";
             document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
-
-            // Font Size Logic
-            const fs = document.getElementById('fontSize').value;
-            wrapper.style.fontSize = fs + 'px';
-            document.querySelector('.q-text').style.fontSize = fs + 'px';
-            document.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (fs - 2) + 'px');
 
             if(save) {
                 clearTimeout(debounceTimer);
@@ -735,62 +617,34 @@ footer {
         }
 
         // --- DOWNLOAD PROCESS ---
-        function processDownload(mode) {
+        function downloadImage() {
             const originalWrapper = document.getElementById('mcqWrapper');
+            
+            // 1. Clone to ensure consistent WYSIWYG but High Res
             const clone = originalWrapper.cloneNode(true);
             
-            clone.style.width = "auto";
-            clone.style.minWidth = "400px"; 
+            // 2. Set width to match original to preserve layout exactly
+            clone.style.width = originalWrapper.offsetWidth + "px";
+            clone.style.maxWidth = "none";
             clone.style.position = "absolute";
             clone.style.top = "-9999px";
             clone.style.left = "0";
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
-            if(mode === 'admin') {
-                const correctVal = document.getElementById('correctOpt').value;
-                if(!correctVal) {
-                    alert("Please select a Correct Answer first!");
-                    return;
-                }
-                const targetId = 'item' + correctVal;
-                const targetEl = clone.querySelector('#' + targetId);
-                if(targetEl) {
-                    targetEl.style.background = "#10b981";
-                    targetEl.style.borderColor = "#059669";
-                    targetEl.style.color = "white";
-                    targetEl.style.fontWeight = "700";
-                    targetEl.querySelector('.opt-circle').style.background = "white";
-                    targetEl.querySelector('.opt-circle').style.color = "#059669";
-                    targetEl.querySelector('.opt-text').style.color = "white";
-                }
-            }
-
             document.body.appendChild(clone);
 
+            // 3. Render with Scale
             html2canvas(clone, {
-                scale: 3, 
+                scale: 4, 
                 useCORS: true,
-                backgroundColor: null, 
+                backgroundColor: null
             }).then(canvas => {
-                canvas.toBlob(blob => {
-                    const file = new File([blob], `mcq_${mode}_${Date.now()}.png`, { type: 'image/png' });
-
-                    if (mode === 'admin' && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        navigator.share({
-                            files: [file],
-                            title: 'MCQ Answer',
-                            text: 'Here is the correct answer.'
-                        }).catch(console.error);
-                    } else {
-                        const link = document.createElement('a');
-                        link.download = `mcq_${mode}_${Date.now()}.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                    }
-                    
-                    document.body.removeChild(clone);
-                });
+                const link = document.createElement('a');
+                link.download = `mcq_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.removeChild(clone);
             });
         }
 
