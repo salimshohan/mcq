@@ -271,7 +271,8 @@ footer {
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
                         <option value="fa-question">Icon: Question</option>
-                        <option value="fa-star" selected>Icon: Star</option> <option value="fa-lightbulb">Icon: Bulb</option>
+                        <option value="fa-star" selected>Icon: Star</option>
+                        <option value="fa-lightbulb">Icon: Bulb</option>
                         <option value="fa-pen-nib">Icon: Pen</option>
                     </select>
                 </div>
@@ -279,7 +280,8 @@ footer {
                     <label><i class="fas fa-list-ol"></i> Option Style</label>
                     <select id="optStyle" class="form-control" onchange="updateLive()">
                         <option value="abcd">a, b, c, d</option>
-                        <option value="ABCD" selected>A, B, C, D</option> <option value="roman">i, ii, iii, iv</option>
+                        <option value="ABCD" selected>A, B, C, D</option>
+                        <option value="roman">i, ii, iii, iv</option>
                         <option value="number">1, 2, 3, 4</option>
                         <option value="bangla">১, ২, ৩, ৪</option>
                         <option value="bangla2">ক, খ, গ, ঘ</option>
@@ -477,8 +479,12 @@ footer {
         let isRestoring = false;
 
         function init() {
-            // Local Storage Logic Removed
-            updateLive(true); 
+            const saved = localStorage.getItem('mcqCurrent');
+            if(saved) {
+                applyState(JSON.parse(saved));
+            } else {
+                updateLive(true); 
+            }
         }
 
         function applyState(state) {
@@ -493,6 +499,7 @@ footer {
             document.getElementById('themeSelector').value = state.theme || 0;
             isRestoring = false;
             updateLive(false); 
+            showRestoredStatus();
         }
 
         function saveState() {
@@ -511,7 +518,7 @@ footer {
                 theme: document.getElementById('themeSelector').value
             };
 
-            // Local Storage Set Item Removed
+            localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
             showSavedStatus();
 
             if (historyIndex < historyStack.length - 1) {
@@ -536,6 +543,14 @@ footer {
             const status = document.getElementById('saveStatus');
             status.className = 'save-status status-saved';
             status.innerHTML = '<i class="fas fa-check"></i> Saved';
+            status.style.opacity = '1';
+            setTimeout(() => { status.style.opacity = '0'; }, 2000);
+        }
+
+        function showRestoredStatus() {
+            const status = document.getElementById('saveStatus');
+            status.className = 'save-status status-restored';
+            status.innerHTML = '<i class="fas fa-history"></i> Restored';
             status.style.opacity = '1';
             setTimeout(() => { status.style.opacity = '0'; }, 2000);
         }
@@ -595,7 +610,7 @@ footer {
             wrapper.style.background = theme.bg;
             document.querySelector('.q-prefix-box').style.color = theme.text;
             document.querySelector('.q-prefix-box').style.background = theme.text === '#fff' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)';
-            // card-line removed to prevent error as it doesn't exist in HTML
+            // card-line removed to prevent error
             // document.querySelector('.card-line').style.background = theme.accent;
 
             const isLightText = theme.text === '#fff' || theme.text === '#ffffff';
@@ -671,9 +686,6 @@ footer {
             });
             
             clone.querySelector('.card-footer').style.marginTop = "25px";
-            // card-line removed from clone logic as well
-            // clone.querySelector('.card-line').style.width = "800px";
-            // clone.querySelector('.card-line').style.height = "5px";
             clone.querySelector('.card-brand').style.fontSize = "18px";
             clone.querySelector('.card-promo').style.fontSize = "20px";
 
