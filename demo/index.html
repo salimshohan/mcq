@@ -128,19 +128,16 @@ select.form-control { cursor: pointer; }
 .download-group { display: flex; gap: 10px; margin-top: 25px; }
 
 .btn-download {
-    flex: 1; padding: 14px;
+    width: 100%; padding: 14px;
     border-radius: 10px; border: none;
     color: white; font-weight: 600; cursor: pointer;
     font-size: 14px; 
     box-shadow: var(--shadow-md);
     transition: all 0.2s;
     display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #111827;
 }
-.btn-user { background: #111827; }
-.btn-user:hover { background: #000000; transform: translateY(-2px); }
-
-.btn-admin { background: #059669; }
-.btn-admin:hover { background: #047857; transform: translateY(-2px); }
+.btn-download:hover { background: #000000; transform: translateY(-2px); }
 
 /* --- PREVIEW BOX --- */
 .preview-box {
@@ -149,7 +146,7 @@ select.form-control { cursor: pointer; }
     padding-top: 10px;
 }
 
-/* --- PREMIUM CARD DESIGN (COMPACT 2.0) --- */
+/* --- PREMIUM CARD DESIGN (COMPACT) --- */
 #mcqWrapper {
     width: 100%; max-width: 480px;
     border-radius: 12px;
@@ -181,7 +178,6 @@ select.form-control { cursor: pointer; }
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Default sizes */
 .q-text { font-size: 17px; font-weight: 700; line-height: 1.35; white-space: pre-wrap; }
 
 .options-list { display: flex; flex-direction: column; gap: 7px; }
@@ -201,19 +197,6 @@ select.form-control { cursor: pointer; }
     content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
     background: rgba(255,255,255,0.3); opacity: 0.5;
 }
-
-.opt-item.correct-ans {
-    background: #10b981 !important; 
-    border-color: #059669 !important;
-    color: white !important;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
-}
-.opt-item.correct-ans::before { background: white; opacity: 1; }
-.opt-item.correct-ans .opt-circle {
-    background: white; color: #059669; border-color: white;
-}
-.opt-item.correct-ans .opt-text { color: white !important; }
-
 
 .opt-circle {
     width: 22px; height: 22px; flex-shrink: 0;
@@ -319,23 +302,9 @@ footer {
                 <input id="optD" class="form-control" placeholder="Option 4" oninput="updateLive()">
             </div>
 
-            <div class="input-group">
-                <label><i class="fas fa-check-circle"></i> Correct Answer (Admin)</label>
-                <select id="correctOpt" class="form-control" onchange="updateLive()">
-                    <option value="">Select Correct Option</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                    <option value="4">Option 4</option>
-                </select>
-            </div>
-
             <div class="download-group">
-                <button class="btn-download btn-user" onclick="processDownload('user')">
-                    <i class="fas fa-download"></i> User PNG
-                </button>
-                <button class="btn-download btn-admin" onclick="processDownload('admin')">
-                    <i class="fas fa-share-alt"></i> Share/Admin
+                <button class="btn-download" onclick="downloadImage()">
+                    <i class="fas fa-download"></i> Download PNG
                 </button>
             </div>
         </div>
@@ -369,9 +338,9 @@ footer {
     <script>
         // --- 100 PREMIUM THEMES ---
         const themes = [
+            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24", text: "#fff" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9", text: "#fff" },
-            { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
             { name: "Electric Blue", bg: "linear-gradient(135deg, #172554, #2563eb)", accent: "#93c5fd", text: "#fff" },
             { name: "Cyber Purple", bg: "linear-gradient(135deg, #2d0036, #0f0c29)", accent: "#ff00ff", text: "#fff" },
             { name: "Amethyst", bg: "linear-gradient(135deg, #9d50bb, #6e48aa)", accent: "#ffffff", text: "#fff" },
@@ -520,7 +489,6 @@ footer {
             document.getElementById('qStyle').value = state.qStyle || 'Q.';
             document.getElementById('optStyle').value = state.optStyle || 'abcd';
             document.getElementById('themeSelector').value = state.theme || 0;
-            document.getElementById('correctOpt').value = state.correct || '';
             isRestoring = false;
             updateLive(false); 
         }
@@ -536,8 +504,7 @@ footer {
                 d: document.getElementById('optD').value,
                 qStyle: document.getElementById('qStyle').value,
                 optStyle: document.getElementById('optStyle').value,
-                theme: document.getElementById('themeSelector').value,
-                correct: document.getElementById('correctOpt').value
+                theme: document.getElementById('themeSelector').value
             };
 
             localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
@@ -578,7 +545,6 @@ footer {
                 document.getElementById('optB').value = '';
                 document.getElementById('optC').value = '';
                 document.getElementById('optD').value = '';
-                document.getElementById('correctOpt').value = '';
                 saveState(); 
                 updateLive();
             }
@@ -638,10 +604,8 @@ footer {
             });
             
             document.querySelectorAll('.opt-item').forEach(el => {
-                if(!el.classList.contains('correct-ans')) {
-                    el.style.borderColor = borderColor;
-                    el.style.background = itemBg;
-                }
+                el.style.borderColor = borderColor;
+                el.style.background = itemBg;
             });
             document.querySelector('.card-brand').style.color = isLightText ? "rgba(255,255,255,0.6)" : "#555";
             document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
@@ -653,11 +617,14 @@ footer {
         }
 
         // --- DOWNLOAD PROCESS ---
-        function processDownload(mode) {
+        function downloadImage() {
             const originalWrapper = document.getElementById('mcqWrapper');
+            
+            // 1. Clone to ensure consistent WYSIWYG but High Res
             const clone = originalWrapper.cloneNode(true);
             
-            clone.style.width = "800px";
+            // 2. Set width to match original to preserve layout exactly
+            clone.style.width = originalWrapper.offsetWidth + "px";
             clone.style.maxWidth = "none";
             clone.style.position = "absolute";
             clone.style.top = "-9999px";
@@ -665,58 +632,16 @@ footer {
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
-            // Adjust Styles for Clone (High Res)
-            clone.style.padding = "40px 30px";
-            clone.style.borderRadius = "24px";
-            clone.querySelector('.question-box').style.marginBottom = "25px";
-            clone.querySelector('.options-list').style.gap = "15px";
-            
-            // Font Scaling
-            clone.querySelector('.q-text').style.fontSize = "30px";
-            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = "26px");
-            clone.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.width = "40px"; el.style.height = "40px"; el.style.fontSize = "20px";
-            });
-            
-            // Handle Icon vs Text Prefix in Clone
-            const prefixVal = document.getElementById('qStyle').value;
-            const clonePrefix = clone.querySelector('#pPrefix');
-            if(prefixVal.startsWith('fa-')) {
-                clonePrefix.innerHTML = `<i class="fas ${prefixVal}" style="font-family:'Font Awesome 6 Free';"></i>`;
-            }
-
-            if(mode === 'admin') {
-                const correctVal = document.getElementById('correctOpt').value;
-                if(!correctVal) {
-                    alert("Please select a Correct Answer first!");
-                    return;
-                }
-                const targetId = 'item' + correctVal;
-                const targetEl = clone.querySelector('#' + targetId);
-                if(targetEl) {
-                    targetEl.style.background = "#10b981";
-                    targetEl.style.borderColor = "#059669";
-                    targetEl.style.color = "white";
-                    targetEl.style.fontWeight = "700";
-                    targetEl.querySelector('.opt-circle').style.background = "white";
-                    targetEl.querySelector('.opt-circle').style.color = "#059669";
-                    targetEl.querySelector('.opt-text').style.color = "white";
-                }
-            }
-
             document.body.appendChild(clone);
 
-            // Scale Logic (User=4, Admin=2) - Reduced from 12 to fix crashes
-            let renderScale = mode === 'user' ? 4 : 2;
-
+            // 3. Render with Scale
             html2canvas(clone, {
-                scale: renderScale, 
+                scale: 4, 
                 useCORS: true,
-                backgroundColor: null,
-                width: 800
+                backgroundColor: null
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `mcq_${mode}_${Date.now()}.png`;
+                link.download = `mcq_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 document.body.removeChild(clone);
