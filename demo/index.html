@@ -120,7 +120,6 @@ textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.4; }
 .form-control::placeholder { color: #9ca3af; font-size: 14px; }
 
 select.form-control { cursor: pointer; }
-input[type="range"] { width: 100%; cursor: pointer; }
 
 .row-inputs { display: flex; gap: 15px; }
 .row-inputs > div { flex: 1; }
@@ -154,7 +153,6 @@ input[type="range"] { width: 100%; cursor: pointer; }
 #mcqWrapper {
     width: 100%; max-width: 480px;
     border-radius: 12px;
-    /* REDUCED PADDING */
     padding: 15px; 
     display: flex; flex-direction: column;
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
@@ -165,12 +163,10 @@ input[type="range"] { width: 100%; cursor: pointer; }
     overflow: hidden;
 }
 
-/* Glassy Overlay */
 .card-content-layer { position: relative; z-index: 2; }
 
 .question-box { 
     display: flex; gap: 10px; 
-    /* REDUCED MARGIN */
     margin-bottom: 12px; 
 }
 
@@ -185,12 +181,9 @@ input[type="range"] { width: 100%; cursor: pointer; }
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.q-text { 
-    font-weight: 700; line-height: 1.35; white-space: pre-wrap; 
-    /* Font size set by JS */
-}
+/* Default sizes */
+.q-text { font-size: 17px; font-weight: 700; line-height: 1.35; white-space: pre-wrap; }
 
-/* REDUCED GAP */
 .options-list { display: flex; flex-direction: column; gap: 7px; }
 
 .opt-item {
@@ -198,7 +191,6 @@ input[type="range"] { width: 100%; cursor: pointer; }
     background: rgba(255, 255, 255, 0.08); 
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px; 
-    /* REDUCED PADDING */
     padding: 7px 10px; 
     transition: 0.2s;
     position: relative;
@@ -210,7 +202,6 @@ input[type="range"] { width: 100%; cursor: pointer; }
     background: rgba(255,255,255,0.3); opacity: 0.5;
 }
 
-/* Admin Mode Correct Answer Style */
 .opt-item.correct-ans {
     background: #10b981 !important; 
     border-color: #059669 !important;
@@ -232,12 +223,8 @@ input[type="range"] { width: 100%; cursor: pointer; }
     font-size: 11px; font-weight: 700; margin-right: 10px;
     border: 1px solid rgba(255,255,255,0.2);
 }
-.opt-text { 
-    font-weight: 500; line-height: 1.3;
-    /* Font size set by JS */
-}
+.opt-text { font-size: 15px; font-weight: 500; line-height: 1.3; }
 
-/* COMPACT FOOTER */
 .card-footer { 
     margin-top: 8px; text-align: center; 
     border-top: 1px solid rgba(255,255,255,0.15);
@@ -292,7 +279,10 @@ footer {
                         <option value="Q.">Q.</option>
                         <option value="?">?</option>
                         <option value="প্রশ্ন:">প্রশ্ন:</option>
-                        <option value="">None</option>
+                        <option value="fa-question">Icon: Question</option>
+                        <option value="fa-star">Icon: Star</option>
+                        <option value="fa-lightbulb">Icon: Bulb</option>
+                        <option value="fa-pen-nib">Icon: Pen</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -304,6 +294,8 @@ footer {
                         <option value="number">1, 2, 3, 4</option>
                         <option value="bangla">১, ২, ৩, ৪</option>
                         <option value="bangla2">ক, খ, গ, ঘ</option>
+                        <option value="arrow">Icon: Arrow</option>
+                        <option value="check">Icon: Check</option>
                     </select>
                 </div>
             </div>
@@ -312,14 +304,6 @@ footer {
                 <label><i class="fas fa-palette"></i> Theme (100 Premium)</label>
                 <select id="themeSelector" class="form-control" onchange="updateLive()">
                     </select>
-            </div>
-
-            <div class="input-group">
-                <label>
-                    <span><i class="fas fa-text-height"></i> Font Size</span>
-                    <span id="fontSizeDisplay" style="color:var(--primary); font-weight:700;">17px</span>
-                </label>
-                <input type="range" id="fontSize" min="10" max="30" value="17" step="1" oninput="updateLive()">
             </div>
 
             <div class="input-group">
@@ -383,9 +367,8 @@ footer {
   <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- 100 PREMIUM THEMES (FIXED CONTRAST - ALL TEXT COLORS DEFINED) ---
+        // --- 100 PREMIUM THEMES ---
         const themes = [
-            // Dark Themes (Text White)
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24", text: "#fff" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9", text: "#fff" },
             { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
@@ -507,7 +490,9 @@ footer {
             roman: ['i', 'ii', 'iii', 'iv'],
             number: ['1', '2', '3', '4'],
             bangla: ['১', '২', '৩', '৪'],
-            bangla2: ['ক','খ','গ','ঘ']
+            bangla2: ['ক','খ','গ','ঘ'],
+            arrow: ['<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>', '<i class="fas fa-arrow-right"></i>'],
+            check: ['<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>', '<i class="fas fa-check"></i>']
         };
 
         // --- HISTORY & STATE MANAGEMENT ---
@@ -536,7 +521,6 @@ footer {
             document.getElementById('optStyle').value = state.optStyle || 'abcd';
             document.getElementById('themeSelector').value = state.theme || 0;
             document.getElementById('correctOpt').value = state.correct || '';
-            document.getElementById('fontSize').value = state.fontSize || 17;
             isRestoring = false;
             updateLive(false); 
         }
@@ -553,8 +537,7 @@ footer {
                 qStyle: document.getElementById('qStyle').value,
                 optStyle: document.getElementById('optStyle').value,
                 theme: document.getElementById('themeSelector').value,
-                correct: document.getElementById('correctOpt').value,
-                fontSize: document.getElementById('fontSize').value
+                correct: document.getElementById('correctOpt').value
             };
 
             localStorage.setItem('mcqCurrent', JSON.stringify(currentState));
@@ -596,7 +579,6 @@ footer {
                 document.getElementById('optC').value = '';
                 document.getElementById('optD').value = '';
                 document.getElementById('correctOpt').value = '';
-                document.getElementById('fontSize').value = 17;
                 saveState(); 
                 updateLive();
             }
@@ -613,13 +595,22 @@ footer {
             document.getElementById('pC').innerText = document.getElementById('optC').value || "Option C";
             document.getElementById('pD').innerText = document.getElementById('optD').value || "Option D";
 
-            document.getElementById('pPrefix').innerText = document.getElementById('qStyle').value;
+            // Prefix Logic
+            const prefixVal = document.getElementById('qStyle').value;
+            const prefixEl = document.getElementById('pPrefix');
+            if(prefixVal.startsWith('fa-')) {
+                prefixEl.innerHTML = `<i class="fas ${prefixVal}"></i>`;
+            } else {
+                prefixEl.innerText = prefixVal;
+            }
+
+            // Option Style Logic
             const optStyle = document.getElementById('optStyle').value;
             const labels = optionTypes[optStyle];
-            document.getElementById('oc1').innerText = labels[0];
-            document.getElementById('oc2').innerText = labels[1];
-            document.getElementById('oc3').innerText = labels[2];
-            document.getElementById('oc4').innerText = labels[3];
+            document.getElementById('oc1').innerHTML = labels[0];
+            document.getElementById('oc2').innerHTML = labels[1];
+            document.getElementById('oc3').innerHTML = labels[2];
+            document.getElementById('oc4').innerHTML = labels[3];
 
             // Theme Logic
             const tIdx = document.getElementById('themeSelector').value;
@@ -655,13 +646,6 @@ footer {
             document.querySelector('.card-brand').style.color = isLightText ? "rgba(255,255,255,0.6)" : "#555";
             document.querySelector('.card-promo').style.color = isLightText ? "rgba(255,255,255,0.5)" : "#666";
 
-            // Font Size Logic (Fixed)
-            const fs = parseInt(document.getElementById('fontSize').value);
-            document.getElementById('fontSizeDisplay').innerText = fs + 'px';
-            document.querySelector('.q-text').style.fontSize = fs + 'px';
-            const optSize = Math.max(10, fs - 2); 
-            document.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = optSize + 'px');
-
             if(save) {
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(saveState, 500);
@@ -673,7 +657,6 @@ footer {
             const originalWrapper = document.getElementById('mcqWrapper');
             const clone = originalWrapper.cloneNode(true);
             
-            // Fixed width for consistent output quality (800px width simulation)
             clone.style.width = "800px";
             clone.style.maxWidth = "none";
             clone.style.position = "absolute";
@@ -682,46 +665,26 @@ footer {
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
-            // Re-apply styles explicitly for the clone
-            const fs = parseInt(document.getElementById('fontSize').value);
-            const optSize = Math.max(10, fs - 2);
-
-            // Scale factor for 800px width (approx 1.8x from preview)
-            const scaleFactor = 1.8;
-            
-            clone.querySelector('.q-text').style.fontSize = (fs * scaleFactor) + 'px';
-            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (optSize * scaleFactor) + 'px');
-            
-            // Scale card elements for hi-res look
+            // Adjust Styles for Clone (High Res)
             clone.style.padding = "40px 30px";
             clone.style.borderRadius = "24px";
-            
             clone.querySelector('.question-box').style.marginBottom = "25px";
-            clone.querySelector('.q-prefix-box').style.width = "60px";
-            clone.querySelector('.q-prefix-box').style.height = "60px";
-            clone.querySelector('.q-prefix-box').style.fontSize = "30px";
-            clone.querySelector('.q-prefix-box').style.borderRadius = "14px";
-            
             clone.querySelector('.options-list').style.gap = "15px";
-            clone.querySelectorAll('.opt-item').forEach(el => {
-                el.style.padding = "15px 25px";
-                el.style.borderRadius = "16px";
-            });
+            
+            // Font Scaling
+            clone.querySelector('.q-text').style.fontSize = "30px";
+            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = "26px");
             clone.querySelectorAll('.opt-circle').forEach(el => {
-                el.style.width = "40px";
-                el.style.height = "40px";
-                el.style.fontSize = "20px";
-                el.style.marginRight = "25px";
-                el.style.borderRadius = "10px";
+                el.style.width = "40px"; el.style.height = "40px"; el.style.fontSize = "20px";
             });
             
-            clone.querySelector('.card-footer').style.marginTop = "25px";
-            clone.querySelector('.card-line').style.width = "80px";
-            clone.querySelector('.card-line').style.height = "5px";
-            clone.querySelector('.card-brand').style.fontSize = "18px";
-            clone.querySelector('.card-promo').style.fontSize = "20px";
+            // Handle Icon vs Text Prefix in Clone
+            const prefixVal = document.getElementById('qStyle').value;
+            const clonePrefix = clone.querySelector('#pPrefix');
+            if(prefixVal.startsWith('fa-')) {
+                clonePrefix.innerHTML = `<i class="fas ${prefixVal}" style="font-family:'Font Awesome 6 Free';"></i>`;
+            }
 
-            // Admin Highlight Logic
             if(mode === 'admin') {
                 const correctVal = document.getElementById('correctOpt').value;
                 if(!correctVal) {
@@ -743,8 +706,8 @@ footer {
 
             document.body.appendChild(clone);
 
-            // User Mode Scale High (12), Admin Mode Low (3)
-            let renderScale = mode === 'user' ? 12 : 3;
+            // Scale Logic (User=4, Admin=2) - Reduced from 12 to fix crashes
+            let renderScale = mode === 'user' ? 4 : 2;
 
             html2canvas(clone, {
                 scale: renderScale, 
@@ -752,26 +715,11 @@ footer {
                 backgroundColor: null,
                 width: 800
             }).then(canvas => {
-                canvas.toBlob(blob => {
-                    const file = new File([blob], `mcq_${mode}_${Date.now()}.png`, { type: 'image/png' });
-
-                    // Only share for Admin mode on supported devices
-                    if (mode === 'admin' && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        navigator.share({
-                            files: [file],
-                            title: 'MCQ Answer',
-                            text: 'Here is the correct answer.'
-                        }).catch(console.error);
-                    } else {
-                        // Direct Download for User Mode or fallback
-                        const link = document.createElement('a');
-                        link.download = `mcq_${mode}_${Date.now()}.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                    }
-                    
-                    document.body.removeChild(clone);
-                });
+                const link = document.createElement('a');
+                link.download = `mcq_${mode}_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.removeChild(clone);
             });
         }
 
