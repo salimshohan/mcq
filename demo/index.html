@@ -151,11 +151,12 @@ input[type="range"] { width: 100%; cursor: pointer; }
     padding-top: 10px;
 }
 
-/* --- PREMIUM CARD DESIGN --- */
+/* --- PREMIUM CARD DESIGN (COMPACT) --- */
 #mcqWrapper {
     width: 100%; max-width: 480px;
     border-radius: 12px;
-    padding: 30px 25px; 
+    /* REDUCED PADDING */
+    padding: 20px 20px; 
     display: flex; flex-direction: column;
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
     border: none;
@@ -171,34 +172,37 @@ input[type="range"] { width: 100%; cursor: pointer; }
 }
 
 .question-box { 
-    display: flex; gap: 12px; 
-    margin-bottom: 25px; 
+    display: flex; gap: 10px; 
+    /* REDUCED MARGIN */
+    margin-bottom: 15px; 
 }
 
 .q-prefix-box {
-    width: 40px; height: 40px; flex-shrink: 0;
+    width: 36px; height: 36px; flex-shrink: 0;
     background: rgba(255,255,255,0.2);
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 18px; font-weight: 900;
+    font-size: 16px; font-weight: 900;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,255,255,0.3);
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .q-text { 
-    font-weight: 700; line-height: 1.5; white-space: pre-wrap; 
+    font-weight: 700; line-height: 1.4; white-space: pre-wrap; 
     /* Font size set by JS */
 }
 
-.options-list { display: flex; flex-direction: column; gap: 12px; }
+/* REDUCED GAP */
+.options-list { display: flex; flex-direction: column; gap: 8px; }
 
 .opt-item {
     display: flex; align-items: center;
     background: rgba(255, 255, 255, 0.08); 
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px; 
-    padding: 10px 15px; 
+    border-radius: 8px; 
+    /* REDUCED PADDING */
+    padding: 8px 12px; 
     transition: 0.2s;
     position: relative;
     overflow: hidden;
@@ -226,22 +230,23 @@ input[type="range"] { width: 100%; cursor: pointer; }
 
 
 .opt-circle {
-    width: 26px; height: 26px; flex-shrink: 0;
-    border-radius: 8px; /* Rounded square looks more premium here */
+    width: 24px; height: 24px; flex-shrink: 0;
+    border-radius: 6px;
     background: rgba(255, 255, 255, 0.15);
     display: flex; justify-content: center; align-items: center;
-    font-size: 13px; font-weight: 700; margin-right: 15px;
+    font-size: 12px; font-weight: 700; margin-right: 12px;
     border: 1px solid rgba(255,255,255,0.2);
 }
 .opt-text { 
-    font-weight: 500; line-height: 1.4;
+    font-weight: 500; line-height: 1.3;
     /* Font size set by JS */
 }
 
 .card-footer { 
-    margin-top: 25px; text-align: center; 
+    /* REDUCED MARGIN */
+    margin-top: 15px; text-align: center; 
     border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 15px;
+    padding-top: 10px;
 }
 
 .card-brand { 
@@ -250,7 +255,6 @@ input[type="range"] { width: 100%; cursor: pointer; }
     margin-bottom: 4px; display: inline-block;
     background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px;
 }
-/* Fixed Font Sizes for Footer */
 .card-promo { font-size: 11px !important; opacity: 0.85; font-weight: 500; }
 
 /* Footer */
@@ -384,8 +388,9 @@ footer {
   <footer>&copy; 2026 Interactive Learning<br>All rights reserved.</footer>
 
     <script>
-        // --- 100 PREMIUM THEMES (FIXED CONTRAST) ---
+        // --- 100 PREMIUM THEMES (FIXED CONTRAST - ALL TEXT COLORS DEFINED) ---
         const themes = [
+            // Dark Themes (Text White)
             { name: "Royal Blue", bg: "linear-gradient(135deg, #242066, #171542)", accent: "#fbbf24", text: "#fff" },
             { name: "Deep Ocean", bg: "linear-gradient(135deg, #0f172a, #0e7490)", accent: "#67e8f9", text: "#fff" },
             { name: "Midnight Navy", bg: "linear-gradient(135deg, #020617, #1e293b)", accent: "#38bdf8", text: "#fff" },
@@ -478,7 +483,7 @@ footer {
             { name: "Amour", bg: "linear-gradient(135deg, #f77062, #fe5196)", accent: "#fff", text: "#fff" },
             { name: "Politics", bg: "linear-gradient(135deg, #2196f3, #f44336)", accent: "#fff", text: "#fff" },
             { name: "Transfile", bg: "linear-gradient(135deg, #16BFFD, #CB3066)", accent: "#fff", text: "#fff" },
-            { name: "Tranquil", bg: "linear-gradient(135deg, #EECDA3, #EF629F)", accent: "#fff", text: "#fff" },
+            { name: "Tranquil", bg: "linear-gradient(135deg, #EECDA3, #EF629F)", accent: "#fff", text: "#222" },
             { name: "Sylvia", bg: "linear-gradient(135deg, #ff4b1f, #ff9068)", accent: "#fff", text: "#fff" },
             { name: "Scooter", bg: "linear-gradient(135deg, #36D1DC, #5B86E5)", accent: "#fff", text: "#fff" },
             { name: "Meridian", bg: "linear-gradient(135deg, #283c86, #45a247)", accent: "#fff", text: "#fff" },
@@ -486,7 +491,7 @@ footer {
             { name: "Alive", bg: "linear-gradient(135deg, #CB356B, #BD3F32)", accent: "#fff", text: "#fff" },
             { name: "Kimoby", bg: "linear-gradient(135deg, #396afc, #2948ff)", accent: "#fff", text: "#fff" },
             { name: "Bourbon", bg: "linear-gradient(135deg, #EC6F66, #F3A183)", accent: "#fff", text: "#fff" },
-            { name: "Sweet Morning", bg: "linear-gradient(135deg, #FF5F6D, #FFC371)", accent: "#333", text: "#222" },
+            { name: "Stellar", bg: "linear-gradient(135deg, #7474BF, #348AC7)", accent: "#fff", text: "#fff" },
             { name: "Clouds", bg: "linear-gradient(135deg, #ECE9E6, #FFFFFF)", accent: "#333", text: "#222" },
             { name: "Traffic", bg: "linear-gradient(135deg, #2193b0, #6dd5ed)", accent: "#fff", text: "#fff" },
             { name: "Mantle", bg: "linear-gradient(135deg, #24C6DC, #514A9D)", accent: "#fff", text: "#fff" },
@@ -659,11 +664,12 @@ footer {
             document.querySelector('.card-brand').style.background = isLightText ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)";
             document.querySelector('.card-promo').style.color = promoColor;
 
-            // Font Size Logic
-            const fs = document.getElementById('fontSize').value;
+            // Font Size Logic (Fixed)
+            const fs = parseInt(document.getElementById('fontSize').value);
             document.getElementById('fontSizeDisplay').innerText = fs + 'px';
             document.querySelector('.q-text').style.fontSize = fs + 'px';
-            document.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (fs - 2) + 'px');
+            const optSize = Math.max(10, fs - 2); // Ensure options don't get too tiny
+            document.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = optSize + 'px');
 
             if(save) {
                 clearTimeout(debounceTimer);
@@ -671,24 +677,54 @@ footer {
             }
         }
 
-        // --- DOWNLOAD PROCESS (Updated for Correct Clone Styles) ---
+        // --- DOWNLOAD PROCESS ---
         function processDownload(mode) {
             const originalWrapper = document.getElementById('mcqWrapper');
             const clone = originalWrapper.cloneNode(true);
             
-            // Explicitly re-apply font sizes to clone because cloned nodes don't inherit js-applied styles automatically sometimes
-            const fs = document.getElementById('fontSize').value;
-            clone.querySelector('.q-text').style.fontSize = fs + 'px';
-            const optTexts = clone.querySelectorAll('.opt-text');
-            optTexts.forEach(el => el.style.fontSize = (fs - 2) + 'px');
-            
-            clone.style.width = originalWrapper.offsetWidth + "px";
+            // Fixed width for mobile view consistency
+            clone.style.width = "800px";
+            clone.style.maxWidth = "none";
             clone.style.position = "absolute";
             clone.style.top = "-9999px";
             clone.style.left = "0";
             clone.style.margin = "0";
             clone.style.boxSizing = "border-box";
             
+            // Re-apply styles explicitly for the clone to ensure accuracy
+            const tIdx = document.getElementById('themeSelector').value;
+            const theme = themes[tIdx];
+            const fs = parseInt(document.getElementById('fontSize').value);
+            const optSize = Math.max(10, fs - 2);
+
+            // Scale fonts for the fixed 800px width (Assuming orig is ~400px, scale ~2x)
+            // But html2canvas scale handles resolution. To match "mobile view layout", we set a fixed width.
+            // Text wrapping will match 800px width.
+            
+            clone.querySelector('.q-text').style.fontSize = (fs * 1.8) + 'px'; // Adjusted for larger width
+            clone.querySelectorAll('.opt-text').forEach(el => el.style.fontSize = (optSize * 1.8) + 'px');
+            clone.querySelectorAll('.card-promo').forEach(el => el.style.fontSize = '20px'); // Scaled promo
+            clone.querySelectorAll('.card-brand').forEach(el => el.style.fontSize = '18px'); 
+
+            // Padding adjustments for clone
+            clone.style.padding = "40px";
+            clone.querySelector('.question-box').style.marginBottom = "30px";
+            clone.querySelector('.options-list').style.gap = "15px";
+            clone.querySelectorAll('.opt-item').forEach(el => {
+                el.style.padding = "15px 20px";
+                el.style.borderRadius = "16px";
+            });
+            clone.querySelector('.q-prefix-box').style.width = "60px";
+            clone.querySelector('.q-prefix-box').style.height = "60px";
+            clone.querySelector('.q-prefix-box').style.fontSize = "30px";
+            
+            clone.querySelectorAll('.opt-circle').forEach(el => {
+                el.style.width = "40px";
+                el.style.height = "40px";
+                el.style.fontSize = "22px";
+                el.style.marginRight = "20px";
+            });
+
             if(mode === 'admin') {
                 const correctVal = document.getElementById('correctOpt').value;
                 if(!correctVal) {
@@ -710,10 +746,15 @@ footer {
 
             document.body.appendChild(clone);
 
+            // User Mode Scale High
+            let renderScale = 3; 
+            if(mode === 'user') renderScale = 12; // High Res User PNG
+
             html2canvas(clone, {
-                scale: 3, 
+                scale: renderScale, 
                 useCORS: true,
                 backgroundColor: null, 
+                width: 800
             }).then(canvas => {
                 canvas.toBlob(blob => {
                     const file = new File([blob], `mcq_${mode}_${Date.now()}.png`, { type: 'image/png' });
